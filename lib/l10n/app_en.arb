@@ -38,5 +38,10 @@
   "calendarRetrogadeStart": "Retrograde Begins",
   "calendarRetrogadeEnd": "Direct",
   "calendarSignIngress": "Enters",
-  "calendarNoEvents": "No events this day"
+  "calendarNoEvents": "No events this day",
+  "characterAboutTitle": "About Xingjian",
+  "characterAboutBackstory": "Xingjian is your personal guide through the cosmos, combining ancient astrological wisdom with modern insight to help you navigate life's journey under the stars.",
+  "characterExpressionGallery": "Expressions",
+  "characterName": "Xingjian",
+  "characterIntro": "Hello! I'm Xingjian, your guide through the stars."
 }

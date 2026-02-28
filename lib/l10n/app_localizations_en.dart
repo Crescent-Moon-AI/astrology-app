@@ -124,4 +124,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calendarNoEvents => 'No events this day';
+
+  @override
+  String get characterAboutTitle => 'About Xingjian';
+
+  @override
+  String get characterAboutBackstory =>
+      'Xingjian is your personal guide through the cosmos, combining ancient astrological wisdom with modern insight to help you navigate life\'s journey under the stars.';
+
+  @override
+  String get characterExpressionGallery => 'Expressions';
+
+  @override
+  String get characterName => 'Xingjian';
+
+  @override
+  String get characterIntro =>
+      'Hello! I\'m Xingjian, your guide through the stars.';
 }

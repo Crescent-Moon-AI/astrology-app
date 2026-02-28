@@ -38,5 +38,10 @@
   "calendarRetrogadeStart": "开始逆行",
   "calendarRetrogadeEnd": "恢复顺行",
   "calendarSignIngress": "进入",
-  "calendarNoEvents": "当天无星象事件"
+  "calendarNoEvents": "当天无星象事件",
+  "characterAboutTitle": "关于星见",
+  "characterAboutBackstory": "星见是你的星空向导，将古老的占星智慧与现代洞察结合，帮助你在星光指引下探索人生旅程。",
+  "characterExpressionGallery": "表情",
+  "characterName": "星见",
+  "characterIntro": "你好！我是星见，你的星空向导。"
 }

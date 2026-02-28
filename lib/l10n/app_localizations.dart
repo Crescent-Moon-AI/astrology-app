@@ -331,6 +331,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No events this day'**
   String get calendarNoEvents;
+
+  /// No description provided for @characterAboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About Xingjian'**
+  String get characterAboutTitle;
+
+  /// No description provided for @characterAboutBackstory.
+  ///
+  /// In en, this message translates to:
+  /// **'Xingjian is your personal guide through the cosmos, combining ancient astrological wisdom with modern insight to help you navigate life\'s journey under the stars.'**
+  String get characterAboutBackstory;
+
+  /// No description provided for @characterExpressionGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Expressions'**
+  String get characterExpressionGallery;
+
+  /// No description provided for @characterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Xingjian'**
+  String get characterName;
+
+  /// No description provided for @characterIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello! I\'m Xingjian, your guide through the stars.'**
+  String get characterIntro;
 }
 
 class _AppLocalizationsDelegate

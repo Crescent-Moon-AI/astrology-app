@@ -124,4 +124,20 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get calendarNoEvents => '当天无星象事件';
+
+  @override
+  String get characterAboutTitle => '关于星见';
+
+  @override
+  String get characterAboutBackstory =>
+      '星见是你的星空向导，将古老的占星智慧与现代洞察结合，帮助你在星光指引下探索人生旅程。';
+
+  @override
+  String get characterExpressionGallery => '表情';
+
+  @override
+  String get characterName => '星见';
+
+  @override
+  String get characterIntro => '你好！我是星见，你的星空向导。';
 }

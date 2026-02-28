@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:astrology_app/shared/models/expression.dart';
+import 'package:astrology_app/shared/widgets/character_avatar.dart';
 import '../../domain/models/message.dart';
 import 'block_renderer.dart';
 
@@ -26,14 +28,9 @@ class MessageBubble extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUser) ...[
-            CircleAvatar(
-              radius: 16,
-              backgroundColor: theme.colorScheme.primaryContainer,
-              child: Icon(
-                Icons.auto_awesome,
-                size: 16,
-                color: theme.colorScheme.onPrimaryContainer,
-              ),
+            CharacterAvatar(
+              expression: mapBlocksToExpression(message.blocks),
+              size: CharacterAvatarSize.md,
             ),
             const SizedBox(width: 8),
           ],
