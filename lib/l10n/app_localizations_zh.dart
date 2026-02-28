@@ -256,4 +256,163 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tarotResume => '继续占卜';
+
+  @override
+  String get friendsTitle => '好友';
+
+  @override
+  String get addFriend => '添加好友';
+
+  @override
+  String get friendName => '姓名';
+
+  @override
+  String get friendBirthDate => '出生日期';
+
+  @override
+  String get friendBirthTime => '出生时间（可选）';
+
+  @override
+  String get friendLocation => '出生地点';
+
+  @override
+  String get friendTimezone => '时区';
+
+  @override
+  String get friendRelationship => '关系';
+
+  @override
+  String get friendRelPartner => '伴侣';
+
+  @override
+  String get friendRelFamily => '家人';
+
+  @override
+  String get friendRelFriend => '朋友';
+
+  @override
+  String get friendRelColleague => '同事';
+
+  @override
+  String get friendRelCrush => '心仪的人';
+
+  @override
+  String get friendSave => '保存好友';
+
+  @override
+  String get friendDelete => '删除好友';
+
+  @override
+  String get friendDeleteConfirm => '确定要删除这位好友吗？';
+
+  @override
+  String get friendLimit => '最多添加 50 位好友';
+
+  @override
+  String get shareTitle => '分享';
+
+  @override
+  String get shareCard => '分享卡片';
+
+  @override
+  String get shareCopyLink => '复制链接';
+
+  @override
+  String get shareSaveImage => '保存图片';
+
+  @override
+  String shareExpires(String date) {
+    return '有效期至 $date';
+  }
+
+  @override
+  String get shareLinkCopied => '链接已复制！';
+
+  @override
+  String get synastryOverall => '综合';
+
+  @override
+  String get synastryEmotional => '情感';
+
+  @override
+  String get synastryIntellectual => '智识';
+
+  @override
+  String get synastryPhysical => '身体';
+
+  @override
+  String get synastrySpiritual => '灵性';
+
+  @override
+  String get askAiAboutThis => '向 AI 咨询';
+
+  @override
+  String get moodCheckinTitle => '今天心情怎么样？';
+
+  @override
+  String get moodScore1 => '很差';
+
+  @override
+  String get moodScore2 => '不好';
+
+  @override
+  String get moodScore3 => '一般';
+
+  @override
+  String get moodScore4 => '不错';
+
+  @override
+  String get moodScore5 => '很棒';
+
+  @override
+  String get moodTagHappy => '开心';
+
+  @override
+  String get moodTagAnxious => '焦虑';
+
+  @override
+  String get moodTagCreative => '有创意';
+
+  @override
+  String get moodTagTired => '疲惫';
+
+  @override
+  String get moodTagRomantic => '浪漫';
+
+  @override
+  String get moodTagCalm => '平静';
+
+  @override
+  String get moodTagEnergetic => '充满活力';
+
+  @override
+  String get moodTagConfused => '困惑';
+
+  @override
+  String get moodHistoryTitle => '心情记录';
+
+  @override
+  String get moodInsightsTitle => '心情洞察';
+
+  @override
+  String moodStreak(int count) {
+    return '连续 $count 天';
+  }
+
+  @override
+  String moodInsightsProgress(int remaining) {
+    return '再记录 $remaining 天即可解锁洞察';
+  }
+
+  @override
+  String get moodDone => '完成';
+
+  @override
+  String get moodEdit => '编辑';
+
+  @override
+  String get moodNoteHint => '添加备注（可选）';
+
+  @override
+  String get moodAskAi => '向 AI 咨询';
 }

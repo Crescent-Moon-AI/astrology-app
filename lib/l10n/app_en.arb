@@ -88,5 +88,77 @@
   "tarotCardReversed": "Reversed",
   "tarotReadingComplete": "Reading Complete",
   "tarotCancel": "Cancel Reading",
-  "tarotResume": "Resume Reading"
+  "tarotResume": "Resume Reading",
+  "friendsTitle": "Friends",
+  "addFriend": "Add Friend",
+  "friendName": "Name",
+  "friendBirthDate": "Birth Date",
+  "friendBirthTime": "Birth Time (optional)",
+  "friendLocation": "Birth Location",
+  "friendTimezone": "Timezone",
+  "friendRelationship": "Relationship",
+  "friendRelPartner": "Partner",
+  "friendRelFamily": "Family",
+  "friendRelFriend": "Friend",
+  "friendRelColleague": "Colleague",
+  "friendRelCrush": "Crush",
+  "friendSave": "Save Friend",
+  "friendDelete": "Delete Friend",
+  "friendDeleteConfirm": "Are you sure you want to delete this friend?",
+  "friendLimit": "Maximum 50 friends reached",
+  "shareTitle": "Share",
+  "shareCard": "Share Card",
+  "shareCopyLink": "Copy Link",
+  "shareSaveImage": "Save Image",
+  "shareExpires": "Expires {date}",
+  "@shareExpires": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "shareLinkCopied": "Link copied!",
+  "synastryOverall": "Overall",
+  "synastryEmotional": "Emotional",
+  "synastryIntellectual": "Intellectual",
+  "synastryPhysical": "Physical",
+  "synastrySpiritual": "Spiritual",
+  "askAiAboutThis": "Ask AI About This",
+  "moodCheckinTitle": "How are you feeling today?",
+  "moodScore1": "Terrible",
+  "moodScore2": "Bad",
+  "moodScore3": "Okay",
+  "moodScore4": "Good",
+  "moodScore5": "Great",
+  "moodTagHappy": "Happy",
+  "moodTagAnxious": "Anxious",
+  "moodTagCreative": "Creative",
+  "moodTagTired": "Tired",
+  "moodTagRomantic": "Romantic",
+  "moodTagCalm": "Calm",
+  "moodTagEnergetic": "Energetic",
+  "moodTagConfused": "Confused",
+  "moodHistoryTitle": "Mood History",
+  "moodInsightsTitle": "Mood Insights",
+  "moodStreak": "Day {count} streak",
+  "@moodStreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "moodInsightsProgress": "Log {remaining} more days to unlock insights",
+  "@moodInsightsProgress": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "moodDone": "Done",
+  "moodEdit": "Edit",
+  "moodNoteHint": "Add a note (optional)",
+  "moodAskAi": "Ask AI About This"
 }

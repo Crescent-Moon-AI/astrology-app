@@ -589,6 +589,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Resume Reading'**
   String get tarotResume;
+
+  /// No description provided for @friendsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Friends'**
+  String get friendsTitle;
+
+  /// No description provided for @addFriend.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Friend'**
+  String get addFriend;
+
+  /// No description provided for @friendName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get friendName;
+
+  /// No description provided for @friendBirthDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Date'**
+  String get friendBirthDate;
+
+  /// No description provided for @friendBirthTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Time (optional)'**
+  String get friendBirthTime;
+
+  /// No description provided for @friendLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Location'**
+  String get friendLocation;
+
+  /// No description provided for @friendTimezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Timezone'**
+  String get friendTimezone;
+
+  /// No description provided for @friendRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship'**
+  String get friendRelationship;
+
+  /// No description provided for @friendRelPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner'**
+  String get friendRelPartner;
+
+  /// No description provided for @friendRelFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get friendRelFamily;
+
+  /// No description provided for @friendRelFriend.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend'**
+  String get friendRelFriend;
+
+  /// No description provided for @friendRelColleague.
+  ///
+  /// In en, this message translates to:
+  /// **'Colleague'**
+  String get friendRelColleague;
+
+  /// No description provided for @friendRelCrush.
+  ///
+  /// In en, this message translates to:
+  /// **'Crush'**
+  String get friendRelCrush;
+
+  /// No description provided for @friendSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Friend'**
+  String get friendSave;
+
+  /// No description provided for @friendDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Friend'**
+  String get friendDelete;
+
+  /// No description provided for @friendDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this friend?'**
+  String get friendDeleteConfirm;
+
+  /// No description provided for @friendLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum 50 friends reached'**
+  String get friendLimit;
+
+  /// No description provided for @shareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get shareTitle;
+
+  /// No description provided for @shareCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Card'**
+  String get shareCard;
+
+  /// No description provided for @shareCopyLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Link'**
+  String get shareCopyLink;
+
+  /// No description provided for @shareSaveImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Image'**
+  String get shareSaveImage;
+
+  /// No description provided for @shareExpires.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires {date}'**
+  String shareExpires(String date);
+
+  /// No description provided for @shareLinkCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied!'**
+  String get shareLinkCopied;
+
+  /// No description provided for @synastryOverall.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall'**
+  String get synastryOverall;
+
+  /// No description provided for @synastryEmotional.
+  ///
+  /// In en, this message translates to:
+  /// **'Emotional'**
+  String get synastryEmotional;
+
+  /// No description provided for @synastryIntellectual.
+  ///
+  /// In en, this message translates to:
+  /// **'Intellectual'**
+  String get synastryIntellectual;
+
+  /// No description provided for @synastryPhysical.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical'**
+  String get synastryPhysical;
+
+  /// No description provided for @synastrySpiritual.
+  ///
+  /// In en, this message translates to:
+  /// **'Spiritual'**
+  String get synastrySpiritual;
+
+  /// No description provided for @askAiAboutThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask AI About This'**
+  String get askAiAboutThis;
+
+  /// No description provided for @moodCheckinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How are you feeling today?'**
+  String get moodCheckinTitle;
+
+  /// No description provided for @moodScore1.
+  ///
+  /// In en, this message translates to:
+  /// **'Terrible'**
+  String get moodScore1;
+
+  /// No description provided for @moodScore2.
+  ///
+  /// In en, this message translates to:
+  /// **'Bad'**
+  String get moodScore2;
+
+  /// No description provided for @moodScore3.
+  ///
+  /// In en, this message translates to:
+  /// **'Okay'**
+  String get moodScore3;
+
+  /// No description provided for @moodScore4.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get moodScore4;
+
+  /// No description provided for @moodScore5.
+  ///
+  /// In en, this message translates to:
+  /// **'Great'**
+  String get moodScore5;
+
+  /// No description provided for @moodTagHappy.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy'**
+  String get moodTagHappy;
+
+  /// No description provided for @moodTagAnxious.
+  ///
+  /// In en, this message translates to:
+  /// **'Anxious'**
+  String get moodTagAnxious;
+
+  /// No description provided for @moodTagCreative.
+  ///
+  /// In en, this message translates to:
+  /// **'Creative'**
+  String get moodTagCreative;
+
+  /// No description provided for @moodTagTired.
+  ///
+  /// In en, this message translates to:
+  /// **'Tired'**
+  String get moodTagTired;
+
+  /// No description provided for @moodTagRomantic.
+  ///
+  /// In en, this message translates to:
+  /// **'Romantic'**
+  String get moodTagRomantic;
+
+  /// No description provided for @moodTagCalm.
+  ///
+  /// In en, this message translates to:
+  /// **'Calm'**
+  String get moodTagCalm;
+
+  /// No description provided for @moodTagEnergetic.
+  ///
+  /// In en, this message translates to:
+  /// **'Energetic'**
+  String get moodTagEnergetic;
+
+  /// No description provided for @moodTagConfused.
+  ///
+  /// In en, this message translates to:
+  /// **'Confused'**
+  String get moodTagConfused;
+
+  /// No description provided for @moodHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mood History'**
+  String get moodHistoryTitle;
+
+  /// No description provided for @moodInsightsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mood Insights'**
+  String get moodInsightsTitle;
+
+  /// No description provided for @moodStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {count} streak'**
+  String moodStreak(int count);
+
+  /// No description provided for @moodInsightsProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Log {remaining} more days to unlock insights'**
+  String moodInsightsProgress(int remaining);
+
+  /// No description provided for @moodDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get moodDone;
+
+  /// No description provided for @moodEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get moodEdit;
+
+  /// No description provided for @moodNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a note (optional)'**
+  String get moodNoteHint;
+
+  /// No description provided for @moodAskAi.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask AI About This'**
+  String get moodAskAi;
 }
 
 class _AppLocalizationsDelegate

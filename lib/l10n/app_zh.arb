@@ -88,5 +88,77 @@
   "tarotCardReversed": "逆位",
   "tarotReadingComplete": "解读完成",
   "tarotCancel": "取消占卜",
-  "tarotResume": "继续占卜"
+  "tarotResume": "继续占卜",
+  "friendsTitle": "好友",
+  "addFriend": "添加好友",
+  "friendName": "姓名",
+  "friendBirthDate": "出生日期",
+  "friendBirthTime": "出生时间（可选）",
+  "friendLocation": "出生地点",
+  "friendTimezone": "时区",
+  "friendRelationship": "关系",
+  "friendRelPartner": "伴侣",
+  "friendRelFamily": "家人",
+  "friendRelFriend": "朋友",
+  "friendRelColleague": "同事",
+  "friendRelCrush": "心仪的人",
+  "friendSave": "保存好友",
+  "friendDelete": "删除好友",
+  "friendDeleteConfirm": "确定要删除这位好友吗？",
+  "friendLimit": "最多添加 50 位好友",
+  "shareTitle": "分享",
+  "shareCard": "分享卡片",
+  "shareCopyLink": "复制链接",
+  "shareSaveImage": "保存图片",
+  "shareExpires": "有效期至 {date}",
+  "@shareExpires": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "shareLinkCopied": "链接已复制！",
+  "synastryOverall": "综合",
+  "synastryEmotional": "情感",
+  "synastryIntellectual": "智识",
+  "synastryPhysical": "身体",
+  "synastrySpiritual": "灵性",
+  "askAiAboutThis": "向 AI 咨询",
+  "moodCheckinTitle": "今天心情怎么样？",
+  "moodScore1": "很差",
+  "moodScore2": "不好",
+  "moodScore3": "一般",
+  "moodScore4": "不错",
+  "moodScore5": "很棒",
+  "moodTagHappy": "开心",
+  "moodTagAnxious": "焦虑",
+  "moodTagCreative": "有创意",
+  "moodTagTired": "疲惫",
+  "moodTagRomantic": "浪漫",
+  "moodTagCalm": "平静",
+  "moodTagEnergetic": "充满活力",
+  "moodTagConfused": "困惑",
+  "moodHistoryTitle": "心情记录",
+  "moodInsightsTitle": "心情洞察",
+  "moodStreak": "连续 {count} 天",
+  "@moodStreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "moodInsightsProgress": "再记录 {remaining} 天即可解锁洞察",
+  "@moodInsightsProgress": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "moodDone": "完成",
+  "moodEdit": "编辑",
+  "moodNoteHint": "添加备注（可选）",
+  "moodAskAi": "向 AI 咨询"
 }

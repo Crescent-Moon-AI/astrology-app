@@ -257,4 +257,164 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tarotResume => 'Resume Reading';
+
+  @override
+  String get friendsTitle => 'Friends';
+
+  @override
+  String get addFriend => 'Add Friend';
+
+  @override
+  String get friendName => 'Name';
+
+  @override
+  String get friendBirthDate => 'Birth Date';
+
+  @override
+  String get friendBirthTime => 'Birth Time (optional)';
+
+  @override
+  String get friendLocation => 'Birth Location';
+
+  @override
+  String get friendTimezone => 'Timezone';
+
+  @override
+  String get friendRelationship => 'Relationship';
+
+  @override
+  String get friendRelPartner => 'Partner';
+
+  @override
+  String get friendRelFamily => 'Family';
+
+  @override
+  String get friendRelFriend => 'Friend';
+
+  @override
+  String get friendRelColleague => 'Colleague';
+
+  @override
+  String get friendRelCrush => 'Crush';
+
+  @override
+  String get friendSave => 'Save Friend';
+
+  @override
+  String get friendDelete => 'Delete Friend';
+
+  @override
+  String get friendDeleteConfirm =>
+      'Are you sure you want to delete this friend?';
+
+  @override
+  String get friendLimit => 'Maximum 50 friends reached';
+
+  @override
+  String get shareTitle => 'Share';
+
+  @override
+  String get shareCard => 'Share Card';
+
+  @override
+  String get shareCopyLink => 'Copy Link';
+
+  @override
+  String get shareSaveImage => 'Save Image';
+
+  @override
+  String shareExpires(String date) {
+    return 'Expires $date';
+  }
+
+  @override
+  String get shareLinkCopied => 'Link copied!';
+
+  @override
+  String get synastryOverall => 'Overall';
+
+  @override
+  String get synastryEmotional => 'Emotional';
+
+  @override
+  String get synastryIntellectual => 'Intellectual';
+
+  @override
+  String get synastryPhysical => 'Physical';
+
+  @override
+  String get synastrySpiritual => 'Spiritual';
+
+  @override
+  String get askAiAboutThis => 'Ask AI About This';
+
+  @override
+  String get moodCheckinTitle => 'How are you feeling today?';
+
+  @override
+  String get moodScore1 => 'Terrible';
+
+  @override
+  String get moodScore2 => 'Bad';
+
+  @override
+  String get moodScore3 => 'Okay';
+
+  @override
+  String get moodScore4 => 'Good';
+
+  @override
+  String get moodScore5 => 'Great';
+
+  @override
+  String get moodTagHappy => 'Happy';
+
+  @override
+  String get moodTagAnxious => 'Anxious';
+
+  @override
+  String get moodTagCreative => 'Creative';
+
+  @override
+  String get moodTagTired => 'Tired';
+
+  @override
+  String get moodTagRomantic => 'Romantic';
+
+  @override
+  String get moodTagCalm => 'Calm';
+
+  @override
+  String get moodTagEnergetic => 'Energetic';
+
+  @override
+  String get moodTagConfused => 'Confused';
+
+  @override
+  String get moodHistoryTitle => 'Mood History';
+
+  @override
+  String get moodInsightsTitle => 'Mood Insights';
+
+  @override
+  String moodStreak(int count) {
+    return 'Day $count streak';
+  }
+
+  @override
+  String moodInsightsProgress(int remaining) {
+    return 'Log $remaining more days to unlock insights';
+  }
+
+  @override
+  String get moodDone => 'Done';
+
+  @override
+  String get moodEdit => 'Edit';
+
+  @override
+  String get moodNoteHint => 'Add a note (optional)';
+
+  @override
+  String get moodAskAi => 'Ask AI About This';
 }

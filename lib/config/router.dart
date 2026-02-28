@@ -11,6 +11,13 @@ import '../features/tarot_ritual/presentation/pages/tarot_ritual_page.dart';
 import '../features/transit/presentation/pages/transit_list_page.dart';
 import '../features/transit/presentation/pages/transit_detail_page.dart';
 import '../features/transit/presentation/pages/astro_calendar_page.dart';
+import '../features/mood/presentation/pages/mood_history_page.dart';
+import '../features/mood/presentation/pages/mood_insights_page.dart';
+import '../features/social/presentation/pages/friend_list_page.dart';
+import '../features/social/presentation/pages/friend_detail_page.dart';
+import '../features/social/presentation/pages/add_friend_page.dart';
+import '../features/social/presentation/pages/share_preview_page.dart';
+import '../features/social/domain/models/shared_card.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -92,6 +99,42 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => TarotRitualPage(
           sessionId: state.pathParameters['sessionId']!,
         ),
+      ),
+      GoRoute(
+        path: '/mood/history',
+        name: 'moodHistory',
+        builder: (context, state) => const MoodHistoryPage(),
+      ),
+      GoRoute(
+        path: '/mood/insights',
+        name: 'moodInsights',
+        builder: (context, state) => const MoodInsightsPage(),
+      ),
+      GoRoute(
+        path: '/friends',
+        name: 'friendList',
+        builder: (context, state) => const FriendListPage(),
+      ),
+      GoRoute(
+        path: '/friends/add',
+        name: 'addFriend',
+        builder: (context, state) => const AddFriendPage(),
+      ),
+      GoRoute(
+        path: '/friends/:id',
+        name: 'friendDetail',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return FriendDetailPage(friendId: id);
+        },
+      ),
+      GoRoute(
+        path: '/share/preview',
+        name: 'sharePreview',
+        builder: (context, state) {
+          final card = state.extra as SharedCard;
+          return SharePreviewPage(card: card);
+        },
       ),
     ],
   );
