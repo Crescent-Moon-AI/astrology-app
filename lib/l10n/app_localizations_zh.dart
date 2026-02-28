@@ -64,4 +64,64 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get chatTitle => '咨询';
+
+  @override
+  String get transitActiveTransits => '活跃星象';
+
+  @override
+  String get transitNoActive => '暂无活跃星象';
+
+  @override
+  String get transitUpcoming => '即将到来的星象';
+
+  @override
+  String get transitDetail => '星象详情';
+
+  @override
+  String get transitAskAi => '向 AI 咨询此星象';
+
+  @override
+  String get transitSeverityHigh => '强';
+
+  @override
+  String get transitSeverityMedium => '中';
+
+  @override
+  String get transitSeverityLow => '弱';
+
+  @override
+  String get transitApplying => '趋近中';
+
+  @override
+  String get transitSeparating => '远离中';
+
+  @override
+  String get transitDismiss => '忽略';
+
+  @override
+  String get calendarTitle => '星象日历';
+
+  @override
+  String get calendarFullMoon => '满月';
+
+  @override
+  String get calendarNewMoon => '新月';
+
+  @override
+  String get calendarSolarEclipse => '日食';
+
+  @override
+  String get calendarLunarEclipse => '月食';
+
+  @override
+  String get calendarRetrogadeStart => '开始逆行';
+
+  @override
+  String get calendarRetrogadeEnd => '恢复顺行';
+
+  @override
+  String get calendarSignIngress => '进入';
+
+  @override
+  String get calendarNoEvents => '当天无星象事件';
 }

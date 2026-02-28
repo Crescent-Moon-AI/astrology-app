@@ -211,6 +211,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Chat'**
   String get chatTitle;
+
+  /// No description provided for @transitActiveTransits.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Transits'**
+  String get transitActiveTransits;
+
+  /// No description provided for @transitNoActive.
+  ///
+  /// In en, this message translates to:
+  /// **'No active transits'**
+  String get transitNoActive;
+
+  /// No description provided for @transitUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Transits'**
+  String get transitUpcoming;
+
+  /// No description provided for @transitDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Transit Detail'**
+  String get transitDetail;
+
+  /// No description provided for @transitAskAi.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask AI About This Transit'**
+  String get transitAskAi;
+
+  /// No description provided for @transitSeverityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get transitSeverityHigh;
+
+  /// No description provided for @transitSeverityMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get transitSeverityMedium;
+
+  /// No description provided for @transitSeverityLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get transitSeverityLow;
+
+  /// No description provided for @transitApplying.
+  ///
+  /// In en, this message translates to:
+  /// **'Applying'**
+  String get transitApplying;
+
+  /// No description provided for @transitSeparating.
+  ///
+  /// In en, this message translates to:
+  /// **'Separating'**
+  String get transitSeparating;
+
+  /// No description provided for @transitDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get transitDismiss;
+
+  /// No description provided for @calendarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Astro Calendar'**
+  String get calendarTitle;
+
+  /// No description provided for @calendarFullMoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Moon'**
+  String get calendarFullMoon;
+
+  /// No description provided for @calendarNewMoon.
+  ///
+  /// In en, this message translates to:
+  /// **'New Moon'**
+  String get calendarNewMoon;
+
+  /// No description provided for @calendarSolarEclipse.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar Eclipse'**
+  String get calendarSolarEclipse;
+
+  /// No description provided for @calendarLunarEclipse.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunar Eclipse'**
+  String get calendarLunarEclipse;
+
+  /// No description provided for @calendarRetrogadeStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Retrograde Begins'**
+  String get calendarRetrogadeStart;
+
+  /// No description provided for @calendarRetrogadeEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct'**
+  String get calendarRetrogadeEnd;
+
+  /// No description provided for @calendarSignIngress.
+  ///
+  /// In en, this message translates to:
+  /// **'Enters'**
+  String get calendarSignIngress;
+
+  /// No description provided for @calendarNoEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'No events this day'**
+  String get calendarNoEvents;
 }
 
 class _AppLocalizationsDelegate
