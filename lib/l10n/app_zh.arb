@@ -1,0 +1,15 @@
+{
+  "@@locale": "zh",
+  "appTitle": "月见",
+  "scenarioCategoryLoveRelationship": "恋爱关系",
+  "scenarioCategoryCareerGrowth": "事业发展",
+  "scenarioCategoryDailyDecision": "日常决策",
+  "scenarioCategoryPersonalGrowth": "个人成长",
+  "scenarioCategorySocialInteraction": "社交互动",
+  "scenarioExploreTitle": "探索",
+  "scenarioExploreSubtitle": "发现咨询场景",
+  "scenarioHotTitle": "热门场景",
+  "scenarioAllCategories": "全部分类",
+  "scenarioStartConsultation": "开始咨询",
+  "scenarioPresetQuestions": "推荐问题"
+}

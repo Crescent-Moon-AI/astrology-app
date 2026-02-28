@@ -1,0 +1,15 @@
+{
+  "@@locale": "en",
+  "appTitle": "Yuejian",
+  "scenarioCategoryLoveRelationship": "Love & Relationships",
+  "scenarioCategoryCareerGrowth": "Career Growth",
+  "scenarioCategoryDailyDecision": "Daily Decisions",
+  "scenarioCategoryPersonalGrowth": "Personal Growth",
+  "scenarioCategorySocialInteraction": "Social Interaction",
+  "scenarioExploreTitle": "Explore",
+  "scenarioExploreSubtitle": "Discover consultation scenarios",
+  "scenarioHotTitle": "Popular Scenarios",
+  "scenarioAllCategories": "All Categories",
+  "scenarioStartConsultation": "Start Consultation",
+  "scenarioPresetQuestions": "Suggested Questions"
+}
