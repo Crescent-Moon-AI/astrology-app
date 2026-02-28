@@ -361,6 +361,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hello! I\'m Xingjian, your guide through the stars.'**
   String get characterIntro;
+
+  /// No description provided for @cosmicTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Cosmic'**
+  String get cosmicTheme;
+
+  /// No description provided for @classicTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get classicTheme;
+
+  /// No description provided for @systemTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get systemTheme;
+
+  /// No description provided for @appearanceSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearanceSettings;
+
+  /// No description provided for @themeSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get themeSelection;
+
+  /// No description provided for @reducedMotion.
+  ///
+  /// In en, this message translates to:
+  /// **'Reduced Motion'**
+  String get reducedMotion;
+
+  /// No description provided for @reducedMotionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable animations for accessibility'**
+  String get reducedMotionDesc;
+
+  /// No description provided for @breathingLoaderMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The cosmos takes time to reveal...'**
+  String get breathingLoaderMessage;
+
+  /// No description provided for @moonPhaseNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New Moon'**
+  String get moonPhaseNew;
+
+  /// No description provided for @moonPhaseWaxingCrescent.
+  ///
+  /// In en, this message translates to:
+  /// **'Waxing Crescent'**
+  String get moonPhaseWaxingCrescent;
+
+  /// No description provided for @moonPhaseFirstQuarter.
+  ///
+  /// In en, this message translates to:
+  /// **'First Quarter'**
+  String get moonPhaseFirstQuarter;
+
+  /// No description provided for @moonPhaseWaxingGibbous.
+  ///
+  /// In en, this message translates to:
+  /// **'Waxing Gibbous'**
+  String get moonPhaseWaxingGibbous;
+
+  /// No description provided for @moonPhaseFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Moon'**
+  String get moonPhaseFull;
+
+  /// No description provided for @moonPhaseWaningGibbous.
+  ///
+  /// In en, this message translates to:
+  /// **'Waning Gibbous'**
+  String get moonPhaseWaningGibbous;
+
+  /// No description provided for @moonPhaseLastQuarter.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Quarter'**
+  String get moonPhaseLastQuarter;
+
+  /// No description provided for @moonPhaseWaningCrescent.
+  ///
+  /// In en, this message translates to:
+  /// **'Waning Crescent'**
+  String get moonPhaseWaningCrescent;
+
+  /// No description provided for @tarotRitualTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tarot Reading'**
+  String get tarotRitualTitle;
+
+  /// No description provided for @tarotSelectSpread.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Spread'**
+  String get tarotSelectSpread;
+
+  /// No description provided for @tarotEnterQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like to ask? (optional)'**
+  String get tarotEnterQuestion;
+
+  /// No description provided for @tarotSpreadSingle.
+  ///
+  /// In en, this message translates to:
+  /// **'Single Card'**
+  String get tarotSpreadSingle;
+
+  /// No description provided for @tarotSpreadSingleDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick insight for one question'**
+  String get tarotSpreadSingleDesc;
+
+  /// No description provided for @tarotSpreadThreeCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Three Card'**
+  String get tarotSpreadThreeCard;
+
+  /// No description provided for @tarotSpreadThreeCardDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Past, Present, Future'**
+  String get tarotSpreadThreeCardDesc;
+
+  /// No description provided for @tarotSpreadLove.
+  ///
+  /// In en, this message translates to:
+  /// **'Love Spread'**
+  String get tarotSpreadLove;
+
+  /// No description provided for @tarotSpreadLoveDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore your relationship'**
+  String get tarotSpreadLoveDesc;
+
+  /// No description provided for @tarotSpreadCelticCross.
+  ///
+  /// In en, this message translates to:
+  /// **'Celtic Cross'**
+  String get tarotSpreadCelticCross;
+
+  /// No description provided for @tarotSpreadCelticCrossDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Comprehensive reading'**
+  String get tarotSpreadCelticCrossDesc;
+
+  /// No description provided for @tarotShuffling.
+  ///
+  /// In en, this message translates to:
+  /// **'Shuffling the deck...'**
+  String get tarotShuffling;
+
+  /// No description provided for @tarotPickCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Select {count} cards'**
+  String tarotPickCards(int count);
+
+  /// No description provided for @tarotConfirmSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Selection'**
+  String get tarotConfirmSelection;
+
+  /// No description provided for @tarotRevealing.
+  ///
+  /// In en, this message translates to:
+  /// **'Revealing your cards...'**
+  String get tarotRevealing;
+
+  /// No description provided for @tarotRevealNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Reveal Next Card'**
+  String get tarotRevealNext;
+
+  /// No description provided for @tarotBeginReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin Reading'**
+  String get tarotBeginReading;
+
+  /// No description provided for @tarotCardUpright.
+  ///
+  /// In en, this message translates to:
+  /// **'Upright'**
+  String get tarotCardUpright;
+
+  /// No description provided for @tarotCardReversed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reversed'**
+  String get tarotCardReversed;
+
+  /// No description provided for @tarotReadingComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading Complete'**
+  String get tarotReadingComplete;
+
+  /// No description provided for @tarotCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Reading'**
+  String get tarotCancel;
+
+  /// No description provided for @tarotResume.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume Reading'**
+  String get tarotResume;
 }
 
 class _AppLocalizationsDelegate

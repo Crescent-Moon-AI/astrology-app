@@ -140,4 +140,120 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get characterIntro => '你好！我是星见，你的星空向导。';
+
+  @override
+  String get cosmicTheme => '宇宙';
+
+  @override
+  String get classicTheme => '经典';
+
+  @override
+  String get systemTheme => '跟随系统';
+
+  @override
+  String get appearanceSettings => '外观设置';
+
+  @override
+  String get themeSelection => '主题';
+
+  @override
+  String get reducedMotion => '减少动画';
+
+  @override
+  String get reducedMotionDesc => '关闭动画效果以提升无障碍体验';
+
+  @override
+  String get breathingLoaderMessage => '星辰的启示需要一点时间...';
+
+  @override
+  String get moonPhaseNew => '新月';
+
+  @override
+  String get moonPhaseWaxingCrescent => '蛾眉月';
+
+  @override
+  String get moonPhaseFirstQuarter => '上弦月';
+
+  @override
+  String get moonPhaseWaxingGibbous => '盈凸月';
+
+  @override
+  String get moonPhaseFull => '满月';
+
+  @override
+  String get moonPhaseWaningGibbous => '亏凸月';
+
+  @override
+  String get moonPhaseLastQuarter => '下弦月';
+
+  @override
+  String get moonPhaseWaningCrescent => '残月';
+
+  @override
+  String get tarotRitualTitle => '塔罗占卜';
+
+  @override
+  String get tarotSelectSpread => '选择牌阵';
+
+  @override
+  String get tarotEnterQuestion => '你想问什么？（可选）';
+
+  @override
+  String get tarotSpreadSingle => '单牌';
+
+  @override
+  String get tarotSpreadSingleDesc => '一张牌快速解答';
+
+  @override
+  String get tarotSpreadThreeCard => '三牌阵';
+
+  @override
+  String get tarotSpreadThreeCardDesc => '过去、现在、未来';
+
+  @override
+  String get tarotSpreadLove => '爱情牌阵';
+
+  @override
+  String get tarotSpreadLoveDesc => '探索你的感情';
+
+  @override
+  String get tarotSpreadCelticCross => '凯尔特十字';
+
+  @override
+  String get tarotSpreadCelticCrossDesc => '全面深度解读';
+
+  @override
+  String get tarotShuffling => '正在洗牌...';
+
+  @override
+  String tarotPickCards(int count) {
+    return '请选择 $count 张牌';
+  }
+
+  @override
+  String get tarotConfirmSelection => '确认选牌';
+
+  @override
+  String get tarotRevealing => '正在揭牌...';
+
+  @override
+  String get tarotRevealNext => '揭示下一张';
+
+  @override
+  String get tarotBeginReading => '开始解读';
+
+  @override
+  String get tarotCardUpright => '正位';
+
+  @override
+  String get tarotCardReversed => '逆位';
+
+  @override
+  String get tarotReadingComplete => '解读完成';
+
+  @override
+  String get tarotCancel => '取消占卜';
+
+  @override
+  String get tarotResume => '继续占卜';
 }

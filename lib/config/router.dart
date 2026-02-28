@@ -5,6 +5,9 @@ import '../features/chat/presentation/pages/conversation_list_page.dart';
 import '../features/scenario/presentation/pages/scenario_list_page.dart';
 import '../features/scenario/presentation/pages/scenario_detail_page.dart';
 import '../features/settings/presentation/pages/about_character_page.dart';
+import '../features/settings/presentation/pages/appearance_settings_page.dart';
+import '../features/tarot_ritual/presentation/pages/spread_selection_page.dart';
+import '../features/tarot_ritual/presentation/pages/tarot_ritual_page.dart';
 import '../features/transit/presentation/pages/transit_list_page.dart';
 import '../features/transit/presentation/pages/transit_detail_page.dart';
 import '../features/transit/presentation/pages/astro_calendar_page.dart';
@@ -68,6 +71,27 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/character',
         name: 'aboutCharacter',
         builder: (context, state) => const AboutCharacterPage(),
+      ),
+      GoRoute(
+        path: '/settings/appearance',
+        name: 'appearanceSettings',
+        builder: (context, state) => const AppearanceSettingsPage(),
+      ),
+      GoRoute(
+        path: '/tarot/spread-select',
+        name: 'tarotSpreadSelect',
+        builder: (context, state) {
+          final conversationId =
+              state.uri.queryParameters['conversation_id'] ?? '';
+          return SpreadSelectionPage(conversationId: conversationId);
+        },
+      ),
+      GoRoute(
+        path: '/tarot/ritual/:sessionId',
+        name: 'tarotRitual',
+        builder: (context, state) => TarotRitualPage(
+          sessionId: state.pathParameters['sessionId']!,
+        ),
       ),
     ],
   );

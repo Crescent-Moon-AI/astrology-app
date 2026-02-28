@@ -43,5 +43,50 @@
   "characterAboutBackstory": "Xingjian is your personal guide through the cosmos, combining ancient astrological wisdom with modern insight to help you navigate life's journey under the stars.",
   "characterExpressionGallery": "Expressions",
   "characterName": "Xingjian",
-  "characterIntro": "Hello! I'm Xingjian, your guide through the stars."
+  "characterIntro": "Hello! I'm Xingjian, your guide through the stars.",
+  "cosmicTheme": "Cosmic",
+  "classicTheme": "Classic",
+  "systemTheme": "System",
+  "appearanceSettings": "Appearance",
+  "themeSelection": "Theme",
+  "reducedMotion": "Reduced Motion",
+  "reducedMotionDesc": "Disable animations for accessibility",
+  "breathingLoaderMessage": "The cosmos takes time to reveal...",
+  "moonPhaseNew": "New Moon",
+  "moonPhaseWaxingCrescent": "Waxing Crescent",
+  "moonPhaseFirstQuarter": "First Quarter",
+  "moonPhaseWaxingGibbous": "Waxing Gibbous",
+  "moonPhaseFull": "Full Moon",
+  "moonPhaseWaningGibbous": "Waning Gibbous",
+  "moonPhaseLastQuarter": "Last Quarter",
+  "moonPhaseWaningCrescent": "Waning Crescent",
+  "tarotRitualTitle": "Tarot Reading",
+  "tarotSelectSpread": "Choose Your Spread",
+  "tarotEnterQuestion": "What would you like to ask? (optional)",
+  "tarotSpreadSingle": "Single Card",
+  "tarotSpreadSingleDesc": "Quick insight for one question",
+  "tarotSpreadThreeCard": "Three Card",
+  "tarotSpreadThreeCardDesc": "Past, Present, Future",
+  "tarotSpreadLove": "Love Spread",
+  "tarotSpreadLoveDesc": "Explore your relationship",
+  "tarotSpreadCelticCross": "Celtic Cross",
+  "tarotSpreadCelticCrossDesc": "Comprehensive reading",
+  "tarotShuffling": "Shuffling the deck...",
+  "tarotPickCards": "Select {count} cards",
+  "@tarotPickCards": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tarotConfirmSelection": "Confirm Selection",
+  "tarotRevealing": "Revealing your cards...",
+  "tarotRevealNext": "Reveal Next Card",
+  "tarotBeginReading": "Begin Reading",
+  "tarotCardUpright": "Upright",
+  "tarotCardReversed": "Reversed",
+  "tarotReadingComplete": "Reading Complete",
+  "tarotCancel": "Cancel Reading",
+  "tarotResume": "Resume Reading"
 }

@@ -141,4 +141,120 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get characterIntro =>
       'Hello! I\'m Xingjian, your guide through the stars.';
+
+  @override
+  String get cosmicTheme => 'Cosmic';
+
+  @override
+  String get classicTheme => 'Classic';
+
+  @override
+  String get systemTheme => 'System';
+
+  @override
+  String get appearanceSettings => 'Appearance';
+
+  @override
+  String get themeSelection => 'Theme';
+
+  @override
+  String get reducedMotion => 'Reduced Motion';
+
+  @override
+  String get reducedMotionDesc => 'Disable animations for accessibility';
+
+  @override
+  String get breathingLoaderMessage => 'The cosmos takes time to reveal...';
+
+  @override
+  String get moonPhaseNew => 'New Moon';
+
+  @override
+  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+
+  @override
+  String get moonPhaseFirstQuarter => 'First Quarter';
+
+  @override
+  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+
+  @override
+  String get moonPhaseFull => 'Full Moon';
+
+  @override
+  String get moonPhaseWaningGibbous => 'Waning Gibbous';
+
+  @override
+  String get moonPhaseLastQuarter => 'Last Quarter';
+
+  @override
+  String get moonPhaseWaningCrescent => 'Waning Crescent';
+
+  @override
+  String get tarotRitualTitle => 'Tarot Reading';
+
+  @override
+  String get tarotSelectSpread => 'Choose Your Spread';
+
+  @override
+  String get tarotEnterQuestion => 'What would you like to ask? (optional)';
+
+  @override
+  String get tarotSpreadSingle => 'Single Card';
+
+  @override
+  String get tarotSpreadSingleDesc => 'Quick insight for one question';
+
+  @override
+  String get tarotSpreadThreeCard => 'Three Card';
+
+  @override
+  String get tarotSpreadThreeCardDesc => 'Past, Present, Future';
+
+  @override
+  String get tarotSpreadLove => 'Love Spread';
+
+  @override
+  String get tarotSpreadLoveDesc => 'Explore your relationship';
+
+  @override
+  String get tarotSpreadCelticCross => 'Celtic Cross';
+
+  @override
+  String get tarotSpreadCelticCrossDesc => 'Comprehensive reading';
+
+  @override
+  String get tarotShuffling => 'Shuffling the deck...';
+
+  @override
+  String tarotPickCards(int count) {
+    return 'Select $count cards';
+  }
+
+  @override
+  String get tarotConfirmSelection => 'Confirm Selection';
+
+  @override
+  String get tarotRevealing => 'Revealing your cards...';
+
+  @override
+  String get tarotRevealNext => 'Reveal Next Card';
+
+  @override
+  String get tarotBeginReading => 'Begin Reading';
+
+  @override
+  String get tarotCardUpright => 'Upright';
+
+  @override
+  String get tarotCardReversed => 'Reversed';
+
+  @override
+  String get tarotReadingComplete => 'Reading Complete';
+
+  @override
+  String get tarotCancel => 'Cancel Reading';
+
+  @override
+  String get tarotResume => 'Resume Reading';
 }
