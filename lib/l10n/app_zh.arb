@@ -11,5 +11,12 @@
   "scenarioHotTitle": "热门场景",
   "scenarioAllCategories": "全部分类",
   "scenarioStartConsultation": "开始咨询",
-  "scenarioPresetQuestions": "推荐问题"
+  "scenarioPresetQuestions": "推荐问题",
+  "progressiveContinueReading": "继续阅读",
+  "progressiveExpandAll": "展开全部",
+  "progressiveCollapseAll": "收起全部",
+  "cardShowDetails": "查看详情",
+  "cardHideDetails": "收起详情",
+  "chatInputHint": "向星空提问...",
+  "chatTitle": "咨询"
 }

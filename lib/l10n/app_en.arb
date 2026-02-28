@@ -11,5 +11,12 @@
   "scenarioHotTitle": "Popular Scenarios",
   "scenarioAllCategories": "All Categories",
   "scenarioStartConsultation": "Start Consultation",
-  "scenarioPresetQuestions": "Suggested Questions"
+  "scenarioPresetQuestions": "Suggested Questions",
+  "progressiveContinueReading": "Continue Reading",
+  "progressiveExpandAll": "Expand All",
+  "progressiveCollapseAll": "Collapse All",
+  "cardShowDetails": "Show Details",
+  "cardHideDetails": "Hide Details",
+  "chatInputHint": "Ask the stars...",
+  "chatTitle": "Chat"
 }

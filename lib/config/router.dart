@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../features/chat/presentation/pages/chat_page.dart';
+import '../features/chat/presentation/pages/conversation_list_page.dart';
 import '../features/scenario/presentation/pages/scenario_list_page.dart';
 import '../features/scenario/presentation/pages/scenario_detail_page.dart';
 
@@ -18,6 +20,26 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final id = state.pathParameters['id']!;
           return ScenarioDetailPage(scenarioId: id);
+        },
+      ),
+      GoRoute(
+        path: '/conversations',
+        name: 'conversations',
+        builder: (context, state) => const ConversationListPage(),
+      ),
+      GoRoute(
+        path: '/chat',
+        name: 'chat',
+        builder: (context, state) => ChatPage(
+          scenarioId: state.uri.queryParameters['scenario_id'],
+        ),
+      ),
+      GoRoute(
+        path: '/chat/:id',
+        name: 'chatConversation',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return ChatPage(conversationId: id);
         },
       ),
     ],

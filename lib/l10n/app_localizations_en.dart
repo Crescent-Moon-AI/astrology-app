@@ -43,4 +43,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scenarioPresetQuestions => 'Suggested Questions';
+
+  @override
+  String get progressiveContinueReading => 'Continue Reading';
+
+  @override
+  String get progressiveExpandAll => 'Expand All';
+
+  @override
+  String get progressiveCollapseAll => 'Collapse All';
+
+  @override
+  String get cardShowDetails => 'Show Details';
+
+  @override
+  String get cardHideDetails => 'Hide Details';
+
+  @override
+  String get chatInputHint => 'Ask the stars...';
+
+  @override
+  String get chatTitle => 'Chat';
 }

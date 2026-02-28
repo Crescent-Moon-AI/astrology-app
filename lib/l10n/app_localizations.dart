@@ -169,6 +169,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Suggested Questions'**
   String get scenarioPresetQuestions;
+
+  /// No description provided for @progressiveContinueReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Reading'**
+  String get progressiveContinueReading;
+
+  /// No description provided for @progressiveExpandAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand All'**
+  String get progressiveExpandAll;
+
+  /// No description provided for @progressiveCollapseAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse All'**
+  String get progressiveCollapseAll;
+
+  /// No description provided for @cardShowDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Details'**
+  String get cardShowDetails;
+
+  /// No description provided for @cardHideDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Details'**
+  String get cardHideDetails;
+
+  /// No description provided for @chatInputHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the stars...'**
+  String get chatInputHint;
+
+  /// No description provided for @chatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get chatTitle;
 }
 
 class _AppLocalizationsDelegate

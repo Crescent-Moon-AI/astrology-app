@@ -43,4 +43,25 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get scenarioPresetQuestions => '推荐问题';
+
+  @override
+  String get progressiveContinueReading => '继续阅读';
+
+  @override
+  String get progressiveExpandAll => '展开全部';
+
+  @override
+  String get progressiveCollapseAll => '收起全部';
+
+  @override
+  String get cardShowDetails => '查看详情';
+
+  @override
+  String get cardHideDetails => '收起详情';
+
+  @override
+  String get chatInputHint => '向星空提问...';
+
+  @override
+  String get chatTitle => '咨询';
 }
