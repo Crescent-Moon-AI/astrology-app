@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
 import '../../../../shared/theme/cosmic_colors.dart';
+import '../../../../shared/widgets/mystical_loading_widget.dart';
+import '../../../../shared/widgets/starfield_background.dart';
 import '../../domain/models/ritual_state.dart';
 import '../providers/tarot_ritual_providers.dart';
 import 'tarot_shuffle_page.dart';
@@ -44,6 +46,7 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
           context.pushNamed(
             'chatConversation',
             pathParameters: {'id': conversationId},
+            queryParameters: {'tarot_session_id': widget.sessionId},
           );
         }
       }
@@ -78,8 +81,8 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
 
   Widget _buildBody(TarotRitualState ritualState) {
     if (ritualState.isLoading && ritualState.session == null) {
-      return const Center(
-        child: CircularProgressIndicator(color: CosmicColors.primary),
+      return const StarfieldBackground(
+        child: Center(child: MysticalLoadingWidget()),
       );
     }
 

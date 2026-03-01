@@ -129,6 +129,19 @@ class MockInterceptor extends Interceptor {
       return _moonPhase();
     }
 
+    // --- Profile ---
+    if (path == '/api/users/me/profile' && method == 'GET') {
+      return _profile();
+    }
+    if (path == '/api/users/me/profile/core' && method == 'PUT') {
+      return _profileUpsertCore(body);
+    }
+
+    // --- Location ---
+    if (path == '/api/locations/resolve' && method == 'GET') {
+      return _locationResolve();
+    }
+
     return null;
   }
 
@@ -906,6 +919,89 @@ class MockInterceptor extends Interceptor {
           .split('T')
           .first,
       'emoji': '🌓',
+    },
+  };
+
+  // ============================================================
+  // Profile
+  // ============================================================
+
+  Map<String, dynamic> _profile() => {
+    'data': {
+      'core': {
+        'user_id': 'mock-user-001',
+        'birth_date': null,
+        'birth_time': null,
+        'birth_time_accuracy': 'unknown',
+        'current_birth_place_id': null,
+        'completeness_score': 0,
+        'created_at': DateTime.now().toIso8601String(),
+        'updated_at': DateTime.now().toIso8601String(),
+      },
+      'current_birth_place': null,
+      'birth_places': <Map<String, dynamic>>[],
+      'values': <Map<String, dynamic>>[],
+    },
+  };
+
+  Map<String, dynamic> _profileUpsertCore(dynamic body) {
+    final b = body as Map<String, dynamic>? ?? {};
+    return {
+      'data': {
+        'core': {
+          'user_id': 'mock-user-001',
+          'birth_date': b['birth_date'],
+          'birth_time': b['birth_time'],
+          'birth_time_accuracy': b['birth_time_accuracy'] ?? 'unknown',
+          'current_birth_place_id': 'mock-place-001',
+          'completeness_score': 0.8,
+          'created_at': DateTime.now().toIso8601String(),
+          'updated_at': DateTime.now().toIso8601String(),
+        },
+      },
+    };
+  }
+
+  // ============================================================
+  // Location
+  // ============================================================
+
+  Map<String, dynamic> _locationResolve() => {
+    'data': {
+      'query': '',
+      'candidates': [
+        {
+          'name': '北京',
+          'formatted_address': '北京市, 中国',
+          'latitude': 39.9042,
+          'longitude': 116.4074,
+          'timezone': 'Asia/Shanghai',
+          'country_code': 'CN',
+          'admin_area': '北京市',
+          'confidence': 0.95,
+        },
+        {
+          'name': '上海',
+          'formatted_address': '上海市, 中国',
+          'latitude': 31.2304,
+          'longitude': 121.4737,
+          'timezone': 'Asia/Shanghai',
+          'country_code': 'CN',
+          'admin_area': '上海市',
+          'confidence': 0.92,
+        },
+        {
+          'name': '广州',
+          'formatted_address': '广州市, 广东省, 中国',
+          'latitude': 23.1291,
+          'longitude': 113.2644,
+          'timezone': 'Asia/Shanghai',
+          'country_code': 'CN',
+          'admin_area': '广东省',
+          'confidence': 0.90,
+        },
+      ],
+      'provider': 'mock',
     },
   };
 }

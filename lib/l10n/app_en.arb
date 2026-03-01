@@ -197,5 +197,31 @@
   "languageSystem": "Follow System",
   "errorLoadFailed": "Failed to load",
   "retry": "Retry",
-  "noDataFound": "No data found"
+  "noDataFound": "No data found",
+
+  "profileBirthData": "Birth Information",
+  "profileBirthDataEmpty": "Add birth info for personalized readings",
+  "profileEditBirthData": "Edit Birth Info",
+  "birthDate": "Birth Date",
+  "birthTime": "Birth Time",
+  "birthTimeUnknown": "I don't know my birth time",
+  "birthTimeExact": "Exact",
+  "birthTimeApproximate": "Approximate",
+  "birthPlace": "Birth Place",
+  "birthPlaceSearch": "Search city...",
+  "birthPlaceTimezone": "Timezone: {timezone}",
+  "@birthPlaceTimezone": {
+    "placeholders": {
+      "timezone": { "type": "String" }
+    }
+  },
+  "birthDataSave": "Save",
+  "birthDataSaved": "Birth info saved",
+  "birthDataRequired": "Please fill in at least the birth date",
+
+  "mysticalLoading1": "The stars are aligning...",
+  "mysticalLoading2": "Threads of fate are weaving...",
+  "mysticalLoading3": "Cosmic messages are converging...",
+  "mysticalLoading4": "Let us listen with calm hearts...",
+  "tarotReadingPrompt": "Please interpret the tarot spread for me"
 }

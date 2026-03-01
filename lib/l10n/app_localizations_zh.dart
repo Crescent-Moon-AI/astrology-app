@@ -507,4 +507,63 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get noDataFound => '暂无数据';
+
+  @override
+  String get profileBirthData => '出生信息';
+
+  @override
+  String get profileBirthDataEmpty => '添加出生信息以获得个性化解读';
+
+  @override
+  String get profileEditBirthData => '编辑出生信息';
+
+  @override
+  String get birthDate => '出生日期';
+
+  @override
+  String get birthTime => '出生时间';
+
+  @override
+  String get birthTimeUnknown => '不知道出生时间';
+
+  @override
+  String get birthTimeExact => '精确';
+
+  @override
+  String get birthTimeApproximate => '大概';
+
+  @override
+  String get birthPlace => '出生地点';
+
+  @override
+  String get birthPlaceSearch => '搜索城市...';
+
+  @override
+  String birthPlaceTimezone(String timezone) {
+    return '时区: $timezone';
+  }
+
+  @override
+  String get birthDataSave => '保存';
+
+  @override
+  String get birthDataSaved => '出生信息已保存';
+
+  @override
+  String get birthDataRequired => '请至少填写出生日期';
+
+  @override
+  String get mysticalLoading1 => '星辰正在排列...';
+
+  @override
+  String get mysticalLoading2 => '命运之线正在编织...';
+
+  @override
+  String get mysticalLoading3 => '宇宙的讯息正在汇聚...';
+
+  @override
+  String get mysticalLoading4 => '让我们静心聆听...';
+
+  @override
+  String get tarotReadingPrompt => '请根据塔罗牌阵为我进行解读';
 }

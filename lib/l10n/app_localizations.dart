@@ -1075,6 +1075,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No data found'**
   String get noDataFound;
+
+  /// No description provided for @profileBirthData.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Information'**
+  String get profileBirthData;
+
+  /// No description provided for @profileBirthDataEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add birth info for personalized readings'**
+  String get profileBirthDataEmpty;
+
+  /// No description provided for @profileEditBirthData.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Birth Info'**
+  String get profileEditBirthData;
+
+  /// No description provided for @birthDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Date'**
+  String get birthDate;
+
+  /// No description provided for @birthTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Time'**
+  String get birthTime;
+
+  /// No description provided for @birthTimeUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'I don\'t know my birth time'**
+  String get birthTimeUnknown;
+
+  /// No description provided for @birthTimeExact.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact'**
+  String get birthTimeExact;
+
+  /// No description provided for @birthTimeApproximate.
+  ///
+  /// In en, this message translates to:
+  /// **'Approximate'**
+  String get birthTimeApproximate;
+
+  /// No description provided for @birthPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Place'**
+  String get birthPlace;
+
+  /// No description provided for @birthPlaceSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search city...'**
+  String get birthPlaceSearch;
+
+  /// No description provided for @birthPlaceTimezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Timezone: {timezone}'**
+  String birthPlaceTimezone(String timezone);
+
+  /// No description provided for @birthDataSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get birthDataSave;
+
+  /// No description provided for @birthDataSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth info saved'**
+  String get birthDataSaved;
+
+  /// No description provided for @birthDataRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in at least the birth date'**
+  String get birthDataRequired;
+
+  /// No description provided for @mysticalLoading1.
+  ///
+  /// In en, this message translates to:
+  /// **'The stars are aligning...'**
+  String get mysticalLoading1;
+
+  /// No description provided for @mysticalLoading2.
+  ///
+  /// In en, this message translates to:
+  /// **'Threads of fate are weaving...'**
+  String get mysticalLoading2;
+
+  /// No description provided for @mysticalLoading3.
+  ///
+  /// In en, this message translates to:
+  /// **'Cosmic messages are converging...'**
+  String get mysticalLoading3;
+
+  /// No description provided for @mysticalLoading4.
+  ///
+  /// In en, this message translates to:
+  /// **'Let us listen with calm hearts...'**
+  String get mysticalLoading4;
+
+  /// No description provided for @tarotReadingPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Please interpret the tarot spread for me'**
+  String get tarotReadingPrompt;
 }
 
 class _AppLocalizationsDelegate

@@ -7,6 +7,7 @@ import '../../../../shared/widgets/character_avatar.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../../../shared/models/expression.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
+import '../providers/profile_providers.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -78,6 +79,11 @@ class ProfilePage extends ConsumerWidget {
             ),
 
             const SizedBox(height: 24),
+
+            // Birth data section
+            _BirthDataSection(isZh: isZh, l10n: l10n),
+
+            const SizedBox(height: 16),
 
             // Menu items
             _MenuSection(
@@ -242,6 +248,110 @@ class _MenuItem extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _BirthDataSection extends ConsumerWidget {
+  final bool isZh;
+  final AppLocalizations l10n;
+
+  const _BirthDataSection({required this.isZh, required this.l10n});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileAsync = ref.watch(userProfileProvider);
+
+    return profileAsync.when(
+      data: (profile) {
+        final core = profile.core;
+        final place = profile.currentBirthPlace;
+        final hasBirthData = core.birthDate != null;
+
+        if (!hasBirthData) {
+          // Empty state prompt card
+          return GestureDetector(
+            onTap: () => context.push('/settings/birth-data'),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                gradient: LinearGradient(
+                  colors: [
+                    CosmicColors.primary.withValues(alpha: 0.12),
+                    CosmicColors.surfaceElevated,
+                  ],
+                ),
+                border: Border.all(color: CosmicColors.borderGlow),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.stars_outlined,
+                    color: CosmicColors.primaryLight,
+                    size: 28,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.profileBirthData,
+                          style: const TextStyle(
+                            color: CosmicColors.textPrimary,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          l10n.profileBirthDataEmpty,
+                          style: const TextStyle(
+                            color: CosmicColors.textTertiary,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(
+                    Icons.add_circle_outline,
+                    color: CosmicColors.primary,
+                    size: 22,
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        // Has birth data — show summary
+        return _MenuSection(
+          title: l10n.profileBirthData,
+          items: [
+            _MenuItem(
+              icon: Icons.cake_outlined,
+              label: core.birthDate ?? '',
+              onTap: () => context.push('/settings/birth-data'),
+            ),
+            if (core.birthTime != null)
+              _MenuItem(
+                icon: Icons.schedule_outlined,
+                label: core.birthTime!,
+                onTap: () => context.push('/settings/birth-data'),
+              ),
+            if (place?.normalizedName != null)
+              _MenuItem(
+                icon: Icons.place_outlined,
+                label: place!.normalizedName!,
+                onTap: () => context.push('/settings/birth-data'),
+              ),
+          ],
+        );
+      },
+      loading: () => const SizedBox.shrink(),
+      error: (_, __) => const SizedBox.shrink(),
     );
   }
 }
