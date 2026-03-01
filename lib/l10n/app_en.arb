@@ -223,5 +223,6 @@
   "mysticalLoading2": "Threads of fate are weaving...",
   "mysticalLoading3": "Cosmic messages are converging...",
   "mysticalLoading4": "Let us listen with calm hearts...",
+  "tarotCancelConfirm": "Are you sure you want to cancel this reading?",
   "tarotReadingPrompt": "Please interpret the tarot spread for me"
 }

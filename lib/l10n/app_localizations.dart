@@ -1184,6 +1184,12 @@ abstract class AppLocalizations {
   /// **'Let us listen with calm hearts...'**
   String get mysticalLoading4;
 
+  /// No description provided for @tarotCancelConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel this reading?'**
+  String get tarotCancelConfirm;
+
   /// No description provided for @tarotReadingPrompt.
   ///
   /// In en, this message translates to:

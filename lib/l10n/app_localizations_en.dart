@@ -568,5 +568,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mysticalLoading4 => 'Let us listen with calm hearts...';
 
   @override
+  String get tarotCancelConfirm =>
+      'Are you sure you want to cancel this reading?';
+
+  @override
   String get tarotReadingPrompt => 'Please interpret the tarot spread for me';
 }

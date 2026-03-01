@@ -80,6 +80,8 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
   }
 
   Widget _buildBody(TarotRitualState ritualState) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (ritualState.isLoading && ritualState.session == null) {
       return const StarfieldBackground(
         child: Center(child: MysticalLoadingWidget()),
@@ -114,10 +116,10 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
                       .read(tarotRitualProvider.notifier)
                       .loadSession(widget.sessionId),
                   borderRadius: BorderRadius.circular(24),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     child: Text(
-                      'Retry',
+                      l10n.retry,
                       style: TextStyle(
                         color: CosmicColors.textPrimary,
                         fontWeight: FontWeight.w600,
@@ -200,7 +202,7 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: Text(l10n.tarotCancel),
-        content: const Text('Are you sure you want to cancel this reading?'),
+        content: Text(l10n.tarotCancelConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),

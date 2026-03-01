@@ -565,5 +565,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mysticalLoading4 => '让我们静心聆听...';
 
   @override
+  String get tarotCancelConfirm => '确定要取消本次占卜吗？';
+
+  @override
   String get tarotReadingPrompt => '请根据塔罗牌阵为我进行解读';
 }

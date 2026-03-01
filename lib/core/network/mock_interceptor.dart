@@ -3,6 +3,45 @@ import 'package:dio/dio.dart';
 /// Dio interceptor that returns mock Chinese data for all API routes.
 /// Used by [main_mock.dart] to create a self-contained demo build.
 class MockInterceptor extends Interceptor {
+  /// In-memory tarot session store for stateful ritual flow.
+  final Map<String, Map<String, dynamic>> _tarotSessions = {};
+
+  static final List<Map<String, dynamic>> _mockCardPool = [
+    // Major Arcana
+    {'id': 0, 'name': 'The Fool', 'name_zh': '愚者', 'number': 0, 'suit': '', 'arcana': 'major', 'element': 'air', 'upright_keywords': ['新开始', '冒险'], 'reversed_keywords': ['鲁莽', '犹豫'], 'image_key': 'major_00'},
+    {'id': 1, 'name': 'The Magician', 'name_zh': '魔术师', 'number': 1, 'suit': '', 'arcana': 'major', 'element': 'air', 'upright_keywords': ['创造力', '意志'], 'reversed_keywords': ['欺骗', '浪费'], 'image_key': 'major_01'},
+    {'id': 2, 'name': 'The High Priestess', 'name_zh': '女祭司', 'number': 2, 'suit': '', 'arcana': 'major', 'element': 'water', 'upright_keywords': ['直觉', '智慧'], 'reversed_keywords': ['隐秘', '迷茫'], 'image_key': 'major_02'},
+    {'id': 6, 'name': 'The Lovers', 'name_zh': '恋人', 'number': 6, 'suit': '', 'arcana': 'major', 'element': 'air', 'upright_keywords': ['爱情', '和谐'], 'reversed_keywords': ['失衡', '分离'], 'image_key': 'major_06'},
+    {'id': 10, 'name': 'Wheel of Fortune', 'name_zh': '命运之轮', 'number': 10, 'suit': '', 'arcana': 'major', 'element': 'fire', 'upright_keywords': ['转运', '机遇'], 'reversed_keywords': ['倒退', '阻碍'], 'image_key': 'major_10'},
+    {'id': 17, 'name': 'The Star', 'name_zh': '星星', 'number': 17, 'suit': '', 'arcana': 'major', 'element': 'air', 'upright_keywords': ['希望', '灵感'], 'reversed_keywords': ['失望', '迷失'], 'image_key': 'major_17'},
+    // Wands
+    {'id': 22, 'name': 'Ace of Wands', 'name_zh': '权杖一', 'number': 1, 'suit': 'wands', 'arcana': 'minor', 'element': 'fire', 'upright_keywords': ['创造', '激情'], 'reversed_keywords': ['延迟', '消沉'], 'image_key': 'wands_01'},
+    {'id': 29, 'name': 'Eight of Wands', 'name_zh': '权杖八', 'number': 8, 'suit': 'wands', 'arcana': 'minor', 'element': 'fire', 'upright_keywords': ['快速', '行动'], 'reversed_keywords': ['拖延', '阻碍'], 'image_key': 'wands_08'},
+    // Cups
+    {'id': 36, 'name': 'Queen of Cups', 'name_zh': '圣杯王后', 'number': 13, 'suit': 'cups', 'arcana': 'minor', 'element': 'water', 'upright_keywords': ['温柔', '直觉'], 'reversed_keywords': ['情绪化', '脆弱'], 'image_key': 'cups_13'},
+    {'id': 38, 'name': 'Two of Cups', 'name_zh': '圣杯二', 'number': 2, 'suit': 'cups', 'arcana': 'minor', 'element': 'water', 'upright_keywords': ['连结', '和谐'], 'reversed_keywords': ['失衡', '误解'], 'image_key': 'cups_02'},
+    {'id': 43, 'name': 'Seven of Cups', 'name_zh': '圣杯七', 'number': 7, 'suit': 'cups', 'arcana': 'minor', 'element': 'water', 'upright_keywords': ['幻想', '选择'], 'reversed_keywords': ['清醒', '决断'], 'image_key': 'cups_07'},
+    // Swords
+    {'id': 50, 'name': 'Ace of Swords', 'name_zh': '宝剑一', 'number': 1, 'suit': 'swords', 'arcana': 'minor', 'element': 'air', 'upright_keywords': ['真相', '清晰'], 'reversed_keywords': ['混乱', '误判'], 'image_key': 'swords_01'},
+    {'id': 55, 'name': 'Six of Swords', 'name_zh': '宝剑六', 'number': 6, 'suit': 'swords', 'arcana': 'minor', 'element': 'air', 'upright_keywords': ['过渡', '前进'], 'reversed_keywords': ['停滞', '抗拒'], 'image_key': 'swords_06'},
+    // Pentacles
+    {'id': 63, 'name': 'Ten of Pentacles', 'name_zh': '星币十', 'number': 10, 'suit': 'pentacles', 'arcana': 'minor', 'element': 'earth', 'upright_keywords': ['富足', '传承'], 'reversed_keywords': ['损失', '孤立'], 'image_key': 'pentacles_10'},
+    {'id': 70, 'name': 'Knight of Pentacles', 'name_zh': '星币骑士', 'number': 12, 'suit': 'pentacles', 'arcana': 'minor', 'element': 'earth', 'upright_keywords': ['勤勉', '务实'], 'reversed_keywords': ['懒惰', '停滞'], 'image_key': 'pentacles_12'},
+  ];
+
+  static const Map<String, int> _spreadCardCounts = {
+    'single': 1,
+    'three_card': 3,
+    'love_spread': 5,
+    'celtic_cross': 10,
+  };
+
+  static const Map<String, List<String>> _spreadPositionLabels = {
+    'single': ['启示'],
+    'three_card': ['过去', '现在', '未来'],
+    'love_spread': ['自己', '对方', '关系', '挑战', '建议'],
+    'celtic_cross': ['现状', '挑战', '意识', '潜意识', '过去', '近未来', '自我', '环境', '希望与恐惧', '结果'],
+  };
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final path = options.path;
@@ -96,10 +135,10 @@ class MockInterceptor extends Interceptor {
       return _tarotList();
     }
     if (_matchPath(path, '/api/tarot/sessions/{id}') && method == 'GET') {
-      return _tarotDetail();
+      return _tarotDetail(path.split('/').last);
     }
     if (_matchPath(path, '/api/tarot/sessions/{id}') && method == 'PATCH') {
-      return _tarotUpdate(body);
+      return _tarotUpdate(path.split('/').last, body);
     }
 
     // --- Friends ---
@@ -650,36 +689,48 @@ class MockInterceptor extends Interceptor {
   };
 
   // ============================================================
-  // Tarot
+  // Tarot — stateful session tracking
   // ============================================================
 
   Map<String, dynamic> _tarotCreate(dynamic body) {
     final b = body as Map<String, dynamic>? ?? {};
     final now = DateTime.now().toIso8601String();
-    return {
-      'data': {
-        'id': 'mock-tarot-${DateTime.now().millisecondsSinceEpoch}',
-        'conversation_id': b['conversation_id'] ?? 'mock-conv-001',
-        'spread_type': b['spread_type'] ?? 'three_card',
-        'card_count': b['card_count'] ?? 3,
-        'question': b['question'] ?? '',
-        'ritual_state': 'shuffling',
-        'selected_positions': <int>[],
-        'selected_cards': <Map<String, dynamic>>[],
-        'position_labels': ['过去', '现在', '未来'],
-        'started_at': now,
-        'created_at': now,
-      },
+    final id = 'mock-tarot-${DateTime.now().millisecondsSinceEpoch}';
+    final spreadType = (b['spread_type'] as String?) ?? 'three_card';
+    final cardCount = _spreadCardCounts[spreadType] ?? 3;
+    final labels = _spreadPositionLabels[spreadType] ?? ['过去', '现在', '未来'];
+
+    final session = <String, dynamic>{
+      'id': id,
+      'conversation_id': b['conversation_id'] ?? 'mock-conv-001',
+      'spread_type': spreadType,
+      'card_count': cardCount,
+      'question': b['question'] ?? '',
+      'ritual_state': 'shuffling',
+      'selected_positions': <int>[],
+      'selected_cards': <Map<String, dynamic>>[],
+      'position_labels': labels,
+      'started_at': now,
+      'created_at': now,
     };
+
+    _tarotSessions[id] = session;
+    return {'data': Map<String, dynamic>.from(session)};
   }
 
-  Map<String, dynamic> _tarotDetail() {
+  Map<String, dynamic> _tarotDetail(String sessionId) {
+    final session = _tarotSessions[sessionId];
+    if (session != null) {
+      return {'data': Map<String, dynamic>.from(session)};
+    }
+
+    // Fallback for unknown IDs (e.g. history entries) — completed session
     final now = DateTime.now()
         .subtract(const Duration(days: 1))
         .toIso8601String();
     return {
       'data': {
-        'id': 'mock-tarot-001',
+        'id': sessionId,
         'conversation_id': 'mock-conv-002',
         'spread_type': 'three_card',
         'card_count': 3,
@@ -691,13 +742,17 @@ class MockInterceptor extends Interceptor {
             'position': 0,
             'position_label': '过去',
             'card': {
-              'id': 37,
-              'name': 'cups_queen',
+              'id': 36,
+              'name': 'Queen of Cups',
               'name_zh': '圣杯王后',
               'number': 13,
               'suit': 'cups',
               'arcana': 'minor',
+              'element': 'water',
               'orientation': 'upright',
+              'upright_keywords': ['温柔', '直觉'],
+              'reversed_keywords': ['情绪化', '脆弱'],
+              'image_key': 'cups_13',
             },
           },
           {
@@ -705,12 +760,16 @@ class MockInterceptor extends Interceptor {
             'position_label': '现在',
             'card': {
               'id': 6,
-              'name': 'the_lovers',
+              'name': 'The Lovers',
               'name_zh': '恋人',
               'number': 6,
               'suit': '',
               'arcana': 'major',
+              'element': 'air',
               'orientation': 'upright',
+              'upright_keywords': ['爱情', '和谐'],
+              'reversed_keywords': ['失衡', '分离'],
+              'image_key': 'major_06',
             },
           },
           {
@@ -718,12 +777,16 @@ class MockInterceptor extends Interceptor {
             'position_label': '未来',
             'card': {
               'id': 63,
-              'name': 'pentacles_10',
+              'name': 'Ten of Pentacles',
               'name_zh': '星币十',
               'number': 10,
               'suit': 'pentacles',
               'arcana': 'minor',
+              'element': 'earth',
               'orientation': 'reversed',
+              'upright_keywords': ['富足', '传承'],
+              'reversed_keywords': ['损失', '孤立'],
+              'image_key': 'pentacles_10',
             },
           },
         ],
@@ -734,40 +797,84 @@ class MockInterceptor extends Interceptor {
     };
   }
 
-  Map<String, dynamic> _tarotUpdate(dynamic body) {
+  Map<String, dynamic> _tarotUpdate(String sessionId, dynamic body) {
     final b = body as Map<String, dynamic>? ?? {};
-    final now = DateTime.now().toIso8601String();
-    return {
-      'data': {
-        'id': 'mock-tarot-001',
-        'conversation_id': 'mock-conv-001',
-        'spread_type': 'three_card',
-        'card_count': 3,
-        'question': '',
-        'ritual_state': b['ritual_state'] ?? 'completed',
-        'selected_positions': b['selected_positions'] ?? <int>[],
-        'selected_cards': b['selected_cards'] ?? <Map<String, dynamic>>[],
-        'position_labels': ['过去', '现在', '未来'],
-        'started_at': now,
-      },
-    };
+    final session = _tarotSessions[sessionId];
+
+    if (session == null) {
+      // Unknown session — echo back what was sent
+      return {
+        'data': {
+          'id': sessionId,
+          'ritual_state': b['ritual_state'] ?? 'completed',
+          'selected_positions': b['selected_positions'] ?? <int>[],
+          'selected_cards': b['selected_cards'] ?? <Map<String, dynamic>>[],
+        },
+      };
+    }
+
+    // Apply state mutation
+    if (b['ritual_state'] != null) {
+      session['ritual_state'] = b['ritual_state'];
+    }
+    if (b['selected_positions'] != null) {
+      session['selected_positions'] = b['selected_positions'];
+    }
+
+    // When transitioning to revealing with positions, generate resolved cards
+    if (b['ritual_state'] == 'revealing' && b['selected_positions'] != null) {
+      final positions = (b['selected_positions'] as List<dynamic>).cast<int>();
+      final labels =
+          (session['position_labels'] as List<dynamic>).cast<String>();
+      final shuffled = List<Map<String, dynamic>>.from(
+        _mockCardPool.map((c) => Map<String, dynamic>.from(c)),
+      )..shuffle();
+
+      final cards = <Map<String, dynamic>>[];
+      for (var i = 0; i < positions.length && i < shuffled.length; i++) {
+        final cardData = shuffled[i];
+        cardData['orientation'] = (i % 3 == 0) ? 'reversed' : 'upright';
+        cards.add({
+          'position': positions[i],
+          'position_label':
+              i < labels.length ? labels[i] : '位置${positions[i] + 1}',
+          'card': cardData,
+        });
+      }
+      session['selected_cards'] = cards;
+    }
+
+    return {'data': Map<String, dynamic>.from(session)};
   }
 
-  Map<String, dynamic> _tarotList() => {
-    'data': {
-      'sessions': [
-        {
-          'id': 'mock-tarot-001',
-          'spread_type': 'celtic_cross',
-          'question': '我的感情何去何从？',
-          'ritual_state': 'completed',
-          'created_at': DateTime.now()
-              .subtract(const Duration(days: 1))
-              .toIso8601String(),
-        },
-      ],
-    },
-  };
+  Map<String, dynamic> _tarotList() {
+    final sessions = _tarotSessions.values
+        .map((s) => <String, dynamic>{
+              'id': s['id'],
+              'spread_type': s['spread_type'],
+              'question': s['question'],
+              'ritual_state': s['ritual_state'],
+              'created_at': s['created_at'],
+            })
+        .toList();
+
+    // Always include a history entry
+    if (sessions.every((s) => s['id'] != 'mock-tarot-001')) {
+      sessions.add({
+        'id': 'mock-tarot-001',
+        'spread_type': 'celtic_cross',
+        'question': '我的感情何去何从？',
+        'ritual_state': 'completed',
+        'created_at': DateTime.now()
+            .subtract(const Duration(days: 1))
+            .toIso8601String(),
+      });
+    }
+
+    return {
+      'data': {'sessions': sessions},
+    };
+  }
 
   // ============================================================
   // Friends
