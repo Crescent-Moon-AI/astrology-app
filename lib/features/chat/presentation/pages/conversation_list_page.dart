@@ -6,7 +6,6 @@ import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/character_avatar.dart';
 import '../../../../shared/models/expression.dart';
-import '../../../scenario/domain/models/scenario.dart';
 import '../../../scenario/l10n/scenario_strings.dart';
 import '../../../scenario/presentation/providers/scenario_providers.dart';
 import '../../../scenario/presentation/widgets/scenario_icon_data.dart';
