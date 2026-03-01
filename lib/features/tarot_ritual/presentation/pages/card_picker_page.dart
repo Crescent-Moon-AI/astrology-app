@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../providers/tarot_ritual_providers.dart';
 import '../widgets/tarot_card_back.dart';
 
@@ -13,7 +14,6 @@ class CardPickerPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
     final ritualState = ref.watch(tarotRitualProvider);
     final notifier = ref.read(tarotRitualProvider.notifier);
 
@@ -26,7 +26,7 @@ class CardPickerPage extends ConsumerWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color(0xFF0A0520),
+            CosmicColors.background,
             Color(0xFF1A0A3E),
           ],
         ),
@@ -41,16 +41,18 @@ class CardPickerPage extends ConsumerWidget {
                 children: [
                   Text(
                     l10n.tarotPickCards(needed),
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: const Color(0xFFD4AF37),
+                    style: const TextStyle(
+                      color: CosmicColors.secondary,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     '${selected.length} / $needed',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.white60,
+                    style: const TextStyle(
+                      color: CosmicColors.textTertiary,
+                      fontSize: 14,
                     ),
                   ),
                 ],
@@ -100,12 +102,12 @@ class CardPickerPage extends ConsumerWidget {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                        color: const Color(0xFFD4AF37),
+                                        color: CosmicColors.secondary,
                                         width: 3,
                                       ),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: const Color(0xFFD4AF37)
+                                          color: CosmicColors.secondary
                                               .withValues(alpha: 0.5),
                                           blurRadius: 12,
                                           spreadRadius: 2,
@@ -122,14 +124,14 @@ class CardPickerPage extends ConsumerWidget {
                                     width: 18,
                                     height: 18,
                                     decoration: const BoxDecoration(
-                                      color: Color(0xFFD4AF37),
+                                      color: CosmicColors.secondary,
                                       shape: BoxShape.circle,
                                     ),
                                     child: Center(
                                       child: Text(
                                         '${selected.toList().indexOf(index) + 1}',
                                         style: const TextStyle(
-                                          color: Colors.white,
+                                          color: CosmicColors.background,
                                           fontSize: 10,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -153,27 +155,59 @@ class CardPickerPage extends ConsumerWidget {
               child: SizedBox(
                 width: double.infinity,
                 height: 52,
-                child: FilledButton(
-                  onPressed: ritualState.selectionComplete &&
-                          !ritualState.isLoading
-                      ? () => notifier.confirmSelection()
-                      : null,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFFD4AF37),
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: Colors.white12,
-                    disabledForegroundColor: Colors.white38,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: ritualState.selectionComplete &&
+                            !ritualState.isLoading
+                        ? CosmicColors.primaryGradient
+                        : null,
+                    color: !ritualState.selectionComplete ||
+                            ritualState.isLoading
+                        ? CosmicColors.surfaceElevated
+                        : null,
+                    borderRadius: BorderRadius.circular(26),
+                    boxShadow: ritualState.selectionComplete
+                        ? [
+                            BoxShadow(
+                              color: CosmicColors.primary
+                                  .withValues(alpha: 0.3),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ]
+                        : null,
                   ),
-                  child: ritualState.isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : Text(l10n.tarotConfirmSelection),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: ritualState.selectionComplete &&
+                              !ritualState.isLoading
+                          ? () => notifier.confirmSelection()
+                          : null,
+                      borderRadius: BorderRadius.circular(26),
+                      child: Center(
+                        child: ritualState.isLoading
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Text(
+                                l10n.tarotConfirmSelection,
+                                style: TextStyle(
+                                  color: ritualState.selectionComplete
+                                      ? CosmicColors.textPrimary
+                                      : CosmicColors.textTertiary,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),

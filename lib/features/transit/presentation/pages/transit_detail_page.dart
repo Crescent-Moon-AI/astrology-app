@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
+import '../../../../shared/widgets/breathing_loader.dart';
 import '../providers/transit_providers.dart';
 import '../widgets/severity_badge.dart';
 
@@ -20,7 +22,15 @@ class TransitDetailPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.transitDetail),
+        title: Text(
+          l10n.transitDetail,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            color: CosmicColors.textPrimary,
+          ),
+        ),
+        backgroundColor: CosmicColors.background,
+        elevation: 0,
       ),
       body: detailAsync.when(
         data: (alert) {
@@ -32,108 +42,132 @@ class TransitDetailPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Header card
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                _buildTitle(alert),
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
+                Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                      colors: [
+                        CosmicColors.primary.withValues(alpha: 0.15),
+                        CosmicColors.surfaceElevated,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    border: Border.all(color: CosmicColors.borderGlow),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              _buildTitle(alert),
+                              style: const TextStyle(
+                                color: CosmicColors.textPrimary,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SeverityBadge(severity: event.severity),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        // Applying / Separating indicator
-                        Row(
-                          children: [
-                            Icon(
-                              alert.applying
-                                  ? Icons.arrow_forward
-                                  : Icons.arrow_back,
-                              size: 18,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
+                          ),
+                          SeverityBadge(severity: event.severity),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Icon(
+                            alert.applying
+                                ? Icons.arrow_forward
+                                : Icons.arrow_back,
+                            size: 16,
+                            color: alert.applying
+                                ? CosmicColors.secondary
+                                : CosmicColors.primaryLight,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            alert.applying
+                                ? l10n.transitApplying
+                                : l10n.transitSeparating,
+                            style: const TextStyle(
+                              color: CosmicColors.textSecondary,
+                              fontSize: 14,
                             ),
-                            const SizedBox(width: 6),
-                            Text(
-                              alert.applying
-                                  ? l10n.transitApplying
-                                  : l10n.transitSeparating,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
-                                  ),
+                          ),
+                          const SizedBox(width: 16),
+                          Text(
+                            'Orb: ${alert.orb.toStringAsFixed(2)}\u00B0',
+                            style: const TextStyle(
+                              color: CosmicColors.textSecondary,
+                              fontSize: 14,
                             ),
-                            const SizedBox(width: 16),
-                            Text(
-                              'Orb: ${alert.orb.toStringAsFixed(2)}\u00B0',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
 
                 const SizedBox(height: 16),
 
-                // Transit details
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        _DetailRow(
-                          label: 'Transit Planet',
-                          value:
-                              '${event.planet} ${alert.transitDegree.toStringAsFixed(1)}\u00B0 ${alert.transitSign}',
+                // Transit details card
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: CosmicColors.surfaceElevated,
+                    border: Border.all(color: CosmicColors.borderGlow),
+                  ),
+                  child: Column(
+                    children: [
+                      _DetailRow(
+                        icon: Icons.wb_sunny_outlined,
+                        label: 'Transit Planet',
+                        value:
+                            '${event.planet} ${alert.transitDegree.toStringAsFixed(1)}\u00B0 ${alert.transitSign}',
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2),
+                        child: Divider(color: CosmicColors.divider),
+                      ),
+                      _DetailRow(
+                        icon: Icons.dark_mode_outlined,
+                        label: 'Natal Planet',
+                        value:
+                            '${alert.natalPlanet} ${alert.natalDegree.toStringAsFixed(1)}\u00B0 ${alert.natalSign}',
+                      ),
+                      if (alert.natalHouse != null) ...[
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 2),
+                          child: Divider(color: CosmicColors.divider),
                         ),
-                        const Divider(),
                         _DetailRow(
-                          label: 'Natal Planet',
-                          value:
-                              '${alert.natalPlanet} ${alert.natalDegree.toStringAsFixed(1)}\u00B0 ${alert.natalSign}',
-                        ),
-                        if (alert.natalHouse != null) ...[
-                          const Divider(),
-                          _DetailRow(
-                            label: 'House',
-                            value: '${alert.natalHouse}',
-                          ),
-                        ],
-                        const Divider(),
-                        _DetailRow(
-                          label: 'Exact Date',
-                          value: event.exactDate,
-                        ),
-                        const Divider(),
-                        _DetailRow(
-                          label: 'Active Period',
-                          value: '${event.startDate} \u2013 ${event.endDate}',
+                          icon: Icons.home_outlined,
+                          label: 'House',
+                          value: '${alert.natalHouse}',
                         ),
                       ],
-                    ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2),
+                        child: Divider(color: CosmicColors.divider),
+                      ),
+                      _DetailRow(
+                        icon: Icons.pin_drop_outlined,
+                        label: 'Exact Date',
+                        value: event.exactDate,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2),
+                        child: Divider(color: CosmicColors.divider),
+                      ),
+                      _DetailRow(
+                        icon: Icons.date_range_outlined,
+                        label: 'Active Period',
+                        value: '${event.startDate} \u2013 ${event.endDate}',
+                      ),
+                    ],
                   ),
                 ),
 
@@ -149,45 +183,97 @@ class TransitDetailPage extends ConsumerWidget {
                 const SizedBox(height: 24),
 
                 // Dismiss button
-                OutlinedButton.icon(
-                  onPressed: () async {
-                    final repo = ref.read(transitRepositoryProvider);
-                    await repo.dismissTransit(transitAlertId);
-                    ref.invalidate(activeTransitsProvider);
-                    if (context.mounted) {
-                      context.pop();
-                    }
-                  },
-                  icon: const Icon(Icons.visibility_off),
-                  label: Text(l10n.transitDismiss),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(44),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () async {
+                      final repo = ref.read(transitRepositoryProvider);
+                      await repo.dismissTransit(transitAlertId);
+                      ref.invalidate(activeTransitsProvider);
+                      if (context.mounted) {
+                        context.pop();
+                      }
+                    },
+                    icon: const Icon(Icons.visibility_off, size: 18),
+                    label: Text(l10n.transitDismiss),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: CosmicColors.textSecondary,
+                      side: const BorderSide(color: CosmicColors.borderGlow),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
                   ),
                 ),
               ],
             ),
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(child: Text('Error: $error')),
+        loading: () => const Center(child: BreathingLoader()),
+        error: (error, _) => Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.cloud_off,
+                  size: 48, color: CosmicColors.textTertiary),
+              const SizedBox(height: 12),
+              Text(
+                'Error: $error',
+                style: const TextStyle(color: CosmicColors.textSecondary),
+              ),
+            ],
+          ),
+        ),
       ),
 
-      // Ask AI button at bottom
+      // Ask AI button
       bottomNavigationBar: detailAsync.when(
         data: (_) => SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: FilledButton.icon(
-              onPressed: () {
-                context.pushNamed(
-                  'chat',
-                  queryParameters: {'scenario_id': 'transit_reading'},
-                );
-              },
-              icon: const Icon(Icons.auto_awesome),
-              label: Text(l10n.transitAskAi),
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(48),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: CosmicColors.primaryGradient,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: CosmicColors.primary.withValues(alpha: 0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    context.pushNamed(
+                      'chat',
+                      queryParameters: {'scenario_id': 'transit_reading'},
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(24),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.auto_awesome,
+                            color: CosmicColors.textPrimary, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          l10n.transitAskAi,
+                          style: const TextStyle(
+                            color: CosmicColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -206,29 +292,42 @@ class TransitDetailPage extends ConsumerWidget {
 }
 
 class _DetailRow extends StatelessWidget {
+  final IconData icon;
   final String label;
   final String value;
 
-  const _DetailRow({required this.label, required this.value});
+  const _DetailRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Icon(icon, size: 18, color: CosmicColors.primaryLight),
+          const SizedBox(width: 10),
           Text(
             label,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+            style: const TextStyle(
+              color: CosmicColors.textSecondary,
+              fontSize: 14,
+            ),
           ),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+          const Spacer(),
+          Flexible(
+            child: Text(
+              value,
+              style: const TextStyle(
+                color: CosmicColors.textPrimary,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.end,
+            ),
           ),
         ],
       ),
@@ -249,9 +348,6 @@ class _DurationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    // Parse dates to calculate progress
     final start = DateTime.tryParse(startDate);
     final end = DateTime.tryParse(endDate);
     final exact = DateTime.tryParse(exactDate);
@@ -264,70 +360,104 @@ class _DurationBar extends StatelessWidget {
     final progress =
         totalDuration > 0 ? (elapsed / totalDuration).clamp(0.0, 1.0) : 0.0;
 
-    // Exact date marker position
     double? exactPosition;
     if (exact != null && totalDuration > 0) {
       exactPosition =
           (exact.difference(start).inHours / totalDuration).clamp(0.0, 1.0);
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Progress bar
-        Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: progress,
-                minHeight: 8,
-                backgroundColor:
-                    theme.colorScheme.surfaceContainerHighest,
-                color: theme.colorScheme.primary,
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: CosmicColors.surfaceElevated,
+        border: Border.all(color: CosmicColors.borderGlow),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Progress bar
+          Stack(
+            children: [
+              // Background
+              Container(
+                height: 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: CosmicColors.surface,
+                ),
               ),
-            ),
-            // Exact date marker
-            if (exactPosition != null)
-              Positioned(
-                left: exactPosition *
-                    (MediaQuery.of(context).size.width - 64),
+              // Progress
+              FractionallySizedBox(
+                widthFactor: progress,
                 child: Container(
-                  width: 3,
                   height: 8,
-                  color: theme.colorScheme.error,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    gradient: CosmicColors.primaryGradient,
+                    boxShadow: [
+                      BoxShadow(
+                        color: CosmicColors.primary.withValues(alpha: 0.5),
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-          ],
-        ),
-        const SizedBox(height: 6),
-        // Date labels
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              startDate,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-            if (exact != null)
+              // Exact date marker
+              if (exactPosition != null)
+                Positioned(
+                  left: exactPosition *
+                      (MediaQuery.of(context).size.width - 96),
+                  child: Container(
+                    width: 3,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: CosmicColors.secondary,
+                      borderRadius: BorderRadius.circular(1.5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: CosmicColors.secondary.withValues(alpha: 0.6),
+                          blurRadius: 4,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          // Date labels
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Text(
-                'Exact: $exactDate',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.error,
-                  fontWeight: FontWeight.w600,
+                startDate,
+                style: const TextStyle(
+                  color: CosmicColors.textTertiary,
+                  fontSize: 11,
                 ),
               ),
-            Text(
-              endDate,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
+              if (exact != null)
+                Text(
+                  'Exact: $exactDate',
+                  style: const TextStyle(
+                    color: CosmicColors.secondary,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              Text(
+                endDate,
+                style: const TextStyle(
+                  color: CosmicColors.textTertiary,
+                  fontSize: 11,
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

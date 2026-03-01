@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class AstroCalendarEvent {
   final String id;
   final String eventType;
@@ -18,6 +20,18 @@ class AstroCalendarEvent {
   });
 
   factory AstroCalendarEvent.fromJson(Map<String, dynamic> json) {
+    Map<String, dynamic>? meta;
+    final rawMeta = json['metadata'];
+    if (rawMeta is Map<String, dynamic>) {
+      meta = rawMeta;
+    } else if (rawMeta is String && rawMeta.isNotEmpty) {
+      try {
+        meta = jsonDecode(rawMeta) as Map<String, dynamic>;
+      } catch (_) {
+        meta = null;
+      }
+    }
+
     return AstroCalendarEvent(
       id: json['id'] as String,
       eventType: json['event_type'] as String,
@@ -25,7 +39,7 @@ class AstroCalendarEvent {
       sign: json['sign'] as String,
       exactDatetime: DateTime.parse(json['exact_datetime'] as String),
       descriptionKey: json['description_key'] as String? ?? '',
-      metadata: json['metadata'] as Map<String, dynamic>?,
+      metadata: meta,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 
 class SynastryScoreBars extends StatelessWidget {
   final Map<String, int> scores;
@@ -26,7 +27,7 @@ class SynastryScoreBars extends StatelessWidget {
       children: labels.entries.map((entry) {
         final score = scores[entry.key] ?? 0;
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 12),
           child: _ScoreBar(
             label: entry.value,
             score: score,
@@ -48,30 +49,55 @@ class _ScoreBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final clampedScore = score.clamp(0, 100);
     final barColor = _scoreColor(clampedScore);
 
     return Row(
       children: [
         SizedBox(
-          width: 90,
+          width: 80,
           child: Text(
             label,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
+            style: const TextStyle(
+              color: CosmicColors.textSecondary,
+              fontSize: 13,
             ),
           ),
         ),
         Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: clampedScore / 100.0,
-              minHeight: 10,
-              backgroundColor: theme.colorScheme.surfaceContainerHighest,
-              color: barColor,
-            ),
+          child: Stack(
+            children: [
+              // Background
+              Container(
+                height: 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: CosmicColors.surface,
+                ),
+              ),
+              // Progress
+              FractionallySizedBox(
+                widthFactor: clampedScore / 100.0,
+                child: Container(
+                  height: 8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    gradient: LinearGradient(
+                      colors: [
+                        barColor.withValues(alpha: 0.7),
+                        barColor,
+                      ],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: barColor.withValues(alpha: 0.4),
+                        blurRadius: 4,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(width: 10),
@@ -80,9 +106,10 @@ class _ScoreBar extends StatelessWidget {
           child: Text(
             '$clampedScore%',
             textAlign: TextAlign.right,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+            style: TextStyle(
               color: barColor,
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
             ),
           ),
         ),
@@ -91,8 +118,8 @@ class _ScoreBar extends StatelessWidget {
   }
 
   Color _scoreColor(int value) {
-    if (value < 40) return Colors.red;
-    if (value <= 60) return Colors.amber.shade700;
-    return Colors.green;
+    if (value < 40) return CosmicColors.error;
+    if (value <= 60) return CosmicColors.warning;
+    return CosmicColors.success;
   }
 }

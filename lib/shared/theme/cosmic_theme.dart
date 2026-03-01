@@ -72,6 +72,27 @@ class CosmicTheme {
                 const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           ),
         ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            backgroundColor: CosmicColors.primary,
+            foregroundColor: CosmicColors.textPrimary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: CosmicColors.primaryLight,
+          ),
+        ),
+        snackBarTheme: const SnackBarThemeData(
+          backgroundColor: CosmicColors.surfaceHighlight,
+          contentTextStyle: TextStyle(color: CosmicColors.textPrimary),
+        ),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: CosmicColors.primary,
+        ),
       );
 
   static ThemeData get classic => ThemeData(

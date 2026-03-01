@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/mood_entry.dart';
 import '../providers/mood_providers.dart';
 
@@ -43,18 +44,20 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
   }
 
   static const _scoreColors = {
-    1: Color(0xFFE53E3E),
+    1: CosmicColors.error,
     2: Color(0xFFED8936),
-    3: Color(0xFFECC94B),
+    3: CosmicColors.warning,
     4: Color(0xFF48BB78),
-    5: Color(0xFF38A169),
+    5: CosmicColors.success,
   };
-
-  static const _weekDayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
+    final isZh = locale.startsWith('zh');
+    final weekDayLabels = isZh
+        ? ['日', '一', '二', '三', '四', '五', '六']
+        : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     final historyAsync = ref.watch(moodHistoryProvider(_monthKey));
 
     return Column(
@@ -64,17 +67,23 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: const Icon(Icons.chevron_left),
+              icon: const Icon(Icons.chevron_left,
+                  color: CosmicColors.textSecondary),
               onPressed: _previousMonth,
             ),
             Text(
-              _formatMonthYear(_currentMonth),
-              style: theme.textTheme.titleMedium?.copyWith(
+              isZh
+                  ? _formatMonthYearZh(_currentMonth)
+                  : _formatMonthYear(_currentMonth),
+              style: const TextStyle(
+                color: CosmicColors.textPrimary,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.chevron_right),
+              icon: const Icon(Icons.chevron_right,
+                  color: CosmicColors.textSecondary),
               onPressed: _nextMonth,
             ),
           ],
@@ -83,13 +92,14 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
 
         // Weekday headers
         Row(
-          children: _weekDayLabels
+          children: weekDayLabels
               .map((label) => Expanded(
                     child: Center(
                       child: Text(
                         label,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                        style: const TextStyle(
+                          color: CosmicColors.textTertiary,
+                          fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -104,11 +114,18 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
           data: (entries) => _buildGrid(context, entries),
           loading: () => const SizedBox(
             height: 200,
-            child: Center(child: CircularProgressIndicator()),
+            child: Center(
+              child: CircularProgressIndicator(color: CosmicColors.primary),
+            ),
           ),
           error: (error, _) => SizedBox(
             height: 200,
-            child: Center(child: Text('Error: $error')),
+            child: Center(
+              child: Text(
+                'Error: $error',
+                style: const TextStyle(color: CosmicColors.error, fontSize: 13),
+              ),
+            ),
           ),
         ),
       ],
@@ -116,8 +133,6 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
   }
 
   Widget _buildGrid(BuildContext context, List<MoodEntry> entries) {
-    final theme = Theme.of(context);
-
     // Build lookup: date string -> entry
     final entryMap = <String, MoodEntry>{};
     for (final entry in entries) {
@@ -152,17 +167,21 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
             decoration: BoxDecoration(
               color: entry != null
                   ? _scoreColors[entry.score]?.withValues(alpha: 0.8)
-                  : theme.colorScheme.surfaceContainerHighest
-                      .withValues(alpha: 0.3),
+                  : CosmicColors.surfaceElevated,
               borderRadius: BorderRadius.circular(6),
+              border: entry != null
+                  ? null
+                  : Border.all(
+                      color: CosmicColors.primary.withValues(alpha: 0.1)),
             ),
             alignment: Alignment.center,
             child: Text(
               '$day',
-              style: theme.textTheme.bodySmall?.copyWith(
+              style: TextStyle(
                 color: entry != null
                     ? Colors.white
-                    : theme.colorScheme.onSurfaceVariant,
+                    : CosmicColors.textTertiary,
+                fontSize: 12,
                 fontWeight:
                     entry != null ? FontWeight.w600 : FontWeight.normal,
               ),
@@ -187,5 +206,9 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
       'July', 'August', 'September', 'October', 'November', 'December',
     ];
     return '${months[date.month - 1]} ${date.year}';
+  }
+
+  String _formatMonthYearZh(DateTime date) {
+    return '${date.year}年${date.month}月';
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 
 class SeverityBadge extends StatelessWidget {
   final String severity;
@@ -35,12 +36,12 @@ class SeverityBadge extends StatelessWidget {
   (Color, String) _severityStyle(AppLocalizations l10n) {
     switch (severity.toLowerCase()) {
       case 'high':
-        return (Colors.red, l10n.transitSeverityHigh);
+        return (CosmicColors.error, l10n.transitSeverityHigh);
       case 'medium':
-        return (Colors.amber.shade700, l10n.transitSeverityMedium);
+        return (CosmicColors.warning, l10n.transitSeverityMedium);
       case 'low':
       default:
-        return (Colors.green, l10n.transitSeverityLow);
+        return (CosmicColors.success, l10n.transitSeverityLow);
     }
   }
 }

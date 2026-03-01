@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/mood_tag.dart';
 
 class MoodTagChips extends StatelessWidget {
@@ -42,18 +43,40 @@ class MoodTagChips extends StatelessWidget {
       runSpacing: 8,
       children: MoodTag.values.map((tag) {
         final isSelected = selectedTags.contains(tag.value);
-        return FilterChip(
-          selected: isSelected,
-          label: Text('${tag.emoji} ${_tagLabel(l10n, tag)}'),
-          onSelected: (selected) {
+        return GestureDetector(
+          onTap: () {
             final updated = Set<String>.from(selectedTags);
-            if (selected) {
-              updated.add(tag.value);
-            } else {
+            if (isSelected) {
               updated.remove(tag.value);
+            } else {
+              updated.add(tag.value);
             }
             onTagsChanged(updated);
           },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? CosmicColors.primary.withValues(alpha: 0.2)
+                  : CosmicColors.surfaceElevated,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: isSelected
+                    ? CosmicColors.primary.withValues(alpha: 0.5)
+                    : CosmicColors.borderGlow,
+              ),
+            ),
+            child: Text(
+              '${tag.emoji} ${_tagLabel(l10n, tag)}',
+              style: TextStyle(
+                color: isSelected
+                    ? CosmicColors.primaryLight
+                    : CosmicColors.textSecondary,
+                fontSize: 13,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ),
         );
       }).toList(),
     );

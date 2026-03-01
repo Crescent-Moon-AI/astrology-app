@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/message.dart';
 import '../../domain/utils/section_parser.dart';
 import 'section_reveal_button.dart';
@@ -125,15 +126,25 @@ class _ProgressiveTextBlockState extends State<ProgressiveTextBlock> {
                 AnimatedRotation(
                   turns: isExpanded ? 0.25 : 0,
                   duration: const Duration(milliseconds: 200),
-                  child: const Icon(Icons.chevron_right, size: 20),
+                  child: Icon(
+                    Icons.chevron_right,
+                    size: 20,
+                    color: isExpanded
+                        ? CosmicColors.primaryLight
+                        : CosmicColors.textTertiary,
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     section.title,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                    style: TextStyle(
+                      color: isExpanded
+                          ? CosmicColors.textPrimary
+                          : CosmicColors.textSecondary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],

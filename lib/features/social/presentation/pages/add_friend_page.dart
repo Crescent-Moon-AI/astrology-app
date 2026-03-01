@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/friend_profile.dart';
 import '../providers/social_providers.dart';
 
@@ -49,6 +50,33 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
     super.dispose();
   }
 
+  InputDecoration _cosmicInputDecoration({
+    required String labelText,
+    IconData? prefixIcon,
+  }) {
+    return InputDecoration(
+      labelText: labelText,
+      labelStyle: const TextStyle(color: CosmicColors.textSecondary),
+      prefixIcon: prefixIcon != null
+          ? Icon(prefixIcon, color: CosmicColors.primaryLight, size: 20)
+          : null,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: CosmicColors.borderGlow),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: CosmicColors.borderGlow),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: CosmicColors.primary, width: 1.5),
+      ),
+      filled: true,
+      fillColor: CosmicColors.surfaceElevated,
+    );
+  }
+
   Future<void> _pickBirthDate() async {
     final now = DateTime.now();
     final picked = await showDatePicker(
@@ -56,6 +84,18 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
       initialDate: _birthDate ?? DateTime(2000, 1, 1),
       firstDate: DateTime(1900),
       lastDate: now,
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: CosmicColors.primary,
+              surface: CosmicColors.background,
+              onSurface: CosmicColors.textPrimary,
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
       setState(() => _birthDate = picked);
@@ -66,6 +106,18 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
     final picked = await showTimePicker(
       context: context,
       initialTime: _birthTime ?? const TimeOfDay(hour: 12, minute: 0),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: CosmicColors.primary,
+              surface: CosmicColors.background,
+              onSurface: CosmicColors.textPrimary,
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
       setState(() => _birthTime = picked);
@@ -121,12 +173,20 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
     final locale = Localizations.localeOf(context).languageCode;
+    final isZh = locale.startsWith('zh');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.addFriend),
+        title: Text(
+          l10n.addFriend,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            color: CosmicColors.textPrimary,
+          ),
+        ),
+        backgroundColor: CosmicColors.background,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -138,10 +198,10 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
               // Name
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(
+                style: const TextStyle(color: CosmicColors.textPrimary),
+                decoration: _cosmicInputDecoration(
                   labelText: l10n.friendName,
-                  border: const OutlineInputBorder(),
-                  prefixIcon: const Icon(Icons.person),
+                  prefixIcon: Icons.person,
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -155,17 +215,17 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
               // Birth Date
               InkWell(
                 onTap: _pickBirthDate,
+                borderRadius: BorderRadius.circular(12),
                 child: InputDecorator(
-                  decoration: InputDecoration(
+                  decoration: _cosmicInputDecoration(
                     labelText: l10n.friendBirthDate,
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.calendar_today),
+                    prefixIcon: Icons.calendar_today,
                   ),
                   child: Text(
                     _birthDate != null
                         ? DateFormat('yyyy-MM-dd').format(_birthDate!)
                         : '',
-                    style: theme.textTheme.bodyLarge,
+                    style: const TextStyle(color: CosmicColors.textPrimary),
                   ),
                 ),
               ),
@@ -174,15 +234,15 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
               // Birth Time (optional)
               InkWell(
                 onTap: _pickBirthTime,
+                borderRadius: BorderRadius.circular(12),
                 child: InputDecorator(
-                  decoration: InputDecoration(
+                  decoration: _cosmicInputDecoration(
                     labelText: l10n.friendBirthTime,
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.access_time),
+                    prefixIcon: Icons.access_time,
                   ),
                   child: Text(
                     _birthTime != null ? _birthTime!.format(context) : '',
-                    style: theme.textTheme.bodyLarge,
+                    style: const TextStyle(color: CosmicColors.textPrimary),
                   ),
                 ),
               ),
@@ -191,10 +251,10 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
               // Location search
               TextFormField(
                 controller: _locationController,
-                decoration: InputDecoration(
+                style: const TextStyle(color: CosmicColors.textPrimary),
+                decoration: _cosmicInputDecoration(
                   labelText: l10n.friendLocation,
-                  border: const OutlineInputBorder(),
-                  prefixIcon: const Icon(Icons.location_on),
+                  prefixIcon: Icons.location_on,
                 ),
               ),
               const SizedBox(height: 16),
@@ -205,24 +265,24 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                   Expanded(
                     child: TextFormField(
                       controller: _latController,
-                      decoration: const InputDecoration(
-                        labelText: 'Latitude',
-                        border: OutlineInputBorder(),
+                      style: const TextStyle(color: CosmicColors.textPrimary),
+                      decoration: _cosmicInputDecoration(
+                        labelText: isZh ? '纬度' : 'Latitude',
                       ),
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: TextFormField(
                       controller: _lonController,
-                      decoration: const InputDecoration(
-                        labelText: 'Longitude',
-                        border: OutlineInputBorder(),
+                      style: const TextStyle(color: CosmicColors.textPrimary),
+                      decoration: _cosmicInputDecoration(
+                        labelText: isZh ? '经度' : 'Longitude',
                       ),
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true),
                     ),
                   ),
                 ],
@@ -232,10 +292,11 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
               // Timezone dropdown
               DropdownButtonFormField<String>(
                 initialValue: _timezone,
-                decoration: InputDecoration(
+                dropdownColor: CosmicColors.background,
+                style: const TextStyle(color: CosmicColors.textPrimary),
+                decoration: _cosmicInputDecoration(
                   labelText: l10n.friendTimezone,
-                  border: const OutlineInputBorder(),
-                  prefixIcon: const Icon(Icons.public),
+                  prefixIcon: Icons.public,
                 ),
                 items: _timezones
                     .map((tz) => DropdownMenuItem(
@@ -249,47 +310,105 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                   }
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
 
               // Relationship label chips
               Text(
                 l10n.friendRelationship,
-                style: theme.textTheme.titleSmall,
+                style: const TextStyle(
+                  color: CosmicColors.textSecondary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
                 children: RelationshipLabel.values.map((rel) {
                   final isSelected = _selectedRelationship == rel;
                   final displayLabel =
-                      locale == 'zh' ? rel.labelZH : rel.labelEN;
-                  return ChoiceChip(
-                    label: Text(displayLabel),
-                    selected: isSelected,
-                    onSelected: (selected) {
+                      isZh ? rel.labelZH : rel.labelEN;
+                  return GestureDetector(
+                    onTap: () {
                       setState(() {
-                        _selectedRelationship = selected ? rel : null;
+                        _selectedRelationship = isSelected ? null : rel;
                       });
                     },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: isSelected
+                            ? CosmicColors.primary.withValues(alpha: 0.25)
+                            : CosmicColors.surfaceElevated,
+                        border: Border.all(
+                          color: isSelected
+                              ? CosmicColors.primary
+                              : CosmicColors.borderGlow,
+                          width: isSelected ? 1.5 : 1,
+                        ),
+                      ),
+                      child: Text(
+                        displayLabel,
+                        style: TextStyle(
+                          color: isSelected
+                              ? CosmicColors.primaryLight
+                              : CosmicColors.textSecondary,
+                          fontSize: 14,
+                          fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.normal,
+                        ),
+                      ),
+                    ),
                   );
                 }).toList(),
               ),
               const SizedBox(height: 32),
 
               // Save button
-              FilledButton(
-                onPressed: _saving ? null : _save,
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size.fromHeight(48),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: CosmicColors.primaryGradient,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: CosmicColors.primary.withValues(alpha: 0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
-                child: _saving
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Text(l10n.friendSave),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: _saving ? null : _save,
+                    borderRadius: BorderRadius.circular(24),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Center(
+                        child: _saving
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: CosmicColors.textPrimary,
+                                ),
+                              )
+                            : Text(
+                                l10n.friendSave,
+                                style: const TextStyle(
+                                  color: CosmicColors.textPrimary,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

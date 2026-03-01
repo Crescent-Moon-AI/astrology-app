@@ -1,5 +1,8 @@
+import '../../config/env.dart';
+
 class ApiConstants {
-  static const String baseUrl = 'http://localhost:8080';
+  static String get baseUrl => AppConfig.apiBaseUrl;
+  static String get wsUrl => AppConfig.wsBaseUrl;
   static const String apiPrefix = '/api';
 
   // Scenario endpoints

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../providers/transit_providers.dart';
 import 'transit_card.dart';
 
@@ -27,11 +28,18 @@ class ActiveTransitsSection extends ConsumerWidget {
                 children: [
                   Text(
                     l10n.transitActiveTransits,
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: const TextStyle(
+                      color: CosmicColors.textPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   TextButton(
                     onPressed: () => context.pushNamed('transits'),
-                    child: Text(l10n.cardShowDetails),
+                    child: Text(
+                      l10n.cardShowDetails,
+                      style: const TextStyle(color: CosmicColors.primaryLight),
+                    ),
                   ),
                 ],
               ),
@@ -64,7 +72,9 @@ class ActiveTransitsSection extends ConsumerWidget {
       },
       loading: () => const SizedBox(
         height: 48,
-        child: Center(child: CircularProgressIndicator()),
+        child: Center(
+          child: CircularProgressIndicator(color: CosmicColors.primary),
+        ),
       ),
       error: (_, __) => const SizedBox.shrink(),
     );

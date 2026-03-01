@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../providers/mood_providers.dart';
 import 'mood_score_selector.dart';
 import 'mood_tag_chips.dart';
@@ -54,30 +55,32 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
     final todayMoodAsync = ref.watch(todayMoodProvider);
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: todayMoodAsync.when(
-          data: (todayMood) {
-            // Already logged today and not editing
-            if (todayMood != null && !_isEditing) {
-              return _buildReadOnlyView(context, l10n, theme, todayMood);
-            }
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: CosmicColors.surfaceElevated,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: CosmicColors.borderGlow),
+      ),
+      child: todayMoodAsync.when(
+        data: (todayMood) {
+          // Already logged today and not editing
+          if (todayMood != null && !_isEditing) {
+            return _buildReadOnlyView(context, l10n, todayMood);
+          }
 
-            // Logging or editing
-            return _buildCheckinForm(context, l10n, theme);
-          },
-          loading: () => const Center(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: CircularProgressIndicator(),
-            ),
+          // Logging or editing
+          return _buildCheckinForm(context, l10n);
+        },
+        loading: () => const Center(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: CircularProgressIndicator(color: CosmicColors.primary),
           ),
-          error: (_, __) => _buildCheckinForm(context, l10n, theme),
         ),
+        error: (_, __) => _buildCheckinForm(context, l10n),
       ),
     );
   }
@@ -85,7 +88,6 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
   Widget _buildReadOnlyView(
     BuildContext context,
     AppLocalizations l10n,
-    ThemeData theme,
     dynamic todayMood,
   ) {
     const scoreEmojis = [
@@ -110,15 +112,20 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
             children: [
               Text(
                 l10n.moodCheckinTitle,
-                style: theme.textTheme.titleSmall,
+                style: const TextStyle(
+                  color: CosmicColors.textPrimary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               if (todayMood.tags.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
                     (todayMood.tags as List<String>).join(', '),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                    style: const TextStyle(
+                      color: CosmicColors.textTertiary,
+                      fontSize: 12,
                     ),
                   ),
                 ),
@@ -135,7 +142,10 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
               _isExpanded = true;
             });
           },
-          child: Text(l10n.moodEdit),
+          child: Text(
+            l10n.moodEdit,
+            style: const TextStyle(color: CosmicColors.primaryLight),
+          ),
         ),
       ],
     );
@@ -144,7 +154,6 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
   Widget _buildCheckinForm(
     BuildContext context,
     AppLocalizations l10n,
-    ThemeData theme,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,11 +164,15 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
             Expanded(
               child: Text(
                 l10n.moodCheckinTitle,
-                style: theme.textTheme.titleSmall,
+                style: const TextStyle(
+                  color: CosmicColors.textPrimary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             // Show streak from stats if available
-            _buildStreakBadge(context, l10n, theme),
+            _buildStreakBadge(context, l10n),
           ],
         ),
         const SizedBox(height: 16),
@@ -196,29 +209,74 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
                 controller: _noteController,
                 decoration: InputDecoration(
                   hintText: l10n.moodNoteHint,
-                  border: const OutlineInputBorder(),
+                  hintStyle: const TextStyle(color: CosmicColors.textTertiary),
+                  filled: true,
+                  fillColor: CosmicColors.background,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: CosmicColors.borderGlow),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: CosmicColors.borderGlow),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: CosmicColors.primary),
+                  ),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 8,
                   ),
                 ),
+                style: const TextStyle(color: CosmicColors.textPrimary),
                 maxLines: 2,
               ),
               const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
-                child: FilledButton(
-                  onPressed:
-                      _selectedScore != null && !_isSubmitting
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: _selectedScore != null && !_isSubmitting
+                        ? CosmicColors.primaryGradient
+                        : null,
+                    color: _selectedScore == null || _isSubmitting
+                        ? CosmicColors.surfaceElevated
+                        : null,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: _selectedScore != null && !_isSubmitting
                           ? _submitMood
                           : null,
-                  child: _isSubmitting
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text(l10n.moodDone),
+                      borderRadius: BorderRadius.circular(24),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Center(
+                          child: _isSubmitting
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Text(
+                                  l10n.moodDone,
+                                  style: TextStyle(
+                                    color: _selectedScore != null
+                                        ? CosmicColors.textPrimary
+                                        : CosmicColors.textTertiary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -231,7 +289,6 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
   Widget _buildStreakBadge(
     BuildContext context,
     AppLocalizations l10n,
-    ThemeData theme,
   ) {
     final statsAsync = ref.watch(moodStatsProvider('30d'));
     return statsAsync.when(
@@ -240,13 +297,18 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer,
+            color: CosmicColors.primary.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: CosmicColors.primary.withValues(alpha: 0.4),
+            ),
           ),
           child: Text(
             l10n.moodStreak(stats.streak.current),
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: theme.colorScheme.onPrimaryContainer,
+            style: const TextStyle(
+              color: CosmicColors.primaryLight,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
             ),
           ),
         );

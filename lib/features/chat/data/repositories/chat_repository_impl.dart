@@ -22,7 +22,7 @@ class ChatRepositoryImpl implements ChatRepository {
       queryParameters: queryParams,
     );
     final data = response.data as Map<String, dynamic>;
-    final items = data['items'] as List<dynamic>? ?? [];
+    final items = data['conversations'] as List<dynamic>? ?? [];
     return items
         .map((e) => Conversation.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -49,7 +49,7 @@ class ChatRepositoryImpl implements ChatRepository {
       queryParameters: queryParams,
     );
     final data = response.data as Map<String, dynamic>;
-    final items = data['items'] as List<dynamic>? ?? [];
+    final items = data['messages'] as List<dynamic>? ?? [];
     return items.map((e) {
       final json = e as Map<String, dynamic>;
       final role = (json['role'] as String) == 'user'
@@ -87,7 +87,7 @@ class ChatRepositoryImpl implements ChatRepository {
 
   @override
   Future<String> getWsTicket() async {
-    final response = await _dio.post('/api/ws/ticket');
+    final response = await _dio.post('/api/auth/ws-ticket');
     final data = response.data as Map<String, dynamic>;
     return data['ticket'] as String;
   }

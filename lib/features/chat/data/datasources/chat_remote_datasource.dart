@@ -44,6 +44,7 @@ class ChatRemoteDatasource {
     String? clientMessageId,
     String? language,
     String? requestId,
+    String? scenarioId,
   }) {
     final msg = WsClientMessage(
       type: 'user_message',
@@ -52,6 +53,7 @@ class ChatRemoteDatasource {
       clientMessageId: clientMessageId,
       language: language,
       id: requestId,
+      scenarioId: scenarioId,
     );
     _channel?.sink.add(jsonEncode(msg.toJson()));
   }

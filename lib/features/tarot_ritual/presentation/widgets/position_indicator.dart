@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../shared/theme/cosmic_colors.dart';
+
 class PositionIndicator extends StatelessWidget {
   final String label;
   final bool isRevealed;
@@ -14,25 +16,23 @@ class PositionIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: isActive
-            ? const Color(0xFFD4AF37).withValues(alpha: 0.2)
+            ? CosmicColors.secondary.withValues(alpha: 0.2)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(8),
         border: isActive
-            ? Border.all(color: const Color(0xFFD4AF37), width: 1)
+            ? Border.all(color: CosmicColors.secondary, width: 1)
             : null,
       ),
       child: Text(
         label,
-        style: theme.textTheme.labelSmall?.copyWith(
+        style: TextStyle(
           color: isRevealed
-              ? const Color(0xFFD4AF37)
-              : theme.colorScheme.onSurfaceVariant,
+              ? CosmicColors.secondary
+              : CosmicColors.textTertiary,
           fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
           fontSize: 10,
         ),
