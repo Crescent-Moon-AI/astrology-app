@@ -9,6 +9,7 @@ import '../features/scenario/presentation/pages/scenario_list_page.dart';
 import '../features/scenario/presentation/pages/scenario_detail_page.dart';
 import '../features/settings/presentation/pages/about_character_page.dart';
 import '../features/settings/presentation/pages/appearance_settings_page.dart';
+import '../features/settings/presentation/pages/edit_birth_data_page.dart';
 import '../features/settings/presentation/pages/profile_page.dart';
 import '../features/shell/main_shell_page.dart';
 import '../features/tarot_ritual/presentation/pages/spread_selection_page.dart';
@@ -101,6 +102,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => ChatPage(
           scenarioId: state.uri.queryParameters['scenario_id'],
           initialMessage: state.uri.queryParameters['initial_message'],
+          tarotSessionId: state.uri.queryParameters['tarot_session_id'],
         ),
       ),
       GoRoute(
@@ -108,7 +110,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'chatConversation',
         builder: (context, state) {
           final id = state.pathParameters['id']!;
-          return ChatPage(conversationId: id);
+          return ChatPage(
+            conversationId: id,
+            tarotSessionId: state.uri.queryParameters['tarot_session_id'],
+          );
         },
       ),
       GoRoute(
@@ -133,6 +138,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/settings/appearance',
         name: 'appearanceSettings',
         builder: (context, state) => const AppearanceSettingsPage(),
+      ),
+      GoRoute(
+        path: '/settings/birth-data',
+        name: 'editBirthData',
+        builder: (context, state) => const EditBirthDataPage(),
       ),
       GoRoute(
         path: '/tarot',

@@ -20,12 +20,14 @@ class ChatPage extends ConsumerStatefulWidget {
   final String? conversationId;
   final String? scenarioId;
   final String? initialMessage;
+  final String? tarotSessionId;
 
   const ChatPage({
     super.key,
     this.conversationId,
     this.scenarioId,
     this.initialMessage,
+    this.tarotSessionId,
   });
 
   @override
@@ -76,10 +78,17 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   }
 
   void _sendInitialMessageIfNeeded() {
-    final msg = widget.initialMessage;
+    String? msg = widget.initialMessage;
+
+    // Auto-send tarot reading prompt when coming from tarot ritual
+    if (msg == null && widget.tarotSessionId != null) {
+      final l10n = AppLocalizations.of(context);
+      msg = l10n?.tarotReadingPrompt ?? '请根据塔罗牌阵为我进行解读';
+    }
+
     if (msg != null && msg.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _sendMessage(msg);
+        _sendMessage(msg!);
       });
     }
   }

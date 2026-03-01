@@ -60,7 +60,7 @@ class TarotCardFace extends StatelessWidget {
             const SizedBox(height: 6),
 
             // Suit/element icon — larger
-            Text(_suitIcon, style: const TextStyle(fontSize: 36)),
+            Text(_suitIcon, style: const TextStyle(fontSize: 40)),
             const SizedBox(height: 6),
 
             // Chinese name — prominent
@@ -77,9 +77,9 @@ class TarotCardFace extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
 
-            // English name
+            // English name (display name, not internal key)
             Text(
-              card.name,
+              _displayName,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Colors.white60,
@@ -110,6 +110,22 @@ class TarotCardFace extends StatelessWidget {
                   ),
                 ),
               ),
+
+            // Active keywords (max 2)
+            if (card.activeKeywords.isNotEmpty) ...[
+              const SizedBox(height: 4),
+              Text(
+                card.activeKeywords.take(2).join(' · '),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white38,
+                  fontSize: 9,
+                  fontStyle: FontStyle.italic,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
             const SizedBox(height: 8),
 
             // Orientation indicator — Chinese
@@ -197,13 +213,26 @@ class TarotCardFace extends StatelessWidget {
   }
 
   String get _suitIcon {
-    if (card.arcana == 'major') return '\u2605'; // star
+    if (card.arcana == 'major') return '\u2727'; // ✧
     return switch (card.suit) {
-      'wands' => '\u2642', // fire/wands
-      'cups' => '\u2615', // cups
-      'swords' => '\u2694', // swords
-      'pentacles' => '\u2B50', // pentacles
-      _ => '\u2726',
+      'wands' => '\uD83D\uDD25', // 🔥
+      'cups' => '\uD83C\uDFC6', // 🏆
+      'swords' => '\u2694\uFE0F', // ⚔️
+      'pentacles' => '\u2B50', // ⭐
+      _ => '\u2727',
     };
+  }
+
+  /// Human-readable English display name.
+  /// Falls back to [card.name] if it already looks like a display name.
+  String get _displayName {
+    // If name contains underscores, it's an internal key — use nameZH as
+    // display, but we still want English here. Try to derive from card data.
+    if (!card.name.contains('_')) return card.name;
+    // Convert snake_case to Title Case as best-effort
+    return card.name
+        .split('_')
+        .map((w) => w.isEmpty ? '' : '${w[0].toUpperCase()}${w.substring(1)}')
+        .join(' ');
   }
 }

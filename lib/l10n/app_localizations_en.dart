@@ -509,4 +509,68 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noDataFound => 'No data found';
+
+  @override
+  String get profileBirthData => 'Birth Information';
+
+  @override
+  String get profileBirthDataEmpty =>
+      'Add birth info for personalized readings';
+
+  @override
+  String get profileEditBirthData => 'Edit Birth Info';
+
+  @override
+  String get birthDate => 'Birth Date';
+
+  @override
+  String get birthTime => 'Birth Time';
+
+  @override
+  String get birthTimeUnknown => 'I don\'t know my birth time';
+
+  @override
+  String get birthTimeExact => 'Exact';
+
+  @override
+  String get birthTimeApproximate => 'Approximate';
+
+  @override
+  String get birthPlace => 'Birth Place';
+
+  @override
+  String get birthPlaceSearch => 'Search city...';
+
+  @override
+  String birthPlaceTimezone(String timezone) {
+    return 'Timezone: $timezone';
+  }
+
+  @override
+  String get birthDataSave => 'Save';
+
+  @override
+  String get birthDataSaved => 'Birth info saved';
+
+  @override
+  String get birthDataRequired => 'Please fill in at least the birth date';
+
+  @override
+  String get mysticalLoading1 => 'The stars are aligning...';
+
+  @override
+  String get mysticalLoading2 => 'Threads of fate are weaving...';
+
+  @override
+  String get mysticalLoading3 => 'Cosmic messages are converging...';
+
+  @override
+  String get mysticalLoading4 => 'Let us listen with calm hearts...';
+
+  @override
+  String get tarotCancelConfirm =>
+      'Are you sure you want to cancel this reading?';
+
+  @override
+  String get tarotReadingPrompt => 'Please interpret the tarot spread for me';
 }

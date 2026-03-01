@@ -10,4 +10,11 @@ class ApiConstants {
   static const String scenarioCategories = '$apiPrefix/scenarios/categories';
   static const String scenarioHot = '$apiPrefix/scenarios/hot';
   static String scenarioDetail(String id) => '$apiPrefix/scenarios/$id';
+
+  // Profile endpoints
+  static const String profile = '$apiPrefix/users/me/profile';
+  static const String profileCore = '$apiPrefix/users/me/profile/core';
+
+  // Location endpoints
+  static const String locationResolve = '$apiPrefix/locations/resolve';
 }
