@@ -25,7 +25,6 @@ class CharacterAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     // Use placeholder since actual illustrations are not yet available.
     // When assets are ready, replace with Image.asset.
-    final theme = Theme.of(context);
     return Container(
       width: size.value,
       height: size.value,
@@ -34,7 +33,7 @@ class CharacterAvatar extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: _gradientForExpression(expression, theme),
+          colors: _gradientForExpression(expression),
         ),
       ),
       child: Center(
@@ -46,7 +45,7 @@ class CharacterAvatar extends StatelessWidget {
     );
   }
 
-  List<Color> _gradientForExpression(ExpressionId expr, ThemeData theme) {
+  List<Color> _gradientForExpression(ExpressionId expr) {
     switch (expr) {
       case ExpressionId.greeting:
         return [const Color(0xFF7C3AED), const Color(0xFF4F46E5)];

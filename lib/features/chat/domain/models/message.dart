@@ -42,16 +42,16 @@ class MessageBlock {
   final String id;
   final int idx;
   final BlockKind kind;
-  BlockStatus? status;
-  String? contentText;
-  String? payloadJson;
-  String? toolCallId;
-  String? toolName;
-  String? error;
-  int? durationMs;
-  BlockMetadata? metadata;
+  final BlockStatus? status;
+  final String? contentText;
+  final String? payloadJson;
+  final String? toolCallId;
+  final String? toolName;
+  final String? error;
+  final int? durationMs;
+  final BlockMetadata? metadata;
 
-  MessageBlock({
+  const MessageBlock({
     required this.id,
     required this.idx,
     required this.kind,
@@ -64,6 +64,34 @@ class MessageBlock {
     this.durationMs,
     this.metadata,
   });
+
+  MessageBlock copyWith({
+    String? id,
+    int? idx,
+    BlockKind? kind,
+    BlockStatus? Function()? status,
+    String? Function()? contentText,
+    String? Function()? payloadJson,
+    String? Function()? toolCallId,
+    String? Function()? toolName,
+    String? Function()? error,
+    int? Function()? durationMs,
+    BlockMetadata? Function()? metadata,
+  }) {
+    return MessageBlock(
+      id: id ?? this.id,
+      idx: idx ?? this.idx,
+      kind: kind ?? this.kind,
+      status: status != null ? status() : this.status,
+      contentText: contentText != null ? contentText() : this.contentText,
+      payloadJson: payloadJson != null ? payloadJson() : this.payloadJson,
+      toolCallId: toolCallId != null ? toolCallId() : this.toolCallId,
+      toolName: toolName != null ? toolName() : this.toolName,
+      error: error != null ? error() : this.error,
+      durationMs: durationMs != null ? durationMs() : this.durationMs,
+      metadata: metadata != null ? metadata() : this.metadata,
+    );
+  }
 }
 
 class ChatMessage {

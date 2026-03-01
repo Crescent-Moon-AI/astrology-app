@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/friend_profile.dart';
 
 class RelationshipLabelBadge extends StatelessWidget {
@@ -35,22 +36,22 @@ class RelationshipLabelBadge extends StatelessWidget {
   (Color, String) _labelStyle(BuildContext context, RelationshipLabel? rel) {
     final locale = Localizations.localeOf(context).languageCode;
     if (rel == null) {
-      return (Colors.grey, label.isEmpty ? '?' : label);
+      return (CosmicColors.textTertiary, label.isEmpty ? '?' : label);
     }
 
     final displayText = locale == 'zh' ? rel.labelZH : rel.labelEN;
 
     switch (rel) {
       case RelationshipLabel.partner:
-        return (Colors.pink, displayText);
+        return (CosmicColors.error, displayText);
       case RelationshipLabel.family:
-        return (Colors.orange, displayText);
+        return (CosmicColors.secondary, displayText);
       case RelationshipLabel.friend:
-        return (Colors.blue, displayText);
+        return (CosmicColors.primaryLight, displayText);
       case RelationshipLabel.colleague:
-        return (Colors.teal, displayText);
+        return (CosmicColors.success, displayText);
       case RelationshipLabel.crush:
-        return (Colors.purple, displayText);
+        return (CosmicColors.primary, displayText);
     }
   }
 }

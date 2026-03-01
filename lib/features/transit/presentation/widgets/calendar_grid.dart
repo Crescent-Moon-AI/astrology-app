@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/astro_calendar_event.dart';
 import 'calendar_day_cell.dart';
 
@@ -18,7 +19,8 @@ class CalendarGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
+    final isZh = locale.startsWith('zh');
     final now = DateTime.now();
     final firstDay = DateTime(year, month, 1);
     final daysInMonth = DateTime(year, month + 1, 0).day;
@@ -35,8 +37,9 @@ class CalendarGrid extends StatelessWidget {
       }
     }
 
-    // Weekday headers
-    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    final weekdays = isZh
+        ? ['日', '一', '二', '三', '四', '五', '六']
+        : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     return Column(
       children: [
@@ -47,8 +50,9 @@ class CalendarGrid extends StatelessWidget {
                     child: Center(
                       child: Text(
                         d,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                        style: const TextStyle(
+                          color: CosmicColors.textTertiary,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

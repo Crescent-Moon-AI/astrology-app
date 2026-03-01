@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/mood_stats.dart';
 import '../providers/mood_providers.dart';
 
@@ -16,7 +17,6 @@ class _MoodTrendChartState extends ConsumerState<MoodTrendChart> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final statsAsync = ref.watch(moodStatsProvider(_selectedPeriod));
 
     return Column(
@@ -45,11 +45,16 @@ class _MoodTrendChartState extends ConsumerState<MoodTrendChart> {
           height: 200,
           child: statsAsync.when(
             data: (stats) => _buildChart(context, stats),
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const Center(
+              child: CircularProgressIndicator(color: CosmicColors.primary),
+            ),
             error: (error, _) => Center(
               child: Text(
                 'Error: $error',
-                style: theme.textTheme.bodySmall,
+                style: const TextStyle(
+                  color: CosmicColors.error,
+                  fontSize: 12,
+                ),
               ),
             ),
           ),
@@ -60,12 +65,13 @@ class _MoodTrendChartState extends ConsumerState<MoodTrendChart> {
 
   Widget _buildChart(BuildContext context, MoodStats stats) {
     if (stats.dailyAverages.isEmpty) {
-      return Center(
+      return const Center(
         child: Text(
           'No data yet',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+          style: TextStyle(
+            color: CosmicColors.textTertiary,
+            fontSize: 14,
+          ),
         ),
       );
     }
@@ -74,9 +80,9 @@ class _MoodTrendChartState extends ConsumerState<MoodTrendChart> {
       size: const Size(double.infinity, 200),
       painter: _TrendChartPainter(
         dailyAverages: stats.dailyAverages,
-        lineColor: Theme.of(context).colorScheme.primary,
-        gridColor: Theme.of(context).colorScheme.outlineVariant,
-        textColor: Theme.of(context).colorScheme.onSurfaceVariant,
+        lineColor: CosmicColors.primary,
+        gridColor: CosmicColors.primary.withValues(alpha: 0.15),
+        textColor: CosmicColors.textTertiary,
       ),
     );
   }
@@ -95,23 +101,28 @@ class _PeriodButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? theme.colorScheme.primaryContainer
-              : theme.colorScheme.surfaceContainerHighest,
+              ? CosmicColors.primary.withValues(alpha: 0.2)
+              : CosmicColors.surfaceElevated,
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected
+                ? CosmicColors.primary.withValues(alpha: 0.5)
+                : CosmicColors.borderGlow,
+          ),
         ),
         child: Text(
           label,
-          style: theme.textTheme.labelMedium?.copyWith(
+          style: TextStyle(
             color: isSelected
-                ? theme.colorScheme.onPrimaryContainer
-                : theme.colorScheme.onSurfaceVariant,
+                ? CosmicColors.primaryLight
+                : CosmicColors.textTertiary,
+            fontSize: 13,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),
         ),

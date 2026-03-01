@@ -29,7 +29,7 @@ class TransitApi {
 
   Future<Map<String, dynamic>> getCalendarEvents(int year, int month) async {
     final response = await _dio.get(
-      '/api/calendar/events',
+      '/api/calendar',
       queryParameters: {'year': year, 'month': month},
     );
     return response.data['data'] as Map<String, dynamic>;

@@ -11,7 +11,7 @@ class TransitRepositoryImpl implements TransitRepository {
   @override
   Future<List<UserTransitAlert>> getActiveTransits() async {
     final data = await _api.getActiveTransits();
-    final items = data['transits'] as List<dynamic>? ?? [];
+    final items = data['items'] as List<dynamic>? ?? [];
     return items
         .map((e) => UserTransitAlert.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -20,7 +20,7 @@ class TransitRepositoryImpl implements TransitRepository {
   @override
   Future<List<UserTransitAlert>> getUpcomingTransits({int days = 30}) async {
     final data = await _api.getUpcomingTransits(days: days);
-    final items = data['transits'] as List<dynamic>? ?? [];
+    final items = data['items'] as List<dynamic>? ?? [];
     return items
         .map((e) => UserTransitAlert.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -41,11 +41,10 @@ class TransitRepositoryImpl implements TransitRepository {
   Future<CalendarData> getCalendarEvents(int year, int month) async {
     final data = await _api.getCalendarEvents(year, month);
     return CalendarData(
-      universalEvents: (data['universal_events'] as List<dynamic>? ?? [])
+      universalEvents: (data['items'] as List<dynamic>? ?? [])
           .map((e) => AstroCalendarEvent.fromJson(e as Map<String, dynamic>))
           .toList(),
-      personalEvents: (data['personal_events'] as List<dynamic>? ?? [])
-          .cast<Map<String, dynamic>>(),
+      personalEvents: const [],
     );
   }
 }

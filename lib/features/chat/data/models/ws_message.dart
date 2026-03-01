@@ -7,6 +7,7 @@ class WsClientMessage {
   final String? language;
   final String? id;
   final bool? debug;
+  final String? scenarioId;
 
   WsClientMessage({
     required this.type,
@@ -16,6 +17,7 @@ class WsClientMessage {
     this.language,
     this.id,
     this.debug,
+    this.scenarioId,
   });
 
   Map<String, dynamic> toJson() => {
@@ -26,6 +28,7 @@ class WsClientMessage {
         if (language != null) 'language': language,
         if (id != null) 'id': id,
         if (debug != null) 'debug': debug,
+        if (scenarioId != null) 'scenario_id': scenarioId,
       };
 }
 

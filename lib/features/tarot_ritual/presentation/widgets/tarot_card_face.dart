@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/tarot_card.dart';
 
 class TarotCardFace extends StatelessWidget {
@@ -16,7 +17,6 @@ class TarotCardFace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isReversed = card.isReversed;
 
     return Container(
@@ -30,16 +30,16 @@ class TarotCardFace extends StatelessWidget {
           colors: [
             _arcanaColor.withValues(alpha: 0.8),
             _arcanaColor.withValues(alpha: 0.4),
-            Colors.white,
+            CosmicColors.background,
           ],
         ),
         border: Border.all(
-          color: const Color(0xFFD4AF37),
+          color: CosmicColors.secondary,
           width: 2,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: CosmicColors.secondary.withValues(alpha: 0.2),
             blurRadius: 8,
             spreadRadius: 1,
           ),
@@ -53,9 +53,10 @@ class TarotCardFace extends StatelessWidget {
             // Card number
             Text(
               _romanNumeral,
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: const TextStyle(
                 color: Colors.white70,
                 fontWeight: FontWeight.bold,
+                fontSize: 11,
               ),
             ),
             const SizedBox(height: 4),
@@ -71,7 +72,7 @@ class TarotCardFace extends StatelessWidget {
             Text(
               card.name,
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodySmall?.copyWith(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 11,
@@ -86,7 +87,7 @@ class TarotCardFace extends StatelessWidget {
               Text(
                 card.nameZH,
                 textAlign: TextAlign.center,
-                style: theme.textTheme.labelSmall?.copyWith(
+                style: const TextStyle(
                   color: Colors.white60,
                   fontSize: 10,
                 ),
@@ -100,15 +101,13 @@ class TarotCardFace extends StatelessWidget {
                 Icon(
                   isReversed ? Icons.arrow_downward : Icons.arrow_upward,
                   size: 12,
-                  color: isReversed ? Colors.red.shade300 : Colors.green.shade300,
+                  color: isReversed ? CosmicColors.error : CosmicColors.success,
                 ),
                 const SizedBox(width: 2),
                 Text(
                   isReversed ? 'Reversed' : 'Upright',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: isReversed
-                        ? Colors.red.shade300
-                        : Colors.green.shade300,
+                  style: TextStyle(
+                    color: isReversed ? CosmicColors.error : CosmicColors.success,
                     fontSize: 9,
                   ),
                 ),
@@ -119,7 +118,7 @@ class TarotCardFace extends StatelessWidget {
             // Keywords (show up to 2)
             ...card.activeKeywords.take(2).map((kw) => Text(
                   kw,
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: const TextStyle(
                     color: Colors.white54,
                     fontSize: 8,
                   ),

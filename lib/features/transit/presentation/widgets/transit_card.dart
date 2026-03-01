@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/user_transit_alert.dart';
 import 'severity_badge.dart';
 
@@ -15,16 +16,20 @@ class TransitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
 
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      elevation: 2,
+    return Material(
+      color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        child: Padding(
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
           padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            color: CosmicColors.surfaceElevated,
+            border: Border.all(color: CosmicColors.borderGlow),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -34,16 +39,16 @@ class TransitCard extends StatelessWidget {
                   Icon(
                     _planetIcon(alert.transitEvent.planet),
                     size: 22,
-                    color: theme.colorScheme.primary,
+                    color: CosmicColors.primaryLight,
                   ),
                   if (alert.transitEvent.aspectType != null) ...[
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 6),
                       child: Text(
                         _aspectSymbol(alert.transitEvent.aspectType!),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: CosmicColors.textSecondary,
                         ),
                       ),
                     ),
@@ -51,7 +56,7 @@ class TransitCard extends StatelessWidget {
                   Icon(
                     _planetIcon(alert.natalPlanet),
                     size: 22,
-                    color: theme.colorScheme.secondary,
+                    color: CosmicColors.secondary,
                   ),
                   const Spacer(),
                   SeverityBadge(severity: alert.transitEvent.severity),
@@ -62,7 +67,11 @@ class TransitCard extends StatelessWidget {
               // Transit description
               Text(
                 _buildTitle(),
-                style: theme.textTheme.titleSmall,
+                style: const TextStyle(
+                  color: CosmicColors.textPrimary,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -72,9 +81,10 @@ class TransitCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Orb: ${alert.orb.toStringAsFixed(1)}°',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                    'Orb: ${alert.orb.toStringAsFixed(1)}\u00B0',
+                    style: const TextStyle(
+                      color: CosmicColors.textTertiary,
+                      fontSize: 12,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -83,16 +93,25 @@ class TransitCard extends StatelessWidget {
                         ? Icons.arrow_forward
                         : Icons.arrow_back,
                     size: 14,
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: alert.applying
+                        ? CosmicColors.secondary
+                        : CosmicColors.primaryLight,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     alert.applying
                         ? l10n.transitApplying
                         : l10n.transitSeparating,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                    style: const TextStyle(
+                      color: CosmicColors.textTertiary,
+                      fontSize: 12,
                     ),
+                  ),
+                  const Spacer(),
+                  const Icon(
+                    Icons.chevron_right,
+                    size: 18,
+                    color: CosmicColors.textTertiary,
                   ),
                 ],
               ),
@@ -139,17 +158,17 @@ class TransitCard extends StatelessWidget {
   String _aspectSymbol(String aspectType) {
     switch (aspectType.toLowerCase()) {
       case 'conjunction':
-        return '\u2606'; // star
+        return '\u2606';
       case 'opposition':
-        return '\u260D'; // opposition
+        return '\u260D';
       case 'trine':
-        return '\u25B3'; // triangle
+        return '\u25B3';
       case 'square':
-        return '\u25A1'; // square
+        return '\u25A1';
       case 'sextile':
-        return '\u2731'; // sextile
+        return '\u2731';
       default:
-        return '\u2022'; // bullet
+        return '\u2022';
     }
   }
 }

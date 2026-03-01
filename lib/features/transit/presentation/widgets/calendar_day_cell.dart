@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/astro_calendar_event.dart';
 
 class CalendarDayCell extends StatelessWidget {
@@ -19,19 +20,17 @@ class CalendarDayCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
       child: Container(
         decoration: BoxDecoration(
           color: isToday
-              ? theme.colorScheme.primary.withValues(alpha: 0.12)
+              ? CosmicColors.primary.withValues(alpha: 0.15)
               : null,
           borderRadius: BorderRadius.circular(8),
           border: isToday
-              ? Border.all(color: theme.colorScheme.primary, width: 1.5)
+              ? Border.all(color: CosmicColors.primary, width: 1.5)
               : null,
         ),
         child: Column(
@@ -44,9 +43,9 @@ class CalendarDayCell extends StatelessWidget {
                 fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
                 color: isCurrentMonth
                     ? (isToday
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.onSurface)
-                    : theme.colorScheme.onSurface.withValues(alpha: 0.35),
+                        ? CosmicColors.primaryLight
+                        : CosmicColors.textPrimary)
+                    : CosmicColors.textTertiary,
               ),
             ),
             const SizedBox(height: 2),
@@ -77,16 +76,16 @@ class CalendarDayCell extends StatelessWidget {
     switch (eventType.toLowerCase()) {
       case 'full_moon':
       case 'new_moon':
-        return Colors.blue;
+        return CosmicColors.primaryLight;
       case 'solar_eclipse':
       case 'lunar_eclipse':
-        return Colors.red;
+        return CosmicColors.error;
       case 'retrograde_start':
       case 'retrograde_end':
-        return Colors.purple;
+        return CosmicColors.secondary;
       case 'sign_ingress':
       default:
-        return Colors.orange;
+        return CosmicColors.success;
     }
   }
 }

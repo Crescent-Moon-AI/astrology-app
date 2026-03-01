@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 
 class ChatInput extends StatefulWidget {
   final ValueChanged<String> onSend;
@@ -40,21 +41,23 @@ class _ChatInputState extends State<ChatInput> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
+    final canSend = _hasText && widget.enabled;
+
     return Container(
       padding: EdgeInsets.only(
-        left: 16,
+        left: 12,
         right: 8,
-        top: 8,
-        bottom: MediaQuery.of(context).padding.bottom + 8,
+        top: 10,
+        bottom: MediaQuery.of(context).padding.bottom + 10,
       ),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+      decoration: const BoxDecoration(
+        color: CosmicColors.background,
         border: Border(
-          top: BorderSide(color: theme.colorScheme.outlineVariant),
+          top: BorderSide(color: CosmicColors.borderGlow, width: 0.5),
         ),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Expanded(
             child: TextField(
@@ -64,25 +67,60 @@ class _ChatInputState extends State<ChatInput> {
               minLines: 1,
               textInputAction: TextInputAction.send,
               onSubmitted: (_) => _send(),
+              style: const TextStyle(
+                color: CosmicColors.textPrimary,
+                fontSize: 15,
+              ),
               decoration: InputDecoration(
-                hintText: l10n?.chatInputHint ?? 'Ask the stars...',
+                hintText: l10n?.chatInputHint ?? '在这里写下你的问题...',
+                hintStyle: const TextStyle(
+                  color: CosmicColors.textTertiary,
+                  fontSize: 15,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide.none,
+                  borderSide: const BorderSide(color: CosmicColors.borderGlow),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: const BorderSide(color: CosmicColors.borderGlow),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: const BorderSide(
+                    color: CosmicColors.primary,
+                    width: 1.5,
+                  ),
                 ),
                 filled: true,
-                fillColor: theme.colorScheme.surfaceContainerHighest,
+                fillColor: CosmicColors.surfaceElevated,
                 contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
+                  horizontal: 18,
                   vertical: 10,
                 ),
               ),
             ),
           ),
           const SizedBox(width: 8),
-          IconButton.filled(
-            onPressed: (_hasText && widget.enabled) ? _send : null,
-            icon: const Icon(Icons.send_rounded, size: 20),
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: canSend ? CosmicColors.primaryGradient : null,
+              color: canSend ? null : CosmicColors.surface,
+            ),
+            child: IconButton(
+              onPressed: canSend ? _send : null,
+              icon: Icon(
+                Icons.send_rounded,
+                size: 20,
+                color: canSend
+                    ? CosmicColors.textPrimary
+                    : CosmicColors.textTertiary,
+              ),
+              padding: EdgeInsets.zero,
+            ),
           ),
         ],
       ),

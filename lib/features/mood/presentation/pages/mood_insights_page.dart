@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
+import '../../../../shared/widgets/breathing_loader.dart';
 import '../providers/mood_providers.dart';
 import '../widgets/mood_insight_card.dart';
 import '../widgets/mood_trend_chart.dart';
@@ -11,14 +13,25 @@ class MoodInsightsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
+    final isZh = locale.startsWith('zh');
     final insightsAsync = ref.watch(moodInsightsProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.moodInsightsTitle),
+        title: Text(
+          l10n.moodInsightsTitle,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            color: CosmicColors.textPrimary,
+          ),
+        ),
+        backgroundColor: CosmicColors.background,
+        elevation: 0,
       ),
       body: RefreshIndicator(
+        color: CosmicColors.primary,
+        backgroundColor: CosmicColors.surfaceElevated,
         onRefresh: () async {
           ref.invalidate(moodInsightsProvider);
         },
@@ -29,44 +42,68 @@ class MoodInsightsPage extends ConsumerWidget {
               children: [
                 // Progress indicator if not enough data
                 if (!response.minimumEntriesMet) ...[
-                  _buildProgressCard(context, theme, l10n, response),
+                  _buildProgressCard(context, isZh, l10n, response),
                   const SizedBox(height: 16),
                 ],
 
                 // Trend chart
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Mood Trend',
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: CosmicColors.surfaceElevated,
+                    border: Border.all(color: CosmicColors.borderGlow),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.show_chart,
+                              size: 18, color: CosmicColors.secondary),
+                          const SizedBox(width: 8),
+                          Text(
+                            isZh ? '心情趋势' : 'Mood Trend',
+                            style: const TextStyle(
+                              color: CosmicColors.textPrimary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 12),
-                        const MoodTrendChart(),
-                      ],
-                    ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      const MoodTrendChart(),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
 
                 // Overall stats header
                 if (response.insights.isNotEmpty) ...[
-                  Text(
-                    l10n.moodInsightsTitle,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      const Icon(Icons.auto_awesome,
+                          size: 18, color: CosmicColors.primaryLight),
+                      const SizedBox(width: 8),
+                      Text(
+                        l10n.moodInsightsTitle,
+                        style: const TextStyle(
+                          color: CosmicColors.textPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Overall average: ${response.overallAverage.toStringAsFixed(1)} from ${response.totalEntries} entries',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                    isZh
+                        ? '平均分 ${response.overallAverage.toStringAsFixed(1)} · ${response.totalEntries} 条记录'
+                        : 'Average: ${response.overallAverage.toStringAsFixed(1)} from ${response.totalEntries} entries',
+                    style: const TextStyle(
+                      color: CosmicColors.textTertiary,
+                      fontSize: 13,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -87,16 +124,14 @@ class MoodInsightsPage extends ConsumerWidget {
                     child: Center(
                       child: Column(
                         children: [
-                          Icon(
-                            Icons.insights,
-                            size: 48,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
+                          const Text('\uD83D\uDD2E',
+                              style: TextStyle(fontSize: 48)),
                           const SizedBox(height: 12),
                           Text(
-                            'No correlations found yet',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
+                            isZh ? '暂无相关性数据' : 'No correlations found yet',
+                            style: const TextStyle(
+                              color: CosmicColors.textSecondary,
+                              fontSize: 14,
                             ),
                           ),
                         ],
@@ -106,8 +141,21 @@ class MoodInsightsPage extends ConsumerWidget {
               ],
             );
           },
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => Center(child: Text('Error: $error')),
+          loading: () => const Center(child: BreathingLoader()),
+          error: (error, _) => Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.cloud_off,
+                    size: 48, color: CosmicColors.textTertiary),
+                const SizedBox(height: 12),
+                Text(
+                  'Error: $error',
+                  style: const TextStyle(color: CosmicColors.textSecondary),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -115,7 +163,7 @@ class MoodInsightsPage extends ConsumerWidget {
 
   Widget _buildProgressCard(
     BuildContext context,
-    ThemeData theme,
+    bool isZh,
     AppLocalizations l10n,
     dynamic response,
   ) {
@@ -123,50 +171,78 @@ class MoodInsightsPage extends ConsumerWidget {
     final remaining = progress.entriesRequired - progress.entriesLogged;
     final fraction = progress.percentage / 100.0;
 
-    return Card(
-      color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.lock_outline,
-                  size: 20,
-                  color: theme.colorScheme.primary,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    l10n.moodInsightsProgress(remaining > 0 ? remaining : 0),
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: fraction.clamp(0.0, 1.0) as double,
-                minHeight: 8,
-                backgroundColor: theme.colorScheme.surfaceContainerHighest,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              '${progress.entriesLogged} / ${progress.entriesRequired} days',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          colors: [
+            CosmicColors.primary.withValues(alpha: 0.15),
+            CosmicColors.surfaceElevated,
           ],
         ),
+        border: Border.all(color: CosmicColors.borderGlow),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.lock_outline,
+                size: 18,
+                color: CosmicColors.secondary,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l10n.moodInsightsProgress(remaining > 0 ? remaining : 0),
+                  style: const TextStyle(
+                    color: CosmicColors.textPrimary,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          // Progress bar
+          Stack(
+            children: [
+              Container(
+                height: 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: CosmicColors.surface,
+                ),
+              ),
+              FractionallySizedBox(
+                widthFactor: (fraction as double).clamp(0.0, 1.0),
+                child: Container(
+                  height: 8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    gradient: CosmicColors.primaryGradient,
+                    boxShadow: [
+                      BoxShadow(
+                        color: CosmicColors.primary.withValues(alpha: 0.5),
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            '${progress.entriesLogged} / ${progress.entriesRequired} ${isZh ? "天" : "days"}',
+            style: const TextStyle(
+              color: CosmicColors.textTertiary,
+              fontSize: 12,
+            ),
+          ),
+        ],
       ),
     );
   }

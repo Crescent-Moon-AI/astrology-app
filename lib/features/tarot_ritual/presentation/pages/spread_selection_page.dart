@@ -3,15 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
+import '../../../../shared/theme/cosmic_colors.dart';
+import '../../../../shared/widgets/starfield_background.dart';
 import '../../domain/models/spread_type.dart';
 import '../providers/tarot_ritual_providers.dart';
 
 class SpreadSelectionPage extends ConsumerStatefulWidget {
-  final String conversationId;
+  final String? conversationId;
 
   const SpreadSelectionPage({
     super.key,
-    required this.conversationId,
+    this.conversationId,
   });
 
   @override
@@ -29,9 +31,18 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
     super.dispose();
   }
 
+  static const _spreadEmojis = {
+    SpreadType.single: '\uD83C\uDCCF',
+    SpreadType.threeCard: '\uD83C\uDCA0',
+    SpreadType.loveSpread: '\u2764\uFE0F',
+    SpreadType.celticCross: '\u2726',
+  };
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).languageCode;
+    final isZh = locale.startsWith('zh');
     final ritualState = ref.watch(tarotRitualProvider);
 
     ref.listen<TarotRitualState>(tarotRitualProvider, (prev, next) {
@@ -50,101 +61,183 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.tarotSelectSpread),
+        title: Text(
+          l10n.tarotSelectSpread,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            color: CosmicColors.textPrimary,
+          ),
+        ),
+        backgroundColor: CosmicColors.background.withValues(alpha: 0.9),
+        elevation: 0,
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  // Question input
-                  TextField(
-                    controller: _questionController,
-                    decoration: InputDecoration(
-                      labelText: l10n.tarotEnterQuestion,
-                      border: const OutlineInputBorder(),
-                      prefixIcon: const Icon(Icons.help_outline),
+      body: StarfieldBackground(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.all(16),
+                  children: [
+                    // Header
+                    Center(
+                      child: Text(
+                        isZh ? '让问题在心中浮现' : 'Let the question arise in your mind',
+                        style: const TextStyle(
+                          color: CosmicColors.textSecondary,
+                          fontSize: 15,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                     ),
-                    maxLines: 2,
-                    textInputAction: TextInputAction.done,
-                  ),
-                  const SizedBox(height: 24),
+                    const SizedBox(height: 16),
 
-                  // Spread type grid
-                  GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.85,
-                    children: [
-                      _SpreadTypeCard(
-                        spread: SpreadType.single,
-                        title: l10n.tarotSpreadSingle,
-                        description: l10n.tarotSpreadSingleDesc,
-                        icon: Icons.style,
-                        isSelected: _selectedSpread == SpreadType.single,
-                        onTap: () =>
-                            setState(() => _selectedSpread = SpreadType.single),
+                    // Question input
+                    TextField(
+                      controller: _questionController,
+                      style: const TextStyle(
+                        color: CosmicColors.textPrimary,
+                        fontSize: 15,
                       ),
-                      _SpreadTypeCard(
-                        spread: SpreadType.threeCard,
-                        title: l10n.tarotSpreadThreeCard,
-                        description: l10n.tarotSpreadThreeCardDesc,
-                        icon: Icons.view_column,
-                        isSelected: _selectedSpread == SpreadType.threeCard,
-                        onTap: () => setState(
-                            () => _selectedSpread = SpreadType.threeCard),
+                      decoration: InputDecoration(
+                        labelText: l10n.tarotEnterQuestion,
+                        labelStyle: const TextStyle(
+                          color: CosmicColors.textSecondary,
+                        ),
+                        prefixIcon: const Icon(Icons.help_outline,
+                            color: CosmicColors.primaryLight, size: 20),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide:
+                              const BorderSide(color: CosmicColors.borderGlow),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide:
+                              const BorderSide(color: CosmicColors.borderGlow),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: const BorderSide(
+                              color: CosmicColors.primary, width: 1.5),
+                        ),
+                        filled: true,
+                        fillColor: CosmicColors.surfaceElevated,
                       ),
-                      _SpreadTypeCard(
-                        spread: SpreadType.loveSpread,
-                        title: l10n.tarotSpreadLove,
-                        description: l10n.tarotSpreadLoveDesc,
-                        icon: Icons.favorite,
-                        isSelected: _selectedSpread == SpreadType.loveSpread,
-                        onTap: () => setState(
-                            () => _selectedSpread = SpreadType.loveSpread),
-                      ),
-                      _SpreadTypeCard(
-                        spread: SpreadType.celticCross,
-                        title: l10n.tarotSpreadCelticCross,
-                        description: l10n.tarotSpreadCelticCrossDesc,
-                        icon: Icons.grid_view,
-                        isSelected: _selectedSpread == SpreadType.celticCross,
-                        onTap: () => setState(
-                            () => _selectedSpread = SpreadType.celticCross),
+                      maxLines: 2,
+                      textInputAction: TextInputAction.done,
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Spread type grid
+                    GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 0.85,
+                      children: [
+                        _SpreadTypeCard(
+                          emoji: _spreadEmojis[SpreadType.single]!,
+                          title: l10n.tarotSpreadSingle,
+                          description: l10n.tarotSpreadSingleDesc,
+                          cardCount: SpreadType.single.cardCount,
+                          isSelected: _selectedSpread == SpreadType.single,
+                          onTap: () =>
+                              setState(() => _selectedSpread = SpreadType.single),
+                        ),
+                        _SpreadTypeCard(
+                          emoji: _spreadEmojis[SpreadType.threeCard]!,
+                          title: l10n.tarotSpreadThreeCard,
+                          description: l10n.tarotSpreadThreeCardDesc,
+                          cardCount: SpreadType.threeCard.cardCount,
+                          isSelected: _selectedSpread == SpreadType.threeCard,
+                          onTap: () => setState(
+                              () => _selectedSpread = SpreadType.threeCard),
+                        ),
+                        _SpreadTypeCard(
+                          emoji: _spreadEmojis[SpreadType.loveSpread]!,
+                          title: l10n.tarotSpreadLove,
+                          description: l10n.tarotSpreadLoveDesc,
+                          cardCount: SpreadType.loveSpread.cardCount,
+                          isSelected: _selectedSpread == SpreadType.loveSpread,
+                          onTap: () => setState(
+                              () => _selectedSpread = SpreadType.loveSpread),
+                        ),
+                        _SpreadTypeCard(
+                          emoji: _spreadEmojis[SpreadType.celticCross]!,
+                          title: l10n.tarotSpreadCelticCross,
+                          description: l10n.tarotSpreadCelticCrossDesc,
+                          cardCount: SpreadType.celticCross.cardCount,
+                          isSelected: _selectedSpread == SpreadType.celticCross,
+                          onTap: () => setState(
+                              () => _selectedSpread = SpreadType.celticCross),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              // Start button
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: CosmicColors.primaryGradient,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: CosmicColors.primary.withValues(alpha: 0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-
-            // Start button
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: FilledButton(
-                  onPressed: ritualState.isLoading ? null : _startRitual,
-                  child: ritualState.isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : Text(l10n.tarotRitualTitle),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: ritualState.isLoading ? null : _startRitual,
+                      borderRadius: BorderRadius.circular(24),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Center(
+                          child: ritualState.isLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: CosmicColors.textPrimary,
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.style,
+                                        color: CosmicColors.textPrimary,
+                                        size: 20),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      l10n.tarotRitualTitle,
+                                      style: const TextStyle(
+                                        color: CosmicColors.textPrimary,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -152,7 +245,7 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
 
   void _startRitual() {
     ref.read(tarotRitualProvider.notifier).createSession(
-          conversationId: widget.conversationId,
+          conversationId: widget.conversationId ?? '',
           spreadType: _selectedSpread.value,
           question: _questionController.text.trim(),
         );
@@ -160,26 +253,25 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
 }
 
 class _SpreadTypeCard extends StatelessWidget {
-  final SpreadType spread;
+  final String emoji;
   final String title;
   final String description;
-  final IconData icon;
+  final int cardCount;
   final bool isSelected;
   final VoidCallback onTap;
 
   const _SpreadTypeCard({
-    required this.spread,
+    required this.emoji,
     required this.title,
     required this.description,
-    required this.icon,
+    required this.cardCount,
     required this.isSelected,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
+    final l10n = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -187,23 +279,24 @@ class _SpreadTypeCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           gradient: isSelected
-              ? const LinearGradient(
+              ? LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Color(0xFF4A1A7A), Color(0xFF2D1B69)],
+                  colors: [
+                    CosmicColors.primary.withValues(alpha: 0.35),
+                    CosmicColors.surfaceElevated,
+                  ],
                 )
               : null,
-          color: isSelected ? null : theme.colorScheme.surfaceContainerHighest,
+          color: isSelected ? null : CosmicColors.surfaceElevated,
           border: Border.all(
-            color: isSelected
-                ? const Color(0xFFD4AF37)
-                : theme.colorScheme.outlineVariant,
+            color: isSelected ? CosmicColors.primary : CosmicColors.borderGlow,
             width: isSelected ? 2 : 1,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: const Color(0xFF4A1A7A).withValues(alpha: 0.3),
+                    color: CosmicColors.primary.withValues(alpha: 0.2),
                     blurRadius: 12,
                     spreadRadius: 2,
                   )
@@ -211,47 +304,45 @@ class _SpreadTypeCard extends StatelessWidget {
               : null,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(14),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 36,
-                color: isSelected
-                    ? const Color(0xFFD4AF37)
-                    : theme.colorScheme.onSurfaceVariant,
-              ),
-              const SizedBox(height: 12),
+              Text(emoji, style: const TextStyle(fontSize: 32)),
+              const SizedBox(height: 10),
               Text(
                 title,
-                style: theme.textTheme.titleSmall?.copyWith(
+                style: TextStyle(
                   color: isSelected
-                      ? Colors.white
-                      : theme.colorScheme.onSurface,
+                      ? CosmicColors.textPrimary
+                      : CosmicColors.textSecondary,
                   fontWeight: FontWeight.bold,
+                  fontSize: 14,
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 4),
               Text(
                 description,
-                style: theme.textTheme.bodySmall?.copyWith(
+                style: TextStyle(
                   color: isSelected
-                      ? Colors.white70
-                      : theme.colorScheme.onSurfaceVariant,
+                      ? CosmicColors.textSecondary
+                      : CosmicColors.textTertiary,
+                  fontSize: 12,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Text(
-                '${spread.cardCount} cards',
-                style: theme.textTheme.labelSmall?.copyWith(
+                l10n.tarotCardCount(cardCount),
+                style: TextStyle(
                   color: isSelected
-                      ? const Color(0xFFD4AF37)
-                      : theme.colorScheme.onSurfaceVariant,
+                      ? CosmicColors.secondary
+                      : CosmicColors.textTertiary,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],

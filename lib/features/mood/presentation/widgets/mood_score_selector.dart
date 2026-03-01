@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import '../../../../shared/theme/cosmic_colors.dart';
 
 class MoodScoreSelector extends StatelessWidget {
   final int? selectedScore;
@@ -39,7 +40,6 @@ class MoodScoreSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -57,9 +57,15 @@ class MoodScoreSelector extends StatelessWidget {
                 ? BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: theme.colorScheme.primary,
+                      color: CosmicColors.primary,
                       width: 2.5,
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: CosmicColors.primary.withValues(alpha: 0.3),
+                        blurRadius: 8,
+                      ),
+                    ],
                   )
                 : null,
             child: Column(
@@ -75,10 +81,11 @@ class MoodScoreSelector extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   _scoreLabel(l10n, score),
-                  style: theme.textTheme.bodySmall?.copyWith(
+                  style: TextStyle(
                     color: isSelected
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.onSurfaceVariant,
+                        ? CosmicColors.primaryLight
+                        : CosmicColors.textTertiary,
+                    fontSize: 12,
                     fontWeight:
                         isSelected ? FontWeight.w600 : FontWeight.normal,
                   ),

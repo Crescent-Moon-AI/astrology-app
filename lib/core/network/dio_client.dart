@@ -25,4 +25,31 @@ class DioClient {
   void clearAuthToken() {
     _dio.options.headers.remove('Authorization');
   }
+
+  /// Install an interceptor that calls [onUnauthorized] on 401 responses.
+  /// Returns true from [onUnauthorized] to retry the request with a new token.
+  void addAuthInterceptor({
+    required Future<bool> Function() onUnauthorized,
+  }) {
+    _dio.interceptors.add(InterceptorsWrapper(
+      onError: (error, handler) async {
+        if (error.response?.statusCode == 401) {
+          final refreshed = await onUnauthorized();
+          if (refreshed) {
+            // Retry the original request with updated token
+            final opts = error.requestOptions;
+            opts.headers['Authorization'] =
+                _dio.options.headers['Authorization'];
+            try {
+              final response = await _dio.fetch(opts);
+              return handler.resolve(response);
+            } catch (e) {
+              return handler.next(error);
+            }
+          }
+        }
+        return handler.next(error);
+      },
+    ));
+  }
 }

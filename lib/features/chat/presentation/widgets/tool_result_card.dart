@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/message.dart';
 
 class ToolResultCard extends StatefulWidget {
@@ -44,83 +45,95 @@ class _ToolResultCardState extends State<ToolResultCard> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
 
-    return Card(
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Summary row
-            Row(
-              children: [
-                Text(_statusIcon, style: const TextStyle(fontSize: 16)),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    _toolDisplayName,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                if (widget.block.durationMs != null)
-                  Text(
-                    '${(widget.block.durationMs! / 1000).toStringAsFixed(1)}s',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.outline,
-                    ),
-                  ),
-              ],
-            ),
-            // Error message
-            if (widget.block.error != null) ...[
-              const SizedBox(height: 8),
-              Text(
-                widget.block.error!,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
-              ),
-            ],
-            // Detail toggle
-            if (widget.block.status == BlockStatus.success &&
-                _parsedPayload != null) ...[
-              const SizedBox(height: 8),
-              AnimatedCrossFade(
-                firstChild: const SizedBox.shrink(),
-                secondChild: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    const JsonEncoder.withIndent('  ').convert(_parsedPayload),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontFamily: 'monospace',
-                    ),
-                  ),
-                ),
-                crossFadeState: _showDetails
-                    ? CrossFadeState.showSecond
-                    : CrossFadeState.showFirst,
-                duration: const Duration(milliseconds: 300),
-              ),
-              TextButton(
-                onPressed: () => setState(() => _showDetails = !_showDetails),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: CosmicColors.surfaceElevated,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: CosmicColors.borderGlow),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Summary row
+          Row(
+            children: [
+              Text(_statusIcon, style: const TextStyle(fontSize: 16)),
+              const SizedBox(width: 8),
+              Expanded(
                 child: Text(
-                  _showDetails
-                      ? (l10n?.cardHideDetails ?? 'Hide Details')
-                      : (l10n?.cardShowDetails ?? 'Show Details'),
+                  _toolDisplayName,
+                  style: const TextStyle(
+                    color: CosmicColors.textPrimary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
+              if (widget.block.durationMs != null)
+                Text(
+                  '${(widget.block.durationMs! / 1000).toStringAsFixed(1)}s',
+                  style: const TextStyle(
+                    color: CosmicColors.textTertiary,
+                    fontSize: 12,
+                  ),
+                ),
             ],
+          ),
+          // Error message
+          if (widget.block.error != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              widget.block.error!,
+              style: const TextStyle(
+                color: CosmicColors.error,
+                fontSize: 12,
+              ),
+            ),
           ],
-        ),
+          // Detail toggle
+          if (widget.block.status == BlockStatus.success &&
+              _parsedPayload != null) ...[
+            const SizedBox(height: 8),
+            AnimatedCrossFade(
+              firstChild: const SizedBox.shrink(),
+              secondChild: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: CosmicColors.background,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: CosmicColors.primary.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Text(
+                  const JsonEncoder.withIndent('  ').convert(_parsedPayload),
+                  style: const TextStyle(
+                    color: CosmicColors.textSecondary,
+                    fontSize: 12,
+                    fontFamily: 'monospace',
+                  ),
+                ),
+              ),
+              crossFadeState: _showDetails
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              duration: const Duration(milliseconds: 300),
+            ),
+            TextButton(
+              onPressed: () => setState(() => _showDetails = !_showDetails),
+              child: Text(
+                _showDetails
+                    ? (l10n?.cardHideDetails ?? 'Hide Details')
+                    : (l10n?.cardShowDetails ?? 'Show Details'),
+                style: const TextStyle(color: CosmicColors.primaryLight),
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }

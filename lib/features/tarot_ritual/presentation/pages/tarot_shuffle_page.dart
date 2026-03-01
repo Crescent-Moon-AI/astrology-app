@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../providers/tarot_ritual_providers.dart';
 import '../widgets/shuffle_animation.dart';
 
@@ -45,7 +46,8 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
+    final isZh =
+        Localizations.localeOf(context).languageCode.startsWith('zh');
 
     return GestureDetector(
       onTap: () {
@@ -58,9 +60,9 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF0A0520),
+              CosmicColors.background,
               Color(0xFF1A0A3E),
-              Color(0xFF0A0520),
+              CosmicColors.background,
             ],
           ),
         ),
@@ -74,8 +76,9 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage>
                 opacity: _fadeController,
                 child: Text(
                   l10n.tarotShuffling,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    color: const Color(0xFFD4AF37),
+                  style: const TextStyle(
+                    color: CosmicColors.secondary,
+                    fontSize: 22,
                     fontWeight: FontWeight.w300,
                     letterSpacing: 2,
                   ),
@@ -83,9 +86,10 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage>
               ),
               const SizedBox(height: 16),
               Text(
-                'Tap to continue',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: Colors.white38,
+                isZh ? '轻触继续' : 'Tap to continue',
+                style: const TextStyle(
+                  color: CosmicColors.textTertiary,
+                  fontSize: 12,
                 ),
               ),
             ],

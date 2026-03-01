@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/tarot_card.dart';
 import '../providers/tarot_ritual_providers.dart';
 import '../widgets/tarot_card_3d.dart';
@@ -13,7 +14,6 @@ class CardRevealPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
     final ritualState = ref.watch(tarotRitualProvider);
     final notifier = ref.read(tarotRitualProvider.notifier);
 
@@ -27,9 +27,9 @@ class CardRevealPage extends ConsumerWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color(0xFF0A0520),
+            CosmicColors.background,
             Color(0xFF1A0A3E),
-            Color(0xFF0A0520),
+            CosmicColors.background,
           ],
         ),
       ),
@@ -41,8 +41,9 @@ class CardRevealPage extends ConsumerWidget {
               padding: const EdgeInsets.all(16),
               child: Text(
                 l10n.tarotRevealing,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: const Color(0xFFD4AF37),
+                style: const TextStyle(
+                  color: CosmicColors.secondary,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -63,10 +64,10 @@ class CardRevealPage extends ConsumerWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(2),
                       color: isRevealed
-                          ? const Color(0xFFD4AF37)
+                          ? CosmicColors.secondary
                           : isCurrent
-                              ? const Color(0xFFD4AF37).withValues(alpha: 0.5)
-                              : Colors.white12,
+                              ? CosmicColors.secondary.withValues(alpha: 0.5)
+                              : CosmicColors.surfaceElevated,
                     ),
                   );
                 }),
@@ -104,24 +105,47 @@ class CardRevealPage extends ConsumerWidget {
                   ? SizedBox(
                       width: double.infinity,
                       height: 52,
-                      child: FilledButton(
-                        onPressed: ritualState.isLoading
-                            ? null
-                            : () => notifier.startReading(),
-                        style: FilledButton.styleFrom(
-                          backgroundColor: const Color(0xFFD4AF37),
-                          foregroundColor: Colors.white,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: CosmicColors.primaryGradient,
+                          borderRadius: BorderRadius.circular(26),
+                          boxShadow: [
+                            BoxShadow(
+                              color:
+                                  CosmicColors.primary.withValues(alpha: 0.3),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
-                        child: ritualState.isLoading
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Text(l10n.tarotBeginReading),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: ritualState.isLoading
+                                ? null
+                                : () => notifier.startReading(),
+                            borderRadius: BorderRadius.circular(26),
+                            child: Center(
+                              child: ritualState.isLoading
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : Text(
+                                      l10n.tarotBeginReading,
+                                      style: const TextStyle(
+                                        color: CosmicColors.textPrimary,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
                       ),
                     )
                   : SizedBox(
@@ -130,8 +154,11 @@ class CardRevealPage extends ConsumerWidget {
                       child: OutlinedButton(
                         onPressed: () => notifier.revealNextCard(),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: const Color(0xFFD4AF37),
-                          side: const BorderSide(color: Color(0xFFD4AF37)),
+                          foregroundColor: CosmicColors.secondary,
+                          side: const BorderSide(color: CosmicColors.secondary),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(26),
+                          ),
                         ),
                         child: Text(l10n.tarotRevealNext),
                       ),
@@ -154,7 +181,6 @@ class _CardRevealItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final card = resolvedCard.card;
 
     return Column(
@@ -179,16 +205,18 @@ class _CardRevealItem extends StatelessWidget {
         // Card info
         Text(
           card.name,
-          style: theme.textTheme.titleMedium?.copyWith(
-            color: Colors.white,
+          style: const TextStyle(
+            color: CosmicColors.textPrimary,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
         ),
         if (card.nameZH.isNotEmpty)
           Text(
             card.nameZH,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: Colors.white60,
+            style: const TextStyle(
+              color: CosmicColors.textTertiary,
+              fontSize: 14,
             ),
           ),
         const SizedBox(height: 8),
@@ -201,16 +229,17 @@ class _CardRevealItem extends StatelessWidget {
               card.isUpright ? Icons.arrow_upward : Icons.arrow_downward,
               size: 16,
               color: card.isUpright
-                  ? Colors.green.shade300
-                  : Colors.red.shade300,
+                  ? CosmicColors.success
+                  : CosmicColors.error,
             ),
             const SizedBox(width: 4),
             Text(
               card.isUpright ? 'Upright' : 'Reversed',
-              style: theme.textTheme.bodySmall?.copyWith(
+              style: TextStyle(
                 color: card.isUpright
-                    ? Colors.green.shade300
-                    : Colors.red.shade300,
+                    ? CosmicColors.success
+                    : CosmicColors.error,
+                fontSize: 12,
               ),
             ),
           ],
@@ -222,17 +251,24 @@ class _CardRevealItem extends StatelessWidget {
           spacing: 8,
           children: card.activeKeywords
               .take(3)
-              .map((kw) => Chip(
-                    label: Text(
-                      kw,
-                      style: const TextStyle(fontSize: 11),
+              .map((kw) => Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: CosmicColors.primary.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color:
+                            CosmicColors.primary.withValues(alpha: 0.3),
+                      ),
                     ),
-                    backgroundColor:
-                        const Color(0xFF4A1A7A).withValues(alpha: 0.5),
-                    labelStyle: const TextStyle(color: Colors.white70),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity.compact,
-                    side: BorderSide.none,
+                    child: Text(
+                      kw,
+                      style: const TextStyle(
+                        color: CosmicColors.primaryLight,
+                        fontSize: 11,
+                      ),
+                    ),
                   ))
               .toList(),
         ),
@@ -252,7 +288,6 @@ class _AllRevealedMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
 
     return Column(
@@ -261,21 +296,23 @@ class _AllRevealedMessage extends StatelessWidget {
         const Icon(
           Icons.auto_awesome,
           size: 48,
-          color: Color(0xFFD4AF37),
+          color: CosmicColors.secondary,
         ),
         const SizedBox(height: 16),
         Text(
           l10n.tarotReadingComplete,
-          style: theme.textTheme.titleLarge?.copyWith(
-            color: const Color(0xFFD4AF37),
+          style: const TextStyle(
+            color: CosmicColors.secondary,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
         Text(
           '${cards.length} cards revealed',
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: Colors.white60,
+          style: const TextStyle(
+            color: CosmicColors.textTertiary,
+            fontSize: 14,
           ),
         ),
       ],

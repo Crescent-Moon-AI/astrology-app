@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
+import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/spread_type.dart';
 import '../providers/tarot_ritual_providers.dart';
 import '../widgets/spread_layout_widget.dart';
@@ -12,12 +13,13 @@ class SpreadOverviewPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
     final ritualState = ref.watch(tarotRitualProvider);
     final session = ritualState.session;
 
     if (session == null) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+        child: CircularProgressIndicator(color: CosmicColors.secondary),
+      );
     }
 
     final spreadType = SpreadType.fromValue(session.spreadType);
@@ -29,7 +31,7 @@ class SpreadOverviewPage extends ConsumerWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color(0xFF0A0520),
+            CosmicColors.background,
             Color(0xFF1A0A3E),
           ],
         ),
@@ -44,8 +46,9 @@ class SpreadOverviewPage extends ConsumerWidget {
                 children: [
                   Text(
                     l10n.tarotReadingComplete,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: const Color(0xFFD4AF37),
+                    style: const TextStyle(
+                      color: CosmicColors.secondary,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -53,8 +56,9 @@ class SpreadOverviewPage extends ConsumerWidget {
                     const SizedBox(height: 8),
                     Text(
                       '"${session.question}"',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.white60,
+                      style: const TextStyle(
+                        color: CosmicColors.textTertiary,
+                        fontSize: 14,
                         fontStyle: FontStyle.italic,
                       ),
                       textAlign: TextAlign.center,
@@ -85,28 +89,50 @@ class SpreadOverviewPage extends ConsumerWidget {
               child: SizedBox(
                 width: double.infinity,
                 height: 52,
-                child: FilledButton(
-                  onPressed: ritualState.isLoading
-                      ? null
-                      : () {
-                          ref
-                              .read(tarotRitualProvider.notifier)
-                              .startReading();
-                        },
-                  style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFFD4AF37),
-                    foregroundColor: Colors.white,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: CosmicColors.primaryGradient,
+                    borderRadius: BorderRadius.circular(26),
+                    boxShadow: [
+                      BoxShadow(
+                        color: CosmicColors.primary.withValues(alpha: 0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
-                  child: ritualState.isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : Text(l10n.tarotBeginReading),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: ritualState.isLoading
+                          ? null
+                          : () {
+                              ref
+                                  .read(tarotRitualProvider.notifier)
+                                  .startReading();
+                            },
+                      borderRadius: BorderRadius.circular(26),
+                      child: Center(
+                        child: ritualState.isLoading
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Text(
+                                l10n.tarotBeginReading,
+                                style: const TextStyle(
+                                  color: CosmicColors.textPrimary,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),

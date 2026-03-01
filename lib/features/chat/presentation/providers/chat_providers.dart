@@ -95,8 +95,10 @@ class ChatMessagesNotifier extends StateNotifier<List<ChatMessage>> {
       final blockIdx = msg.blocks.indexWhere((b) => b.id == blockId);
       if (blockIdx >= 0) {
         final blocks = List<MessageBlock>.from(msg.blocks);
-        blocks[blockIdx].contentText =
-            (blocks[blockIdx].contentText ?? '') + delta;
+        blocks[blockIdx] = blocks[blockIdx].copyWith(
+          contentText: () =>
+              (blocks[blockIdx].contentText ?? '') + delta,
+        );
         return ChatMessage(
           id: msg.id,
           role: msg.role,
@@ -118,11 +120,13 @@ class ChatMessagesNotifier extends StateNotifier<List<ChatMessage>> {
       final blockIdx = msg.blocks.indexWhere((b) => b.id == blockId);
       if (blockIdx >= 0) {
         final blocks = List<MessageBlock>.from(msg.blocks);
-        blocks[blockIdx].contentText = content;
-        blocks[blockIdx].status = BlockStatus.success;
-        if (blockMetadata != null) {
-          blocks[blockIdx].metadata = BlockMetadata.fromJson(blockMetadata);
-        }
+        blocks[blockIdx] = blocks[blockIdx].copyWith(
+          contentText: () => content,
+          status: () => BlockStatus.success,
+          metadata: blockMetadata != null
+              ? () => BlockMetadata.fromJson(blockMetadata)
+              : null,
+        );
         return ChatMessage(
           id: msg.id,
           role: msg.role,
