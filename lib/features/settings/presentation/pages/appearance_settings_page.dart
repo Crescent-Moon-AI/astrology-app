@@ -57,8 +57,9 @@ class AppearanceSettingsPage extends ConsumerWidget {
                   iconColor: CosmicColors.primary,
                   label: l10n?.cosmicTheme ?? (isZh ? '宇宙主题' : 'Cosmic'),
                   isSelected: currentMode == AppThemeMode.cosmic,
-                  onTap: () => ref.read(themeModeProvider.notifier).state =
-                      AppThemeMode.cosmic,
+                  onTap: () => ref
+                      .read(themeModeProvider.notifier)
+                      .set(AppThemeMode.cosmic),
                 ),
                 const Divider(
                   height: 1,
@@ -70,8 +71,9 @@ class AppearanceSettingsPage extends ConsumerWidget {
                   iconColor: CosmicColors.secondary,
                   label: l10n?.classicTheme ?? (isZh ? '经典主题' : 'Classic'),
                   isSelected: currentMode == AppThemeMode.classic,
-                  onTap: () => ref.read(themeModeProvider.notifier).state =
-                      AppThemeMode.classic,
+                  onTap: () => ref
+                      .read(themeModeProvider.notifier)
+                      .set(AppThemeMode.classic),
                 ),
                 const Divider(
                   height: 1,
@@ -83,8 +85,9 @@ class AppearanceSettingsPage extends ConsumerWidget {
                   iconColor: CosmicColors.textSecondary,
                   label: l10n?.systemTheme ?? (isZh ? '跟随系统' : 'System'),
                   isSelected: currentMode == AppThemeMode.system,
-                  onTap: () => ref.read(themeModeProvider.notifier).state =
-                      AppThemeMode.system,
+                  onTap: () => ref
+                      .read(themeModeProvider.notifier)
+                      .set(AppThemeMode.system),
                 ),
               ],
             ),
@@ -191,7 +194,7 @@ class AppearanceSettingsPage extends ConsumerWidget {
               value: reducedMotion,
               activeColor: CosmicColors.primary,
               onChanged: (value) =>
-                  ref.read(reducedMotionProvider.notifier).state = value,
+                  ref.read(reducedMotionProvider.notifier).set(value),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

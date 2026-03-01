@@ -25,7 +25,16 @@ final scenarioCategoriesProvider =
 });
 
 // Selected category filter
-final selectedCategoryProvider = StateProvider<String?>((ref) => null);
+class SelectedCategoryNotifier extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  void set(String? value) => state = value;
+}
+
+final selectedCategoryProvider =
+    NotifierProvider<SelectedCategoryNotifier, String?>(
+        SelectedCategoryNotifier.new);
 
 // Scenario list (filtered by category)
 final scenarioListProvider = FutureProvider<List<Scenario>>((ref) async {

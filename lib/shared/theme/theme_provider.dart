@@ -5,8 +5,15 @@ import 'cosmic_theme.dart';
 
 enum AppThemeMode { cosmic, classic, system }
 
+class ThemeModeNotifier extends Notifier<AppThemeMode> {
+  @override
+  AppThemeMode build() => AppThemeMode.cosmic;
+
+  void set(AppThemeMode mode) => state = mode;
+}
+
 final themeModeProvider =
-    StateProvider<AppThemeMode>((ref) => AppThemeMode.cosmic);
+    NotifierProvider<ThemeModeNotifier, AppThemeMode>(ThemeModeNotifier.new);
 
 final themeDataProvider = Provider<ThemeData>((ref) {
   final mode = ref.watch(themeModeProvider);
@@ -22,4 +29,12 @@ final themeDataProvider = Provider<ThemeData>((ref) {
   }
 });
 
-final reducedMotionProvider = StateProvider<bool>((ref) => false);
+class ReducedMotionNotifier extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  void set(bool value) => state = value;
+}
+
+final reducedMotionProvider =
+    NotifierProvider<ReducedMotionNotifier, bool>(ReducedMotionNotifier.new);

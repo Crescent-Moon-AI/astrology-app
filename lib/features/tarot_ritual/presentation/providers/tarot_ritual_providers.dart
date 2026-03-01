@@ -92,10 +92,14 @@ class TarotRitualState {
 }
 
 // Ritual state notifier
-class TarotRitualNotifier extends StateNotifier<TarotRitualState> {
-  final TarotSessionApi _api;
+class TarotRitualNotifier extends Notifier<TarotRitualState> {
+  late final TarotSessionApi _api;
 
-  TarotRitualNotifier(this._api) : super(const TarotRitualState());
+  @override
+  TarotRitualState build() {
+    _api = ref.watch(tarotSessionApiProvider);
+    return const TarotRitualState();
+  }
 
   Future<void> createSession({
     required String conversationId,
@@ -237,9 +241,5 @@ class TarotRitualNotifier extends StateNotifier<TarotRitualState> {
 }
 
 // Ritual state notifier provider
-final tarotRitualProvider =
-    StateNotifierProvider.autoDispose<TarotRitualNotifier, TarotRitualState>(
-        (ref) {
-  final api = ref.watch(tarotSessionApiProvider);
-  return TarotRitualNotifier(api);
-});
+final tarotRitualProvider = NotifierProvider.autoDispose<TarotRitualNotifier,
+    TarotRitualState>(TarotRitualNotifier.new);
