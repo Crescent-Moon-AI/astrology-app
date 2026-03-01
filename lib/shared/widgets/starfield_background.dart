@@ -34,9 +34,9 @@ class _StarfieldBackgroundState extends ConsumerState<StarfieldBackground>
     )..repeat();
 
     final random = Random(42);
-    _stars = List.generate(300, (i) {
+    _stars = List.generate(200, (i) {
       // Layer 0: small / slow, Layer 1: medium, Layer 2: large / fast
-      final layer = i ~/ 100;
+      final layer = i < 80 ? 0 : (i < 150 ? 1 : 2);
       return _Star(
         x: random.nextDouble(),
         y: random.nextDouble(),
@@ -66,9 +66,7 @@ class _StarfieldBackgroundState extends ConsumerState<StarfieldBackground>
     return Stack(
       children: [
         // Background color
-        Positioned.fill(
-          child: ColoredBox(color: CosmicColors.background),
-        ),
+        Positioned.fill(child: ColoredBox(color: CosmicColors.background)),
         // Starfield layer
         Positioned.fill(
           child: RepaintBoundary(

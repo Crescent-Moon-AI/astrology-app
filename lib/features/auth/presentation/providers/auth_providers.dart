@@ -23,11 +23,7 @@ class AuthState {
   final User? user;
   final String? error;
 
-  const AuthState({
-    this.status = AuthStatus.unknown,
-    this.user,
-    this.error,
-  });
+  const AuthState({this.status = AuthStatus.unknown, this.user, this.error});
 
   AuthState copyWith({AuthStatus? status, User? user, String? error}) {
     return AuthState(
@@ -71,10 +67,7 @@ class AuthNotifier extends Notifier<AuthState> {
       return true;
     } on DioException catch (e) {
       final msg = _extractError(e);
-      state = state.copyWith(
-        status: AuthStatus.unauthenticated,
-        error: msg,
-      );
+      state = state.copyWith(status: AuthStatus.unauthenticated, error: msg);
       return false;
     }
   }
@@ -96,10 +89,7 @@ class AuthNotifier extends Notifier<AuthState> {
       return true;
     } on DioException catch (e) {
       final msg = _extractError(e);
-      state = state.copyWith(
-        status: AuthStatus.unauthenticated,
-        error: msg,
-      );
+      state = state.copyWith(status: AuthStatus.unauthenticated, error: msg);
       return false;
     }
   }
@@ -135,10 +125,7 @@ class AuthNotifier extends Notifier<AuthState> {
     await _storage.setAccessToken(response.accessToken);
     await _storage.setRefreshToken(response.refreshToken);
     _dioClient.setAuthToken(response.accessToken);
-    state = AuthState(
-      status: AuthStatus.authenticated,
-      user: response.user,
-    );
+    state = AuthState(status: AuthStatus.authenticated, user: response.user);
   }
 
   String _extractError(DioException e) {

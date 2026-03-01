@@ -5,10 +5,7 @@ import '../../domain/models/friend_profile.dart';
 class RelationshipLabelBadge extends StatelessWidget {
   final String label;
 
-  const RelationshipLabelBadge({
-    super.key,
-    required this.label,
-  });
+  const RelationshipLabelBadge({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {

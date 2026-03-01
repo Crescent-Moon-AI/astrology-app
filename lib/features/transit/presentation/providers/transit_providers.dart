@@ -18,8 +18,9 @@ final transitRepositoryProvider = Provider<TransitRepository>((ref) {
 });
 
 // Active transits
-final activeTransitsProvider =
-    FutureProvider<List<UserTransitAlert>>((ref) async {
+final activeTransitsProvider = FutureProvider<List<UserTransitAlert>>((
+  ref,
+) async {
   final repo = ref.watch(transitRepositoryProvider);
   return repo.getActiveTransits();
 });
@@ -27,21 +28,25 @@ final activeTransitsProvider =
 // Upcoming transits (parameterized by days)
 final upcomingTransitsProvider =
     FutureProvider.family<List<UserTransitAlert>, int>((ref, days) async {
-  final repo = ref.watch(transitRepositoryProvider);
-  return repo.getUpcomingTransits(days: days);
-});
+      final repo = ref.watch(transitRepositoryProvider);
+      return repo.getUpcomingTransits(days: days);
+    });
 
 // Single transit detail
-final transitDetailProvider =
-    FutureProvider.family<UserTransitAlert, String>((ref, id) async {
+final transitDetailProvider = FutureProvider.family<UserTransitAlert, String>((
+  ref,
+  id,
+) async {
   final repo = ref.watch(transitRepositoryProvider);
   return repo.getTransitDetail(id);
 });
 
 // Calendar events (parameterized by year+month)
 final calendarEventsProvider =
-    FutureProvider.family<CalendarData, ({int year, int month})>(
-        (ref, params) async {
-  final repo = ref.watch(transitRepositoryProvider);
-  return repo.getCalendarEvents(params.year, params.month);
-});
+    FutureProvider.family<CalendarData, ({int year, int month})>((
+      ref,
+      params,
+    ) async {
+      final repo = ref.watch(transitRepositoryProvider);
+      return repo.getCalendarEvents(params.year, params.month);
+    });

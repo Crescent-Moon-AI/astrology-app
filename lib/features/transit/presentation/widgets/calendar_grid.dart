@@ -46,18 +46,20 @@ class CalendarGrid extends StatelessWidget {
         // Weekday header row
         Row(
           children: weekdays
-              .map((d) => Expanded(
-                    child: Center(
-                      child: Text(
-                        d,
-                        style: const TextStyle(
-                          color: CosmicColors.textTertiary,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
+              .map(
+                (d) => Expanded(
+                  child: Center(
+                    child: Text(
+                      d,
+                      style: const TextStyle(
+                        color: CosmicColors.textTertiary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ))
+                  ),
+                ),
+              )
               .toList(),
         ),
         const SizedBox(height: 4),
@@ -76,9 +78,8 @@ class CalendarGrid extends StatelessWidget {
               return const SizedBox.shrink();
             }
             final day = index - startWeekday + 1;
-            final isToday = now.year == year &&
-                now.month == month &&
-                now.day == day;
+            final isToday =
+                now.year == year && now.month == month && now.day == day;
             final dayEvents = eventsByDay[day] ?? [];
 
             return CalendarDayCell(

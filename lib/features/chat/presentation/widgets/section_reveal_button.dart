@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:astrology_app/l10n/app_localizations.dart';
 
 import '../../../../shared/theme/cosmic_colors.dart';
 
@@ -10,24 +9,27 @@ class SectionRevealButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return TextButton.icon(
-      onPressed: onPressed,
-      icon: const Icon(Icons.expand_more,
-          size: 18, color: CosmicColors.primaryLight),
-      label: Text(
-        l10n?.progressiveContinueReading ?? 'Continue Reading',
-        style: const TextStyle(color: CosmicColors.primaryLight),
-      ),
-      style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(
-            color: CosmicColors.primary.withValues(alpha: 0.3),
-          ),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: 48,
+        height: 48,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: CosmicColors.primaryGradient,
+          boxShadow: [
+            BoxShadow(
+              color: CosmicColors.primary.withAlpha(77), // 30%
+              blurRadius: 12,
+              spreadRadius: 0,
+            ),
+          ],
         ),
-        backgroundColor: CosmicColors.primary.withValues(alpha: 0.1),
+        child: const Icon(
+          Icons.arrow_forward,
+          color: CosmicColors.textPrimary,
+          size: 24,
+        ),
       ),
     );
   }

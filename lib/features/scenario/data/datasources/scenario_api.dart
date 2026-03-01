@@ -11,9 +11,7 @@ class ScenarioApi {
     int limit = 20,
     String? cursor,
   }) async {
-    final queryParams = <String, dynamic>{
-      'limit': limit,
-    };
+    final queryParams = <String, dynamic>{'limit': limit};
     if (categorySlug != null) queryParams['category'] = categorySlug;
     if (cursor != null) queryParams['cursor'] = cursor;
 

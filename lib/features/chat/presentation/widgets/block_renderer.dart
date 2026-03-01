@@ -10,11 +10,7 @@ class BlockRenderer extends StatelessWidget {
   final MessageBlock block;
   final ScrollController? scrollController;
 
-  const BlockRenderer({
-    super.key,
-    required this.block,
-    this.scrollController,
-  });
+  const BlockRenderer({super.key, required this.block, this.scrollController});
 
   @override
   Widget build(BuildContext context) {

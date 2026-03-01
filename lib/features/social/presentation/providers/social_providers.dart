@@ -26,22 +26,26 @@ final socialRepositoryProvider = Provider<SocialRepository>((ref) {
 });
 
 // Friends list
-final friendsProvider =
-    FutureProvider.autoDispose<List<FriendProfile>>((ref) async {
+final friendsProvider = FutureProvider.autoDispose<List<FriendProfile>>((
+  ref,
+) async {
   final repo = ref.watch(socialRepositoryProvider);
   return repo.listFriends();
 });
 
 // Single friend detail
-final friendDetailProvider =
-    FutureProvider.family<FriendProfile, String>((ref, id) async {
+final friendDetailProvider = FutureProvider.family<FriendProfile, String>((
+  ref,
+  id,
+) async {
   final repo = ref.watch(socialRepositoryProvider);
   return repo.getFriend(id);
 });
 
 // My share cards
-final myShareCardsProvider =
-    FutureProvider.autoDispose<List<SharedCard>>((ref) async {
+final myShareCardsProvider = FutureProvider.autoDispose<List<SharedCard>>((
+  ref,
+) async {
   final repo = ref.watch(socialRepositoryProvider);
   return repo.listMyCards();
 });

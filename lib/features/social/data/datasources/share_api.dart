@@ -12,10 +12,7 @@ class ShareApi {
   }) async {
     final response = await _dio.post(
       '/api/share/cards',
-      data: {
-        'card_type': cardType,
-        'source_data': sourceData,
-      },
+      data: {'card_type': cardType, 'source_data': sourceData},
     );
     final data = response.data['data'] as Map<String, dynamic>;
     return SharedCard.fromJson(data);

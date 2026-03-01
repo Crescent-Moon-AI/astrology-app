@@ -60,10 +60,20 @@ const Map<String, ScenarioVisual> _scenarioVisuals = {
     emoji: '\uD83D\uDC95', // 💕
     gradient: [Color(0xFFFF6B9D), Color(0xFFC44569)],
   ),
+  'weekly-love': ScenarioVisual(
+    icon: Icons.favorite_rounded,
+    emoji: '\uD83D\uDC98', // 💘
+    gradient: [Color(0xFFFF6B9D), Color(0xFFC44569)],
+  ),
   'career-direction': ScenarioVisual(
     icon: Icons.rocket_launch_rounded,
     emoji: '\uD83D\uDE80', // 🚀
     gradient: [Color(0xFF4FACFE), Color(0xFF00F2FE)],
+  ),
+  'career-guide': ScenarioVisual(
+    icon: Icons.star_rounded,
+    emoji: '\uD83C\uDF1F', // 🌟
+    gradient: [Color(0xFF4FACFE), Color(0xFF667EEA)],
   ),
   'job-change-timing': ScenarioVisual(
     icon: Icons.swap_horiz_rounded,
@@ -77,8 +87,28 @@ const Map<String, ScenarioVisual> _scenarioVisuals = {
   ),
   'daily-fortune': ScenarioVisual(
     icon: Icons.wb_sunny_rounded,
-    emoji: '\uD83C\uDF1F', // 🌟
+    emoji: '\u2600\uFE0F', // ☀️
     gradient: [Color(0xFFFFD700), Color(0xFFFF8C00)],
+  ),
+  'monthly-wealth': ScenarioVisual(
+    icon: Icons.paid_rounded,
+    emoji: '\uD83D\uDCB0', // 💰
+    gradient: [Color(0xFFFFD700), Color(0xFFF59E0B)],
+  ),
+  'mercury-retrograde': ScenarioVisual(
+    icon: Icons.autorenew_rounded,
+    emoji: '\uD83C\uDF00', // 🌀
+    gradient: [Color(0xFF8B5CF6), Color(0xFF6366F1)],
+  ),
+  'energy-tuning': ScenarioVisual(
+    icon: Icons.self_improvement_rounded,
+    emoji: '\uD83E\uDDD8', // 🧘
+    gradient: [Color(0xFF10B981), Color(0xFF06B6D4)],
+  ),
+  'new-moon-wish': ScenarioVisual(
+    icon: Icons.dark_mode_rounded,
+    emoji: '\uD83C\uDF11', // 🌑
+    gradient: [Color(0xFF7C3AED), Color(0xFF4F46E5)],
   ),
   'know-yourself': ScenarioVisual(
     icon: Icons.psychology_rounded,
@@ -112,6 +142,21 @@ const Map<String, CategoryVisual> _categoryVisuals = {
     icon: Icons.work_rounded,
     emoji: '\uD83D\uDCBC',
     accentColor: Color(0xFF4FACFE),
+  ),
+  'coins': CategoryVisual(
+    icon: Icons.paid_rounded,
+    emoji: '\uD83D\uDCB0',
+    accentColor: Color(0xFFFFD700),
+  ),
+  'heart_pulse': CategoryVisual(
+    icon: Icons.monitor_heart_rounded,
+    emoji: '\uD83D\uDC9A',
+    accentColor: Color(0xFF10B981),
+  ),
+  'sparkles': CategoryVisual(
+    icon: Icons.auto_awesome_rounded,
+    emoji: '\u2728',
+    accentColor: Color(0xFF7C3AED),
   ),
   'dice': CategoryVisual(
     icon: Icons.casino_rounded,

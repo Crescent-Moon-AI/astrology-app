@@ -31,16 +31,13 @@ class _ShareButtonState extends ConsumerState<ShareButton> {
         sourceData: widget.sourceData,
       );
       if (mounted) {
-        context.pushNamed(
-          'sharePreview',
-          extra: card,
-        );
+        context.pushNamed('sharePreview', extra: card);
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('$e')));
       }
     } finally {
       if (mounted) setState(() => _loading = false);

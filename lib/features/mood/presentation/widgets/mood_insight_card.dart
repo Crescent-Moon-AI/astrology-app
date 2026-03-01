@@ -51,14 +51,14 @@ class MoodInsightCard extends StatelessWidget {
             children: [
               // Delta from average
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: deltaColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: deltaColor.withValues(alpha: 0.3),
-                  ),
+                  border: Border.all(color: deltaColor.withValues(alpha: 0.3)),
                 ),
                 child: Text(
                   '$deltaSign${insight.delta.toStringAsFixed(2)}',
@@ -98,15 +98,19 @@ class MoodInsightCard extends StatelessWidget {
             children: [
               // Strength label badge
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
-                  color: _strengthColor(insight.strengthLabel)
-                      .withValues(alpha: 0.15),
+                  color: _strengthColor(
+                    insight.strengthLabel,
+                  ).withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: _strengthColor(insight.strengthLabel)
-                        .withValues(alpha: 0.3),
+                    color: _strengthColor(
+                      insight.strengthLabel,
+                    ).withValues(alpha: 0.3),
                   ),
                 ),
                 child: Text(
@@ -128,8 +132,11 @@ class MoodInsightCard extends StatelessWidget {
                     queryParameters: {'scenario_id': 'mood_insight'},
                   );
                 },
-                icon: const Icon(Icons.auto_awesome,
-                    size: 16, color: CosmicColors.primaryLight),
+                icon: const Icon(
+                  Icons.auto_awesome,
+                  size: 16,
+                  color: CosmicColors.primaryLight,
+                ),
                 label: Text(
                   l10n.moodAskAi,
                   style: const TextStyle(color: CosmicColors.primaryLight),

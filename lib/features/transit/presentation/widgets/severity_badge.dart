@@ -5,10 +5,7 @@ import '../../../../shared/theme/cosmic_colors.dart';
 class SeverityBadge extends StatelessWidget {
   final String severity;
 
-  const SeverityBadge({
-    super.key,
-    required this.severity,
-  });
+  const SeverityBadge({super.key, required this.severity});
 
   @override
   Widget build(BuildContext context) {

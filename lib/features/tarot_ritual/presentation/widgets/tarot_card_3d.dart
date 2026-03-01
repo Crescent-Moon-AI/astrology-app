@@ -38,15 +38,9 @@ class _TarotCard3DState extends State<TarotCard3D>
   void initState() {
     super.initState();
     _showFront = widget.showFace;
-    _controller = AnimationController(
-      duration: widget.duration,
-      vsync: this,
-    );
+    _controller = AnimationController(duration: widget.duration, vsync: this);
     _animation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOutBack,
-      ),
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOutBack),
     );
     _animation.addListener(() {
       // Switch sides at the halfway point
@@ -93,10 +87,7 @@ class _TarotCard3DState extends State<TarotCard3D>
             ..setEntry(3, 2, 0.001) // perspective
             ..rotateY(angle),
           child: isBackVisible
-              ? TarotCardBack(
-                  width: widget.width,
-                  height: widget.height,
-                )
+              ? TarotCardBack(width: widget.width, height: widget.height)
               : Transform(
                   alignment: Alignment.center,
                   transform: Matrix4.identity()..rotateY(math.pi),

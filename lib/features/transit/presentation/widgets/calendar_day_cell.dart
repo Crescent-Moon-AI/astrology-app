@@ -25,9 +25,7 @@ class CalendarDayCell extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: Container(
         decoration: BoxDecoration(
-          color: isToday
-              ? CosmicColors.primary.withValues(alpha: 0.15)
-              : null,
+          color: isToday ? CosmicColors.primary.withValues(alpha: 0.15) : null,
           borderRadius: BorderRadius.circular(8),
           border: isToday
               ? Border.all(color: CosmicColors.primary, width: 1.5)
@@ -43,8 +41,8 @@ class CalendarDayCell extends StatelessWidget {
                 fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
                 color: isCurrentMonth
                     ? (isToday
-                        ? CosmicColors.primaryLight
-                        : CosmicColors.textPrimary)
+                          ? CosmicColors.primaryLight
+                          : CosmicColors.textPrimary)
                     : CosmicColors.textTertiary,
               ),
             ),
@@ -55,15 +53,17 @@ class CalendarDayCell extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: events
                     .take(3)
-                    .map((e) => Container(
-                          width: 5,
-                          height: 5,
-                          margin: const EdgeInsets.symmetric(horizontal: 1),
-                          decoration: BoxDecoration(
-                            color: _eventColor(e.eventType),
-                            shape: BoxShape.circle,
-                          ),
-                        ))
+                    .map(
+                      (e) => Container(
+                        width: 5,
+                        height: 5,
+                        margin: const EdgeInsets.symmetric(horizontal: 1),
+                        decoration: BoxDecoration(
+                          color: _eventColor(e.eventType),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    )
                     .toList(),
               ),
           ],

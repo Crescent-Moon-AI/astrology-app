@@ -7,10 +7,7 @@ import 'tarot_card_back.dart';
 class ShuffleAnimation extends StatefulWidget {
   final VoidCallback? onComplete;
 
-  const ShuffleAnimation({
-    super.key,
-    this.onComplete,
-  });
+  const ShuffleAnimation({super.key, this.onComplete});
 
   @override
   State<ShuffleAnimation> createState() => _ShuffleAnimationState();
@@ -67,10 +64,7 @@ class _ShuffleAnimationState extends State<ShuffleAnimation>
                     transform: Matrix4.identity()
                       ..translateByDouble(-8.0, 8.0, 0.0, 1.0)
                       ..rotateZ(-0.05),
-                    child: const TarotCardBack(
-                      width: 110,
-                      height: 185,
-                    ),
+                    child: const TarotCardBack(width: 110, height: 185),
                   ),
                   // Middle card (slight offset)
                   Transform(
@@ -78,10 +72,7 @@ class _ShuffleAnimationState extends State<ShuffleAnimation>
                     transform: Matrix4.identity()
                       ..translateByDouble(0.0, 0.0, 0.0, 1.0)
                       ..rotateZ(0.02),
-                    child: const TarotCardBack(
-                      width: 110,
-                      height: 185,
-                    ),
+                    child: const TarotCardBack(width: 110, height: 185),
                   ),
                   // Top card (offset right and up)
                   Transform(
@@ -89,10 +80,7 @@ class _ShuffleAnimationState extends State<ShuffleAnimation>
                     transform: Matrix4.identity()
                       ..translateByDouble(8.0, -8.0, 0.0, 1.0)
                       ..rotateZ(0.05),
-                    child: const TarotCardBack(
-                      width: 110,
-                      height: 185,
-                    ),
+                    child: const TarotCardBack(width: 110, height: 185),
                   ),
                 ],
               ),

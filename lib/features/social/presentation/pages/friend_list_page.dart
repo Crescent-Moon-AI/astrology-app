@@ -63,8 +63,11 @@ class FriendListPage extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.cloud_off,
-                    size: 48, color: CosmicColors.textTertiary),
+                const Icon(
+                  Icons.cloud_off,
+                  size: 48,
+                  color: CosmicColors.textTertiary,
+                ),
                 const SizedBox(height: 12),
                 Text(
                   'Error: $error',
@@ -92,10 +95,7 @@ class FriendListPage extends ConsumerWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           tooltip: l10n.addFriend,
-          child: const Icon(
-            Icons.person_add,
-            color: CosmicColors.textPrimary,
-          ),
+          child: const Icon(Icons.person_add, color: CosmicColors.textPrimary),
         ),
       ),
     );

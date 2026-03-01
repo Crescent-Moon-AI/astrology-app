@@ -30,10 +30,7 @@ class SpreadOverviewPage extends ConsumerWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            CosmicColors.background,
-            Color(0xFF1A0A3E),
-          ],
+          colors: [CosmicColors.background, Color(0xFF1A0A3E)],
         ),
       ),
       child: SafeArea(

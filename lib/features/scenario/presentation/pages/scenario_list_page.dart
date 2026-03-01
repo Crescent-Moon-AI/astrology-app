@@ -16,19 +16,41 @@ class ScenarioListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final isZh = Localizations.localeOf(context).languageCode == 'zh';
     final categoriesAsync = ref.watch(scenarioCategoriesProvider);
     final scenariosAsync = ref.watch(scenarioListProvider);
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: CosmicColors.background,
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(
-          l10n.scenarioExploreTitle,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: CosmicColors.textPrimary,
-          ),
+        centerTitle: false,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.scenarioExploreTitle,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: CosmicColors.textPrimary,
+              ),
+            ),
+            ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                colors: [
+                  CosmicColors.primaryLight,
+                  CosmicColors.secondaryLight,
+                ],
+              ).createShader(bounds),
+              child: Text(
+                isZh
+                    ? '\u63A2\u7D22\u5B87\u5B99\u7684\u5965\u79D8'
+                    : 'Explore cosmic mysteries',
+                style: const TextStyle(fontSize: 12, color: Colors.white),
+              ),
+            ),
+          ],
         ),
         actions: [
           IconButton(
@@ -50,13 +72,13 @@ class ScenarioListPage extends ConsumerWidget {
                 },
               ),
               loading: () => const SizedBox(height: 48),
-              error: (_, __) => const SizedBox.shrink(),
+              error: (_, _) => const SizedBox.shrink(),
             ),
 
-            // Scenario grid
+            // Scenario list
             Expanded(
               child: scenariosAsync.when(
-                data: (scenarios) => _buildGrid(context, scenarios),
+                data: (scenarios) => _buildList(context, scenarios),
                 loading: () => const Center(child: BreathingLoader()),
                 error: (error, _) => Center(
                   child: Column(
@@ -95,7 +117,7 @@ class ScenarioListPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildGrid(BuildContext context, List<Scenario> scenarios) {
+  Widget _buildList(BuildContext context, List<Scenario> scenarios) {
     if (scenarios.isEmpty) {
       return Center(
         child: Column(
@@ -112,15 +134,10 @@ class ScenarioListPage extends ConsumerWidget {
       );
     }
 
-    return GridView.builder(
+    return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.78,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-      ),
       itemCount: scenarios.length,
+      separatorBuilder: (_, _) => const SizedBox(height: 10),
       itemBuilder: (context, index) {
         final scenario = scenarios[index];
         return ScenarioCard(

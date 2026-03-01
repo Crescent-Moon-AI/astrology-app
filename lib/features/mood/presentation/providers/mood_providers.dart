@@ -28,20 +28,25 @@ final todayMoodProvider = FutureProvider.autoDispose<MoodEntry?>((ref) async {
 });
 
 // Stats by period (e.g. "30d", "90d")
-final moodStatsProvider =
-    FutureProvider.family<MoodStats, String>((ref, period) async {
+final moodStatsProvider = FutureProvider.family<MoodStats, String>((
+  ref,
+  period,
+) async {
   return ref.watch(moodApiProvider).getStats(period);
 });
 
 // Insights (correlations with transits)
-final moodInsightsProvider =
-    FutureProvider.autoDispose<MoodInsightsResponse>((ref) async {
+final moodInsightsProvider = FutureProvider.autoDispose<MoodInsightsResponse>((
+  ref,
+) async {
   return ref.watch(moodApiProvider).getInsights();
 });
 
 // History by month (monthKey format: "2026-02")
-final moodHistoryProvider =
-    FutureProvider.family<List<MoodEntry>, String>((ref, monthKey) async {
+final moodHistoryProvider = FutureProvider.family<List<MoodEntry>, String>((
+  ref,
+  monthKey,
+) async {
   final from = '$monthKey-01';
   final year = int.parse(monthKey.split('-')[0]);
   final month = int.parse(monthKey.split('-')[1]);

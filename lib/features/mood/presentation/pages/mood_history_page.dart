@@ -52,8 +52,11 @@ class MoodHistoryPage extends ConsumerWidget {
               error: (error, _) => Center(
                 child: Column(
                   children: [
-                    const Icon(Icons.cloud_off,
-                        size: 36, color: CosmicColors.textTertiary),
+                    const Icon(
+                      Icons.cloud_off,
+                      size: 36,
+                      color: CosmicColors.textTertiary,
+                    ),
                     const SizedBox(height: 8),
                     Text(
                       'Error: $error',
@@ -72,11 +75,7 @@ class MoodHistoryPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatsSummary(
-    BuildContext context,
-    bool isZh,
-    dynamic stats,
-  ) {
+  Widget _buildStatsSummary(BuildContext context, bool isZh, dynamic stats) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -89,7 +88,11 @@ class MoodHistoryPage extends ConsumerWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.insights, size: 18, color: CosmicColors.secondary),
+              const Icon(
+                Icons.insights,
+                size: 18,
+                color: CosmicColors.secondary,
+              ),
               const SizedBox(width: 8),
               Text(
                 isZh ? '月度总结' : 'Summary',
@@ -123,8 +126,7 @@ class MoodHistoryPage extends ConsumerWidget {
           _StatRow(
             icon: Icons.local_fire_department,
             label: isZh ? '当前连续' : 'Current Streak',
-            value:
-                '${stats.streak.current} ${isZh ? "天" : "days"}',
+            value: '${stats.streak.current} ${isZh ? "天" : "days"}',
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 2),
@@ -133,8 +135,7 @@ class MoodHistoryPage extends ConsumerWidget {
           _StatRow(
             icon: Icons.emoji_events,
             label: isZh ? '最长连续' : 'Longest Streak',
-            value:
-                '${stats.streak.longest} ${isZh ? "天" : "days"}',
+            value: '${stats.streak.longest} ${isZh ? "天" : "days"}',
           ),
           if (stats.topTags.isNotEmpty) ...[
             const Padding(
@@ -176,10 +177,9 @@ class MoodHistoryPage extends ConsumerWidget {
       '\u{1F60A}',
       '\u{1F604}',
     ];
-    final emoji =
-        entry.score >= 1 && entry.score <= 5
-            ? scoreEmojis[entry.score - 1]
-            : '\u{1F610}';
+    final emoji = entry.score >= 1 && entry.score <= 5
+        ? scoreEmojis[entry.score - 1]
+        : '\u{1F610}';
 
     showDialog(
       context: context,
@@ -197,34 +197,35 @@ class MoodHistoryPage extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Text(emoji, style: const TextStyle(fontSize: 48)),
-            ),
+            Center(child: Text(emoji, style: const TextStyle(fontSize: 48))),
             const SizedBox(height: 12),
             if (entry.tags.isNotEmpty)
               Wrap(
                 spacing: 6,
                 runSpacing: 6,
                 children: entry.tags
-                    .map((tag) => Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: CosmicColors.primary.withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color:
-                                  CosmicColors.primary.withValues(alpha: 0.3),
-                            ),
+                    .map(
+                      (tag) => Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: CosmicColors.primary.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: CosmicColors.primary.withValues(alpha: 0.3),
                           ),
-                          child: Text(
-                            tag,
-                            style: const TextStyle(
-                              color: CosmicColors.primaryLight,
-                              fontSize: 12,
-                            ),
+                        ),
+                        child: Text(
+                          tag,
+                          style: const TextStyle(
+                            color: CosmicColors.primaryLight,
+                            fontSize: 12,
                           ),
-                        ))
+                        ),
+                      ),
+                    )
                     .toList(),
               ),
             if (entry.note.isNotEmpty) ...[

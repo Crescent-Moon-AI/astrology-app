@@ -41,11 +41,13 @@ class TarotCard {
       suit: json['suit'] as String?,
       orientation: json['orientation'] as String? ?? 'upright',
       element: json['element'] as String? ?? '',
-      uprightKeywords: (json['upright_keywords'] as List<dynamic>?)
+      uprightKeywords:
+          (json['upright_keywords'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           [],
-      reversedKeywords: (json['reversed_keywords'] as List<dynamic>?)
+      reversedKeywords:
+          (json['reversed_keywords'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           [],

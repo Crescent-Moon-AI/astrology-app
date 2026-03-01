@@ -47,15 +47,16 @@ class MoodStats {
       totalEntries: (json['total_entries'] as num?)?.toInt() ?? 0,
       averageScore: (json['average_score'] as num?)?.toDouble() ?? 0.0,
       scoreDistribution: scoreDistMap,
-      topTags: (json['top_tags'] as List<dynamic>?)
+      topTags:
+          (json['top_tags'] as List<dynamic>?)
               ?.map((e) => TagCount.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
       streak: MoodStreak.fromJson(
-          json['streak'] as Map<String, dynamic>? ?? {}),
+        json['streak'] as Map<String, dynamic>? ?? {},
+      ),
       dailyAverages: dailyAvgMap,
-      trend: MoodTrend.fromJson(
-          json['trend'] as Map<String, dynamic>? ?? {}),
+      trend: MoodTrend.fromJson(json['trend'] as Map<String, dynamic>? ?? {}),
     );
   }
 }

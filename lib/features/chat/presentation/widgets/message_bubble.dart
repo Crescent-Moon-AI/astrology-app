@@ -22,7 +22,7 @@ class MessageBubble extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: isUser ? _buildUserBubble(context) : _buildAiBubble(context),
+      child: isUser ? _buildUserBubble(context) : _buildAiCard(context),
     );
   }
 
@@ -38,8 +38,8 @@ class MessageBubble extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  CosmicColors.primary.withValues(alpha: 0.4),
-                  CosmicColors.primary.withValues(alpha: 0.25),
+                  CosmicColors.primary.withAlpha(128), // 50%
+                  CosmicColors.primary.withAlpha(89), // 35%
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -51,7 +51,7 @@ class MessageBubble extends StatelessWidget {
                 bottomRight: Radius.circular(18),
               ),
               border: Border.all(
-                color: CosmicColors.primary.withValues(alpha: 0.3),
+                color: CosmicColors.primary.withAlpha(77), // 30%
               ),
             ),
             child: Text(
@@ -68,79 +68,71 @@ class MessageBubble extends StatelessWidget {
     );
   }
 
-  Widget _buildAiBubble(BuildContext context) {
+  Widget _buildAiCard(BuildContext context) {
     final locale = Localizations.localeOf(context).languageCode;
     final isZh = locale.startsWith('zh');
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        // Avatar centered
         CharacterAvatar(
           expression: mapBlocksToExpression(message.blocks),
-          size: CharacterAvatarSize.sm,
+          size: CharacterAvatarSize.md,
         ),
-        const SizedBox(width: 8),
-        Flexible(
-          child: Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: CosmicColors.surfaceElevated,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(4),
-                topRight: Radius.circular(18),
-                bottomLeft: Radius.circular(18),
-                bottomRight: Radius.circular(18),
-              ),
-              border: Border.all(
-                color: CosmicColors.borderGlow,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (final block in message.blocks)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: BlockRenderer(
-                      block: block,
-                      scrollController: scrollController,
-                    ),
+        const SizedBox(height: 12),
+
+        // Content blocks
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (final block in message.blocks)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: BlockRenderer(
+                    block: block,
+                    scrollController: scrollController,
                   ),
-                if (message.blocks.isEmpty && message.content != null)
-                  Text(
-                    message.content!,
-                    style: const TextStyle(
-                      color: CosmicColors.textPrimary,
-                      fontSize: 15,
-                      height: 1.6,
-                    ),
-                  ),
-                // AI disclaimer
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.auto_awesome,
-                      size: 11,
-                      color: CosmicColors.textTertiary,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      isZh ? 'AI生成 · 仅供参考' : 'AI Generated',
-                      style: const TextStyle(
-                        color: CosmicColors.textTertiary,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ],
                 ),
-              ],
-            ),
+              if (message.blocks.isEmpty && message.content != null)
+                Text(
+                  message.content!,
+                  style: const TextStyle(
+                    color: CosmicColors.textPrimary,
+                    fontSize: 16,
+                    height: 1.7,
+                  ),
+                ),
+            ],
           ),
         ),
-        const SizedBox(width: 32),
+
+        // AI disclaimer — right-aligned
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Icon(
+                Icons.auto_awesome,
+                size: 11,
+                color: CosmicColors.textTertiary,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                isZh
+                    ? 'AI\u751F\u6210 \u00B7 \u4EC5\u4F9B\u53C2\u8003'
+                    : 'AI Generated',
+                style: const TextStyle(
+                  color: CosmicColors.textTertiary,
+                  fontSize: 11,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

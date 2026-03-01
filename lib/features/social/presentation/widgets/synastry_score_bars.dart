@@ -5,10 +5,7 @@ import '../../../../shared/theme/cosmic_colors.dart';
 class SynastryScoreBars extends StatelessWidget {
   final Map<String, int> scores;
 
-  const SynastryScoreBars({
-    super.key,
-    required this.scores,
-  });
+  const SynastryScoreBars({super.key, required this.scores});
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +25,7 @@ class SynastryScoreBars extends StatelessWidget {
         final score = scores[entry.key] ?? 0;
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
-          child: _ScoreBar(
-            label: entry.value,
-            score: score,
-          ),
+          child: _ScoreBar(label: entry.value, score: score),
         );
       }).toList(),
     );
@@ -42,10 +36,7 @@ class _ScoreBar extends StatelessWidget {
   final String label;
   final int score;
 
-  const _ScoreBar({
-    required this.label,
-    required this.score,
-  });
+  const _ScoreBar({required this.label, required this.score});
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +74,7 @@ class _ScoreBar extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                     gradient: LinearGradient(
-                      colors: [
-                        barColor.withValues(alpha: 0.7),
-                        barColor,
-                      ],
+                      colors: [barColor.withValues(alpha: 0.7), barColor],
                     ),
                     boxShadow: [
                       BoxShadow(

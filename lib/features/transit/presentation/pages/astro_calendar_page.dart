@@ -50,16 +50,38 @@ class _AstroCalendarPageState extends ConsumerState<AstroCalendarPage> {
 
   String _monthName(int month) {
     const months = [
-      '', 'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December',
+      '',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
     return months[month];
   }
 
   String _monthNameZh(int month) {
     const months = [
-      '', '一月', '二月', '三月', '四月', '五月', '六月',
-      '七月', '八月', '九月', '十月', '十一月', '十二月',
+      '',
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月',
     ];
     return months[month];
   }
@@ -69,8 +91,9 @@ class _AstroCalendarPageState extends ConsumerState<AstroCalendarPage> {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).languageCode;
     final isZh = locale.startsWith('zh');
-    final calendarAsync =
-        ref.watch(calendarEventsProvider((year: _year, month: _month)));
+    final calendarAsync = ref.watch(
+      calendarEventsProvider((year: _year, month: _month)),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -93,8 +116,10 @@ class _AstroCalendarPageState extends ConsumerState<AstroCalendarPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.chevron_left,
-                      color: CosmicColors.primaryLight),
+                  icon: const Icon(
+                    Icons.chevron_left,
+                    color: CosmicColors.primaryLight,
+                  ),
                   onPressed: _previousMonth,
                 ),
                 Text(
@@ -108,8 +133,10 @@ class _AstroCalendarPageState extends ConsumerState<AstroCalendarPage> {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.chevron_right,
-                      color: CosmicColors.primaryLight),
+                  icon: const Icon(
+                    Icons.chevron_right,
+                    color: CosmicColors.primaryLight,
+                  ),
                   onPressed: _nextMonth,
                 ),
               ],
@@ -137,8 +164,11 @@ class _AstroCalendarPageState extends ConsumerState<AstroCalendarPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.cloud_off,
-                        size: 48, color: CosmicColors.textTertiary),
+                    const Icon(
+                      Icons.cloud_off,
+                      size: 48,
+                      color: CosmicColors.textTertiary,
+                    ),
                     const SizedBox(height: 12),
                     Text(
                       'Error: $error',
@@ -204,8 +234,7 @@ class _AstroCalendarPageState extends ConsumerState<AstroCalendarPage> {
                     child: Center(
                       child: Column(
                         children: [
-                          const Text('\u2728',
-                              style: TextStyle(fontSize: 32)),
+                          const Text('\u2728', style: TextStyle(fontSize: 32)),
                           const SizedBox(height: 8),
                           Text(
                             l10n.calendarNoEvents,
@@ -219,57 +248,60 @@ class _AstroCalendarPageState extends ConsumerState<AstroCalendarPage> {
                     ),
                   )
                 else
-                  ...events.map((event) => Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: CosmicColors.surfaceElevated,
-                          border: Border.all(color: CosmicColors.borderGlow),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 36,
-                              height: 36,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: _eventColor(event.eventType)
-                                    .withValues(alpha: 0.2),
-                              ),
-                              child: Icon(
-                                _eventIcon(event.eventType),
-                                size: 18,
-                                color: _eventColor(event.eventType),
-                              ),
+                  ...events.map(
+                    (event) => Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: CosmicColors.surfaceElevated,
+                        border: Border.all(color: CosmicColors.borderGlow),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 36,
+                            height: 36,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: _eventColor(
+                                event.eventType,
+                              ).withValues(alpha: 0.2),
                             ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    _eventLabel(event, l10n),
-                                    style: const TextStyle(
-                                      color: CosmicColors.textPrimary,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    '${event.planet} in ${event.sign}',
-                                    style: const TextStyle(
-                                      color: CosmicColors.textTertiary,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            child: Icon(
+                              _eventIcon(event.eventType),
+                              size: 18,
+                              color: _eventColor(event.eventType),
                             ),
-                          ],
-                        ),
-                      )),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _eventLabel(event, l10n),
+                                  style: const TextStyle(
+                                    color: CosmicColors.textPrimary,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  '${event.planet} in ${event.sign}',
+                                  style: const TextStyle(
+                                    color: CosmicColors.textTertiary,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

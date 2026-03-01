@@ -31,9 +31,7 @@ class SpreadLayoutWidget extends StatelessWidget {
   }
 
   Widget _buildSingleLayout(BuildContext context) {
-    return Center(
-      child: _buildCardSlot(context, 0),
-    );
+    return Center(child: _buildCardSlot(context, 0));
   }
 
   Widget _buildThreeCardLayout(BuildContext context) {
@@ -102,8 +100,7 @@ class SpreadLayoutWidget extends StatelessWidget {
             top: 140,
             child: Transform.rotate(
               angle: 1.5708, // 90 degrees
-              child: _buildCardSlot(context, 1,
-                  cardWidth: cw, cardHeight: ch),
+              child: _buildCardSlot(context, 1, cardWidth: cw, cardHeight: ch),
             ),
           ),
           // Position 2: Above (Crown)
@@ -179,15 +176,9 @@ class SpreadLayoutWidget extends StatelessWidget {
             height: cardHeight,
           )
         else
-          TarotCardBack(
-            width: cardWidth,
-            height: cardHeight,
-          ),
+          TarotCardBack(width: cardWidth, height: cardHeight),
         const SizedBox(height: 4),
-        PositionIndicator(
-          label: label,
-          isRevealed: isRevealed,
-        ),
+        PositionIndicator(label: label, isRevealed: isRevealed),
       ],
     );
   }

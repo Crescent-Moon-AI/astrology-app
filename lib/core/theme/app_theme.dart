@@ -7,10 +7,7 @@ class AppTheme {
     brightness: Brightness.light,
     colorSchemeSeed: AppColors.primary,
     scaffoldBackgroundColor: AppColors.backgroundLight,
-    appBarTheme: const AppBarTheme(
-      elevation: 0,
-      centerTitle: true,
-    ),
+    appBarTheme: const AppBarTheme(elevation: 0, centerTitle: true),
   );
 
   static ThemeData get dark => ThemeData(
@@ -18,9 +15,6 @@ class AppTheme {
     brightness: Brightness.dark,
     colorSchemeSeed: AppColors.primary,
     scaffoldBackgroundColor: AppColors.backgroundDark,
-    appBarTheme: const AppBarTheme(
-      elevation: 0,
-      centerTitle: true,
-    ),
+    appBarTheme: const AppBarTheme(elevation: 0, centerTitle: true),
   );
 }

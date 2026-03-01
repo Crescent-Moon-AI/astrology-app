@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
 import '../../../../shared/theme/cosmic_colors.dart';
+import '../../../../shared/widgets/cosmic_ritual_button.dart';
 import '../../domain/models/tarot_card.dart';
 import '../providers/tarot_ritual_providers.dart';
 import '../widgets/tarot_card_3d.dart';
@@ -14,6 +15,7 @@ class CardRevealPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
     final ritualState = ref.watch(tarotRitualProvider);
     final notifier = ref.read(tarotRitualProvider.notifier);
 
@@ -40,10 +42,12 @@ class CardRevealPage extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
-                l10n.tarotRevealing,
+                isZh
+                    ? '\u63ED\u793A\u547D\u8FD0\u4E4B\u724C'
+                    : l10n.tarotRevealing,
                 style: const TextStyle(
-                  color: CosmicColors.secondary,
-                  fontSize: 16,
+                  color: CosmicColors.textPrimary,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -66,8 +70,8 @@ class CardRevealPage extends ConsumerWidget {
                       color: isRevealed
                           ? CosmicColors.secondary
                           : isCurrent
-                              ? CosmicColors.secondary.withValues(alpha: 0.5)
-                              : CosmicColors.surfaceElevated,
+                          ? CosmicColors.secondary.withAlpha(128) // 50%
+                          : CosmicColors.surfaceElevated,
                     ),
                   );
                 }),
@@ -100,68 +104,22 @@ class CardRevealPage extends ConsumerWidget {
 
             // Bottom controls
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
               child: ritualState.allRevealed
-                  ? SizedBox(
-                      width: double.infinity,
-                      height: 52,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: CosmicColors.primaryGradient,
-                          borderRadius: BorderRadius.circular(26),
-                          boxShadow: [
-                            BoxShadow(
-                              color:
-                                  CosmicColors.primary.withValues(alpha: 0.3),
-                              blurRadius: 12,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: ritualState.isLoading
-                                ? null
-                                : () => notifier.startReading(),
-                            borderRadius: BorderRadius.circular(26),
-                            child: Center(
-                              child: ritualState.isLoading
-                                  ? const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : Text(
-                                      l10n.tarotBeginReading,
-                                      style: const TextStyle(
-                                        color: CosmicColors.textPrimary,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ),
-                      ),
+                  ? CosmicRitualButton(
+                      label: isZh
+                          ? '\u5F00\u59CB\u89E3\u8BFB'
+                          : l10n.tarotBeginReading,
+                      onPressed: ritualState.isLoading
+                          ? null
+                          : () => notifier.startReading(),
+                      isLoading: ritualState.isLoading,
                     )
-                  : SizedBox(
-                      width: double.infinity,
-                      height: 52,
-                      child: OutlinedButton(
-                        onPressed: () => notifier.revealNextCard(),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: CosmicColors.secondary,
-                          side: const BorderSide(color: CosmicColors.secondary),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(26),
-                          ),
-                        ),
-                        child: Text(l10n.tarotRevealNext),
-                      ),
+                  : CosmicRitualButton(
+                      label: isZh
+                          ? '\u7FFB\u5F00\u4E0B\u4E00\u5F20'
+                          : l10n.tarotRevealNext,
+                      onPressed: () => notifier.revealNextCard(),
                     ),
             ),
           ],
@@ -174,67 +132,77 @@ class CardRevealPage extends ConsumerWidget {
 class _CardRevealItem extends StatelessWidget {
   final ResolvedCard resolvedCard;
 
-  const _CardRevealItem({
-    super.key,
-    required this.resolvedCard,
-  });
+  const _CardRevealItem({super.key, required this.resolvedCard});
 
   @override
   Widget build(BuildContext context) {
     final card = resolvedCard.card;
+    final isZh = Localizations.localeOf(context).languageCode == 'zh';
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         // Position label
-        PositionIndicator(
-          label: resolvedCard.positionLabel,
-          isActive: true,
-        ),
+        PositionIndicator(label: resolvedCard.positionLabel, isActive: true),
         const SizedBox(height: 16),
 
-        // 3D flip card
-        TarotCard3D(
-          card: card,
-          showFace: true,
-          width: 160,
-          height: 266,
-        ),
+        // 3D flip card — larger
+        TarotCard3D(card: card, showFace: true, width: 200, height: 340),
         const SizedBox(height: 16),
 
-        // Card info
+        // Card name + element tag
         Text(
-          card.name,
+          card.nameZH.isNotEmpty ? card.nameZH : card.name,
           style: const TextStyle(
             color: CosmicColors.textPrimary,
-            fontSize: 16,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         if (card.nameZH.isNotEmpty)
           Text(
-            card.nameZH,
+            card.name,
             style: const TextStyle(
               color: CosmicColors.textTertiary,
-              fontSize: 14,
+              fontSize: 13,
             ),
           ),
         const SizedBox(height: 8),
 
-        // Orientation
+        // Element tag + orientation
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (card.element.isNotEmpty) ...[
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: CosmicColors.primary.withAlpha(38), // 15%
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: CosmicColors.primary.withAlpha(64), // 25%
+                  ),
+                ),
+                child: Text(
+                  _elementLabel(card.element, isZh),
+                  style: const TextStyle(
+                    color: CosmicColors.primaryLight,
+                    fontSize: 11,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+            ],
             Icon(
               card.isUpright ? Icons.arrow_upward : Icons.arrow_downward,
-              size: 16,
-              color: card.isUpright
-                  ? CosmicColors.success
-                  : CosmicColors.error,
+              size: 14,
+              color: card.isUpright ? CosmicColors.success : CosmicColors.error,
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: 2),
             Text(
-              card.isUpright ? 'Upright' : 'Reversed',
+              card.isUpright
+                  ? (isZh ? '\u6B63\u4F4D' : 'Upright')
+                  : (isZh ? '\u9006\u4F4D' : 'Reversed'),
               style: TextStyle(
                 color: card.isUpright
                     ? CosmicColors.success
@@ -251,29 +219,43 @@ class _CardRevealItem extends StatelessWidget {
           spacing: 8,
           children: card.activeKeywords
               .take(3)
-              .map((kw) => Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: CosmicColors.primary.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color:
-                            CosmicColors.primary.withValues(alpha: 0.3),
-                      ),
+              .map(
+                (kw) => Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: CosmicColors.primary.withAlpha(51), // 20%
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: CosmicColors.primary.withAlpha(77), // 30%
                     ),
-                    child: Text(
-                      kw,
-                      style: const TextStyle(
-                        color: CosmicColors.primaryLight,
-                        fontSize: 11,
-                      ),
+                  ),
+                  child: Text(
+                    kw,
+                    style: const TextStyle(
+                      color: CosmicColors.primaryLight,
+                      fontSize: 11,
                     ),
-                  ))
+                  ),
+                ),
+              )
               .toList(),
         ),
       ],
     );
+  }
+
+  static String _elementLabel(String element, bool isZh) {
+    if (!isZh) return element;
+    final zhMap = {
+      'fire': '\u706B\u5143\u7D20',
+      'water': '\u6C34\u5143\u7D20',
+      'air': '\u98CE\u5143\u7D20',
+      'earth': '\u571F\u5143\u7D20',
+    };
+    return zhMap[element.toLowerCase()] ?? element;
   }
 }
 
@@ -281,37 +263,32 @@ class _AllRevealedMessage extends StatelessWidget {
   final List<ResolvedCard> cards;
   final int revealedCount;
 
-  const _AllRevealedMessage({
-    required this.cards,
-    required this.revealedCount,
-  });
+  const _AllRevealedMessage({required this.cards, required this.revealedCount});
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final isZh = Localizations.localeOf(context).languageCode == 'zh';
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(
-          Icons.auto_awesome,
-          size: 48,
-          color: CosmicColors.secondary,
-        ),
+        const Icon(Icons.auto_awesome, size: 48, color: CosmicColors.secondary),
         const SizedBox(height: 16),
         Text(
-          l10n.tarotReadingComplete,
+          isZh ? '\u6240\u6709\u724C\u5DF2\u63ED\u793A' : 'All cards revealed',
           style: const TextStyle(
-            color: CosmicColors.secondary,
-            fontSize: 20,
+            color: CosmicColors.textPrimary,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
         Text(
-          '${cards.length} cards revealed',
+          isZh
+              ? '\u5171 ${cards.length} \u5F20\u724C\uFF0C\u8BA9\u6211\u4EEC\u5F00\u59CB\u89E3\u8BFB'
+              : '${cards.length} cards ready for reading',
           style: const TextStyle(
-            color: CosmicColors.textTertiary,
+            color: CosmicColors.textSecondary,
             fontSize: 14,
           ),
         ),

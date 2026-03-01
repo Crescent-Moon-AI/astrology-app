@@ -20,7 +20,8 @@ ExpressionId mapBlocksToExpression(
 
   for (final block in blocks) {
     // Thinking or tool blocks that are still running -> thinking
-    if (block.kind == BlockKind.thinking && block.status == BlockStatus.running) {
+    if (block.kind == BlockKind.thinking &&
+        block.status == BlockStatus.running) {
       return ExpressionId.thinking;
     }
     if (block.kind == BlockKind.tool && block.status == BlockStatus.running) {

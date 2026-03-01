@@ -18,23 +18,15 @@ class MoonPhaseWidget extends ConsumerWidget {
     return moonPhaseAsync.when(
       data: (moonPhase) => Tooltip(
         message: moonPhase.phaseName,
-        child: Text(
-          moonPhase.emoji,
-          style: TextStyle(fontSize: size),
-        ),
+        child: Text(moonPhase.emoji, style: TextStyle(fontSize: size)),
       ),
       loading: () => SizedBox(
         width: size,
         height: size,
-        child: const Center(
-          child: CircularProgressIndicator(strokeWidth: 2),
-        ),
+        child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
       ),
-      error: (_, __) => Icon(
-        Icons.dark_mode,
-        size: size,
-        color: CosmicColors.textTertiary,
-      ),
+      error: (_, __) =>
+          Icon(Icons.dark_mode, size: size, color: CosmicColors.textTertiary),
     );
   }
 }

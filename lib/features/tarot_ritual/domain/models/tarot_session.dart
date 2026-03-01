@@ -32,19 +32,20 @@ class TarotSession {
     return TarotSession(
       id: json['id'] as String,
       conversationId: json['conversation_id'] as String,
-      spreadType: json['spread_type'] as String,
+      spreadType: json['spread_type'] as String? ?? 'three_card',
       cardCount: json['card_count'] as int? ?? 0,
       question: json['question'] as String? ?? '',
-      ritualState:
-          RitualState.fromValue(json['ritual_state'] as String? ?? ''),
-      selectedPositions: (json['selected_positions'] as List<dynamic>?)
+      ritualState: RitualState.fromValue(json['ritual_state'] as String? ?? ''),
+      selectedPositions:
+          (json['selected_positions'] as List<dynamic>?)
               ?.map((e) => e as int)
               .toList() ??
           [],
       selectedCards: (json['selected_cards'] as List<dynamic>?)
           ?.map((e) => ResolvedCard.fromJson(e as Map<String, dynamic>))
           .toList(),
-      positionLabels: (json['position_labels'] as List<dynamic>?)
+      positionLabels:
+          (json['position_labels'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           [],

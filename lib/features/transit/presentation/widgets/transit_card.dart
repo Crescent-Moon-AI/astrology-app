@@ -8,11 +8,7 @@ class TransitCard extends StatelessWidget {
   final UserTransitAlert alert;
   final VoidCallback? onTap;
 
-  const TransitCard({
-    super.key,
-    required this.alert,
-    this.onTap,
-  });
+  const TransitCard({super.key, required this.alert, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +85,7 @@ class TransitCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 12),
                   Icon(
-                    alert.applying
-                        ? Icons.arrow_forward
-                        : Icons.arrow_back,
+                    alert.applying ? Icons.arrow_forward : Icons.arrow_back,
                     size: 14,
                     color: alert.applying
                         ? CosmicColors.secondary

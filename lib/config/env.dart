@@ -17,10 +17,8 @@ class EnvConfig {
   /// iOS simulator and desktop can use localhost directly.
   static final dev = EnvConfig(
     env: Environment.dev,
-    apiBaseUrl:
-        'http://${Platform.isAndroid ? '10.0.2.2' : 'localhost'}:3000',
-    wsBaseUrl:
-        'ws://${Platform.isAndroid ? '10.0.2.2' : 'localhost'}:3000',
+    apiBaseUrl: 'http://${Platform.isAndroid ? '10.0.2.2' : 'localhost'}:3000',
+    wsBaseUrl: 'ws://${Platform.isAndroid ? '10.0.2.2' : 'localhost'}:3000',
   );
 
   /// Dev config for real device testing over WiFi.

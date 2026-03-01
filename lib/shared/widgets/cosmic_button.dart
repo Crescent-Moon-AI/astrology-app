@@ -19,9 +19,7 @@ class CosmicButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: onPressed != null
-            ? CosmicColors.primaryGradient
-            : null,
+        gradient: onPressed != null ? CosmicColors.primaryGradient : null,
         color: onPressed == null ? CosmicColors.surfaceElevated : null,
         borderRadius: BorderRadius.circular(24),
         boxShadow: onPressed != null
@@ -42,8 +40,7 @@ class CosmicButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           splashColor: CosmicColors.primaryLight.withValues(alpha: 0.3),
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             child: Center(
               child: isLoading
                   ? const SizedBox(

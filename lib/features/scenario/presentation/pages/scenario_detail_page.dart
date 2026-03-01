@@ -13,10 +13,7 @@ import '../widgets/scenario_icon_data.dart';
 class ScenarioDetailPage extends ConsumerWidget {
   final String scenarioId;
 
-  const ScenarioDetailPage({
-    super.key,
-    required this.scenarioId,
-  });
+  const ScenarioDetailPage({super.key, required this.scenarioId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,8 +32,10 @@ class ScenarioDetailPage extends ConsumerWidget {
 
             final visual = getScenarioVisual(scenario.slug);
             final title = resolveScenarioKey(scenario.title, locale);
-            final description =
-                resolveScenarioKey(scenario.description, locale);
+            final description = resolveScenarioKey(
+              scenario.description,
+              locale,
+            );
 
             return CustomScrollView(
               slivers: [
@@ -44,7 +43,9 @@ class ScenarioDetailPage extends ConsumerWidget {
                 SliverAppBar(
                   expandedHeight: 240,
                   pinned: true,
-                  backgroundColor: CosmicColors.background.withValues(alpha: 0.9),
+                  backgroundColor: CosmicColors.background.withValues(
+                    alpha: 0.9,
+                  ),
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () => Navigator.of(context).pop(),
@@ -110,7 +111,9 @@ class ScenarioDetailPage extends ConsumerWidget {
                         if (scenario.category != null)
                           _CategoryBadge(
                             name: resolveScenarioKey(
-                                scenario.category!.name, locale),
+                              scenario.category!.name,
+                              locale,
+                            ),
                             iconName: scenario.category!.icon,
                           ),
 
@@ -120,18 +123,13 @@ class ScenarioDetailPage extends ConsumerWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(16),
                           child: BackdropFilter(
-                            filter:
-                                ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                             child: Container(
                               width: double.infinity,
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
                                 color: CosmicColors.surfaceElevated,
                                 borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: CosmicColors.borderGlow,
-                                  width: 1,
-                                ),
                               ),
                               child: Text(
                                 description,
@@ -168,8 +166,7 @@ class ScenarioDetailPage extends ConsumerWidget {
                           ),
                           const SizedBox(height: 12),
                           ...scenario.presetQuestions.map((q) {
-                            final translated =
-                                resolveScenarioKey(q, locale);
+                            final translated = resolveScenarioKey(q, locale);
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 8),
                               child: _PresetQuestionCard(
@@ -211,9 +208,7 @@ class ScenarioDetailPage extends ConsumerWidget {
             );
           },
           loading: () => const Center(
-            child: CircularProgressIndicator(
-              color: CosmicColors.primary,
-            ),
+            child: CircularProgressIndicator(color: CosmicColors.primary),
           ),
           error: (error, _) => Center(
             child: Text(
@@ -232,16 +227,15 @@ class ScenarioDetailPage extends ConsumerWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  CosmicColors.background,
-                ],
+                colors: [Colors.transparent, CosmicColors.background],
               ),
             ),
             child: SafeArea(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
                 child: Container(
                   decoration: BoxDecoration(
                     gradient: CosmicColors.primaryGradient,
@@ -261,9 +255,7 @@ class ScenarioDetailPage extends ConsumerWidget {
                       onTap: () {
                         context.pushNamed(
                           'chat',
-                          queryParameters: {
-                            'scenario_id': scenario.id,
-                          },
+                          queryParameters: {'scenario_id': scenario.id},
                         );
                       },
                       borderRadius: BorderRadius.circular(24),
@@ -362,10 +354,6 @@ class _PresetQuestionCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: CosmicColors.surface,
-          border: Border.all(
-            color: CosmicColors.borderGlow,
-            width: 1,
-          ),
         ),
         child: Row(
           children: [

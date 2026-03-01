@@ -97,10 +97,9 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
       '\u{1F60A}',
       '\u{1F604}',
     ];
-    final emoji =
-        todayMood.score >= 1 && todayMood.score <= 5
-            ? scoreEmojis[todayMood.score - 1]
-            : '\u{1F610}';
+    final emoji = todayMood.score >= 1 && todayMood.score <= 5
+        ? scoreEmojis[todayMood.score - 1]
+        : '\u{1F610}';
 
     return Row(
       children: [
@@ -151,10 +150,7 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
     );
   }
 
-  Widget _buildCheckinForm(
-    BuildContext context,
-    AppLocalizations l10n,
-  ) {
+  Widget _buildCheckinForm(BuildContext context, AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -193,8 +189,9 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
         // Expanded section: tags + note + done button
         AnimatedCrossFade(
           duration: const Duration(milliseconds: 300),
-          crossFadeState:
-              _isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          crossFadeState: _isExpanded
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
           firstChild: const SizedBox.shrink(),
           secondChild: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,11 +211,15 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
                   fillColor: CosmicColors.background,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: CosmicColors.borderGlow),
+                    borderSide: const BorderSide(
+                      color: CosmicColors.borderGlow,
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: CosmicColors.borderGlow),
+                    borderSide: const BorderSide(
+                      color: CosmicColors.borderGlow,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -286,10 +287,7 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
     );
   }
 
-  Widget _buildStreakBadge(
-    BuildContext context,
-    AppLocalizations l10n,
-  ) {
+  Widget _buildStreakBadge(BuildContext context, AppLocalizations l10n) {
     final statsAsync = ref.watch(moodStatsProvider('30d'));
     return statsAsync.when(
       data: (stats) {

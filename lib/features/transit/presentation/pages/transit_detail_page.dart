@@ -10,10 +10,7 @@ import '../widgets/severity_badge.dart';
 class TransitDetailPage extends ConsumerWidget {
   final String transitAlertId;
 
-  const TransitDetailPage({
-    super.key,
-    required this.transitAlertId,
-  });
+  const TransitDetailPage({super.key, required this.transitAlertId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -215,8 +212,11 @@ class TransitDetailPage extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.cloud_off,
-                  size: 48, color: CosmicColors.textTertiary),
+              const Icon(
+                Icons.cloud_off,
+                size: 48,
+                color: CosmicColors.textTertiary,
+              ),
               const SizedBox(height: 12),
               Text(
                 'Error: $error',
@@ -259,8 +259,11 @@ class TransitDetailPage extends ConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.auto_awesome,
-                            color: CosmicColors.textPrimary, size: 20),
+                        const Icon(
+                          Icons.auto_awesome,
+                          color: CosmicColors.textPrimary,
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           l10n.transitAskAi,
@@ -357,13 +360,16 @@ class _DurationBar extends StatelessWidget {
 
     final totalDuration = end.difference(start).inHours;
     final elapsed = now.difference(start).inHours;
-    final progress =
-        totalDuration > 0 ? (elapsed / totalDuration).clamp(0.0, 1.0) : 0.0;
+    final progress = totalDuration > 0
+        ? (elapsed / totalDuration).clamp(0.0, 1.0)
+        : 0.0;
 
     double? exactPosition;
     if (exact != null && totalDuration > 0) {
-      exactPosition =
-          (exact.difference(start).inHours / totalDuration).clamp(0.0, 1.0);
+      exactPosition = (exact.difference(start).inHours / totalDuration).clamp(
+        0.0,
+        1.0,
+      );
     }
 
     return Container(
@@ -407,8 +413,8 @@ class _DurationBar extends StatelessWidget {
               // Exact date marker
               if (exactPosition != null)
                 Positioned(
-                  left: exactPosition *
-                      (MediaQuery.of(context).size.width - 96),
+                  left:
+                      exactPosition * (MediaQuery.of(context).size.width - 96),
                   child: Container(
                     width: 3,
                     height: 8,

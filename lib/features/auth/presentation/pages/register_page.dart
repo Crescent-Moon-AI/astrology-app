@@ -37,7 +37,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     setState(() => _loading = true);
     ref.read(authProvider.notifier).clearError();
 
-    final ok = await ref.read(authProvider.notifier).register(
+    final ok = await ref
+        .read(authProvider.notifier)
+        .register(
           _emailCtrl.text.trim(),
           _passwordCtrl.text,
           username: _usernameCtrl.text.trim().isNotEmpty
@@ -115,8 +117,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     // Email
                     TextFormField(
                       controller: _emailCtrl,
-                      style:
-                          const TextStyle(color: CosmicColors.textPrimary),
+                      style: const TextStyle(color: CosmicColors.textPrimary),
                       decoration: _inputDecoration(
                         label: l10n.authEmail,
                         prefixIcon: Icons.email_outlined,
@@ -124,7 +125,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       validator: (v) {
-                        if (v == null || v.trim().isEmpty) return l10n.authRequired;
+                        if (v == null || v.trim().isEmpty)
+                          return l10n.authRequired;
                         if (!v.contains('@')) return l10n.authInvalidEmail;
                         return null;
                       },
@@ -134,8 +136,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     // Username
                     TextFormField(
                       controller: _usernameCtrl,
-                      style:
-                          const TextStyle(color: CosmicColors.textPrimary),
+                      style: const TextStyle(color: CosmicColors.textPrimary),
                       decoration: _inputDecoration(
                         label: l10n.authUsername,
                         prefixIcon: Icons.person_outline,
@@ -147,20 +148,16 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     // Password
                     TextFormField(
                       controller: _passwordCtrl,
-                      style:
-                          const TextStyle(color: CosmicColors.textPrimary),
+                      style: const TextStyle(color: CosmicColors.textPrimary),
                       decoration: _inputDecoration(
                         label: l10n.authPassword,
                         prefixIcon: Icons.lock_outline,
                         suffix: IconButton(
                           icon: Icon(
-                            _obscure
-                                ? Icons.visibility_off
-                                : Icons.visibility,
+                            _obscure ? Icons.visibility_off : Icons.visibility,
                             color: CosmicColors.textTertiary,
                           ),
-                          onPressed: () =>
-                              setState(() => _obscure = !_obscure),
+                          onPressed: () => setState(() => _obscure = !_obscure),
                         ),
                       ),
                       obscureText: _obscure,
@@ -176,8 +173,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     // Confirm Password
                     TextFormField(
                       controller: _confirmCtrl,
-                      style:
-                          const TextStyle(color: CosmicColors.textPrimary),
+                      style: const TextStyle(color: CosmicColors.textPrimary),
                       decoration: _inputDecoration(
                         label: l10n.authConfirmPassword,
                         prefixIcon: Icons.lock_outline,
@@ -216,16 +212,15 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                           gradient: _loading
                               ? null
                               : CosmicColors.primaryGradient,
-                          color: _loading
-                              ? CosmicColors.surfaceElevated
-                              : null,
+                          color: _loading ? CosmicColors.surfaceElevated : null,
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: _loading
                               ? null
                               : [
                                   BoxShadow(
-                                    color: CosmicColors.primary
-                                        .withValues(alpha: 0.3),
+                                    color: CosmicColors.primary.withValues(
+                                      alpha: 0.3,
+                                    ),
                                     blurRadius: 12,
                                     offset: const Offset(0, 4),
                                   ),
@@ -267,8 +262,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       style: TextButton.styleFrom(
                         foregroundColor: CosmicColors.primaryLight,
                       ),
-                      child:
-                          Text(l10n.authHaveAccount),
+                      child: Text(l10n.authHaveAccount),
                     ),
                   ],
                 ),

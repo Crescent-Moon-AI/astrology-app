@@ -41,10 +41,7 @@ class _ProgressiveTextBlockState extends State<ProgressiveTextBlock> {
 
   void _parseSections() {
     final text = widget.block.contentText ?? '';
-    _sections = parseSections(
-      text,
-      metadata: widget.block.metadata?.sections,
-    );
+    _sections = parseSections(text, metadata: widget.block.metadata?.sections);
     for (var i = 0; i < _sections.length; i++) {
       _sectionKeys.putIfAbsent(i, () => GlobalKey());
     }
@@ -158,8 +155,9 @@ class _ProgressiveTextBlockState extends State<ProgressiveTextBlock> {
             padding: const EdgeInsets.only(left: 32, right: 8, bottom: 8),
             child: MarkdownBody(data: section.content),
           ),
-          crossFadeState:
-              isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          crossFadeState: isExpanded
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
           duration: const Duration(milliseconds: 300),
         ),
         // "Continue Reading" button

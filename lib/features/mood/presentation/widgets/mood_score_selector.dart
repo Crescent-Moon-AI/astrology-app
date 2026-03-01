@@ -56,10 +56,7 @@ class MoodScoreSelector extends StatelessWidget {
             decoration: isSelected
                 ? BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: CosmicColors.primary,
-                      width: 2.5,
-                    ),
+                    border: Border.all(color: CosmicColors.primary, width: 2.5),
                     boxShadow: [
                       BoxShadow(
                         color: CosmicColors.primary.withValues(alpha: 0.3),
@@ -73,9 +70,7 @@ class MoodScoreSelector extends StatelessWidget {
               children: [
                 AnimatedDefaultTextStyle(
                   duration: const Duration(milliseconds: 200),
-                  style: TextStyle(
-                    fontSize: isSelected ? 36 : 28,
-                  ),
+                  style: TextStyle(fontSize: isSelected ? 36 : 28),
                   child: Text(_scoreEmojis[index]),
                 ),
                 const SizedBox(height: 4),
@@ -86,8 +81,9 @@ class MoodScoreSelector extends StatelessWidget {
                         ? CosmicColors.primaryLight
                         : CosmicColors.textTertiary,
                     fontSize: 12,
-                    fontWeight:
-                        isSelected ? FontWeight.w600 : FontWeight.normal,
+                    fontWeight: isSelected
+                        ? FontWeight.w600
+                        : FontWeight.normal,
                   ),
                 ),
               ],

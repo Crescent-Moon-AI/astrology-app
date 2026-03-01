@@ -11,10 +11,7 @@ import '../widgets/synastry_score_bars.dart';
 class FriendDetailPage extends ConsumerWidget {
   final String friendId;
 
-  const FriendDetailPage({
-    super.key,
-    required this.friendId,
-  });
+  const FriendDetailPage({super.key, required this.friendId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -56,8 +53,11 @@ class FriendDetailPage extends ConsumerWidget {
                 value: 'delete',
                 child: Row(
                   children: [
-                    const Icon(Icons.delete_outline,
-                        size: 20, color: CosmicColors.error),
+                    const Icon(
+                      Icons.delete_outline,
+                      size: 20,
+                      color: CosmicColors.error,
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       l10n.friendDelete,
@@ -173,8 +173,11 @@ class FriendDetailPage extends ConsumerWidget {
                 // Synastry scores
                 Row(
                   children: [
-                    const Icon(Icons.auto_awesome,
-                        size: 18, color: CosmicColors.secondary),
+                    const Icon(
+                      Icons.auto_awesome,
+                      size: 18,
+                      color: CosmicColors.secondary,
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       isZh ? '合盘分析' : 'Synastry',
@@ -217,7 +220,9 @@ class FriendDetailPage extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
                             BoxShadow(
-                              color: CosmicColors.primary.withValues(alpha: 0.3),
+                              color: CosmicColors.primary.withValues(
+                                alpha: 0.3,
+                              ),
                               blurRadius: 12,
                               offset: const Offset(0, 4),
                             ),
@@ -240,9 +245,11 @@ class FriendDetailPage extends ConsumerWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Icon(Icons.auto_awesome,
-                                      color: CosmicColors.textPrimary,
-                                      size: 18),
+                                  const Icon(
+                                    Icons.auto_awesome,
+                                    color: CosmicColors.textPrimary,
+                                    size: 18,
+                                  ),
                                   const SizedBox(width: 6),
                                   Text(
                                     l10n.askAiAboutThis,
@@ -270,7 +277,9 @@ class FriendDetailPage extends ConsumerWidget {
                         label: Text(l10n.shareTitle),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: CosmicColors.primaryLight,
-                          side: const BorderSide(color: CosmicColors.borderGlow),
+                          side: const BorderSide(
+                            color: CosmicColors.borderGlow,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(24),
                           ),
@@ -289,8 +298,11 @@ class FriendDetailPage extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.cloud_off,
-                  size: 48, color: CosmicColors.textTertiary),
+              const Icon(
+                Icons.cloud_off,
+                size: 48,
+                color: CosmicColors.textTertiary,
+              ),
               const SizedBox(height: 12),
               Text(
                 'Error: $error',
@@ -351,9 +363,9 @@ class FriendDetailPage extends ConsumerWidget {
         }
       } catch (e) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('$e')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('$e')));
         }
       }
     }

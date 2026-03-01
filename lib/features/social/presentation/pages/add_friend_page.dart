@@ -161,9 +161,9 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('$e')));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -270,7 +270,8 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                         labelText: isZh ? '纬度' : 'Latitude',
                       ),
                       keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true),
+                        decimal: true,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -282,7 +283,8 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                         labelText: isZh ? '经度' : 'Longitude',
                       ),
                       keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true),
+                        decimal: true,
+                      ),
                     ),
                   ),
                 ],
@@ -299,10 +301,7 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                   prefixIcon: Icons.public,
                 ),
                 items: _timezones
-                    .map((tz) => DropdownMenuItem(
-                          value: tz,
-                          child: Text(tz),
-                        ))
+                    .map((tz) => DropdownMenuItem(value: tz, child: Text(tz)))
                     .toList(),
                 onChanged: (value) {
                   if (value != null) {
@@ -327,8 +326,7 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                 runSpacing: 8,
                 children: RelationshipLabel.values.map((rel) {
                   final isSelected = _selectedRelationship == rel;
-                  final displayLabel =
-                      isZh ? rel.labelZH : rel.labelEN;
+                  final displayLabel = isZh ? rel.labelZH : rel.labelEN;
                   return GestureDetector(
                     onTap: () {
                       setState(() {
@@ -337,7 +335,9 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: isSelected
@@ -357,8 +357,9 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                               ? CosmicColors.primaryLight
                               : CosmicColors.textSecondary,
                           fontSize: 14,
-                          fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.normal,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.normal,
                         ),
                       ),
                     ),

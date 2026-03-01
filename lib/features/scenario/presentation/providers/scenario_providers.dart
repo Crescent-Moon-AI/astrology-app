@@ -18,8 +18,9 @@ final scenarioRepositoryProvider = Provider<ScenarioRepository>((ref) {
 });
 
 // Categories
-final scenarioCategoriesProvider =
-    FutureProvider<List<ScenarioCategory>>((ref) async {
+final scenarioCategoriesProvider = FutureProvider<List<ScenarioCategory>>((
+  ref,
+) async {
   final repo = ref.watch(scenarioRepositoryProvider);
   return repo.listCategories();
 });
@@ -34,7 +35,8 @@ class SelectedCategoryNotifier extends Notifier<String?> {
 
 final selectedCategoryProvider =
     NotifierProvider<SelectedCategoryNotifier, String?>(
-        SelectedCategoryNotifier.new);
+      SelectedCategoryNotifier.new,
+    );
 
 // Scenario list (filtered by category)
 final scenarioListProvider = FutureProvider<List<Scenario>>((ref) async {
@@ -44,15 +46,16 @@ final scenarioListProvider = FutureProvider<List<Scenario>>((ref) async {
 });
 
 // Hot scenarios for chat empty state
-final hotScenariosProvider =
-    FutureProvider<List<ScenarioSummary>>((ref) async {
+final hotScenariosProvider = FutureProvider<List<ScenarioSummary>>((ref) async {
   final repo = ref.watch(scenarioRepositoryProvider);
   return repo.listHotScenarios();
 });
 
 // Single scenario detail
-final scenarioDetailProvider =
-    FutureProvider.family<Scenario?, String>((ref, id) async {
+final scenarioDetailProvider = FutureProvider.family<Scenario?, String>((
+  ref,
+  id,
+) async {
   final repo = ref.watch(scenarioRepositoryProvider);
   return repo.getScenario(id);
 });

@@ -13,9 +13,7 @@ class MoodApi {
     List<String>? tags,
     String? note,
   }) async {
-    final body = <String, dynamic>{
-      'score': score,
-    };
+    final body = <String, dynamic>{'score': score};
     if (tags != null && tags.isNotEmpty) {
       body['tags'] = tags;
     }

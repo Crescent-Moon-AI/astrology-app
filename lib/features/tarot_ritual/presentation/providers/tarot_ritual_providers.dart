@@ -15,26 +15,29 @@ final tarotSessionApiProvider = Provider<TarotSessionApi>((ref) {
 });
 
 // Repository
-final tarotSessionRepositoryProvider =
-    Provider<TarotSessionRepository>((ref) {
+final tarotSessionRepositoryProvider = Provider<TarotSessionRepository>((ref) {
   final api = ref.watch(tarotSessionApiProvider);
   return TarotSessionRepositoryImpl(api);
 });
 
 // Session provider (fetch by ID)
-final tarotSessionProvider =
-    FutureProvider.family<TarotSession, String>((ref, sessionId) async {
+final tarotSessionProvider = FutureProvider.family<TarotSession, String>((
+  ref,
+  sessionId,
+) async {
   final api = ref.watch(tarotSessionApiProvider);
   return api.getSession(sessionId);
 });
 
 // Sessions list (by conversation ID)
 final tarotSessionsListProvider =
-    FutureProvider.family<List<TarotSession>, String>(
-        (ref, conversationId) async {
-  final api = ref.watch(tarotSessionApiProvider);
-  return api.listSessions(conversationId);
-});
+    FutureProvider.family<List<TarotSession>, String>((
+      ref,
+      conversationId,
+    ) async {
+      final api = ref.watch(tarotSessionApiProvider);
+      return api.listSessions(conversationId);
+    });
 
 // Ritual state model
 class TarotRitualState {
@@ -131,7 +134,8 @@ class TarotRitualNotifier extends Notifier<TarotRitualState> {
         session: session,
         step: session.ritualState,
         selectedPositions: session.selectedPositions.toSet(),
-        revealIndex: session.ritualState == RitualState.completed ||
+        revealIndex:
+            session.ritualState == RitualState.completed ||
                 session.ritualState == RitualState.reading
             ? session.selectedCards?.length ?? 0
             : 0,
@@ -241,5 +245,7 @@ class TarotRitualNotifier extends Notifier<TarotRitualState> {
 }
 
 // Ritual state notifier provider
-final tarotRitualProvider = NotifierProvider.autoDispose<TarotRitualNotifier,
-    TarotRitualState>(TarotRitualNotifier.new);
+final tarotRitualProvider =
+    NotifierProvider.autoDispose<TarotRitualNotifier, TarotRitualState>(
+      TarotRitualNotifier.new,
+    );

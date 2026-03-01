@@ -5,6 +5,7 @@ import 'package:astrology_app/l10n/app_localizations.dart';
 
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/character_avatar.dart';
+import '../../../../shared/widgets/starfield_background.dart';
 import '../../../../shared/models/expression.dart';
 import '../../../scenario/l10n/scenario_strings.dart';
 import '../../../scenario/presentation/providers/scenario_providers.dart';
@@ -24,52 +25,55 @@ class ConversationListPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.chatTitle),
-        backgroundColor: CosmicColors.background,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
       ),
-      body: conversationsAsync.when(
-        data: (conversations) {
-          if (conversations.isEmpty) {
-            return _buildEmptyState(context, ref, isZh, locale);
-          }
-          return ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            itemCount: conversations.length,
-            itemBuilder: (context, index) {
-              final conv = conversations[index];
-              return _ConversationCard(
-                title: conv.title ??
-                    (isZh ? '新的对话' : 'New Conversation'),
-                subtitle: conv.lastMessageAt != null
-                    ? _formatDate(conv.lastMessageAt!, isZh)
-                    : null,
-                onTap: () => context.push('/chat/${conv.id}'),
-              );
-            },
-          );
-        },
-        loading: () => const Center(
-          child: CircularProgressIndicator(
-            color: CosmicColors.primary,
+      body: StarfieldBackground(
+        child: conversationsAsync.when(
+          data: (conversations) {
+            if (conversations.isEmpty) {
+              return _buildEmptyState(context, ref, isZh, locale);
+            }
+            return ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              itemCount: conversations.length,
+              itemBuilder: (context, index) {
+                final conv = conversations[index];
+                return _ConversationCard(
+                  title: conv.title ?? (isZh ? '新的对话' : 'New Conversation'),
+                  subtitle: conv.lastMessageAt != null
+                      ? _formatDate(conv.lastMessageAt!, isZh)
+                      : null,
+                  onTap: () => context.push('/chat/${conv.id}'),
+                );
+              },
+            );
+          },
+          loading: () => const Center(
+            child: CircularProgressIndicator(color: CosmicColors.primary),
           ),
-        ),
-        error: (error, _) => Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.cloud_off, size: 48, color: CosmicColors.textTertiary),
-              const SizedBox(height: 12),
-              Text(
-                isZh ? '加载失败' : 'Failed to load',
-                style: const TextStyle(color: CosmicColors.textSecondary),
-              ),
-              const SizedBox(height: 8),
-              TextButton(
-                onPressed: () => ref.invalidate(conversationListProvider),
-                child: Text(isZh ? '重试' : 'Retry'),
-              ),
-            ],
+          error: (error, _) => Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.cloud_off,
+                  size: 48,
+                  color: CosmicColors.textTertiary,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  isZh ? '加载失败' : 'Failed to load',
+                  style: const TextStyle(color: CosmicColors.textSecondary),
+                ),
+                const SizedBox(height: 8),
+                TextButton(
+                  onPressed: () => ref.invalidate(conversationListProvider),
+                  child: Text(isZh ? '重试' : 'Retry'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -89,17 +93,18 @@ class ConversationListPage extends ConsumerWidget {
           onPressed: () => context.push('/chat'),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          child: const Icon(
-            Icons.add,
-            color: CosmicColors.textPrimary,
-          ),
+          child: const Icon(Icons.add, color: CosmicColors.textPrimary),
         ),
       ),
     );
   }
 
   Widget _buildEmptyState(
-      BuildContext context, WidgetRef ref, bool isZh, String locale) {
+    BuildContext context,
+    WidgetRef ref,
+    bool isZh,
+    String locale,
+  ) {
     final hotScenariosAsync = ref.watch(hotScenariosProvider);
 
     return Center(
@@ -114,23 +119,28 @@ class ConversationListPage extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              isZh ? '还没有对话' : 'No conversations yet',
+              isZh ? '\u8FD8\u6CA1\u6709\u5BF9\u8BDD' : 'No conversations yet',
               style: const TextStyle(
                 color: CosmicColors.textPrimary,
-                fontSize: 18,
+                fontSize: 22,
                 fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              isZh
-                  ? '开始一段新的对话，让星象为你指引方向'
-                  : 'Start a new conversation and let the stars guide you',
-              style: const TextStyle(
-                color: CosmicColors.textSecondary,
-                fontSize: 14,
+            ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                colors: [
+                  CosmicColors.primaryLight,
+                  CosmicColors.secondaryLight,
+                ],
+              ).createShader(bounds),
+              child: Text(
+                isZh
+                    ? '开始一段新的对话，让星象为你指引方向'
+                    : 'Start a new conversation and let the stars guide you',
+                style: const TextStyle(color: Colors.white, fontSize: 14),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
             Container(
@@ -144,8 +154,10 @@ class ConversationListPage extends ConsumerWidget {
                   onTap: () => context.push('/chat'),
                   borderRadius: BorderRadius.circular(24),
                   child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 28,
+                      vertical: 12,
+                    ),
                     child: Text(
                       isZh ? '开始咨询' : 'Start Consultation',
                       style: const TextStyle(
@@ -180,16 +192,12 @@ class ConversationListPage extends ConsumerWidget {
                         alignment: WrapAlignment.center,
                         children: scenarios.map((s) {
                           final visual = getScenarioVisual(s.slug);
-                          final title = resolveScenarioKey(
-                            s.title,
-                            locale,
-                          );
+                          final title = resolveScenarioKey(s.title, locale);
                           return Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              onTap: () => context.push(
-                                '/chat?scenario_id=${s.id}',
-                              ),
+                              onTap: () =>
+                                  context.push('/chat?scenario_id=${s.id}'),
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -199,9 +207,6 @@ class ConversationListPage extends ConsumerWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: CosmicColors.surfaceElevated,
-                                  border: Border.all(
-                                    color: CosmicColors.borderGlow,
-                                  ),
                                 ),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -230,7 +235,7 @@ class ConversationListPage extends ConsumerWidget {
                 );
               },
               loading: () => const SizedBox.shrink(),
-              error: (_, __) => const SizedBox.shrink(),
+              error: (_, _) => const SizedBox.shrink(),
             ),
           ],
         ),
@@ -242,12 +247,14 @@ class ConversationListPage extends ConsumerWidget {
     final now = DateTime.now();
     final diff = now.difference(date);
     if (diff.inMinutes < 1) return isZh ? '刚刚' : 'Just now';
-    if (diff.inHours < 1) return isZh ? '${diff.inMinutes}分钟前' : '${diff.inMinutes}m ago';
+    if (diff.inHours < 1)
+      return isZh ? '${diff.inMinutes}分钟前' : '${diff.inMinutes}m ago';
     if (diff.inDays == 0) {
       return '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     }
     if (diff.inDays == 1) return isZh ? '昨天' : 'Yesterday';
-    if (diff.inDays < 7) return isZh ? '${diff.inDays}天前' : '${diff.inDays}d ago';
+    if (diff.inDays < 7)
+      return isZh ? '${diff.inDays}天前' : '${diff.inDays}d ago';
     return '${date.month}/${date.day}';
   }
 }
@@ -277,7 +284,6 @@ class _ConversationCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: CosmicColors.surfaceElevated,
-              border: Border.all(color: CosmicColors.borderGlow),
             ),
             child: Row(
               children: [

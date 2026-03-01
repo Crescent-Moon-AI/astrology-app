@@ -21,17 +21,18 @@ final chatRepositoryProvider = Provider<ChatRepository>((ref) {
 });
 
 // Conversation list
-final conversationListProvider =
-    FutureProvider<List<Conversation>>((ref) async {
+final conversationListProvider = FutureProvider<List<Conversation>>((
+  ref,
+) async {
   final repo = ref.watch(chatRepositoryProvider);
   return repo.listConversations();
 });
 
 // Messages state notifier (per conversation)
-final chatMessagesProvider = NotifierProvider.family<ChatMessagesNotifier,
-    List<ChatMessage>, String>(
-  (conversationId) => ChatMessagesNotifier(conversationId),
-);
+final chatMessagesProvider =
+    NotifierProvider.family<ChatMessagesNotifier, List<ChatMessage>, String>(
+      (conversationId) => ChatMessagesNotifier(conversationId),
+    );
 
 class ChatMessagesNotifier extends Notifier<List<ChatMessage>> {
   ChatMessagesNotifier(this.conversationId);
@@ -99,8 +100,7 @@ class ChatMessagesNotifier extends Notifier<List<ChatMessage>> {
       if (blockIdx >= 0) {
         final blocks = List<MessageBlock>.from(msg.blocks);
         blocks[blockIdx] = blocks[blockIdx].copyWith(
-          contentText: () =>
-              (blocks[blockIdx].contentText ?? '') + delta,
+          contentText: () => (blocks[blockIdx].contentText ?? '') + delta,
         );
         return ChatMessage(
           id: msg.id,

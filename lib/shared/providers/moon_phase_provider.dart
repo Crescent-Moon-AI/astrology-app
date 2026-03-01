@@ -46,9 +46,8 @@ final moonPhaseProvider = FutureProvider.autoDispose<MoonPhase>((ref) async {
   );
   final data = response.data;
   // Support both { data: {...} } envelope and flat response.
-  final payload =
-      data is Map<String, dynamic> && data.containsKey('data')
-          ? data['data'] as Map<String, dynamic>
-          : data as Map<String, dynamic>;
+  final payload = data is Map<String, dynamic> && data.containsKey('data')
+      ? data['data'] as Map<String, dynamic>
+      : data as Map<String, dynamic>;
   return MoonPhase.fromJson(payload);
 });

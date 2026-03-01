@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
 import '../../../../shared/theme/cosmic_colors.dart';
+import '../../../../shared/widgets/cosmic_ritual_button.dart';
 import '../providers/tarot_ritual_providers.dart';
 import '../widgets/tarot_card_back.dart';
 
@@ -14,6 +15,7 @@ class CardPickerPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
     final ritualState = ref.watch(tarotRitualProvider);
     final notifier = ref.read(tarotRitualProvider.notifier);
 
@@ -25,10 +27,7 @@ class CardPickerPage extends ConsumerWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            CosmicColors.background,
-            Color(0xFF1A0A3E),
-          ],
+          colors: [CosmicColors.background, Color(0xFF1A0A3E)],
         ),
       ),
       child: SafeArea(
@@ -36,23 +35,28 @@ class CardPickerPage extends ConsumerWidget {
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: Column(
                 children: [
                   Text(
-                    l10n.tarotPickCards(needed),
+                    isZh
+                        ? '\u8BA9\u95EE\u9898\u5728\u5FC3\u4E2D\u6D6E\u73B0'
+                        : 'Let the question arise in your mind',
                     style: const TextStyle(
-                      color: CosmicColors.secondary,
-                      fontSize: 16,
+                      color: CosmicColors.textPrimary,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   Text(
-                    '${selected.length} / $needed',
+                    isZh
+                        ? '\u62BD\u7B2C ${selected.length + 1} \u5F20\u724C\uFF08\u5171 $needed \u5F20\uFF09'
+                        : l10n.tarotPickCards(needed),
                     style: const TextStyle(
-                      color: CosmicColors.textTertiary,
-                      fontSize: 14,
+                      color: CosmicColors.textSecondary,
+                      fontSize: 15,
                     ),
                   ),
                 ],
@@ -92,10 +96,7 @@ class CardPickerPage extends ConsumerWidget {
                           transformAlignment: Alignment.bottomCenter,
                           child: Stack(
                             children: [
-                              TarotCardBack(
-                                width: 60,
-                                height: 100,
-                              ),
+                              TarotCardBack(width: 60, height: 100),
                               if (isSelected)
                                 Positioned.fill(
                                   child: Container(
@@ -108,7 +109,7 @@ class CardPickerPage extends ConsumerWidget {
                                       boxShadow: [
                                         BoxShadow(
                                           color: CosmicColors.secondary
-                                              .withValues(alpha: 0.5),
+                                              .withAlpha(128), // 50%
                                           blurRadius: 12,
                                           spreadRadius: 2,
                                         ),
@@ -151,64 +152,14 @@ class CardPickerPage extends ConsumerWidget {
 
             // Confirm button
             Padding(
-              padding: const EdgeInsets.all(16),
-              child: SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: ritualState.selectionComplete &&
-                            !ritualState.isLoading
-                        ? CosmicColors.primaryGradient
-                        : null,
-                    color: !ritualState.selectionComplete ||
-                            ritualState.isLoading
-                        ? CosmicColors.surfaceElevated
-                        : null,
-                    borderRadius: BorderRadius.circular(26),
-                    boxShadow: ritualState.selectionComplete
-                        ? [
-                            BoxShadow(
-                              color: CosmicColors.primary
-                                  .withValues(alpha: 0.3),
-                              blurRadius: 12,
-                              offset: const Offset(0, 4),
-                            ),
-                          ]
-                        : null,
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: ritualState.selectionComplete &&
-                              !ritualState.isLoading
-                          ? () => notifier.confirmSelection()
-                          : null,
-                      borderRadius: BorderRadius.circular(26),
-                      child: Center(
-                        child: ritualState.isLoading
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Text(
-                                l10n.tarotConfirmSelection,
-                                style: TextStyle(
-                                  color: ritualState.selectionComplete
-                                      ? CosmicColors.textPrimary
-                                      : CosmicColors.textTertiary,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                ),
-                              ),
-                      ),
-                    ),
-                  ),
-                ),
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+              child: CosmicRitualButton(
+                label: isZh ? '\u7EE7\u7EED' : l10n.tarotConfirmSelection,
+                onPressed:
+                    ritualState.selectionComplete && !ritualState.isLoading
+                    ? () => notifier.confirmSelection()
+                    : null,
+                isLoading: ritualState.isLoading,
               ),
             ),
           ],

@@ -11,10 +11,7 @@ import '../providers/tarot_ritual_providers.dart';
 class SpreadSelectionPage extends ConsumerStatefulWidget {
   final String? conversationId;
 
-  const SpreadSelectionPage({
-    super.key,
-    this.conversationId,
-  });
+  const SpreadSelectionPage({super.key, this.conversationId});
 
   @override
   ConsumerState<SpreadSelectionPage> createState() =>
@@ -53,9 +50,9 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
         );
       }
       if (next.error != null && prev?.error == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error!)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
       }
     });
 
@@ -82,7 +79,9 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
                     // Header
                     Center(
                       child: Text(
-                        isZh ? '让问题在心中浮现' : 'Let the question arise in your mind',
+                        isZh
+                            ? '让问题在心中浮现'
+                            : 'Let the question arise in your mind',
                         style: const TextStyle(
                           color: CosmicColors.textSecondary,
                           fontSize: 15,
@@ -104,22 +103,29 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
                         labelStyle: const TextStyle(
                           color: CosmicColors.textSecondary,
                         ),
-                        prefixIcon: const Icon(Icons.help_outline,
-                            color: CosmicColors.primaryLight, size: 20),
+                        prefixIcon: const Icon(
+                          Icons.help_outline,
+                          color: CosmicColors.primaryLight,
+                          size: 20,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
-                          borderSide:
-                              const BorderSide(color: CosmicColors.borderGlow),
+                          borderSide: const BorderSide(
+                            color: CosmicColors.borderGlow,
+                          ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
-                          borderSide:
-                              const BorderSide(color: CosmicColors.borderGlow),
+                          borderSide: const BorderSide(
+                            color: CosmicColors.borderGlow,
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
                           borderSide: const BorderSide(
-                              color: CosmicColors.primary, width: 1.5),
+                            color: CosmicColors.primary,
+                            width: 1.5,
+                          ),
                         ),
                         filled: true,
                         fillColor: CosmicColors.surfaceElevated,
@@ -144,8 +150,9 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
                           description: l10n.tarotSpreadSingleDesc,
                           cardCount: SpreadType.single.cardCount,
                           isSelected: _selectedSpread == SpreadType.single,
-                          onTap: () =>
-                              setState(() => _selectedSpread = SpreadType.single),
+                          onTap: () => setState(
+                            () => _selectedSpread = SpreadType.single,
+                          ),
                         ),
                         _SpreadTypeCard(
                           emoji: _spreadEmojis[SpreadType.threeCard]!,
@@ -154,7 +161,8 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
                           cardCount: SpreadType.threeCard.cardCount,
                           isSelected: _selectedSpread == SpreadType.threeCard,
                           onTap: () => setState(
-                              () => _selectedSpread = SpreadType.threeCard),
+                            () => _selectedSpread = SpreadType.threeCard,
+                          ),
                         ),
                         _SpreadTypeCard(
                           emoji: _spreadEmojis[SpreadType.loveSpread]!,
@@ -163,7 +171,8 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
                           cardCount: SpreadType.loveSpread.cardCount,
                           isSelected: _selectedSpread == SpreadType.loveSpread,
                           onTap: () => setState(
-                              () => _selectedSpread = SpreadType.loveSpread),
+                            () => _selectedSpread = SpreadType.loveSpread,
+                          ),
                         ),
                         _SpreadTypeCard(
                           emoji: _spreadEmojis[SpreadType.celticCross]!,
@@ -172,7 +181,8 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
                           cardCount: SpreadType.celticCross.cardCount,
                           isSelected: _selectedSpread == SpreadType.celticCross,
                           onTap: () => setState(
-                              () => _selectedSpread = SpreadType.celticCross),
+                            () => _selectedSpread = SpreadType.celticCross,
+                          ),
                         ),
                       ],
                     ),
@@ -216,9 +226,11 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
                               : Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Icon(Icons.style,
-                                        color: CosmicColors.textPrimary,
-                                        size: 20),
+                                    const Icon(
+                                      Icons.style,
+                                      color: CosmicColors.textPrimary,
+                                      size: 20,
+                                    ),
                                     const SizedBox(width: 8),
                                     Text(
                                       l10n.tarotRitualTitle,
@@ -244,7 +256,9 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
   }
 
   void _startRitual() {
-    ref.read(tarotRitualProvider.notifier).createSession(
+    ref
+        .read(tarotRitualProvider.notifier)
+        .createSession(
           conversationId: widget.conversationId ?? '',
           spreadType: _selectedSpread.value,
           question: _questionController.text.trim(),
@@ -299,7 +313,7 @@ class _SpreadTypeCard extends StatelessWidget {
                     color: CosmicColors.primary.withValues(alpha: 0.2),
                     blurRadius: 12,
                     spreadRadius: 2,
-                  )
+                  ),
                 ]
               : null,
         ),

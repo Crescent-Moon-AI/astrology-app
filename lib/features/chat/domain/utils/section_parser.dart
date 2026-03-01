@@ -40,8 +40,9 @@ List<ParsedSection> parseSections(String text, {List<SectionMeta>? metadata}) {
   for (var i = 0; i < matches.length; i++) {
     final title = matches[i].group(1)!.trim();
     final startOffset = matches[i].end;
-    final endOffset =
-        (i + 1 < matches.length) ? matches[i + 1].start : text.length;
+    final endOffset = (i + 1 < matches.length)
+        ? matches[i + 1].start
+        : text.length;
     final content = text.substring(startOffset, endOffset).trim();
     sections.add(ParsedSection(title: title, content: content));
   }
