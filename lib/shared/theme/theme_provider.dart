@@ -12,8 +12,9 @@ class ThemeModeNotifier extends Notifier<AppThemeMode> {
   void set(AppThemeMode mode) => state = mode;
 }
 
-final themeModeProvider =
-    NotifierProvider<ThemeModeNotifier, AppThemeMode>(ThemeModeNotifier.new);
+final themeModeProvider = NotifierProvider<ThemeModeNotifier, AppThemeMode>(
+  ThemeModeNotifier.new,
+);
 
 final themeDataProvider = Provider<ThemeData>((ref) {
   final mode = ref.watch(themeModeProvider);
@@ -36,5 +37,6 @@ class ReducedMotionNotifier extends Notifier<bool> {
   void set(bool value) => state = value;
 }
 
-final reducedMotionProvider =
-    NotifierProvider<ReducedMotionNotifier, bool>(ReducedMotionNotifier.new);
+final reducedMotionProvider = NotifierProvider<ReducedMotionNotifier, bool>(
+  ReducedMotionNotifier.new,
+);

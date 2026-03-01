@@ -89,8 +89,8 @@ class AboutCharacterPage extends StatelessWidget {
                       (isZh
                           ? '星见是你的私人星象向导，将古老的占星智慧与现代洞察力相结合，帮助你在星辰下驾驭人生的旅程。'
                           : 'Xingjian is your personal guide through the cosmos, combining '
-                              'ancient astrological wisdom with modern insight to help you '
-                              'navigate life\'s journey under the stars.'),
+                                'ancient astrological wisdom with modern insight to help you '
+                                'navigate life\'s journey under the stars.'),
                   style: const TextStyle(
                     color: CosmicColors.textSecondary,
                     fontSize: 15,
@@ -102,8 +102,11 @@ class AboutCharacterPage extends StatelessWidget {
               const SizedBox(height: 32),
               Row(
                 children: [
-                  const Icon(Icons.auto_awesome,
-                      size: 18, color: CosmicColors.secondary),
+                  const Icon(
+                    Icons.auto_awesome,
+                    size: 18,
+                    color: CosmicColors.secondary,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     l10n?.characterExpressionGallery ??
@@ -129,7 +132,9 @@ class AboutCharacterPage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CharacterAvatar(
-                          expression: expr, size: CharacterAvatarSize.md),
+                        expression: expr,
+                        size: CharacterAvatarSize.md,
+                      ),
                       const SizedBox(height: 4),
                       Text(
                         _exprLabel(l10n!, expr),

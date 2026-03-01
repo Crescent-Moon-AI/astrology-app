@@ -32,8 +32,9 @@ class UserTransitAlert {
   factory UserTransitAlert.fromJson(Map<String, dynamic> json) {
     return UserTransitAlert(
       id: json['id'] as String,
-      transitEvent:
-          TransitEvent.fromJson(json['transit_event'] as Map<String, dynamic>),
+      transitEvent: TransitEvent.fromJson(
+        json['transit_event'] as Map<String, dynamic>,
+      ),
       natalPlanet: json['natal_planet'] as String,
       natalDegree: (json['natal_degree'] as num).toDouble(),
       natalSign: json['natal_sign'] as String,

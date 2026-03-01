@@ -8,10 +8,7 @@ import '../../domain/models/shared_card.dart';
 class SharePreviewPage extends StatelessWidget {
   final SharedCard card;
 
-  const SharePreviewPage({
-    super.key,
-    required this.card,
-  });
+  const SharePreviewPage({super.key, required this.card});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +54,10 @@ class SharePreviewPage extends StatelessWidget {
                         card.imageUrl!,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
-                            _PlaceholderCard(cardType: card.cardType, isZh: isZh),
+                            _PlaceholderCard(
+                              cardType: card.cardType,
+                              isZh: isZh,
+                            ),
                       )
                     : _PlaceholderCard(cardType: card.cardType, isZh: isZh),
               ),
@@ -74,7 +74,11 @@ class SharePreviewPage extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.link, size: 18, color: CosmicColors.primaryLight),
+                  const Icon(
+                    Icons.link,
+                    size: 18,
+                    color: CosmicColors.primaryLight,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -128,8 +132,11 @@ class SharePreviewPage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.share,
-                            color: CosmicColors.textPrimary, size: 20),
+                        const Icon(
+                          Icons.share,
+                          color: CosmicColors.textPrimary,
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           l10n.shareCard,
@@ -193,9 +200,9 @@ class SharePreviewPage extends StatelessWidget {
 
   void _copyLink(BuildContext context, AppLocalizations l10n) {
     Clipboard.setData(ClipboardData(text: card.shareUrl));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l10n.shareLinkCopied)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l10n.shareLinkCopied)));
   }
 }
 

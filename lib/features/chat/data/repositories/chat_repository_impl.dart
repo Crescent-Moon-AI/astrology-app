@@ -70,7 +70,8 @@ class ChatRepositoryImpl implements ChatRepository {
           durationMs: blockJson['duration_ms'] as int?,
           metadata: blockJson['metadata'] != null
               ? BlockMetadata.fromJson(
-                  blockJson['metadata'] as Map<String, dynamic>)
+                  blockJson['metadata'] as Map<String, dynamic>,
+                )
               : null,
         );
       }).toList();

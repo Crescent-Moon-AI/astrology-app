@@ -11,7 +11,7 @@ enum SpreadType {
   final int cardCount;
 
   static SpreadType fromValue(String value) => SpreadType.values.firstWhere(
-        (e) => e.value == value,
-        orElse: () => SpreadType.threeCard,
-      );
+    (e) => e.value == value,
+    orElse: () => SpreadType.threeCard,
+  );
 }

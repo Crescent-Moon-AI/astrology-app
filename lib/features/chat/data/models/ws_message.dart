@@ -21,15 +21,15 @@ class WsClientMessage {
   });
 
   Map<String, dynamic> toJson() => {
-        'type': type,
-        if (content != null) 'content': content,
-        if (conversationId != null) 'conversation_id': conversationId,
-        if (clientMessageId != null) 'client_message_id': clientMessageId,
-        if (language != null) 'language': language,
-        if (id != null) 'id': id,
-        if (debug != null) 'debug': debug,
-        if (scenarioId != null) 'scenario_id': scenarioId,
-      };
+    'type': type,
+    if (content != null) 'content': content,
+    if (conversationId != null) 'conversation_id': conversationId,
+    if (clientMessageId != null) 'client_message_id': clientMessageId,
+    if (language != null) 'language': language,
+    if (id != null) 'id': id,
+    if (debug != null) 'debug': debug,
+    if (scenarioId != null) 'scenario_id': scenarioId,
+  };
 }
 
 /// Server -> Client WebSocket message.

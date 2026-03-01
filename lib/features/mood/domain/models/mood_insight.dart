@@ -18,12 +18,14 @@ class MoodInsightsResponse {
       totalEntries: (json['total_entries'] as num?)?.toInt() ?? 0,
       overallAverage: (json['overall_average'] as num?)?.toDouble() ?? 0.0,
       minimumEntriesMet: json['minimum_entries_met'] as bool? ?? false,
-      insights: (json['insights'] as List<dynamic>?)
+      insights:
+          (json['insights'] as List<dynamic>?)
               ?.map((e) => MoodInsight.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
       progress: MoodProgress.fromJson(
-          json['progress'] as Map<String, dynamic>? ?? {}),
+        json['progress'] as Map<String, dynamic>? ?? {},
+      ),
     );
   }
 }

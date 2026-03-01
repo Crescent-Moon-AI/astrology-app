@@ -51,10 +51,7 @@ class _MoodTrendChartState extends ConsumerState<MoodTrendChart> {
             error: (error, _) => Center(
               child: Text(
                 'Error: $error',
-                style: const TextStyle(
-                  color: CosmicColors.error,
-                  fontSize: 12,
-                ),
+                style: const TextStyle(color: CosmicColors.error, fontSize: 12),
               ),
             ),
           ),
@@ -68,10 +65,7 @@ class _MoodTrendChartState extends ConsumerState<MoodTrendChart> {
       return const Center(
         child: Text(
           'No data yet',
-          style: TextStyle(
-            color: CosmicColors.textTertiary,
-            fontSize: 14,
-          ),
+          style: TextStyle(color: CosmicColors.textTertiary, fontSize: 14),
         ),
       );
     }
@@ -188,8 +182,7 @@ class _TrendChartPainter extends CustomPainter {
     if (values.length < 2) {
       // Single point
       final x = paddingLeft + chartWidth / 2;
-      final y =
-          paddingTop + chartHeight - ((values[0] - 1) / 4) * chartHeight;
+      final y = paddingTop + chartHeight - ((values[0] - 1) / 4) * chartHeight;
       final dotPaint = Paint()..color = lineColor;
       canvas.drawCircle(Offset(x, y), 4, dotPaint);
       return;
@@ -199,8 +192,7 @@ class _TrendChartPainter extends CustomPainter {
     final points = <Offset>[];
     for (var i = 0; i < values.length; i++) {
       final x = paddingLeft + (i / (values.length - 1)) * chartWidth;
-      final y =
-          paddingTop + chartHeight - ((values[i] - 1) / 4) * chartHeight;
+      final y = paddingTop + chartHeight - ((values[i] - 1) / 4) * chartHeight;
       points.add(Offset(x, y));
     }
 
@@ -240,7 +232,10 @@ class _TrendChartPainter extends CustomPainter {
       ..shader = LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [lineColor.withValues(alpha: 0.3), lineColor.withValues(alpha: 0.0)],
+        colors: [
+          lineColor.withValues(alpha: 0.3),
+          lineColor.withValues(alpha: 0.0),
+        ],
       ).createShader(Rect.fromLTWH(0, paddingTop, size.width, chartHeight));
     canvas.drawPath(fillPath, fillPaint);
 
@@ -271,7 +266,8 @@ class _TrendChartPainter extends CustomPainter {
         style: TextStyle(color: textColor, fontSize: 10),
       );
       textPainter.layout();
-      final x = paddingLeft + (idx / math.max(1, sortedKeys.length - 1)) * chartWidth;
+      final x =
+          paddingLeft + (idx / math.max(1, sortedKeys.length - 1)) * chartWidth;
       textPainter.paint(
         canvas,
         Offset(x - textPainter.width / 2, size.height - textPainter.height),

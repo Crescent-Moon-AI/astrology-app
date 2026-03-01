@@ -14,10 +14,7 @@ import 'spread_overview_page.dart';
 class TarotRitualPage extends ConsumerStatefulWidget {
   final String sessionId;
 
-  const TarotRitualPage({
-    super.key,
-    required this.sessionId,
-  });
+  const TarotRitualPage({super.key, required this.sessionId});
 
   @override
   ConsumerState<TarotRitualPage> createState() => _TarotRitualPageState();
@@ -40,7 +37,8 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
 
     // Listen for reading state to navigate to chat
     ref.listen<TarotRitualState>(tarotRitualProvider, (prev, next) {
-      if (next.step == RitualState.reading && prev?.step != RitualState.reading) {
+      if (next.step == RitualState.reading &&
+          prev?.step != RitualState.reading) {
         final conversationId = next.session?.conversationId;
         if (conversationId != null && context.mounted) {
           context.pushNamed(
@@ -90,8 +88,11 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline,
-                size: 48, color: CosmicColors.error),
+            const Icon(
+              Icons.error_outline,
+              size: 48,
+              color: CosmicColors.error,
+            ),
             const SizedBox(height: 16),
             Text(
               ritualState.error!,
@@ -111,8 +112,7 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
                       .loadSession(widget.sessionId),
                   borderRadius: BorderRadius.circular(24),
                   child: const Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 12),
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     child: Text(
                       'Retry',
                       style: TextStyle(
@@ -131,9 +131,11 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
 
     return switch (ritualState.step) {
       RitualState.shuffling => const TarotShufflePage(),
-      RitualState.pickingCards || RitualState.confirming => const CardPickerPage(),
+      RitualState.pickingCards ||
+      RitualState.confirming => const CardPickerPage(),
       RitualState.revealing => const CardRevealPage(),
-      RitualState.reading || RitualState.completed => const SpreadOverviewPage(),
+      RitualState.reading ||
+      RitualState.completed => const SpreadOverviewPage(),
       RitualState.cancelled || RitualState.expired => _buildEndedView(),
     };
   }
@@ -146,10 +148,7 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            CosmicColors.background,
-            Color(0xFF1A0A3E),
-          ],
+          colors: [CosmicColors.background, Color(0xFF1A0A3E)],
         ),
       ),
       child: Center(

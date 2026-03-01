@@ -21,9 +21,8 @@ class MoodEntry {
     return MoodEntry(
       id: json['id'] as String,
       score: json['score'] as int,
-      tags: (json['tags'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
+      tags:
+          (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
           [],
       note: json['note'] as String? ?? '',
       loggedDate: json['logged_date'] as String,

@@ -16,7 +16,8 @@ const Map<String, Map<String, String>> scenarioStrings = {
     'scenario.heartbreak.q1': 'How can I heal from this breakup?',
     'scenario.heartbreak.q2': 'What does the universe say about my love life?',
     'scenario.heartbreak.q3': 'When will I be ready for love again?',
-    'scenario.heartbreak.q4': 'What lessons can I learn from this relationship?',
+    'scenario.heartbreak.q4':
+        'What lessons can I learn from this relationship?',
 
     // Love Compatibility
     'scenario.love_compatibility.title': 'Love Compatibility',
@@ -90,10 +91,8 @@ const Map<String, Map<String, String>> scenarioStrings = {
     'scenario.family_harmony.description':
         'Understand family dynamics through the stars.',
     'scenario.family_harmony.q1': 'How can I improve family relationships?',
-    'scenario.family_harmony.q2':
-        'Why do certain family members conflict?',
-    'scenario.family_harmony.q3':
-        'How can I create more harmony at home?',
+    'scenario.family_harmony.q2': 'Why do certain family members conflict?',
+    'scenario.family_harmony.q3': 'How can I create more harmony at home?',
   },
   'zh': {
     // Categories

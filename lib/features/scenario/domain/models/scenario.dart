@@ -57,11 +57,13 @@ class Scenario {
       category: json['category'] != null
           ? ScenarioCategory.fromJson(json['category'] as Map<String, dynamic>)
           : null,
-      toolBindings: (json['tool_bindings'] as List<dynamic>?)
+      toolBindings:
+          (json['tool_bindings'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           [],
-      presetQuestions: (json['preset_questions'] as List<dynamic>?)
+      presetQuestions:
+          (json['preset_questions'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           [],
@@ -93,7 +95,8 @@ class ScenarioSummary {
       iconUrl: json['icon_url'] as String? ?? '',
       category: json['category'] != null
           ? ScenarioCategorySummary.fromJson(
-              json['category'] as Map<String, dynamic>)
+              json['category'] as Map<String, dynamic>,
+            )
           : null,
     );
   }

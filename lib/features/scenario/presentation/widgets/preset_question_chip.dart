@@ -5,11 +5,7 @@ class PresetQuestionChip extends StatelessWidget {
   final String question;
   final VoidCallback? onTap;
 
-  const PresetQuestionChip({
-    super.key,
-    required this.question,
-    this.onTap,
-  });
+  const PresetQuestionChip({super.key, required this.question, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +16,7 @@ class PresetQuestionChip extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: CosmicColors.surfaceElevated,
-          border: Border.all(
-            color: CosmicColors.borderGlow,
-            width: 1,
-          ),
+          border: Border.all(color: CosmicColors.borderGlow, width: 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

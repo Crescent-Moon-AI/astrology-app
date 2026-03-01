@@ -64,15 +64,15 @@ class CategoryFilterChips extends ConsumerWidget {
                 label: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('${visual.emoji} ',
-                        style: const TextStyle(fontSize: 13)),
+                    Text(
+                      '${visual.emoji} ',
+                      style: const TextStyle(fontSize: 13),
+                    ),
                     Text(resolveScenarioKey(cat.name, locale)),
                   ],
                 ),
                 selected: isSelected,
-                onSelected: (_) => onSelected(
-                  isSelected ? null : cat.slug,
-                ),
+                onSelected: (_) => onSelected(isSelected ? null : cat.slug),
                 selectedColor: visual.accentColor.withValues(alpha: 0.25),
                 backgroundColor: CosmicColors.surfaceElevated,
                 side: BorderSide(

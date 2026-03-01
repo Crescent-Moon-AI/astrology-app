@@ -59,8 +59,11 @@ class MoodInsightsPage extends ConsumerWidget {
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.show_chart,
-                              size: 18, color: CosmicColors.secondary),
+                          const Icon(
+                            Icons.show_chart,
+                            size: 18,
+                            color: CosmicColors.secondary,
+                          ),
                           const SizedBox(width: 8),
                           Text(
                             isZh ? '心情趋势' : 'Mood Trend',
@@ -83,8 +86,11 @@ class MoodInsightsPage extends ConsumerWidget {
                 if (response.insights.isNotEmpty) ...[
                   Row(
                     children: [
-                      const Icon(Icons.auto_awesome,
-                          size: 18, color: CosmicColors.primaryLight),
+                      const Icon(
+                        Icons.auto_awesome,
+                        size: 18,
+                        color: CosmicColors.primaryLight,
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         l10n.moodInsightsTitle,
@@ -124,8 +130,10 @@ class MoodInsightsPage extends ConsumerWidget {
                     child: Center(
                       child: Column(
                         children: [
-                          const Text('\uD83D\uDD2E',
-                              style: TextStyle(fontSize: 48)),
+                          const Text(
+                            '\uD83D\uDD2E',
+                            style: TextStyle(fontSize: 48),
+                          ),
                           const SizedBox(height: 12),
                           Text(
                             isZh ? '暂无相关性数据' : 'No correlations found yet',
@@ -146,8 +154,11 @@ class MoodInsightsPage extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.cloud_off,
-                    size: 48, color: CosmicColors.textTertiary),
+                const Icon(
+                  Icons.cloud_off,
+                  size: 48,
+                  color: CosmicColors.textTertiary,
+                ),
                 const SizedBox(height: 12),
                 Text(
                   'Error: $error',

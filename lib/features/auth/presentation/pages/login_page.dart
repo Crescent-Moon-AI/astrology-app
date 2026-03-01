@@ -33,10 +33,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     setState(() => _loading = true);
     ref.read(authProvider.notifier).clearError();
 
-    final ok = await ref.read(authProvider.notifier).login(
-          _identifierCtrl.text.trim(),
-          _passwordCtrl.text,
-        );
+    final ok = await ref
+        .read(authProvider.notifier)
+        .login(_identifierCtrl.text.trim(), _passwordCtrl.text);
 
     if (mounted) setState(() => _loading = false);
     if (ok && mounted) {
@@ -125,8 +124,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
-                      validator: (v) =>
-                          v == null || v.trim().isEmpty ? l10n.authRequired : null,
+                      validator: (v) => v == null || v.trim().isEmpty
+                          ? l10n.authRequired
+                          : null,
                     ),
                     const SizedBox(height: 16),
 
@@ -139,13 +139,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         prefixIcon: Icons.lock_outline,
                         suffix: IconButton(
                           icon: Icon(
-                            _obscure
-                                ? Icons.visibility_off
-                                : Icons.visibility,
+                            _obscure ? Icons.visibility_off : Icons.visibility,
                             color: CosmicColors.textTertiary,
                           ),
-                          onPressed: () =>
-                              setState(() => _obscure = !_obscure),
+                          onPressed: () => setState(() => _obscure = !_obscure),
                         ),
                       ),
                       obscureText: _obscure,
@@ -178,16 +175,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           gradient: _loading
                               ? null
                               : CosmicColors.primaryGradient,
-                          color: _loading
-                              ? CosmicColors.surfaceElevated
-                              : null,
+                          color: _loading ? CosmicColors.surfaceElevated : null,
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: _loading
                               ? null
                               : [
                                   BoxShadow(
-                                    color: CosmicColors.primary
-                                        .withValues(alpha: 0.3),
+                                    color: CosmicColors.primary.withValues(
+                                      alpha: 0.3,
+                                    ),
                                     blurRadius: 12,
                                     offset: const Offset(0, 4),
                                   ),
@@ -229,8 +225,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       style: TextButton.styleFrom(
                         foregroundColor: CosmicColors.primaryLight,
                       ),
-                      child:
-                          Text(l10n.authNoAccount),
+                      child: Text(l10n.authNoAccount),
                     ),
                   ],
                 ),

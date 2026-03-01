@@ -20,10 +20,7 @@ class AuthRemoteDatasource {
     String? username,
     String? inviteCode,
   }) async {
-    final body = <String, dynamic>{
-      'email': email,
-      'password': password,
-    };
+    final body = <String, dynamic>{'email': email, 'password': password};
     if (username != null && username.isNotEmpty) body['username'] = username;
     if (inviteCode != null && inviteCode.isNotEmpty) {
       body['invite_code'] = inviteCode;
@@ -36,17 +33,18 @@ class AuthRemoteDatasource {
     required String identifier,
     required String password,
   }) async {
-    final response = await _dio.post('/api/auth/login', data: {
-      'identifier': identifier,
-      'password': password,
-    });
+    final response = await _dio.post(
+      '/api/auth/login',
+      data: {'identifier': identifier, 'password': password},
+    );
     return _parseAuth(response.data as Map<String, dynamic>);
   }
 
   Future<AuthResponse> refresh(String refreshToken) async {
-    final response = await _dio.post('/api/auth/refresh', data: {
-      'refresh_token': refreshToken,
-    });
+    final response = await _dio.post(
+      '/api/auth/refresh',
+      data: {'refresh_token': refreshToken},
+    );
     return _parseAuth(response.data as Map<String, dynamic>);
   }
 

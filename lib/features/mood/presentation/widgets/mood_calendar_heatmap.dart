@@ -67,8 +67,10 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: const Icon(Icons.chevron_left,
-                  color: CosmicColors.textSecondary),
+              icon: const Icon(
+                Icons.chevron_left,
+                color: CosmicColors.textSecondary,
+              ),
               onPressed: _previousMonth,
             ),
             Text(
@@ -82,8 +84,10 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.chevron_right,
-                  color: CosmicColors.textSecondary),
+              icon: const Icon(
+                Icons.chevron_right,
+                color: CosmicColors.textSecondary,
+              ),
               onPressed: _nextMonth,
             ),
           ],
@@ -93,18 +97,20 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
         // Weekday headers
         Row(
           children: weekDayLabels
-              .map((label) => Expanded(
-                    child: Center(
-                      child: Text(
-                        label,
-                        style: const TextStyle(
-                          color: CosmicColors.textTertiary,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
+              .map(
+                (label) => Expanded(
+                  child: Center(
+                    child: Text(
+                      label,
+                      style: const TextStyle(
+                        color: CosmicColors.textTertiary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ))
+                  ),
+                ),
+              )
               .toList(),
         ),
         const SizedBox(height: 4),
@@ -139,8 +145,11 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
       entryMap[entry.loggedDate] = entry;
     }
 
-    final daysInMonth =
-        DateTime(_currentMonth.year, _currentMonth.month + 1, 0).day;
+    final daysInMonth = DateTime(
+      _currentMonth.year,
+      _currentMonth.month + 1,
+      0,
+    ).day;
     final firstWeekday =
         DateTime(_currentMonth.year, _currentMonth.month, 1).weekday % 7;
 
@@ -172,18 +181,16 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
               border: entry != null
                   ? null
                   : Border.all(
-                      color: CosmicColors.primary.withValues(alpha: 0.1)),
+                      color: CosmicColors.primary.withValues(alpha: 0.1),
+                    ),
             ),
             alignment: Alignment.center,
             child: Text(
               '$day',
               style: TextStyle(
-                color: entry != null
-                    ? Colors.white
-                    : CosmicColors.textTertiary,
+                color: entry != null ? Colors.white : CosmicColors.textTertiary,
                 fontSize: 12,
-                fontWeight:
-                    entry != null ? FontWeight.w600 : FontWeight.normal,
+                fontWeight: entry != null ? FontWeight.w600 : FontWeight.normal,
               ),
             ),
           ),
@@ -202,8 +209,18 @@ class _MoodCalendarHeatmapState extends ConsumerState<MoodCalendarHeatmap> {
 
   String _formatMonthYear(DateTime date) {
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
     return '${months[date.month - 1]} ${date.year}';
   }

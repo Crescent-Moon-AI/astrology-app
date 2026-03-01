@@ -143,17 +143,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/tarot/spread-select',
         name: 'tarotSpreadSelect',
         builder: (context, state) {
-          final conversationId =
-              state.uri.queryParameters['conversation_id'];
+          final conversationId = state.uri.queryParameters['conversation_id'];
           return SpreadSelectionPage(conversationId: conversationId);
         },
       ),
       GoRoute(
         path: '/tarot/ritual/:sessionId',
         name: 'tarotRitual',
-        builder: (context, state) => TarotRitualPage(
-          sessionId: state.pathParameters['sessionId']!,
-        ),
+        builder: (context, state) =>
+            TarotRitualPage(sessionId: state.pathParameters['sessionId']!),
       ),
       GoRoute(
         path: '/mood/history',

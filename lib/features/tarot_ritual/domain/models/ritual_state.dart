@@ -12,7 +12,7 @@ enum RitualState {
   final String value;
 
   static RitualState fromValue(String value) => RitualState.values.firstWhere(
-        (e) => e.value == value,
-        orElse: () => RitualState.shuffling,
-      );
+    (e) => e.value == value,
+    orElse: () => RitualState.shuffling,
+  );
 }

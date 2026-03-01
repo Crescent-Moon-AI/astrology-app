@@ -7,11 +7,7 @@ class FriendCard extends StatelessWidget {
   final FriendProfile friend;
   final VoidCallback? onTap;
 
-  const FriendCard({
-    super.key,
-    required this.friend,
-    this.onTap,
-  });
+  const FriendCard({super.key, required this.friend, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +35,7 @@ class FriendCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    friend.name.isNotEmpty
-                        ? friend.name[0].toUpperCase()
-                        : '?',
+                    friend.name.isNotEmpty ? friend.name[0].toUpperCase() : '?',
                     style: const TextStyle(
                       color: CosmicColors.textPrimary,
                       fontWeight: FontWeight.bold,

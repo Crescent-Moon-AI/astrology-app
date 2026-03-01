@@ -15,10 +15,7 @@ class SocialRepositoryImpl implements SocialRepository {
     required String cardType,
     required Map<String, dynamic> sourceData,
   }) {
-    return _shareApi.generateCard(
-      cardType: cardType,
-      sourceData: sourceData,
-    );
+    return _shareApi.generateCard(cardType: cardType, sourceData: sourceData);
   }
 
   @override
@@ -65,10 +62,7 @@ class SocialRepositoryImpl implements SocialRepository {
   }
 
   @override
-  Future<FriendProfile> updateFriend(
-    String id,
-    Map<String, dynamic> updates,
-  ) {
+  Future<FriendProfile> updateFriend(String id, Map<String, dynamic> updates) {
     return _friendApi.updateFriend(id, updates);
   }
 

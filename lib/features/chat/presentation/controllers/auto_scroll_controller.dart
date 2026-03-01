@@ -6,7 +6,7 @@ class AutoScrollController {
   static const double _bottomThreshold = 50.0;
 
   AutoScrollController({ScrollController? controller})
-      : scrollController = controller ?? ScrollController() {
+    : scrollController = controller ?? ScrollController() {
     scrollController.addListener(_onScroll);
   }
 
@@ -19,9 +19,7 @@ class AutoScrollController {
     _isUserScrolledUp = (maxScroll - currentScroll) > _bottomThreshold;
   }
 
-  void scrollToBottom({
-    Duration duration = const Duration(milliseconds: 200),
-  }) {
+  void scrollToBottom({Duration duration = const Duration(milliseconds: 200)}) {
     if (!scrollController.hasClients) return;
     scrollController.animateTo(
       scrollController.position.maxScrollExtent,
