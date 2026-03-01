@@ -642,62 +642,100 @@ class MockInterceptor extends Interceptor {
 
   Map<String, dynamic> _tarotCreate(dynamic body) {
     final b = body as Map<String, dynamic>? ?? {};
+    final now = DateTime.now().toIso8601String();
     return {
       'data': {
         'id': 'mock-tarot-${DateTime.now().millisecondsSinceEpoch}',
         'conversation_id': b['conversation_id'] ?? 'mock-conv-001',
-        'spread_type': b['spread_type'] ?? 'celtic_cross',
-        'question': b['question'] ?? '我的感情何去何从？',
-        'ritual_state': 'selecting',
-        'cards': <Map<String, dynamic>>[],
-        'created_at': DateTime.now().toIso8601String(),
+        'spread_type': b['spread_type'] ?? 'three_card',
+        'card_count': b['card_count'] ?? 3,
+        'question': b['question'] ?? '',
+        'ritual_state': 'shuffling',
+        'selected_positions': <int>[],
+        'selected_cards': <Map<String, dynamic>>[],
+        'position_labels': ['过去', '现在', '未来'],
+        'started_at': now,
+        'created_at': now,
       },
     };
   }
 
-  Map<String, dynamic> _tarotDetail() => {
-    'data': {
-      'id': 'mock-tarot-001',
-      'conversation_id': 'mock-conv-002',
-      'spread_type': 'celtic_cross',
-      'question': '我的感情何去何从？',
-      'ritual_state': 'completed',
-      'cards': [
-        {
-          'position': 0,
-          'card_name': '圣杯王后',
-          'card_id': 'cups_queen',
-          'is_reversed': false,
-          'meaning': '情感成熟、直觉敏锐、温柔关怀',
-        },
-        {
-          'position': 1,
-          'card_name': '恋人',
-          'card_id': 'major_06',
-          'is_reversed': false,
-          'meaning': '爱情选择、价值观一致、灵魂伴侣',
-        },
-        {
-          'position': 2,
-          'card_name': '星币十',
-          'card_id': 'pentacles_10',
-          'is_reversed': false,
-          'meaning': '家庭和谐、财富稳定、世代传承',
-        },
-      ],
-      'created_at': DateTime.now()
-          .subtract(const Duration(days: 1))
-          .toIso8601String(),
-    },
-  };
-
-  Map<String, dynamic> _tarotUpdate(dynamic body) {
-    final b = body as Map<String, dynamic>? ?? {};
+  Map<String, dynamic> _tarotDetail() {
+    final now = DateTime.now()
+        .subtract(const Duration(days: 1))
+        .toIso8601String();
     return {
       'data': {
         'id': 'mock-tarot-001',
+        'conversation_id': 'mock-conv-002',
+        'spread_type': 'three_card',
+        'card_count': 3,
+        'question': '我的感情何去何从？',
+        'ritual_state': 'completed',
+        'selected_positions': [0, 1, 2],
+        'selected_cards': [
+          {
+            'position': 0,
+            'position_label': '过去',
+            'card': {
+              'id': 37,
+              'name': 'cups_queen',
+              'name_zh': '圣杯王后',
+              'number': 13,
+              'suit': 'cups',
+              'arcana': 'minor',
+              'orientation': 'upright',
+            },
+          },
+          {
+            'position': 1,
+            'position_label': '现在',
+            'card': {
+              'id': 6,
+              'name': 'the_lovers',
+              'name_zh': '恋人',
+              'number': 6,
+              'suit': '',
+              'arcana': 'major',
+              'orientation': 'upright',
+            },
+          },
+          {
+            'position': 2,
+            'position_label': '未来',
+            'card': {
+              'id': 63,
+              'name': 'pentacles_10',
+              'name_zh': '星币十',
+              'number': 10,
+              'suit': 'pentacles',
+              'arcana': 'minor',
+              'orientation': 'reversed',
+            },
+          },
+        ],
+        'position_labels': ['过去', '现在', '未来'],
+        'started_at': now,
+        'completed_at': now,
+      },
+    };
+  }
+
+  Map<String, dynamic> _tarotUpdate(dynamic body) {
+    final b = body as Map<String, dynamic>? ?? {};
+    final now = DateTime.now().toIso8601String();
+    return {
+      'data': {
+        'id': 'mock-tarot-001',
+        'conversation_id': 'mock-conv-001',
+        'spread_type': 'three_card',
+        'card_count': 3,
+        'question': '',
         'ritual_state': b['ritual_state'] ?? 'completed',
-        'selected_positions': b['selected_positions'] ?? [0, 1, 2],
+        'selected_positions': b['selected_positions'] ?? <int>[],
+        'selected_cards': b['selected_cards'] ?? <Map<String, dynamic>>[],
+        'position_labels': ['过去', '现在', '未来'],
+        'started_at': now,
       },
     };
   }

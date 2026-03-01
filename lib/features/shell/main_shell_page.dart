@@ -52,61 +52,141 @@ class _MainShellPageState extends ConsumerState<MainShellPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
 
     return Scaffold(
       body: widget.child,
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: CosmicColors.borderGlow,
-              width: 0.5,
+      bottomNavigationBar: _CosmicBottomBar(
+        currentIndex: _currentIndex,
+        onTabSelected: (index) {
+          if (index == _currentIndex) return;
+          setState(() => _currentIndex = index);
+          context.go(_tabRoutes[index]);
+        },
+        onCenterTap: () => context.push('/tarot'),
+        labels: [
+          l10n.scenarioExploreTitle,
+          l10n.chatTitle,
+          l10n.calendarTitle,
+          isZh ? '\u6211\u7684' : 'Profile',
+        ],
+      ),
+    );
+  }
+}
+
+class _CosmicBottomBar extends StatelessWidget {
+  final int currentIndex;
+  final ValueChanged<int> onTabSelected;
+  final VoidCallback onCenterTap;
+  final List<String> labels;
+
+  const _CosmicBottomBar({
+    required this.currentIndex,
+    required this.onTabSelected,
+    required this.onCenterTap,
+    required this.labels,
+  });
+
+  static const _unselectedIcons = [
+    Icons.explore_outlined,
+    Icons.question_answer_outlined,
+    Icons.nights_stay_outlined,
+    Icons.person_outline,
+  ];
+
+  static const _selectedIcons = [
+    Icons.explore,
+    Icons.question_answer,
+    Icons.nights_stay,
+    Icons.person,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
+    return SizedBox(
+      height: 64 + bottomPadding + 14, // extra 14 for raised button
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // Nav bar background
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 64 + bottomPadding,
+            child: Container(
+              padding: EdgeInsets.only(bottom: bottomPadding),
+              decoration: BoxDecoration(
+                color: CosmicColors.backgroundDeep.withAlpha(230),
+              ),
+              child: Row(
+                children: [
+                  _buildTab(0),
+                  _buildTab(1),
+                  const Spacer(), // placeholder for center button
+                  _buildTab(2),
+                  _buildTab(3),
+                ],
+              ),
             ),
           ),
-        ),
-        child: NavigationBar(
-          selectedIndex: _currentIndex,
-          backgroundColor: CosmicColors.background,
-          indicatorColor: CosmicColors.primary.withValues(alpha: 0.2),
-          surfaceTintColor: Colors.transparent,
-          onDestinationSelected: (index) {
-            if (index == _currentIndex) return;
-            setState(() => _currentIndex = index);
-            context.go(_tabRoutes[index]);
-          },
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          destinations: [
-            NavigationDestination(
-              icon: const Icon(Icons.explore_outlined),
-              selectedIcon: const Icon(Icons.explore),
-              label: l10n.scenarioExploreTitle,
+          // Raised center button — centered horizontally, raised above bar
+          Positioned(
+            bottom: bottomPadding + (64 - 56) / 2,
+            left: 0,
+            right: 0,
+            child: Center(child: _buildCenterButton()),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTab(int index) {
+    final isSelected = currentIndex == index;
+
+    return Expanded(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => onTabSelected(index),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              isSelected ? _selectedIcons[index] : _unselectedIcons[index],
+              color: isSelected
+                  ? CosmicColors.primaryLight
+                  : CosmicColors.textTertiary,
+              size: 24,
             ),
-            NavigationDestination(
-              icon: const Icon(Icons.chat_outlined),
-              selectedIcon: const Icon(Icons.chat),
-              label: l10n.chatTitle,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.auto_awesome_outlined),
-              selectedIcon: const Icon(Icons.auto_awesome),
-              label: l10n.calendarTitle,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.person_outline),
-              selectedIcon: const Icon(Icons.person),
-              label: _getProfileLabel(l10n),
+            const SizedBox(height: 2),
+            Text(
+              labels[index],
+              style: TextStyle(
+                fontSize: 11,
+                color: isSelected
+                    ? CosmicColors.primaryLight
+                    : CosmicColors.textTertiary,
+                fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
+              ),
             ),
           ],
         ),
       ),
-      // Floating center tarot button
-      floatingActionButton: SizedBox(
-        width: 56,
-        height: 56,
-        child: FloatingActionButton(
-          onPressed: () => context.push('/tarot'),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+    );
+  }
+
+  Widget _buildCenterButton() {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onCenterTap,
+      child: SizedBox(
+        width: 72, // larger tap target
+        height: 72,
+        child: Center(
           child: Container(
             width: 56,
             height: 56,
@@ -115,26 +195,20 @@ class _MainShellPageState extends ConsumerState<MainShellPage> {
               gradient: CosmicColors.primaryGradient,
               boxShadow: [
                 BoxShadow(
-                  color: CosmicColors.primary.withValues(alpha: 0.4),
-                  blurRadius: 12,
-                  spreadRadius: 2,
+                  color: CosmicColors.primary.withAlpha(77), // 30%
+                  blurRadius: 16,
+                  spreadRadius: 0,
                 ),
               ],
             ),
             child: const Icon(
-              Icons.style,
+              Icons.auto_awesome,
               color: CosmicColors.textPrimary,
               size: 28,
             ),
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
-  }
-
-  String _getProfileLabel(AppLocalizations l10n) {
-    final locale = Localizations.localeOf(context).languageCode;
-    return locale.startsWith('zh') ? '我的' : 'Profile';
   }
 }

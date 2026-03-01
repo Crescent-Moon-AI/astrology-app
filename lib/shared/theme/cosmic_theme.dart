@@ -6,98 +6,132 @@ class CosmicTheme {
   CosmicTheme._();
 
   static ThemeData get dark => ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: CosmicColors.background,
-        colorScheme: const ColorScheme.dark(
-          primary: CosmicColors.primary,
-          secondary: CosmicColors.secondary,
-          surface: CosmicColors.background,
-          error: CosmicColors.error,
-          onPrimary: CosmicColors.textPrimary,
-          onSecondary: CosmicColors.background,
-          onSurface: CosmicColors.textPrimary,
-          onError: CosmicColors.textPrimary,
-        ),
-        cardTheme: CardThemeData(
-          color: CosmicColors.surface,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side:
-                const BorderSide(color: CosmicColors.borderGlow, width: 1),
-          ),
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          foregroundColor: CosmicColors.textPrimary,
-        ),
-        textTheme: const TextTheme(
-          headlineLarge: TextStyle(
-            color: CosmicColors.textPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-          headlineMedium: TextStyle(
-            color: CosmicColors.textPrimary,
-            fontWeight: FontWeight.w600,
-          ),
-          titleLarge: TextStyle(
-            color: CosmicColors.textPrimary,
-            fontWeight: FontWeight.w600,
-          ),
-          titleMedium: TextStyle(color: CosmicColors.textPrimary),
-          bodyLarge: TextStyle(color: CosmicColors.textPrimary),
-          bodyMedium: TextStyle(color: CosmicColors.textSecondary),
-          bodySmall: TextStyle(color: CosmicColors.textTertiary),
-          labelLarge: TextStyle(
-            color: CosmicColors.textPrimary,
+    useMaterial3: true,
+    brightness: Brightness.dark,
+    scaffoldBackgroundColor: CosmicColors.background,
+    colorScheme: const ColorScheme.dark(
+      primary: CosmicColors.primary,
+      secondary: CosmicColors.secondary,
+      surface: CosmicColors.background,
+      error: CosmicColors.error,
+      onPrimary: CosmicColors.textPrimary,
+      onSecondary: CosmicColors.background,
+      onSurface: CosmicColors.textPrimary,
+      onError: CosmicColors.textPrimary,
+    ),
+    cardTheme: CardThemeData(
+      color: CosmicColors.surface,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: const BorderSide(color: CosmicColors.borderGlow, width: 1),
+      ),
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      foregroundColor: CosmicColors.textPrimary,
+    ),
+    textTheme: const TextTheme(
+      headlineLarge: TextStyle(
+        color: CosmicColors.textPrimary,
+        fontSize: 28,
+        fontWeight: FontWeight.bold,
+      ),
+      headlineMedium: TextStyle(
+        color: CosmicColors.textPrimary,
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
+      ),
+      titleLarge: TextStyle(
+        color: CosmicColors.textPrimary,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+      ),
+      titleMedium: TextStyle(color: CosmicColors.textPrimary),
+      bodyLarge: TextStyle(color: CosmicColors.textPrimary),
+      bodyMedium: TextStyle(color: CosmicColors.textSecondary),
+      bodySmall: TextStyle(color: CosmicColors.textTertiary),
+      labelLarge: TextStyle(
+        color: CosmicColors.textPrimary,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: CosmicColors.backgroundDeep,
+      indicatorColor: CosmicColors.primary.withAlpha(38), // 15%
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const TextStyle(
+            color: CosmicColors.primaryLight,
+            fontSize: 11,
             fontWeight: FontWeight.w500,
-          ),
-        ),
-        dividerTheme: const DividerThemeData(
-          color: CosmicColors.divider,
-          thickness: 1,
-        ),
-        iconTheme: const IconThemeData(color: CosmicColors.textPrimary),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: CosmicColors.primary,
-            foregroundColor: CosmicColors.textPrimary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-            ),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          ),
-        ),
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            backgroundColor: CosmicColors.primary,
-            foregroundColor: CosmicColors.textPrimary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-            ),
-          ),
-        ),
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            foregroundColor: CosmicColors.primaryLight,
-          ),
-        ),
-        snackBarTheme: const SnackBarThemeData(
-          backgroundColor: CosmicColors.surfaceHighlight,
-          contentTextStyle: TextStyle(color: CosmicColors.textPrimary),
-        ),
-        progressIndicatorTheme: const ProgressIndicatorThemeData(
-          color: CosmicColors.primary,
-        ),
-      );
+          );
+        }
+        return const TextStyle(color: CosmicColors.textTertiary, fontSize: 11);
+      }),
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const IconThemeData(
+            color: CosmicColors.primaryLight,
+            size: 24,
+          );
+        }
+        return const IconThemeData(color: CosmicColors.textTertiary, size: 24);
+      }),
+    ),
+    dividerTheme: const DividerThemeData(
+      color: CosmicColors.divider,
+      thickness: 1,
+    ),
+    iconTheme: const IconThemeData(color: CosmicColors.textPrimary),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: CosmicColors.primary,
+        foregroundColor: CosmicColors.textPrimary,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      ),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: CosmicColors.primary,
+        foregroundColor: CosmicColors.textPrimary,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(foregroundColor: CosmicColors.primaryLight),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: CosmicColors.surface,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: CosmicColors.borderGlow),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: CosmicColors.borderSubtle),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: CosmicColors.primary),
+      ),
+    ),
+    snackBarTheme: const SnackBarThemeData(
+      backgroundColor: CosmicColors.surfaceHighlight,
+      contentTextStyle: TextStyle(color: CosmicColors.textPrimary),
+    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: CosmicColors.primary,
+    ),
+  );
 
   static ThemeData get classic => ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(seedColor: CosmicColors.primary),
-      );
+    useMaterial3: true,
+    brightness: Brightness.light,
+    colorScheme: ColorScheme.fromSeed(seedColor: CosmicColors.primary),
+  );
 }

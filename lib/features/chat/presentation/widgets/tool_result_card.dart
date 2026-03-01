@@ -18,19 +18,35 @@ class ToolResultCard extends StatefulWidget {
 class _ToolResultCardState extends State<ToolResultCard> {
   bool _showDetails = false;
 
-  String get _toolDisplayName => widget.block.toolName ?? 'Tool';
+  String get _toolDisplayName {
+    final name = widget.block.toolName ?? 'Tool';
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
+    if (!isZh) return name;
+    return switch (name) {
+      'tarot_reading' || 'tarot' => '\u5854\u7F57\u5360\u535C',
+      'natal_chart' => '\u661F\u76D8\u5206\u6790',
+      'synastry' => '\u5408\u76D8\u5206\u6790',
+      'transit' => '\u884C\u661F\u8FC7\u5883',
+      _ => name,
+    };
+  }
+
+  Color get _statusColor {
+    return switch (widget.block.status) {
+      BlockStatus.running => CosmicColors.primary,
+      BlockStatus.success => CosmicColors.success,
+      BlockStatus.error => CosmicColors.error,
+      _ => CosmicColors.textTertiary,
+    };
+  }
 
   String get _statusIcon {
-    switch (widget.block.status) {
-      case BlockStatus.running:
-        return '\u23F3'; // hourglass
-      case BlockStatus.success:
-        return '\u2705'; // check mark
-      case BlockStatus.error:
-        return '\u274C'; // cross mark
-      default:
-        return '\uD83D\uDD27'; // wrench
-    }
+    return switch (widget.block.status) {
+      BlockStatus.running => '\u23F3', // hourglass
+      BlockStatus.success => '\u2705', // check mark
+      BlockStatus.error => '\u274C', // cross mark
+      _ => '\uD83D\uDD27', // wrench
+    };
   }
 
   Map<String, dynamic>? get _parsedPayload {
@@ -48,91 +64,118 @@ class _ToolResultCardState extends State<ToolResultCard> {
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
-      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: CosmicColors.surfaceElevated,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: CosmicColors.borderGlow),
       ),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Summary row
-          Row(
-            children: [
-              Text(_statusIcon, style: const TextStyle(fontSize: 16)),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  _toolDisplayName,
-                  style: const TextStyle(
-                    color: CosmicColors.textPrimary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+          // Left color bar
+          Container(
+            width: 3,
+            constraints: const BoxConstraints(minHeight: 48),
+            decoration: BoxDecoration(
+              color: _statusColor,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                bottomLeft: Radius.circular(12),
               ),
-              if (widget.block.durationMs != null)
-                Text(
-                  '${(widget.block.durationMs! / 1000).toStringAsFixed(1)}s',
-                  style: const TextStyle(
-                    color: CosmicColors.textTertiary,
-                    fontSize: 12,
-                  ),
-                ),
-            ],
+            ),
           ),
-          // Error message
-          if (widget.block.error != null) ...[
-            const SizedBox(height: 8),
-            Text(
-              widget.block.error!,
-              style: const TextStyle(
-                color: CosmicColors.error,
-                fontSize: 12,
-              ),
-            ),
-          ],
-          // Detail toggle
-          if (widget.block.status == BlockStatus.success &&
-              _parsedPayload != null) ...[
-            const SizedBox(height: 8),
-            AnimatedCrossFade(
-              firstChild: const SizedBox.shrink(),
-              secondChild: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: CosmicColors.background,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: CosmicColors.primary.withValues(alpha: 0.2),
+          // Content
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Summary row
+                  Row(
+                    children: [
+                      Text(_statusIcon, style: const TextStyle(fontSize: 16)),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          _toolDisplayName,
+                          style: const TextStyle(
+                            color: CosmicColors.primaryLight,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      if (widget.block.durationMs != null)
+                        Text(
+                          '${(widget.block.durationMs! / 1000).toStringAsFixed(1)}s',
+                          style: const TextStyle(
+                            color: CosmicColors.textTertiary,
+                            fontSize: 12,
+                          ),
+                        ),
+                    ],
                   ),
-                ),
-                child: Text(
-                  const JsonEncoder.withIndent('  ').convert(_parsedPayload),
-                  style: const TextStyle(
-                    color: CosmicColors.textSecondary,
-                    fontSize: 12,
-                    fontFamily: 'monospace',
-                  ),
-                ),
+                  // Error message
+                  if (widget.block.error != null) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      widget.block.error!,
+                      style: const TextStyle(
+                        color: CosmicColors.error,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                  // Detail toggle
+                  if (widget.block.status == BlockStatus.success &&
+                      _parsedPayload != null) ...[
+                    const SizedBox(height: 8),
+                    AnimatedCrossFade(
+                      firstChild: const SizedBox.shrink(),
+                      secondChild: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: CosmicColors.background,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: CosmicColors.primary.withAlpha(51), // 20%
+                          ),
+                        ),
+                        child: Text(
+                          const JsonEncoder.withIndent(
+                            '  ',
+                          ).convert(_parsedPayload),
+                          style: const TextStyle(
+                            color: CosmicColors.textSecondary,
+                            fontSize: 12,
+                            fontFamily: 'monospace',
+                          ),
+                        ),
+                      ),
+                      crossFadeState: _showDetails
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
+                      duration: const Duration(milliseconds: 300),
+                    ),
+                    TextButton(
+                      onPressed: () =>
+                          setState(() => _showDetails = !_showDetails),
+                      child: Text(
+                        _showDetails
+                            ? (l10n?.cardHideDetails ?? 'Hide Details')
+                            : (l10n?.cardShowDetails ?? 'Show Details'),
+                        style: const TextStyle(
+                          color: CosmicColors.primaryLight,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
               ),
-              crossFadeState: _showDetails
-                  ? CrossFadeState.showSecond
-                  : CrossFadeState.showFirst,
-              duration: const Duration(milliseconds: 300),
             ),
-            TextButton(
-              onPressed: () => setState(() => _showDetails = !_showDetails),
-              child: Text(
-                _showDetails
-                    ? (l10n?.cardHideDetails ?? 'Hide Details')
-                    : (l10n?.cardShowDetails ?? 'Show Details'),
-                style: const TextStyle(color: CosmicColors.primaryLight),
-              ),
-            ),
-          ],
+          ),
         ],
       ),
     );

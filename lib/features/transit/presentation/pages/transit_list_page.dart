@@ -27,12 +27,14 @@ class TransitListPage extends ConsumerWidget {
             color: CosmicColors.textPrimary,
           ),
         ),
-        backgroundColor: CosmicColors.background,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.calendar_month,
-                color: CosmicColors.primaryLight),
+            icon: const Icon(
+              Icons.calendar_month,
+              color: CosmicColors.primaryLight,
+            ),
             onPressed: () => context.pushNamed('calendar'),
             tooltip: l10n.calendarTitle,
           ),
@@ -115,16 +117,18 @@ class TransitListPage extends ConsumerWidget {
 
     return Column(
       children: alerts
-          .map((alert) => Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: TransitCard(
-                  alert: alert,
-                  onTap: () => context.pushNamed(
-                    'transitDetail',
-                    pathParameters: {'id': alert.id},
-                  ),
+          .map(
+            (alert) => Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: TransitCard(
+                alert: alert,
+                onTap: () => context.pushNamed(
+                  'transitDetail',
+                  pathParameters: {'id': alert.id},
                 ),
-              ))
+              ),
+            ),
+          )
           .toList(),
     );
   }
@@ -135,8 +139,11 @@ class TransitListPage extends ConsumerWidget {
       child: Center(
         child: Column(
           children: [
-            const Icon(Icons.cloud_off,
-                size: 36, color: CosmicColors.textTertiary),
+            const Icon(
+              Icons.cloud_off,
+              size: 36,
+              color: CosmicColors.textTertiary,
+            ),
             const SizedBox(height: 8),
             Text(
               'Error: $error',

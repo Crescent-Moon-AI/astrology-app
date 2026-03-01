@@ -50,11 +50,8 @@ class _ChatInputState extends State<ChatInput> {
         top: 10,
         bottom: MediaQuery.of(context).padding.bottom + 10,
       ),
-      decoration: const BoxDecoration(
-        color: CosmicColors.background,
-        border: Border(
-          top: BorderSide(color: CosmicColors.borderGlow, width: 0.5),
-        ),
+      decoration: BoxDecoration(
+        color: CosmicColors.backgroundDeep.withAlpha(230),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -93,7 +90,7 @@ class _ChatInputState extends State<ChatInput> {
                   ),
                 ),
                 filled: true,
-                fillColor: CosmicColors.surfaceElevated,
+                fillColor: CosmicColors.surface,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 18,
                   vertical: 10,
@@ -103,8 +100,8 @@ class _ChatInputState extends State<ChatInput> {
           ),
           const SizedBox(width: 8),
           Container(
-            width: 40,
-            height: 40,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: canSend ? CosmicColors.primaryGradient : null,

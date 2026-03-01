@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../theme/cosmic_colors.dart';
 
 /// A frosted-glass card with backdrop blur, semi-transparent background,
-/// and a subtle border glow.
+/// and subtle border. Creates a "floating glass panel" effect over starfield.
 class CosmicCard extends StatelessWidget {
   final Widget child;
   final EdgeInsets? padding;
@@ -27,19 +27,9 @@ class CosmicCard extends StatelessWidget {
         child: Container(
           padding: padding,
           decoration: BoxDecoration(
-            color: CosmicColors.surface,
+            color: CosmicColors.surfaceElevated,
             borderRadius: BorderRadius.circular(borderRadius),
-            border: Border.all(
-              color: CosmicColors.borderGlow,
-              width: 1,
-            ),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x1A6C5CE7), // primary @ 10%
-                blurRadius: 24,
-                spreadRadius: 0,
-              ),
-            ],
+            border: Border.all(color: CosmicColors.borderGlow, width: 0.5),
           ),
           child: child,
         ),

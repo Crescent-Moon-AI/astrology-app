@@ -154,8 +154,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       content: content,
       conversationId: _currentConversationId,
       language: Localizations.localeOf(context).languageCode,
-      scenarioId:
-          _currentConversationId == null ? widget.scenarioId : null,
+      scenarioId: _currentConversationId == null ? widget.scenarioId : null,
     );
 
     _autoScroll.scrollToBottom();
@@ -171,8 +170,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final messages =
-        ref.watch(chatMessagesProvider(_currentConversationId ?? ''));
+    final messages = ref.watch(
+      chatMessagesProvider(_currentConversationId ?? ''),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -214,8 +214,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             if (_wsError != null)
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: CosmicColors.error.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
@@ -225,14 +227,19 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.warning_amber_rounded,
-                        size: 16, color: CosmicColors.error),
+                    const Icon(
+                      Icons.warning_amber_rounded,
+                      size: 16,
+                      color: CosmicColors.error,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         _wsError!,
                         style: const TextStyle(
-                            color: CosmicColors.error, fontSize: 12),
+                          color: CosmicColors.error,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ],
@@ -287,14 +294,16 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             ),
             const SizedBox(height: 20),
             Text(
-              isZh ? '有什么想问的？' : 'What would you like to ask?',
+              isZh
+                  ? '\u6709\u4EC0\u4E48\u60F3\u95EE\u7684\uFF1F'
+                  : 'What would you like to ask?',
               style: const TextStyle(
                 color: CosmicColors.textPrimary,
-                fontSize: 20,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Text(
               isZh
                   ? '写下你的问题，让星象为你指引方向'
@@ -347,6 +356,13 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           color: CosmicColors.surfaceElevated,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: CosmicColors.borderGlow),
+          boxShadow: [
+            BoxShadow(
+              color: CosmicColors.primary.withAlpha(13), // 5%
+              blurRadius: 8,
+              spreadRadius: 0,
+            ),
+          ],
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
