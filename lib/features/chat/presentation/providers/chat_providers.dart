@@ -28,22 +28,25 @@ final conversationListProvider =
 });
 
 // Messages state notifier (per conversation)
-final chatMessagesProvider = StateNotifierProvider.family<ChatMessagesNotifier,
+final chatMessagesProvider = NotifierProvider.family<ChatMessagesNotifier,
     List<ChatMessage>, String>(
-  (ref, conversationId) {
-    final datasource = ref.watch(chatDatasourceProvider);
-    return ChatMessagesNotifier(datasource, conversationId);
-  },
+  (conversationId) => ChatMessagesNotifier(conversationId),
 );
 
-class ChatMessagesNotifier extends StateNotifier<List<ChatMessage>> {
-  final ChatRemoteDatasource _datasource;
+class ChatMessagesNotifier extends Notifier<List<ChatMessage>> {
+  ChatMessagesNotifier(this.conversationId);
+
   final String conversationId;
+  late final ChatRemoteDatasource _datasource;
 
   // Keep a reference to the datasource for potential future use
   ChatRemoteDatasource get datasource => _datasource;
 
-  ChatMessagesNotifier(this._datasource, this.conversationId) : super([]);
+  @override
+  List<ChatMessage> build() {
+    _datasource = ref.watch(chatDatasourceProvider);
+    return [];
+  }
 
   void addUserMessage(String content) {
     final msg = ChatMessage(

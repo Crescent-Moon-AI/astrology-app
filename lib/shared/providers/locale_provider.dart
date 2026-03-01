@@ -1,19 +1,17 @@
 import 'dart:ui';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/providers/core_providers.dart';
 
 enum AppLocaleMode { zh, en, system }
 
-class LocaleNotifier extends StateNotifier<AppLocaleMode> {
-  final SharedPreferences _prefs;
+class LocaleNotifier extends Notifier<AppLocaleMode> {
   static const _key = 'app_locale_mode';
 
-  LocaleNotifier(this._prefs) : super(_load(_prefs));
-
-  static AppLocaleMode _load(SharedPreferences prefs) {
+  @override
+  AppLocaleMode build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
     final value = prefs.getString(_key);
     return AppLocaleMode.values.firstWhere(
       (e) => e.name == value,
@@ -23,15 +21,12 @@ class LocaleNotifier extends StateNotifier<AppLocaleMode> {
 
   void setMode(AppLocaleMode mode) {
     state = mode;
-    _prefs.setString(_key, mode.name);
+    ref.read(sharedPreferencesProvider).setString(_key, mode.name);
   }
 }
 
-final localeModeProvider = StateNotifierProvider<LocaleNotifier, AppLocaleMode>(
-  (ref) {
-    final prefs = ref.watch(sharedPreferencesProvider);
-    return LocaleNotifier(prefs);
-  },
+final localeModeProvider = NotifierProvider<LocaleNotifier, AppLocaleMode>(
+  LocaleNotifier.new,
 );
 
 /// Resolved locale for MaterialApp.locale.

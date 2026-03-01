@@ -46,7 +46,7 @@ class ScenarioListPage extends ConsumerWidget {
               data: (categories) => CategoryFilterChips(
                 categories: categories,
                 onSelected: (slug) {
-                  ref.read(selectedCategoryProvider.notifier).state = slug;
+                  ref.read(selectedCategoryProvider.notifier).set(slug);
                 },
               ),
               loading: () => const SizedBox(height: 48),

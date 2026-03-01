@@ -38,13 +38,18 @@ class AuthState {
   }
 }
 
-class AuthNotifier extends StateNotifier<AuthState> {
-  final AuthRemoteDatasource _datasource;
-  final SecureStorage _storage;
-  final DioClient _dioClient;
+class AuthNotifier extends Notifier<AuthState> {
+  late final AuthRemoteDatasource _datasource;
+  late final SecureStorage _storage;
+  late final DioClient _dioClient;
 
-  AuthNotifier(this._datasource, this._storage, this._dioClient)
-      : super(const AuthState());
+  @override
+  AuthState build() {
+    _datasource = ref.watch(authDatasourceProvider);
+    _storage = ref.watch(secureStorageProvider);
+    _dioClient = ref.watch(dioClientProvider);
+    return const AuthState();
+  }
 
   Future<void> checkAuth() async {
     final token = await _storage.getAccessToken();
@@ -155,9 +160,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 }
 
-final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  final datasource = ref.watch(authDatasourceProvider);
-  final storage = ref.watch(secureStorageProvider);
-  final dioClient = ref.watch(dioClientProvider);
-  return AuthNotifier(datasource, storage, dioClient);
-});
+final authProvider = NotifierProvider<AuthNotifier, AuthState>(
+  AuthNotifier.new,
+);
