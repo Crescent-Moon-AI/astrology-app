@@ -160,5 +160,42 @@
   "moodDone": "Done",
   "moodEdit": "Edit",
   "moodNoteHint": "Add a note (optional)",
-  "moodAskAi": "Ask AI About This"
+  "moodAskAi": "Ask AI About This",
+  "authSubtitle": "AI Astrologer",
+  "authEmail": "Email",
+  "authPassword": "Password",
+  "authLogin": "Login",
+  "authRegister": "Register",
+  "authCreateAccount": "Create Account",
+  "authUsername": "Username (optional)",
+  "authConfirmPassword": "Confirm Password",
+  "authNoAccount": "Don't have an account? Register",
+  "authHaveAccount": "Already have an account? Login",
+  "authRequired": "Required",
+  "authInvalidEmail": "Invalid email",
+  "authPasswordMin": "At least 8 characters",
+  "authPasswordMismatch": "Passwords do not match",
+  "tarotCardCount": "{count} cards",
+  "@tarotCardCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exprGreeting": "Greeting",
+  "exprThinking": "Thinking",
+  "exprHappy": "Happy",
+  "exprCaring": "Caring",
+  "exprMysterious": "Mysterious",
+  "exprSurprised": "Surprised",
+  "exprExplaining": "Explaining",
+  "exprFarewell": "Farewell",
+  "languageSelection": "Language",
+  "languageChinese": "中文",
+  "languageEnglish": "English",
+  "languageSystem": "Follow System",
+  "errorLoadFailed": "Failed to load",
+  "retry": "Retry",
+  "noDataFound": "No data found"
 }

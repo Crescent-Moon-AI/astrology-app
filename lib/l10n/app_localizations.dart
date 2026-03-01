@@ -895,6 +895,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ask AI About This'**
   String get moodAskAi;
+
+  /// No description provided for @authSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Astrologer'**
+  String get authSubtitle;
+
+  /// No description provided for @authEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get authEmail;
+
+  /// No description provided for @authPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get authPassword;
+
+  /// No description provided for @authLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get authLogin;
+
+  /// No description provided for @authRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get authRegister;
+
+  /// No description provided for @authCreateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get authCreateAccount;
+
+  /// No description provided for @authUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Username (optional)'**
+  String get authUsername;
+
+  /// No description provided for @authConfirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get authConfirmPassword;
+
+  /// No description provided for @authNoAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? Register'**
+  String get authNoAccount;
+
+  /// No description provided for @authHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Login'**
+  String get authHaveAccount;
+
+  /// No description provided for @authRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get authRequired;
+
+  /// No description provided for @authInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email'**
+  String get authInvalidEmail;
+
+  /// No description provided for @authPasswordMin.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters'**
+  String get authPasswordMin;
+
+  /// No description provided for @authPasswordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get authPasswordMismatch;
+
+  /// No description provided for @tarotCardCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} cards'**
+  String tarotCardCount(int count);
+
+  /// No description provided for @exprGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Greeting'**
+  String get exprGreeting;
+
+  /// No description provided for @exprThinking.
+  ///
+  /// In en, this message translates to:
+  /// **'Thinking'**
+  String get exprThinking;
+
+  /// No description provided for @exprHappy.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy'**
+  String get exprHappy;
+
+  /// No description provided for @exprCaring.
+  ///
+  /// In en, this message translates to:
+  /// **'Caring'**
+  String get exprCaring;
+
+  /// No description provided for @exprMysterious.
+  ///
+  /// In en, this message translates to:
+  /// **'Mysterious'**
+  String get exprMysterious;
+
+  /// No description provided for @exprSurprised.
+  ///
+  /// In en, this message translates to:
+  /// **'Surprised'**
+  String get exprSurprised;
+
+  /// No description provided for @exprExplaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Explaining'**
+  String get exprExplaining;
+
+  /// No description provided for @exprFarewell.
+  ///
+  /// In en, this message translates to:
+  /// **'Farewell'**
+  String get exprFarewell;
+
+  /// No description provided for @languageSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageSelection;
+
+  /// No description provided for @languageChinese.
+  ///
+  /// In en, this message translates to:
+  /// **'中文'**
+  String get languageChinese;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @languageSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow System'**
+  String get languageSystem;
+
+  /// No description provided for @errorLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load'**
+  String get errorLoadFailed;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @noDataFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No data found'**
+  String get noDataFound;
 }
 
 class _AppLocalizationsDelegate

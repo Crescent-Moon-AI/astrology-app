@@ -160,5 +160,42 @@
   "moodDone": "完成",
   "moodEdit": "编辑",
   "moodNoteHint": "添加备注（可选）",
-  "moodAskAi": "向 AI 咨询"
+  "moodAskAi": "向 AI 咨询",
+  "authSubtitle": "AI 星象师",
+  "authEmail": "邮箱",
+  "authPassword": "密码",
+  "authLogin": "登录",
+  "authRegister": "注册",
+  "authCreateAccount": "创建账号",
+  "authUsername": "用户名（可选）",
+  "authConfirmPassword": "确认密码",
+  "authNoAccount": "没有账号？立即注册",
+  "authHaveAccount": "已有账号？立即登录",
+  "authRequired": "必填项",
+  "authInvalidEmail": "邮箱格式不正确",
+  "authPasswordMin": "至少 8 个字符",
+  "authPasswordMismatch": "两次密码不一致",
+  "tarotCardCount": "{count} 张牌",
+  "@tarotCardCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exprGreeting": "问候",
+  "exprThinking": "思考",
+  "exprHappy": "开心",
+  "exprCaring": "关怀",
+  "exprMysterious": "神秘",
+  "exprSurprised": "惊讶",
+  "exprExplaining": "讲解",
+  "exprFarewell": "告别",
+  "languageSelection": "语言",
+  "languageChinese": "中文",
+  "languageEnglish": "English",
+  "languageSystem": "跟随系统",
+  "errorLoadFailed": "加载失败",
+  "retry": "重试",
+  "noDataFound": "暂无数据"
 }
