@@ -117,7 +117,10 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
                       .loadSession(widget.sessionId),
                   borderRadius: BorderRadius.circular(24),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
                     child: Text(
                       l10n.retry,
                       style: TextStyle(

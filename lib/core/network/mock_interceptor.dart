@@ -8,25 +8,190 @@ class MockInterceptor extends Interceptor {
 
   static final List<Map<String, dynamic>> _mockCardPool = [
     // Major Arcana
-    {'id': 0, 'name': 'The Fool', 'name_zh': '愚者', 'number': 0, 'suit': '', 'arcana': 'major', 'element': 'air', 'upright_keywords': ['新开始', '冒险'], 'reversed_keywords': ['鲁莽', '犹豫'], 'image_key': 'major_00'},
-    {'id': 1, 'name': 'The Magician', 'name_zh': '魔术师', 'number': 1, 'suit': '', 'arcana': 'major', 'element': 'air', 'upright_keywords': ['创造力', '意志'], 'reversed_keywords': ['欺骗', '浪费'], 'image_key': 'major_01'},
-    {'id': 2, 'name': 'The High Priestess', 'name_zh': '女祭司', 'number': 2, 'suit': '', 'arcana': 'major', 'element': 'water', 'upright_keywords': ['直觉', '智慧'], 'reversed_keywords': ['隐秘', '迷茫'], 'image_key': 'major_02'},
-    {'id': 6, 'name': 'The Lovers', 'name_zh': '恋人', 'number': 6, 'suit': '', 'arcana': 'major', 'element': 'air', 'upright_keywords': ['爱情', '和谐'], 'reversed_keywords': ['失衡', '分离'], 'image_key': 'major_06'},
-    {'id': 10, 'name': 'Wheel of Fortune', 'name_zh': '命运之轮', 'number': 10, 'suit': '', 'arcana': 'major', 'element': 'fire', 'upright_keywords': ['转运', '机遇'], 'reversed_keywords': ['倒退', '阻碍'], 'image_key': 'major_10'},
-    {'id': 17, 'name': 'The Star', 'name_zh': '星星', 'number': 17, 'suit': '', 'arcana': 'major', 'element': 'air', 'upright_keywords': ['希望', '灵感'], 'reversed_keywords': ['失望', '迷失'], 'image_key': 'major_17'},
+    {
+      'id': 0,
+      'name': 'The Fool',
+      'name_zh': '愚者',
+      'number': 0,
+      'suit': '',
+      'arcana': 'major',
+      'element': 'air',
+      'upright_keywords': ['新开始', '冒险'],
+      'reversed_keywords': ['鲁莽', '犹豫'],
+      'image_key': 'major_00',
+    },
+    {
+      'id': 1,
+      'name': 'The Magician',
+      'name_zh': '魔术师',
+      'number': 1,
+      'suit': '',
+      'arcana': 'major',
+      'element': 'air',
+      'upright_keywords': ['创造力', '意志'],
+      'reversed_keywords': ['欺骗', '浪费'],
+      'image_key': 'major_01',
+    },
+    {
+      'id': 2,
+      'name': 'The High Priestess',
+      'name_zh': '女祭司',
+      'number': 2,
+      'suit': '',
+      'arcana': 'major',
+      'element': 'water',
+      'upright_keywords': ['直觉', '智慧'],
+      'reversed_keywords': ['隐秘', '迷茫'],
+      'image_key': 'major_02',
+    },
+    {
+      'id': 6,
+      'name': 'The Lovers',
+      'name_zh': '恋人',
+      'number': 6,
+      'suit': '',
+      'arcana': 'major',
+      'element': 'air',
+      'upright_keywords': ['爱情', '和谐'],
+      'reversed_keywords': ['失衡', '分离'],
+      'image_key': 'major_06',
+    },
+    {
+      'id': 10,
+      'name': 'Wheel of Fortune',
+      'name_zh': '命运之轮',
+      'number': 10,
+      'suit': '',
+      'arcana': 'major',
+      'element': 'fire',
+      'upright_keywords': ['转运', '机遇'],
+      'reversed_keywords': ['倒退', '阻碍'],
+      'image_key': 'major_10',
+    },
+    {
+      'id': 17,
+      'name': 'The Star',
+      'name_zh': '星星',
+      'number': 17,
+      'suit': '',
+      'arcana': 'major',
+      'element': 'air',
+      'upright_keywords': ['希望', '灵感'],
+      'reversed_keywords': ['失望', '迷失'],
+      'image_key': 'major_17',
+    },
     // Wands
-    {'id': 22, 'name': 'Ace of Wands', 'name_zh': '权杖一', 'number': 1, 'suit': 'wands', 'arcana': 'minor', 'element': 'fire', 'upright_keywords': ['创造', '激情'], 'reversed_keywords': ['延迟', '消沉'], 'image_key': 'wands_01'},
-    {'id': 29, 'name': 'Eight of Wands', 'name_zh': '权杖八', 'number': 8, 'suit': 'wands', 'arcana': 'minor', 'element': 'fire', 'upright_keywords': ['快速', '行动'], 'reversed_keywords': ['拖延', '阻碍'], 'image_key': 'wands_08'},
+    {
+      'id': 22,
+      'name': 'Ace of Wands',
+      'name_zh': '权杖一',
+      'number': 1,
+      'suit': 'wands',
+      'arcana': 'minor',
+      'element': 'fire',
+      'upright_keywords': ['创造', '激情'],
+      'reversed_keywords': ['延迟', '消沉'],
+      'image_key': 'wands_01',
+    },
+    {
+      'id': 29,
+      'name': 'Eight of Wands',
+      'name_zh': '权杖八',
+      'number': 8,
+      'suit': 'wands',
+      'arcana': 'minor',
+      'element': 'fire',
+      'upright_keywords': ['快速', '行动'],
+      'reversed_keywords': ['拖延', '阻碍'],
+      'image_key': 'wands_08',
+    },
     // Cups
-    {'id': 36, 'name': 'Queen of Cups', 'name_zh': '圣杯王后', 'number': 13, 'suit': 'cups', 'arcana': 'minor', 'element': 'water', 'upright_keywords': ['温柔', '直觉'], 'reversed_keywords': ['情绪化', '脆弱'], 'image_key': 'cups_13'},
-    {'id': 38, 'name': 'Two of Cups', 'name_zh': '圣杯二', 'number': 2, 'suit': 'cups', 'arcana': 'minor', 'element': 'water', 'upright_keywords': ['连结', '和谐'], 'reversed_keywords': ['失衡', '误解'], 'image_key': 'cups_02'},
-    {'id': 43, 'name': 'Seven of Cups', 'name_zh': '圣杯七', 'number': 7, 'suit': 'cups', 'arcana': 'minor', 'element': 'water', 'upright_keywords': ['幻想', '选择'], 'reversed_keywords': ['清醒', '决断'], 'image_key': 'cups_07'},
+    {
+      'id': 36,
+      'name': 'Queen of Cups',
+      'name_zh': '圣杯王后',
+      'number': 13,
+      'suit': 'cups',
+      'arcana': 'minor',
+      'element': 'water',
+      'upright_keywords': ['温柔', '直觉'],
+      'reversed_keywords': ['情绪化', '脆弱'],
+      'image_key': 'cups_13',
+    },
+    {
+      'id': 38,
+      'name': 'Two of Cups',
+      'name_zh': '圣杯二',
+      'number': 2,
+      'suit': 'cups',
+      'arcana': 'minor',
+      'element': 'water',
+      'upright_keywords': ['连结', '和谐'],
+      'reversed_keywords': ['失衡', '误解'],
+      'image_key': 'cups_02',
+    },
+    {
+      'id': 43,
+      'name': 'Seven of Cups',
+      'name_zh': '圣杯七',
+      'number': 7,
+      'suit': 'cups',
+      'arcana': 'minor',
+      'element': 'water',
+      'upright_keywords': ['幻想', '选择'],
+      'reversed_keywords': ['清醒', '决断'],
+      'image_key': 'cups_07',
+    },
     // Swords
-    {'id': 50, 'name': 'Ace of Swords', 'name_zh': '宝剑一', 'number': 1, 'suit': 'swords', 'arcana': 'minor', 'element': 'air', 'upright_keywords': ['真相', '清晰'], 'reversed_keywords': ['混乱', '误判'], 'image_key': 'swords_01'},
-    {'id': 55, 'name': 'Six of Swords', 'name_zh': '宝剑六', 'number': 6, 'suit': 'swords', 'arcana': 'minor', 'element': 'air', 'upright_keywords': ['过渡', '前进'], 'reversed_keywords': ['停滞', '抗拒'], 'image_key': 'swords_06'},
+    {
+      'id': 50,
+      'name': 'Ace of Swords',
+      'name_zh': '宝剑一',
+      'number': 1,
+      'suit': 'swords',
+      'arcana': 'minor',
+      'element': 'air',
+      'upright_keywords': ['真相', '清晰'],
+      'reversed_keywords': ['混乱', '误判'],
+      'image_key': 'swords_01',
+    },
+    {
+      'id': 55,
+      'name': 'Six of Swords',
+      'name_zh': '宝剑六',
+      'number': 6,
+      'suit': 'swords',
+      'arcana': 'minor',
+      'element': 'air',
+      'upright_keywords': ['过渡', '前进'],
+      'reversed_keywords': ['停滞', '抗拒'],
+      'image_key': 'swords_06',
+    },
     // Pentacles
-    {'id': 63, 'name': 'Ten of Pentacles', 'name_zh': '星币十', 'number': 10, 'suit': 'pentacles', 'arcana': 'minor', 'element': 'earth', 'upright_keywords': ['富足', '传承'], 'reversed_keywords': ['损失', '孤立'], 'image_key': 'pentacles_10'},
-    {'id': 70, 'name': 'Knight of Pentacles', 'name_zh': '星币骑士', 'number': 12, 'suit': 'pentacles', 'arcana': 'minor', 'element': 'earth', 'upright_keywords': ['勤勉', '务实'], 'reversed_keywords': ['懒惰', '停滞'], 'image_key': 'pentacles_12'},
+    {
+      'id': 63,
+      'name': 'Ten of Pentacles',
+      'name_zh': '星币十',
+      'number': 10,
+      'suit': 'pentacles',
+      'arcana': 'minor',
+      'element': 'earth',
+      'upright_keywords': ['富足', '传承'],
+      'reversed_keywords': ['损失', '孤立'],
+      'image_key': 'pentacles_10',
+    },
+    {
+      'id': 70,
+      'name': 'Knight of Pentacles',
+      'name_zh': '星币骑士',
+      'number': 12,
+      'suit': 'pentacles',
+      'arcana': 'minor',
+      'element': 'earth',
+      'upright_keywords': ['勤勉', '务实'],
+      'reversed_keywords': ['懒惰', '停滞'],
+      'image_key': 'pentacles_12',
+    },
   ];
 
   static const Map<String, int> _spreadCardCounts = {
@@ -40,7 +205,18 @@ class MockInterceptor extends Interceptor {
     'single': ['启示'],
     'three_card': ['过去', '现在', '未来'],
     'love_spread': ['自己', '对方', '关系', '挑战', '建议'],
-    'celtic_cross': ['现状', '挑战', '意识', '潜意识', '过去', '近未来', '自我', '环境', '希望与恐惧', '结果'],
+    'celtic_cross': [
+      '现状',
+      '挑战',
+      '意识',
+      '潜意识',
+      '过去',
+      '近未来',
+      '自我',
+      '环境',
+      '希望与恐惧',
+      '结果',
+    ],
   };
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -824,8 +1000,8 @@ class MockInterceptor extends Interceptor {
     // When transitioning to revealing with positions, generate resolved cards
     if (b['ritual_state'] == 'revealing' && b['selected_positions'] != null) {
       final positions = (b['selected_positions'] as List<dynamic>).cast<int>();
-      final labels =
-          (session['position_labels'] as List<dynamic>).cast<String>();
+      final labels = (session['position_labels'] as List<dynamic>)
+          .cast<String>();
       final shuffled = List<Map<String, dynamic>>.from(
         _mockCardPool.map((c) => Map<String, dynamic>.from(c)),
       )..shuffle();
@@ -836,8 +1012,9 @@ class MockInterceptor extends Interceptor {
         cardData['orientation'] = (i % 3 == 0) ? 'reversed' : 'upright';
         cards.add({
           'position': positions[i],
-          'position_label':
-              i < labels.length ? labels[i] : '位置${positions[i] + 1}',
+          'position_label': i < labels.length
+              ? labels[i]
+              : '位置${positions[i] + 1}',
           'card': cardData,
         });
       }
@@ -849,13 +1026,15 @@ class MockInterceptor extends Interceptor {
 
   Map<String, dynamic> _tarotList() {
     final sessions = _tarotSessions.values
-        .map((s) => <String, dynamic>{
-              'id': s['id'],
-              'spread_type': s['spread_type'],
-              'question': s['question'],
-              'ritual_state': s['ritual_state'],
-              'created_at': s['created_at'],
-            })
+        .map(
+          (s) => <String, dynamic>{
+            'id': s['id'],
+            'spread_type': s['spread_type'],
+            'question': s['question'],
+            'ritual_state': s['ritual_state'],
+            'created_at': s['created_at'],
+          },
+        )
         .toList();
 
     // Always include a history entry
