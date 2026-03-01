@@ -415,4 +415,96 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get moodAskAi => '向 AI 咨询';
+
+  @override
+  String get authSubtitle => 'AI 星象师';
+
+  @override
+  String get authEmail => '邮箱';
+
+  @override
+  String get authPassword => '密码';
+
+  @override
+  String get authLogin => '登录';
+
+  @override
+  String get authRegister => '注册';
+
+  @override
+  String get authCreateAccount => '创建账号';
+
+  @override
+  String get authUsername => '用户名（可选）';
+
+  @override
+  String get authConfirmPassword => '确认密码';
+
+  @override
+  String get authNoAccount => '没有账号？立即注册';
+
+  @override
+  String get authHaveAccount => '已有账号？立即登录';
+
+  @override
+  String get authRequired => '必填项';
+
+  @override
+  String get authInvalidEmail => '邮箱格式不正确';
+
+  @override
+  String get authPasswordMin => '至少 8 个字符';
+
+  @override
+  String get authPasswordMismatch => '两次密码不一致';
+
+  @override
+  String tarotCardCount(int count) {
+    return '$count 张牌';
+  }
+
+  @override
+  String get exprGreeting => '问候';
+
+  @override
+  String get exprThinking => '思考';
+
+  @override
+  String get exprHappy => '开心';
+
+  @override
+  String get exprCaring => '关怀';
+
+  @override
+  String get exprMysterious => '神秘';
+
+  @override
+  String get exprSurprised => '惊讶';
+
+  @override
+  String get exprExplaining => '讲解';
+
+  @override
+  String get exprFarewell => '告别';
+
+  @override
+  String get languageSelection => '语言';
+
+  @override
+  String get languageChinese => '中文';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageSystem => '跟随系统';
+
+  @override
+  String get errorLoadFailed => '加载失败';
+
+  @override
+  String get retry => '重试';
+
+  @override
+  String get noDataFound => '暂无数据';
 }

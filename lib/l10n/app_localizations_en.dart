@@ -417,4 +417,96 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moodAskAi => 'Ask AI About This';
+
+  @override
+  String get authSubtitle => 'AI Astrologer';
+
+  @override
+  String get authEmail => 'Email';
+
+  @override
+  String get authPassword => 'Password';
+
+  @override
+  String get authLogin => 'Login';
+
+  @override
+  String get authRegister => 'Register';
+
+  @override
+  String get authCreateAccount => 'Create Account';
+
+  @override
+  String get authUsername => 'Username (optional)';
+
+  @override
+  String get authConfirmPassword => 'Confirm Password';
+
+  @override
+  String get authNoAccount => 'Don\'t have an account? Register';
+
+  @override
+  String get authHaveAccount => 'Already have an account? Login';
+
+  @override
+  String get authRequired => 'Required';
+
+  @override
+  String get authInvalidEmail => 'Invalid email';
+
+  @override
+  String get authPasswordMin => 'At least 8 characters';
+
+  @override
+  String get authPasswordMismatch => 'Passwords do not match';
+
+  @override
+  String tarotCardCount(int count) {
+    return '$count cards';
+  }
+
+  @override
+  String get exprGreeting => 'Greeting';
+
+  @override
+  String get exprThinking => 'Thinking';
+
+  @override
+  String get exprHappy => 'Happy';
+
+  @override
+  String get exprCaring => 'Caring';
+
+  @override
+  String get exprMysterious => 'Mysterious';
+
+  @override
+  String get exprSurprised => 'Surprised';
+
+  @override
+  String get exprExplaining => 'Explaining';
+
+  @override
+  String get exprFarewell => 'Farewell';
+
+  @override
+  String get languageSelection => 'Language';
+
+  @override
+  String get languageChinese => '中文';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageSystem => 'Follow System';
+
+  @override
+  String get errorLoadFailed => 'Failed to load';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get noDataFound => 'No data found';
 }
