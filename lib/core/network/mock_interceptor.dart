@@ -6,6 +6,15 @@ class MockInterceptor extends Interceptor {
   /// In-memory tarot session store for stateful ritual flow.
   final Map<String, Map<String, dynamic>> _tarotSessions = {};
 
+  /// In-memory rune session store.
+  final Map<String, Map<String, dynamic>> _runeSessions = {};
+
+  /// In-memory lenormand session store.
+  final Map<String, Map<String, dynamic>> _lenormandSessions = {};
+
+  /// In-memory I Ching session store.
+  final Map<String, Map<String, dynamic>> _ichingSessions = {};
+
   static final List<Map<String, dynamic>> _mockCardPool = [
     // Major Arcana
     {
@@ -315,6 +324,48 @@ class MockInterceptor extends Interceptor {
     }
     if (_matchPath(path, '/api/tarot/sessions/{id}') && method == 'PATCH') {
       return _tarotUpdate(path.split('/').last, body);
+    }
+
+    // --- Rune ---
+    if (path == '/api/rune/sessions' && method == 'POST') {
+      return _runeCreate(body);
+    }
+    if (path == '/api/rune/sessions' && method == 'GET') {
+      return _runeList();
+    }
+    if (_matchPath(path, '/api/rune/sessions/{id}') && method == 'GET') {
+      return _runeDetail(path.split('/').last);
+    }
+    if (_matchPath(path, '/api/rune/sessions/{id}') && method == 'PATCH') {
+      return _runeUpdate(path.split('/').last, body);
+    }
+
+    // --- Lenormand ---
+    if (path == '/api/lenormand/sessions' && method == 'POST') {
+      return _lenormandCreate(body);
+    }
+    if (path == '/api/lenormand/sessions' && method == 'GET') {
+      return _lenormandList();
+    }
+    if (_matchPath(path, '/api/lenormand/sessions/{id}') && method == 'GET') {
+      return _lenormandDetail(path.split('/').last);
+    }
+    if (_matchPath(path, '/api/lenormand/sessions/{id}') && method == 'PATCH') {
+      return _lenormandUpdate(path.split('/').last, body);
+    }
+
+    // --- I Ching ---
+    if (path == '/api/iching/sessions' && method == 'POST') {
+      return _ichingCreate(body);
+    }
+    if (path == '/api/iching/sessions' && method == 'GET') {
+      return _ichingList();
+    }
+    if (_matchPath(path, '/api/iching/sessions/{id}') && method == 'GET') {
+      return _ichingDetail(path.split('/').last);
+    }
+    if (_matchPath(path, '/api/iching/sessions/{id}') && method == 'PATCH') {
+      return _ichingUpdate(path.split('/').last, body);
     }
 
     // --- Friends ---
@@ -1290,4 +1341,495 @@ class MockInterceptor extends Interceptor {
       'provider': 'mock',
     },
   };
+
+  // ============================================================
+  // Rune — stateful session tracking
+  // ============================================================
+
+  static const _mockRunePool = [
+    {
+      'id': 1,
+      'name': 'Fehu',
+      'name_zh': '费胡',
+      'symbol': '\u16A0',
+      'meaning': 'Wealth, abundance',
+      'meaning_zh': '财富、丰盛',
+    },
+    {
+      'id': 2,
+      'name': 'Uruz',
+      'name_zh': '乌鲁兹',
+      'symbol': '\u16A2',
+      'meaning': 'Strength, health',
+      'meaning_zh': '力量、健康',
+    },
+    {
+      'id': 3,
+      'name': 'Thurisaz',
+      'name_zh': '索里萨兹',
+      'symbol': '\u16A6',
+      'meaning': 'Protection, gateway',
+      'meaning_zh': '保护、门户',
+    },
+    {
+      'id': 4,
+      'name': 'Ansuz',
+      'name_zh': '安苏兹',
+      'symbol': '\u16A8',
+      'meaning': 'Wisdom, communication',
+      'meaning_zh': '智慧、沟通',
+    },
+    {
+      'id': 5,
+      'name': 'Raidho',
+      'name_zh': '莱多',
+      'symbol': '\u16B1',
+      'meaning': 'Journey, movement',
+      'meaning_zh': '旅途、移动',
+    },
+  ];
+
+  static const Map<String, int> _runeSpreadCounts = {
+    'single': 1,
+    'three_rune': 3,
+    'five_rune_cross': 5,
+  };
+
+  static const Map<String, List<String>> _runePositionLabels = {
+    'single': ['启示'],
+    'three_rune': ['过去', '现在', '未来'],
+    'five_rune_cross': ['中心', '过去', '未来', '基础', '结果'],
+  };
+
+  Map<String, dynamic> _runeCreate(dynamic body) {
+    final b = body as Map<String, dynamic>? ?? {};
+    final now = DateTime.now().toIso8601String();
+    final id = 'mock-rune-${DateTime.now().millisecondsSinceEpoch}';
+    final spreadType = (b['spread_type'] as String?) ?? 'three_rune';
+    final runeCount = _runeSpreadCounts[spreadType] ?? 3;
+    final labels = _runePositionLabels[spreadType] ?? ['过去', '现在', '未来'];
+
+    final session = <String, dynamic>{
+      'id': id,
+      'conversation_id': b['conversation_id'] ?? 'mock-conv-001',
+      'spread_type': spreadType,
+      'rune_count': runeCount,
+      'question': b['question'] ?? '',
+      'ritual_state': 'drawing',
+      'drawn_runes': <Map<String, dynamic>>[],
+      'position_labels': labels,
+      'started_at': now,
+    };
+
+    _runeSessions[id] = session;
+    return {'data': Map<String, dynamic>.from(session)};
+  }
+
+  Map<String, dynamic> _runeDetail(String sessionId) {
+    final session = _runeSessions[sessionId];
+    if (session != null) {
+      return {'data': Map<String, dynamic>.from(session)};
+    }
+    return {
+      'data': {
+        'id': sessionId,
+        'conversation_id': 'mock-conv-001',
+        'spread_type': 'three_rune',
+        'rune_count': 3,
+        'question': '',
+        'ritual_state': 'drawing',
+        'drawn_runes': <Map<String, dynamic>>[],
+        'position_labels': ['过去', '现在', '未来'],
+        'started_at': DateTime.now().toIso8601String(),
+      },
+    };
+  }
+
+  Map<String, dynamic> _runeUpdate(String sessionId, dynamic body) {
+    final b = body as Map<String, dynamic>? ?? {};
+    final session = _runeSessions[sessionId];
+
+    if (session == null) {
+      return {
+        'data': {
+          'id': sessionId,
+          'ritual_state': b['ritual_state'] ?? 'completed',
+        },
+      };
+    }
+
+    if (b['ritual_state'] != null) {
+      session['ritual_state'] = b['ritual_state'];
+    }
+
+    // Generate drawn runes when transitioning to revealing
+    if (b['ritual_state'] == 'revealing') {
+      final runeCount = session['rune_count'] as int? ?? 3;
+      final shuffled = List<Map<String, dynamic>>.from(
+        _mockRunePool.map((r) => Map<String, dynamic>.from(r)),
+      )..shuffle();
+      session['drawn_runes'] = shuffled.take(runeCount).toList();
+    }
+
+    return {'data': Map<String, dynamic>.from(session)};
+  }
+
+  Map<String, dynamic> _runeList() {
+    return {
+      'data': {
+        'sessions': _runeSessions.values
+            .map(
+              (s) => <String, dynamic>{
+                'id': s['id'],
+                'spread_type': s['spread_type'],
+                'ritual_state': s['ritual_state'],
+              },
+            )
+            .toList(),
+      },
+    };
+  }
+
+  // ============================================================
+  // Lenormand — stateful session tracking
+  // ============================================================
+
+  static const _mockLenormandPool = [
+    {
+      'id': 1,
+      'number': 1,
+      'name': 'Rider',
+      'name_zh': '骑士',
+      'icon': '\uD83C\uDFC7',
+      'keywords': ['news', 'speed'],
+      'keywords_zh': ['消息', '速度'],
+    },
+    {
+      'id': 2,
+      'number': 2,
+      'name': 'Clover',
+      'name_zh': '三叶草',
+      'icon': '\u2618',
+      'keywords': ['luck', 'opportunity'],
+      'keywords_zh': ['运气', '机会'],
+    },
+    {
+      'id': 3,
+      'number': 3,
+      'name': 'Ship',
+      'name_zh': '船',
+      'icon': '\u26F5',
+      'keywords': ['travel', 'distance'],
+      'keywords_zh': ['旅行', '远方'],
+    },
+    {
+      'id': 4,
+      'number': 4,
+      'name': 'House',
+      'name_zh': '房屋',
+      'icon': '\uD83C\uDFE0',
+      'keywords': ['home', 'stability'],
+      'keywords_zh': ['家庭', '稳定'],
+    },
+    {
+      'id': 5,
+      'number': 5,
+      'name': 'Tree',
+      'name_zh': '树',
+      'icon': '\uD83C\uDF33',
+      'keywords': ['health', 'growth'],
+      'keywords_zh': ['健康', '成长'],
+    },
+    {
+      'id': 6,
+      'number': 6,
+      'name': 'Clouds',
+      'name_zh': '云',
+      'icon': '\u2601',
+      'keywords': ['confusion', 'doubt'],
+      'keywords_zh': ['困惑', '疑虑'],
+    },
+    {
+      'id': 7,
+      'number': 7,
+      'name': 'Snake',
+      'name_zh': '蛇',
+      'icon': '\uD83D\uDC0D',
+      'keywords': ['wisdom', 'deception'],
+      'keywords_zh': ['智慧', '欺骗'],
+    },
+    {
+      'id': 8,
+      'number': 8,
+      'name': 'Coffin',
+      'name_zh': '棺材',
+      'icon': '\u26B0',
+      'keywords': ['ending', 'transformation'],
+      'keywords_zh': ['结束', '转变'],
+    },
+    {
+      'id': 9,
+      'number': 9,
+      'name': 'Bouquet',
+      'name_zh': '花束',
+      'icon': '\uD83D\uDC90',
+      'keywords': ['gift', 'beauty'],
+      'keywords_zh': ['礼物', '美丽'],
+    },
+    {
+      'id': 10,
+      'number': 10,
+      'name': 'Scythe',
+      'name_zh': '镰刀',
+      'icon': '\uD83D\uDDE1',
+      'keywords': ['sudden', 'decision'],
+      'keywords_zh': ['突然', '决断'],
+    },
+  ];
+
+  static const Map<String, int> _lenormandSpreadCounts = {
+    'single': 1,
+    'three_card': 3,
+    'five_card': 5,
+    'grand_tableau': 36,
+  };
+
+  static const Map<String, List<String>> _lenormandPositionLabels = {
+    'single': ['启示'],
+    'three_card': ['过去', '现在', '未来'],
+    'five_card': ['主题', '过去', '现在', '未来', '建议'],
+    'grand_tableau': [],
+  };
+
+  Map<String, dynamic> _lenormandCreate(dynamic body) {
+    final b = body as Map<String, dynamic>? ?? {};
+    final now = DateTime.now().toIso8601String();
+    final id = 'mock-lenormand-${DateTime.now().millisecondsSinceEpoch}';
+    final spreadType = (b['spread_type'] as String?) ?? 'three_card';
+    final cardCount = _lenormandSpreadCounts[spreadType] ?? 3;
+    final labels = _lenormandPositionLabels[spreadType] ?? ['过去', '现在', '未来'];
+
+    final session = <String, dynamic>{
+      'id': id,
+      'conversation_id': b['conversation_id'] ?? 'mock-conv-001',
+      'spread_type': spreadType,
+      'card_count': cardCount,
+      'question': b['question'] ?? '',
+      'ritual_state': 'shuffling',
+      'selected_positions': <int>[],
+      'selected_cards': <Map<String, dynamic>>[],
+      'position_labels': labels,
+      'started_at': now,
+    };
+
+    _lenormandSessions[id] = session;
+    return {'data': Map<String, dynamic>.from(session)};
+  }
+
+  Map<String, dynamic> _lenormandDetail(String sessionId) {
+    final session = _lenormandSessions[sessionId];
+    if (session != null) {
+      return {'data': Map<String, dynamic>.from(session)};
+    }
+    return {
+      'data': {
+        'id': sessionId,
+        'conversation_id': 'mock-conv-001',
+        'spread_type': 'three_card',
+        'card_count': 3,
+        'question': '',
+        'ritual_state': 'shuffling',
+        'selected_positions': <int>[],
+        'selected_cards': <Map<String, dynamic>>[],
+        'position_labels': ['过去', '现在', '未来'],
+        'started_at': DateTime.now().toIso8601String(),
+      },
+    };
+  }
+
+  Map<String, dynamic> _lenormandUpdate(String sessionId, dynamic body) {
+    final b = body as Map<String, dynamic>? ?? {};
+    final session = _lenormandSessions[sessionId];
+
+    if (session == null) {
+      return {
+        'data': {
+          'id': sessionId,
+          'ritual_state': b['ritual_state'] ?? 'completed',
+        },
+      };
+    }
+
+    if (b['ritual_state'] != null) session['ritual_state'] = b['ritual_state'];
+    if (b['selected_positions'] != null)
+      session['selected_positions'] = b['selected_positions'];
+
+    // Generate resolved cards when revealing
+    if (b['ritual_state'] == 'revealing' && b['selected_positions'] != null) {
+      final positions = (b['selected_positions'] as List<dynamic>).cast<int>();
+      final labels = (session['position_labels'] as List<dynamic>)
+          .cast<String>();
+      final shuffled = List<Map<String, dynamic>>.from(
+        _mockLenormandPool.map((c) => Map<String, dynamic>.from(c)),
+      )..shuffle();
+
+      final cards = <Map<String, dynamic>>[];
+      for (var i = 0; i < positions.length && i < shuffled.length; i++) {
+        cards.add({
+          'position': positions[i],
+          'position_label': i < labels.length
+              ? labels[i]
+              : '位置${positions[i] + 1}',
+          'card': shuffled[i],
+        });
+      }
+      session['selected_cards'] = cards;
+    }
+
+    return {'data': Map<String, dynamic>.from(session)};
+  }
+
+  Map<String, dynamic> _lenormandList() {
+    return {
+      'data': {
+        'sessions': _lenormandSessions.values
+            .map(
+              (s) => <String, dynamic>{
+                'id': s['id'],
+                'spread_type': s['spread_type'],
+                'ritual_state': s['ritual_state'],
+              },
+            )
+            .toList(),
+      },
+    };
+  }
+
+  // ============================================================
+  // I Ching — stateful session tracking
+  // ============================================================
+
+  Map<String, dynamic> _ichingCreate(dynamic body) {
+    final b = body as Map<String, dynamic>? ?? {};
+    final now = DateTime.now().toIso8601String();
+    final id = 'mock-iching-${DateTime.now().millisecondsSinceEpoch}';
+
+    final session = <String, dynamic>{
+      'id': id,
+      'conversation_id': b['conversation_id'] ?? 'mock-conv-001',
+      'question': b['question'] ?? '',
+      'ritual_state': 'tossing',
+      'tosses': <Map<String, dynamic>>[],
+      'primary_hexagram': null,
+      'transformed_hexagram': null,
+      'started_at': now,
+    };
+
+    _ichingSessions[id] = session;
+    return {'data': Map<String, dynamic>.from(session)};
+  }
+
+  Map<String, dynamic> _ichingDetail(String sessionId) {
+    final session = _ichingSessions[sessionId];
+    if (session != null) {
+      return {'data': Map<String, dynamic>.from(session)};
+    }
+    return {
+      'data': {
+        'id': sessionId,
+        'conversation_id': 'mock-conv-001',
+        'question': '',
+        'ritual_state': 'tossing',
+        'tosses': <Map<String, dynamic>>[],
+        'started_at': DateTime.now().toIso8601String(),
+      },
+    };
+  }
+
+  Map<String, dynamic> _ichingUpdate(String sessionId, dynamic body) {
+    final b = body as Map<String, dynamic>? ?? {};
+    final session = _ichingSessions[sessionId];
+
+    if (session == null) {
+      return {
+        'data': {
+          'id': sessionId,
+          'ritual_state': b['ritual_state'] ?? 'completed',
+        },
+      };
+    }
+
+    if (b['ritual_state'] != null) session['ritual_state'] = b['ritual_state'];
+    if (b['tosses'] != null) session['tosses'] = b['tosses'];
+
+    // Generate hexagrams when revealing
+    if (b['ritual_state'] == 'revealing' && b['tosses'] != null) {
+      final tosses = (b['tosses'] as List<dynamic>)
+          .cast<Map<String, dynamic>>();
+      final lines = <Map<String, dynamic>>[];
+      final transformedLines = <Map<String, dynamic>>[];
+
+      for (var i = 0; i < tosses.length && i < 6; i++) {
+        final sum = tosses[i]['sum'] as int? ?? 7;
+        final isYang = sum.isOdd;
+        final isMoving = sum == 6 || sum == 9;
+
+        lines.add({
+          'position': i + 1,
+          'is_yang': isYang,
+          'is_moving': isMoving,
+          'text': '',
+          'text_zh': '',
+        });
+
+        // Transformed: moving lines flip
+        transformedLines.add({
+          'position': i + 1,
+          'is_yang': isMoving ? !isYang : isYang,
+          'is_moving': false,
+          'text': '',
+          'text_zh': '',
+        });
+      }
+
+      session['primary_hexagram'] = {
+        'number': 1,
+        'name': 'Qian',
+        'name_zh': '乾',
+        'symbol': '\u4DC0',
+        'lines': lines,
+      };
+
+      final hasMoving = tosses.any(
+        (t) => (t['sum'] as int?) == 6 || (t['sum'] as int?) == 9,
+      );
+      if (hasMoving) {
+        session['transformed_hexagram'] = {
+          'number': 2,
+          'name': 'Kun',
+          'name_zh': '坤',
+          'symbol': '\u4DC1',
+          'lines': transformedLines,
+        };
+      }
+    }
+
+    return {'data': Map<String, dynamic>.from(session)};
+  }
+
+  Map<String, dynamic> _ichingList() {
+    return {
+      'data': {
+        'sessions': _ichingSessions.values
+            .map(
+              (s) => <String, dynamic>{
+                'id': s['id'],
+                'question': s['question'],
+                'ritual_state': s['ritual_state'],
+              },
+            )
+            .toList(),
+      },
+    };
+  }
 }

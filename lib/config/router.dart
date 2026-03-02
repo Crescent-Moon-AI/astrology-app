@@ -14,6 +14,16 @@ import '../features/settings/presentation/pages/profile_page.dart';
 import '../features/shell/main_shell_page.dart';
 import '../features/tarot_ritual/presentation/pages/spread_selection_page.dart';
 import '../features/tarot_ritual/presentation/pages/tarot_ritual_page.dart';
+import '../features/dice_ritual/presentation/pages/dice_ritual_page.dart';
+import '../features/numerology/presentation/pages/numerology_input_page.dart';
+import '../features/rune_ritual/presentation/pages/rune_spread_select.dart';
+import '../features/rune_ritual/presentation/pages/rune_ritual_page.dart';
+import '../features/lenormand_ritual/presentation/pages/lenormand_spread_select.dart';
+import '../features/lenormand_ritual/presentation/pages/lenormand_ritual_page.dart';
+import '../features/iching_ritual/presentation/pages/iching_question_page.dart';
+import '../features/iching_ritual/presentation/pages/iching_ritual_page.dart';
+import '../features/meihua_ritual/presentation/pages/meihua_method_page.dart';
+import '../features/divination/presentation/pages/divination_hub_page.dart';
 import '../features/transit/presentation/pages/transit_list_page.dart';
 import '../features/transit/presentation/pages/transit_detail_page.dart';
 import '../features/transit/presentation/pages/astro_calendar_page.dart';
@@ -198,6 +208,73 @@ final routerProvider = Provider<GoRouter>((ref) {
           final card = state.extra as SharedCard;
           return SharePreviewPage(card: card);
         },
+      ),
+
+      // Divination Hub
+      GoRoute(
+        path: '/divination',
+        name: 'divination',
+        builder: (context, state) => const DivinationHubPage(),
+      ),
+
+      // Dice Ritual
+      GoRoute(
+        path: '/dice',
+        name: 'dice',
+        builder: (context, state) => const DiceRitualPage(),
+      ),
+
+      // Numerology
+      GoRoute(
+        path: '/numerology',
+        name: 'numerology',
+        builder: (context, state) => const NumerologyInputPage(),
+      ),
+
+      // Rune Ritual
+      GoRoute(
+        path: '/rune',
+        name: 'rune',
+        builder: (context, state) => const RuneSpreadSelect(),
+      ),
+      GoRoute(
+        path: '/rune/ritual/:sessionId',
+        name: 'runeRitual',
+        builder: (context, state) =>
+            RuneRitualPage(sessionId: state.pathParameters['sessionId']!),
+      ),
+
+      // Lenormand Ritual
+      GoRoute(
+        path: '/lenormand',
+        name: 'lenormand',
+        builder: (context, state) => const LenormandSpreadSelect(),
+      ),
+      GoRoute(
+        path: '/lenormand/ritual/:sessionId',
+        name: 'lenormandRitual',
+        builder: (context, state) =>
+            LenormandRitualPage(sessionId: state.pathParameters['sessionId']!),
+      ),
+
+      // I Ching Ritual
+      GoRoute(
+        path: '/iching',
+        name: 'iching',
+        builder: (context, state) => const IChingQuestionPage(),
+      ),
+      GoRoute(
+        path: '/iching/ritual/:sessionId',
+        name: 'ichingRitual',
+        builder: (context, state) =>
+            IChingRitualPage(sessionId: state.pathParameters['sessionId']!),
+      ),
+
+      // Meihua Ritual
+      GoRoute(
+        path: '/meihua',
+        name: 'meihua',
+        builder: (context, state) => const MeihuaMethodPage(),
       ),
     ],
   );

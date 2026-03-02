@@ -63,7 +63,7 @@ class _MainShellPageState extends ConsumerState<MainShellPage> {
           setState(() => _currentIndex = index);
           context.go(_tabRoutes[index]);
         },
-        onCenterTap: () => context.push('/tarot'),
+        onCenterTap: () => context.push('/divination'),
         labels: [
           l10n.scenarioExploreTitle,
           l10n.chatTitle,

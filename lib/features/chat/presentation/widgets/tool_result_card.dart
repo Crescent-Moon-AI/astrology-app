@@ -27,6 +27,12 @@ class _ToolResultCardState extends State<ToolResultCard> {
       'natal_chart' => '\u661F\u76D8\u5206\u6790',
       'synastry' => '\u5408\u76D8\u5206\u6790',
       'transit' => '\u884C\u661F\u8FC7\u5883',
+      'dice_divination' => '\u9AB0\u5B50\u5360\u535C',
+      'numerology_analysis' => '\u6570\u5B57\u547D\u7406',
+      'rune_reading' => '\u7B26\u6587\u5360\u535C',
+      'lenormand_reading' => '\u96F7\u8BFA\u66FC\u724C',
+      'iching_divination' => '\u6613\u7ECF\u5360\u535C',
+      'meihua_divination' => '\u6885\u82B1\u6613\u6570',
       _ => name,
     };
   }
