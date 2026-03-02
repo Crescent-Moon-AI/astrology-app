@@ -819,4 +819,139 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get divinationMeihuaDesc => '时数起卦，万象可占';
+
+  @override
+  String get homeTitle => '首页';
+
+  @override
+  String get homeFortuneTitle => '每日运势';
+
+  @override
+  String get homeOverallScore => '综合指数';
+
+  @override
+  String get homeDimensionLove => '恋爱';
+
+  @override
+  String get homeDimensionCareer => '事业';
+
+  @override
+  String get homeDimensionWealth => '财富';
+
+  @override
+  String get homeDimensionStudy => '学业';
+
+  @override
+  String get homeLuckyColor => '幸运色';
+
+  @override
+  String get homeLuckyNumber => '幸运数';
+
+  @override
+  String get homeLuckyFlower => '幸运花';
+
+  @override
+  String get homeLuckyStone => '幸运石';
+
+  @override
+  String get homeQuickConsult => '开始咨询';
+
+  @override
+  String get homeQuickTarot => '塔罗抽牌';
+
+  @override
+  String get homeQuickPhoto => '拍照解盘';
+
+  @override
+  String get homeSceneExplore => '场景探索';
+
+  @override
+  String get homeExploreMore => '探索更多';
+
+  @override
+  String get homeFortuneAdvice => '宜';
+
+  @override
+  String get homeFortuneAvoid => '忌';
+
+  @override
+  String get insightTitle => '洞见';
+
+  @override
+  String get insightQuote => '凡是你所抗拒的，都会坚持。';
+
+  @override
+  String get insightQuoteAuthor => '——卡尔·荣格';
+
+  @override
+  String get insightMyChart => '我的星盘';
+
+  @override
+  String get insightSynastry => '查看合盘';
+
+  @override
+  String get insightDeepExplore => '深度探索';
+
+  @override
+  String get insightComingSoon => '即将开放';
+
+  @override
+  String get consultTitle => '咨询';
+
+  @override
+  String get consultRoomTitle => '咨询室';
+
+  @override
+  String get consultFreeAsk => '自由询问';
+
+  @override
+  String get consultTarot => '塔罗咨询';
+
+  @override
+  String get consultChart => '星盘咨询';
+
+  @override
+  String get consultPrompt => '此刻，有什么想问月见的？';
+
+  @override
+  String get consultTarotPrompt => '想用塔罗牌探索一下吗？';
+
+  @override
+  String get consultChartPrompt => '探索你的星盘奥秘';
+
+  @override
+  String get consultSubtext => '我会用星象的智慧为你解答';
+
+  @override
+  String get consultStart => '开始咨询';
+
+  @override
+  String get diaryTitle => '日记';
+
+  @override
+  String get diaryAddNew => '添加新日记';
+
+  @override
+  String get diaryEmptyHint => '记录你的每一天\n让星象为你的心情画像';
+
+  @override
+  String get profileTitle => '我的';
+
+  @override
+  String get aiDisclaimer => '以上内容均由AI生成，仅供参考和娱乐';
+
+  @override
+  String get tabHome => '首页';
+
+  @override
+  String get tabInsight => '洞见';
+
+  @override
+  String get tabConsult => '咨询';
+
+  @override
+  String get tabDiary => '日记';
+
+  @override
+  String get tabProfile => '我的';
 }

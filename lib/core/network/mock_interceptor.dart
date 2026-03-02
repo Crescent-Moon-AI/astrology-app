@@ -390,6 +390,11 @@ class MockInterceptor extends Interceptor {
       return _shareDetail();
     }
 
+    // --- Fortune ---
+    if (path == '/api/fortune/daily' && method == 'GET') {
+      return _dailyFortune();
+    }
+
     // --- Astrology ---
     if (path == '/api/astrology/moon-phase' && method == 'GET') {
       return _moonPhase();
@@ -1237,6 +1242,81 @@ class MockInterceptor extends Interceptor {
   // ============================================================
   // Astrology
   // ============================================================
+
+  // ============================================================
+  // Daily Fortune
+  // ============================================================
+
+  static const _fortuneSets = [
+    {
+      'title': '火花闪现 行动为先',
+      'advice': '主动出击，把握机遇',
+      'avoid': '犹豫不决，错失良机',
+      'overall_score': 86,
+      'dimensions': [
+        {'key': 'love', 'label': '恋爱', 'score': 91},
+        {'key': 'career', 'label': '事业', 'score': 47},
+        {'key': 'wealth', 'label': '财富', 'score': 40},
+        {'key': 'study', 'label': '学业', 'score': 96},
+      ],
+      'lucky_elements': {
+        'color': '紫色',
+        'number': 7,
+        'flower': '薰衣草',
+        'stone': '紫水晶',
+      },
+    },
+    {
+      'title': '静水流深 以柔克刚',
+      'advice': '沉淀自我，厚积薄发',
+      'avoid': '急功近利，操之过急',
+      'overall_score': 72,
+      'dimensions': [
+        {'key': 'love', 'label': '恋爱', 'score': 65},
+        {'key': 'career', 'label': '事业', 'score': 78},
+        {'key': 'wealth', 'label': '财富', 'score': 82},
+        {'key': 'study', 'label': '学业', 'score': 60},
+      ],
+      'lucky_elements': {
+        'color': '深蓝',
+        'number': 3,
+        'flower': '莲花',
+        'stone': '月光石',
+      },
+    },
+    {
+      'title': '星光指路 真心可鉴',
+      'advice': '坦诚沟通，化解误会',
+      'avoid': '隐瞒心事，独自承担',
+      'overall_score': 93,
+      'dimensions': [
+        {'key': 'love', 'label': '恋爱', 'score': 95},
+        {'key': 'career', 'label': '事业', 'score': 88},
+        {'key': 'wealth', 'label': '财富', 'score': 75},
+        {'key': 'study', 'label': '学业', 'score': 91},
+      ],
+      'lucky_elements': {
+        'color': '金色',
+        'number': 9,
+        'flower': '向日葵',
+        'stone': '黄水晶',
+      },
+    },
+  ];
+
+  Map<String, dynamic> _dailyFortune() {
+    final now = DateTime.now();
+    final idx = now.day % _fortuneSets.length;
+    final set = _fortuneSets[idx];
+    return {
+      'data': {
+        'date':
+            '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}',
+        'moon_phase': 'waxing_crescent',
+        ...set,
+      },
+    };
+  }
 
   Map<String, dynamic> _moonPhase() => {
     'data': {

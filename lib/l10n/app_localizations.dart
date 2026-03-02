@@ -1687,6 +1687,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cast by time, divine all things'**
   String get divinationMeihuaDesc;
+
+  /// No description provided for @homeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homeTitle;
+
+  /// No description provided for @homeFortuneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Fortune'**
+  String get homeFortuneTitle;
+
+  /// No description provided for @homeOverallScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall'**
+  String get homeOverallScore;
+
+  /// No description provided for @homeDimensionLove.
+  ///
+  /// In en, this message translates to:
+  /// **'Love'**
+  String get homeDimensionLove;
+
+  /// No description provided for @homeDimensionCareer.
+  ///
+  /// In en, this message translates to:
+  /// **'Career'**
+  String get homeDimensionCareer;
+
+  /// No description provided for @homeDimensionWealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Wealth'**
+  String get homeDimensionWealth;
+
+  /// No description provided for @homeDimensionStudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Study'**
+  String get homeDimensionStudy;
+
+  /// No description provided for @homeLuckyColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Lucky Color'**
+  String get homeLuckyColor;
+
+  /// No description provided for @homeLuckyNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Lucky Number'**
+  String get homeLuckyNumber;
+
+  /// No description provided for @homeLuckyFlower.
+  ///
+  /// In en, this message translates to:
+  /// **'Lucky Flower'**
+  String get homeLuckyFlower;
+
+  /// No description provided for @homeLuckyStone.
+  ///
+  /// In en, this message translates to:
+  /// **'Lucky Stone'**
+  String get homeLuckyStone;
+
+  /// No description provided for @homeQuickConsult.
+  ///
+  /// In en, this message translates to:
+  /// **'Consult'**
+  String get homeQuickConsult;
+
+  /// No description provided for @homeQuickTarot.
+  ///
+  /// In en, this message translates to:
+  /// **'Tarot'**
+  String get homeQuickTarot;
+
+  /// No description provided for @homeQuickPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo Read'**
+  String get homeQuickPhoto;
+
+  /// No description provided for @homeSceneExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Scenarios'**
+  String get homeSceneExplore;
+
+  /// No description provided for @homeExploreMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore More'**
+  String get homeExploreMore;
+
+  /// No description provided for @homeFortuneAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'Do'**
+  String get homeFortuneAdvice;
+
+  /// No description provided for @homeFortuneAvoid.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid'**
+  String get homeFortuneAvoid;
+
+  /// No description provided for @insightTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Insight'**
+  String get insightTitle;
+
+  /// No description provided for @insightQuote.
+  ///
+  /// In en, this message translates to:
+  /// **'What you resist, persists.'**
+  String get insightQuote;
+
+  /// No description provided for @insightQuoteAuthor.
+  ///
+  /// In en, this message translates to:
+  /// **'— Carl Jung'**
+  String get insightQuoteAuthor;
+
+  /// No description provided for @insightMyChart.
+  ///
+  /// In en, this message translates to:
+  /// **'My Chart'**
+  String get insightMyChart;
+
+  /// No description provided for @insightSynastry.
+  ///
+  /// In en, this message translates to:
+  /// **'Synastry'**
+  String get insightSynastry;
+
+  /// No description provided for @insightDeepExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep Explore'**
+  String get insightDeepExplore;
+
+  /// No description provided for @insightComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming Soon'**
+  String get insightComingSoon;
+
+  /// No description provided for @consultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Consult'**
+  String get consultTitle;
+
+  /// No description provided for @consultRoomTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Consultation Room'**
+  String get consultRoomTitle;
+
+  /// No description provided for @consultFreeAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Ask'**
+  String get consultFreeAsk;
+
+  /// No description provided for @consultTarot.
+  ///
+  /// In en, this message translates to:
+  /// **'Tarot'**
+  String get consultTarot;
+
+  /// No description provided for @consultChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Chart'**
+  String get consultChart;
+
+  /// No description provided for @consultPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like to ask?'**
+  String get consultPrompt;
+
+  /// No description provided for @consultTarotPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Want to explore with tarot cards?'**
+  String get consultTarotPrompt;
+
+  /// No description provided for @consultChartPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore your natal chart mysteries'**
+  String get consultChartPrompt;
+
+  /// No description provided for @consultSubtext.
+  ///
+  /// In en, this message translates to:
+  /// **'I will answer with the wisdom of the stars'**
+  String get consultSubtext;
+
+  /// No description provided for @consultStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Consultation'**
+  String get consultStart;
+
+  /// No description provided for @diaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Diary'**
+  String get diaryTitle;
+
+  /// No description provided for @diaryAddNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Diary'**
+  String get diaryAddNew;
+
+  /// No description provided for @diaryEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Record your every day\nLet the stars paint your mood'**
+  String get diaryEmptyHint;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// No description provided for @aiDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'All content is AI-generated, for reference and entertainment only'**
+  String get aiDisclaimer;
+
+  /// No description provided for @tabHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get tabHome;
+
+  /// No description provided for @tabInsight.
+  ///
+  /// In en, this message translates to:
+  /// **'Insight'**
+  String get tabInsight;
+
+  /// No description provided for @tabConsult.
+  ///
+  /// In en, this message translates to:
+  /// **'Consult'**
+  String get tabConsult;
+
+  /// No description provided for @tabDiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Diary'**
+  String get tabDiary;
+
+  /// No description provided for @tabProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get tabProfile;
 }
 
 class _AppLocalizationsDelegate

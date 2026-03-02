@@ -43,7 +43,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       ref.invalidate(scenarioListProvider);
       ref.invalidate(scenarioCategoriesProvider);
       ref.invalidate(hotScenariosProvider);
-      context.go('/scenarios');
+      context.go('/home');
     }
   }
 
