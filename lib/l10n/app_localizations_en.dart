@@ -573,4 +573,257 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tarotReadingPrompt => 'Please interpret the tarot spread for me';
+
+  @override
+  String get diceRitualTitle => 'Dice Divination';
+
+  @override
+  String get dicePrompt => 'Roll three dice to reveal cosmic guidance';
+
+  @override
+  String get diceQuestionHint => 'What would you like to ask? (optional)';
+
+  @override
+  String get diceRollButton => 'Roll Dice';
+
+  @override
+  String get diceRolling => 'Rolling the dice...';
+
+  @override
+  String get diceTotal => 'Total';
+
+  @override
+  String get diceGetReading => 'Get AI Reading';
+
+  @override
+  String get diceRollAgain => 'Roll Again';
+
+  @override
+  String get diceReadingPrompt =>
+      'Please interpret the dice divination result for me';
+
+  @override
+  String get numerologyTitle => 'Numerology';
+
+  @override
+  String get numerologyPrompt =>
+      'Enter your birth date to discover your life path number';
+
+  @override
+  String get numerologySelectDate => 'Select birth date';
+
+  @override
+  String get numerologyCalculate => 'Calculate Life Path';
+
+  @override
+  String get numerologyCalculating => 'Calculating...';
+
+  @override
+  String get numerologyLifePath => 'Life Path Number';
+
+  @override
+  String get numerologyGetReading => 'Get AI Reading';
+
+  @override
+  String get numerologyTryAnother => 'Try Another Date';
+
+  @override
+  String get runeRitualTitle => 'Rune Reading';
+
+  @override
+  String get runeSelectSpread => 'Choose Your Spread';
+
+  @override
+  String get runeQuestionHint => 'What would you like to ask? (optional)';
+
+  @override
+  String get runeBeginRitual => 'Begin Ritual';
+
+  @override
+  String get runeDrawPrompt => 'Tap the rune bag to draw runes';
+
+  @override
+  String get runeRevealNext => 'Reveal Next';
+
+  @override
+  String get runeBeginReading => 'Begin Reading';
+
+  @override
+  String get runeCancelled => 'Ritual cancelled';
+
+  @override
+  String get lenormandRitualTitle => 'Lenormand Reading';
+
+  @override
+  String get lenormandSelectSpread => 'Choose Your Spread';
+
+  @override
+  String get lenormandQuestionHint => 'What would you like to ask? (optional)';
+
+  @override
+  String get lenormandBeginRitual => 'Begin Ritual';
+
+  @override
+  String get lenormandShuffling => 'Shuffling the deck...';
+
+  @override
+  String get lenormandStartPicking => 'Start Picking';
+
+  @override
+  String lenormandPickCards(int count) {
+    return 'Select $count cards';
+  }
+
+  @override
+  String get lenormandConfirmSelection => 'Confirm Selection';
+
+  @override
+  String get lenormandRevealNext => 'Reveal Next Card';
+
+  @override
+  String get lenormandBeginReading => 'Begin Reading';
+
+  @override
+  String get lenormandCancelled => 'Ritual cancelled';
+
+  @override
+  String get ichingRitualTitle => 'I Ching Divination';
+
+  @override
+  String get ichingQuestionPrompt =>
+      'Calm your mind and focus on your question';
+
+  @override
+  String get ichingQuestionHint => 'Enter your question...';
+
+  @override
+  String get ichingBeginTossing => 'Begin Coin Tossing';
+
+  @override
+  String ichingRound(int round) {
+    return 'Line $round';
+  }
+
+  @override
+  String get ichingTapToToss => 'Tap to toss coins';
+
+  @override
+  String get ichingBuildHexagram => 'Build Hexagram';
+
+  @override
+  String get ichingBuilding => 'Building hexagram...';
+
+  @override
+  String get ichingPrimaryHexagram => 'Primary Hexagram';
+
+  @override
+  String get ichingTransformedHexagram => 'Transformed Hexagram';
+
+  @override
+  String get ichingBeginReading => 'Begin Reading';
+
+  @override
+  String get ichingCancelled => 'Ritual cancelled';
+
+  @override
+  String get meihuaRitualTitle => 'Meihua Yishu';
+
+  @override
+  String get meihuaSelectMethod => 'Choose a Method';
+
+  @override
+  String get meihuaTimeMethod => 'Time-Based';
+
+  @override
+  String get meihuaTimeMethodDesc => 'Auto-cast using current time';
+
+  @override
+  String get meihuaNumberMethod => 'Number-Based';
+
+  @override
+  String get meihuaNumberMethodDesc => 'Enter two numbers to cast';
+
+  @override
+  String get meihuaQuestionHint => 'What would you like to ask? (optional)';
+
+  @override
+  String get meihuaCurrentTime => 'Current Time';
+
+  @override
+  String get meihuaNumberA => 'Upper';
+
+  @override
+  String get meihuaNumberB => 'Lower';
+
+  @override
+  String get meihuaCalculateButton => 'Cast Hexagram';
+
+  @override
+  String get meihuaCalculating => 'Casting hexagram...';
+
+  @override
+  String get meihuaMovingLine => 'Moving Line';
+
+  @override
+  String get meihuaPrimaryHexagram => 'Primary';
+
+  @override
+  String get meihuaTransformedHexagram => 'Transformed';
+
+  @override
+  String get meihuaMutualHexagram => 'Mutual';
+
+  @override
+  String get meihuaGetReading => 'Get AI Reading';
+
+  @override
+  String get meihuaTryAgain => 'Try Again';
+
+  @override
+  String get divinationHubTitle => 'Divination';
+
+  @override
+  String get divinationHubSubtitle => 'Choose your divination method';
+
+  @override
+  String get divinationTarotName => 'Tarot';
+
+  @override
+  String get divinationTarotDesc => 'Wisdom from 78 cards';
+
+  @override
+  String get divinationDiceName => 'Dice Divination';
+
+  @override
+  String get divinationDiceDesc => 'Three dice reveal your destiny';
+
+  @override
+  String get divinationNumerologyName => 'Numerology';
+
+  @override
+  String get divinationNumerologyDesc => 'Life path number reveals your code';
+
+  @override
+  String get divinationRuneName => 'Norse Runes';
+
+  @override
+  String get divinationRuneDesc => 'Ancient rune guidance';
+
+  @override
+  String get divinationLenormandName => 'Lenormand';
+
+  @override
+  String get divinationLenormandDesc => '36 cards of daily prophecy';
+
+  @override
+  String get divinationIChingName => 'I Ching';
+
+  @override
+  String get divinationIChingDesc => 'Coin toss hexagrams, way of heaven';
+
+  @override
+  String get divinationMeihuaName => 'Meihua Yishu';
+
+  @override
+  String get divinationMeihuaDesc => 'Cast by time, divine all things';
 }

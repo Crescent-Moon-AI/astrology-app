@@ -569,4 +569,254 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tarotReadingPrompt => '请根据塔罗牌阵为我进行解读';
+
+  @override
+  String get diceRitualTitle => '骰子占卜';
+
+  @override
+  String get dicePrompt => '掷出三颗骰子，揭示宇宙的指引';
+
+  @override
+  String get diceQuestionHint => '你想问什么？（可选）';
+
+  @override
+  String get diceRollButton => '掷骰子';
+
+  @override
+  String get diceRolling => '骰子翻滚中...';
+
+  @override
+  String get diceTotal => '总数';
+
+  @override
+  String get diceGetReading => '获取 AI 解读';
+
+  @override
+  String get diceRollAgain => '再掷一次';
+
+  @override
+  String get diceReadingPrompt => '请根据骰子占卜结果为我进行解读';
+
+  @override
+  String get numerologyTitle => '数字命理';
+
+  @override
+  String get numerologyPrompt => '输入出生日期，揭示你的生命密码';
+
+  @override
+  String get numerologySelectDate => '选择出生日期';
+
+  @override
+  String get numerologyCalculate => '计算生命数字';
+
+  @override
+  String get numerologyCalculating => '正在计算...';
+
+  @override
+  String get numerologyLifePath => '生命路径数';
+
+  @override
+  String get numerologyGetReading => '获取 AI 解读';
+
+  @override
+  String get numerologyTryAnother => '换个日期试试';
+
+  @override
+  String get runeRitualTitle => '符文占卜';
+
+  @override
+  String get runeSelectSpread => '选择符文阵';
+
+  @override
+  String get runeQuestionHint => '你想问什么？（可选）';
+
+  @override
+  String get runeBeginRitual => '开始仪式';
+
+  @override
+  String get runeDrawPrompt => '点击符文袋抽取符文';
+
+  @override
+  String get runeRevealNext => '揭示下一个';
+
+  @override
+  String get runeBeginReading => '开始解读';
+
+  @override
+  String get runeCancelled => '仪式已取消';
+
+  @override
+  String get lenormandRitualTitle => '雷诺曼牌';
+
+  @override
+  String get lenormandSelectSpread => '选择牌阵';
+
+  @override
+  String get lenormandQuestionHint => '你想问什么？（可选）';
+
+  @override
+  String get lenormandBeginRitual => '开始仪式';
+
+  @override
+  String get lenormandShuffling => '正在洗牌...';
+
+  @override
+  String get lenormandStartPicking => '开始选牌';
+
+  @override
+  String lenormandPickCards(int count) {
+    return '请选择 $count 张牌';
+  }
+
+  @override
+  String get lenormandConfirmSelection => '确认选牌';
+
+  @override
+  String get lenormandRevealNext => '揭示下一张';
+
+  @override
+  String get lenormandBeginReading => '开始解读';
+
+  @override
+  String get lenormandCancelled => '仪式已取消';
+
+  @override
+  String get ichingRitualTitle => '易经占卜';
+
+  @override
+  String get ichingQuestionPrompt => '静心凝神，在心中默念你的问题';
+
+  @override
+  String get ichingQuestionHint => '输入你的问题...';
+
+  @override
+  String get ichingBeginTossing => '开始掷币';
+
+  @override
+  String ichingRound(int round) {
+    return '第 $round 爻';
+  }
+
+  @override
+  String get ichingTapToToss => '点击掷币';
+
+  @override
+  String get ichingBuildHexagram => '生成卦象';
+
+  @override
+  String get ichingBuilding => '卦象生成中...';
+
+  @override
+  String get ichingPrimaryHexagram => '本卦';
+
+  @override
+  String get ichingTransformedHexagram => '变卦';
+
+  @override
+  String get ichingBeginReading => '开始解读';
+
+  @override
+  String get ichingCancelled => '仪式已取消';
+
+  @override
+  String get meihuaRitualTitle => '梅花易数';
+
+  @override
+  String get meihuaSelectMethod => '选择起卦方式';
+
+  @override
+  String get meihuaTimeMethod => '时间起卦';
+
+  @override
+  String get meihuaTimeMethodDesc => '以当前时间自动起卦';
+
+  @override
+  String get meihuaNumberMethod => '数字起卦';
+
+  @override
+  String get meihuaNumberMethodDesc => '输入两个数字起卦';
+
+  @override
+  String get meihuaQuestionHint => '你想问什么？（可选）';
+
+  @override
+  String get meihuaCurrentTime => '当前时间';
+
+  @override
+  String get meihuaNumberA => '上卦数';
+
+  @override
+  String get meihuaNumberB => '下卦数';
+
+  @override
+  String get meihuaCalculateButton => '起卦';
+
+  @override
+  String get meihuaCalculating => '正在起卦...';
+
+  @override
+  String get meihuaMovingLine => '动爻';
+
+  @override
+  String get meihuaPrimaryHexagram => '本卦';
+
+  @override
+  String get meihuaTransformedHexagram => '变卦';
+
+  @override
+  String get meihuaMutualHexagram => '互卦';
+
+  @override
+  String get meihuaGetReading => '获取 AI 解读';
+
+  @override
+  String get meihuaTryAgain => '重新起卦';
+
+  @override
+  String get divinationHubTitle => '占卜';
+
+  @override
+  String get divinationHubSubtitle => '选择你的占卜方式';
+
+  @override
+  String get divinationTarotName => '塔罗牌';
+
+  @override
+  String get divinationTarotDesc => '78张牌的智慧指引';
+
+  @override
+  String get divinationDiceName => '骰子占卜';
+
+  @override
+  String get divinationDiceDesc => '三颗骰子的命运启示';
+
+  @override
+  String get divinationNumerologyName => '数字命理';
+
+  @override
+  String get divinationNumerologyDesc => '生命灵数揭示人生密码';
+
+  @override
+  String get divinationRuneName => '北欧符文';
+
+  @override
+  String get divinationRuneDesc => '古老符文的神秘指引';
+
+  @override
+  String get divinationLenormandName => '雷诺曼牌';
+
+  @override
+  String get divinationLenormandDesc => '36张牌的日常预言';
+
+  @override
+  String get divinationIChingName => '易经';
+
+  @override
+  String get divinationIChingDesc => '铜钱卜卦，天地之道';
+
+  @override
+  String get divinationMeihuaName => '梅花易数';
+
+  @override
+  String get divinationMeihuaDesc => '时数起卦，万象可占';
 }

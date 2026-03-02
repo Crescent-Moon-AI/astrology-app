@@ -1195,6 +1195,498 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please interpret the tarot spread for me'**
   String get tarotReadingPrompt;
+
+  /// No description provided for @diceRitualTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dice Divination'**
+  String get diceRitualTitle;
+
+  /// No description provided for @dicePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Roll three dice to reveal cosmic guidance'**
+  String get dicePrompt;
+
+  /// No description provided for @diceQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like to ask? (optional)'**
+  String get diceQuestionHint;
+
+  /// No description provided for @diceRollButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Roll Dice'**
+  String get diceRollButton;
+
+  /// No description provided for @diceRolling.
+  ///
+  /// In en, this message translates to:
+  /// **'Rolling the dice...'**
+  String get diceRolling;
+
+  /// No description provided for @diceTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get diceTotal;
+
+  /// No description provided for @diceGetReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Get AI Reading'**
+  String get diceGetReading;
+
+  /// No description provided for @diceRollAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Roll Again'**
+  String get diceRollAgain;
+
+  /// No description provided for @diceReadingPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Please interpret the dice divination result for me'**
+  String get diceReadingPrompt;
+
+  /// No description provided for @numerologyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Numerology'**
+  String get numerologyTitle;
+
+  /// No description provided for @numerologyPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your birth date to discover your life path number'**
+  String get numerologyPrompt;
+
+  /// No description provided for @numerologySelectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select birth date'**
+  String get numerologySelectDate;
+
+  /// No description provided for @numerologyCalculate.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculate Life Path'**
+  String get numerologyCalculate;
+
+  /// No description provided for @numerologyCalculating.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculating...'**
+  String get numerologyCalculating;
+
+  /// No description provided for @numerologyLifePath.
+  ///
+  /// In en, this message translates to:
+  /// **'Life Path Number'**
+  String get numerologyLifePath;
+
+  /// No description provided for @numerologyGetReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Get AI Reading'**
+  String get numerologyGetReading;
+
+  /// No description provided for @numerologyTryAnother.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Another Date'**
+  String get numerologyTryAnother;
+
+  /// No description provided for @runeRitualTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rune Reading'**
+  String get runeRitualTitle;
+
+  /// No description provided for @runeSelectSpread.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Spread'**
+  String get runeSelectSpread;
+
+  /// No description provided for @runeQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like to ask? (optional)'**
+  String get runeQuestionHint;
+
+  /// No description provided for @runeBeginRitual.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin Ritual'**
+  String get runeBeginRitual;
+
+  /// No description provided for @runeDrawPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the rune bag to draw runes'**
+  String get runeDrawPrompt;
+
+  /// No description provided for @runeRevealNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Reveal Next'**
+  String get runeRevealNext;
+
+  /// No description provided for @runeBeginReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin Reading'**
+  String get runeBeginReading;
+
+  /// No description provided for @runeCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Ritual cancelled'**
+  String get runeCancelled;
+
+  /// No description provided for @lenormandRitualTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lenormand Reading'**
+  String get lenormandRitualTitle;
+
+  /// No description provided for @lenormandSelectSpread.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Spread'**
+  String get lenormandSelectSpread;
+
+  /// No description provided for @lenormandQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like to ask? (optional)'**
+  String get lenormandQuestionHint;
+
+  /// No description provided for @lenormandBeginRitual.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin Ritual'**
+  String get lenormandBeginRitual;
+
+  /// No description provided for @lenormandShuffling.
+  ///
+  /// In en, this message translates to:
+  /// **'Shuffling the deck...'**
+  String get lenormandShuffling;
+
+  /// No description provided for @lenormandStartPicking.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Picking'**
+  String get lenormandStartPicking;
+
+  /// No description provided for @lenormandPickCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Select {count} cards'**
+  String lenormandPickCards(int count);
+
+  /// No description provided for @lenormandConfirmSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Selection'**
+  String get lenormandConfirmSelection;
+
+  /// No description provided for @lenormandRevealNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Reveal Next Card'**
+  String get lenormandRevealNext;
+
+  /// No description provided for @lenormandBeginReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin Reading'**
+  String get lenormandBeginReading;
+
+  /// No description provided for @lenormandCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Ritual cancelled'**
+  String get lenormandCancelled;
+
+  /// No description provided for @ichingRitualTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I Ching Divination'**
+  String get ichingRitualTitle;
+
+  /// No description provided for @ichingQuestionPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Calm your mind and focus on your question'**
+  String get ichingQuestionPrompt;
+
+  /// No description provided for @ichingQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your question...'**
+  String get ichingQuestionHint;
+
+  /// No description provided for @ichingBeginTossing.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin Coin Tossing'**
+  String get ichingBeginTossing;
+
+  /// No description provided for @ichingRound.
+  ///
+  /// In en, this message translates to:
+  /// **'Line {round}'**
+  String ichingRound(int round);
+
+  /// No description provided for @ichingTapToToss.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to toss coins'**
+  String get ichingTapToToss;
+
+  /// No description provided for @ichingBuildHexagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Build Hexagram'**
+  String get ichingBuildHexagram;
+
+  /// No description provided for @ichingBuilding.
+  ///
+  /// In en, this message translates to:
+  /// **'Building hexagram...'**
+  String get ichingBuilding;
+
+  /// No description provided for @ichingPrimaryHexagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary Hexagram'**
+  String get ichingPrimaryHexagram;
+
+  /// No description provided for @ichingTransformedHexagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Transformed Hexagram'**
+  String get ichingTransformedHexagram;
+
+  /// No description provided for @ichingBeginReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin Reading'**
+  String get ichingBeginReading;
+
+  /// No description provided for @ichingCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Ritual cancelled'**
+  String get ichingCancelled;
+
+  /// No description provided for @meihuaRitualTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Meihua Yishu'**
+  String get meihuaRitualTitle;
+
+  /// No description provided for @meihuaSelectMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a Method'**
+  String get meihuaSelectMethod;
+
+  /// No description provided for @meihuaTimeMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Time-Based'**
+  String get meihuaTimeMethod;
+
+  /// No description provided for @meihuaTimeMethodDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-cast using current time'**
+  String get meihuaTimeMethodDesc;
+
+  /// No description provided for @meihuaNumberMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Number-Based'**
+  String get meihuaNumberMethod;
+
+  /// No description provided for @meihuaNumberMethodDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter two numbers to cast'**
+  String get meihuaNumberMethodDesc;
+
+  /// No description provided for @meihuaQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like to ask? (optional)'**
+  String get meihuaQuestionHint;
+
+  /// No description provided for @meihuaCurrentTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Time'**
+  String get meihuaCurrentTime;
+
+  /// No description provided for @meihuaNumberA.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper'**
+  String get meihuaNumberA;
+
+  /// No description provided for @meihuaNumberB.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower'**
+  String get meihuaNumberB;
+
+  /// No description provided for @meihuaCalculateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Cast Hexagram'**
+  String get meihuaCalculateButton;
+
+  /// No description provided for @meihuaCalculating.
+  ///
+  /// In en, this message translates to:
+  /// **'Casting hexagram...'**
+  String get meihuaCalculating;
+
+  /// No description provided for @meihuaMovingLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Moving Line'**
+  String get meihuaMovingLine;
+
+  /// No description provided for @meihuaPrimaryHexagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary'**
+  String get meihuaPrimaryHexagram;
+
+  /// No description provided for @meihuaTransformedHexagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Transformed'**
+  String get meihuaTransformedHexagram;
+
+  /// No description provided for @meihuaMutualHexagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Mutual'**
+  String get meihuaMutualHexagram;
+
+  /// No description provided for @meihuaGetReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Get AI Reading'**
+  String get meihuaGetReading;
+
+  /// No description provided for @meihuaTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get meihuaTryAgain;
+
+  /// No description provided for @divinationHubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Divination'**
+  String get divinationHubTitle;
+
+  /// No description provided for @divinationHubSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your divination method'**
+  String get divinationHubSubtitle;
+
+  /// No description provided for @divinationTarotName.
+  ///
+  /// In en, this message translates to:
+  /// **'Tarot'**
+  String get divinationTarotName;
+
+  /// No description provided for @divinationTarotDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Wisdom from 78 cards'**
+  String get divinationTarotDesc;
+
+  /// No description provided for @divinationDiceName.
+  ///
+  /// In en, this message translates to:
+  /// **'Dice Divination'**
+  String get divinationDiceName;
+
+  /// No description provided for @divinationDiceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Three dice reveal your destiny'**
+  String get divinationDiceDesc;
+
+  /// No description provided for @divinationNumerologyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Numerology'**
+  String get divinationNumerologyName;
+
+  /// No description provided for @divinationNumerologyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Life path number reveals your code'**
+  String get divinationNumerologyDesc;
+
+  /// No description provided for @divinationRuneName.
+  ///
+  /// In en, this message translates to:
+  /// **'Norse Runes'**
+  String get divinationRuneName;
+
+  /// No description provided for @divinationRuneDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ancient rune guidance'**
+  String get divinationRuneDesc;
+
+  /// No description provided for @divinationLenormandName.
+  ///
+  /// In en, this message translates to:
+  /// **'Lenormand'**
+  String get divinationLenormandName;
+
+  /// No description provided for @divinationLenormandDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'36 cards of daily prophecy'**
+  String get divinationLenormandDesc;
+
+  /// No description provided for @divinationIChingName.
+  ///
+  /// In en, this message translates to:
+  /// **'I Ching'**
+  String get divinationIChingName;
+
+  /// No description provided for @divinationIChingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Coin toss hexagrams, way of heaven'**
+  String get divinationIChingDesc;
+
+  /// No description provided for @divinationMeihuaName.
+  ///
+  /// In en, this message translates to:
+  /// **'Meihua Yishu'**
+  String get divinationMeihuaName;
+
+  /// No description provided for @divinationMeihuaDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Cast by time, divine all things'**
+  String get divinationMeihuaDesc;
 }
 
 class _AppLocalizationsDelegate
