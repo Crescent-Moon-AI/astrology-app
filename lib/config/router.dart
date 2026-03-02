@@ -5,6 +5,10 @@ import '../features/auth/presentation/pages/register_page.dart';
 import '../features/auth/presentation/providers/auth_providers.dart';
 import '../features/chat/presentation/pages/chat_page.dart';
 import '../features/chat/presentation/pages/conversation_list_page.dart';
+import '../features/consult/presentation/pages/consult_page.dart';
+import '../features/diary/presentation/pages/diary_page.dart';
+import '../features/home/presentation/pages/home_page.dart';
+import '../features/insight/presentation/pages/insight_page.dart';
 import '../features/scenario/presentation/pages/scenario_list_page.dart';
 import '../features/scenario/presentation/pages/scenario_detail_page.dart';
 import '../features/settings/presentation/pages/about_character_page.dart';
@@ -39,7 +43,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authProvider);
 
   return GoRouter(
-    initialLocation: '/scenarios',
+    initialLocation: '/home',
     redirect: (context, state) {
       final isAuth = authState.status == AuthStatus.authenticated;
       final isAuthRoute =
@@ -47,7 +51,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           state.matchedLocation == '/register';
 
       if (!isAuth && !isAuthRoute) return '/login';
-      if (isAuth && isAuthRoute) return '/scenarios';
+      if (isAuth && isAuthRoute) return '/home';
       return null;
     },
     routes: [
@@ -63,35 +67,42 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const RegisterPage(),
       ),
 
-      // Main shell with bottom navigation
+      // Main shell with bottom navigation — 5 tabs
       ShellRoute(
         builder: (context, state, child) => MainShellPage(child: child),
         routes: [
-          // Tab 1: Explore
+          // Tab 0: Home
           GoRoute(
-            path: '/scenarios',
-            name: 'scenarios',
-            builder: (context, state) => const ScenarioListPage(),
+            path: '/home',
+            name: 'home',
+            builder: (context, state) => const HomePage(),
           ),
 
-          // Tab 2: Chat
+          // Tab 1: Insight
           GoRoute(
-            path: '/conversations',
-            name: 'conversations',
-            builder: (context, state) => const ConversationListPage(),
+            path: '/insight',
+            name: 'insight',
+            builder: (context, state) => const InsightPage(),
           ),
 
-          // Tab 3: Transits/Calendar
+          // Tab 2: Consult (center button)
           GoRoute(
-            path: '/transits',
-            name: 'transits',
-            builder: (context, state) => const TransitListPage(),
+            path: '/consult',
+            name: 'consult',
+            builder: (context, state) => const ConsultPage(),
           ),
 
-          // Tab 4: Profile/Settings
+          // Tab 3: Diary
           GoRoute(
-            path: '/settings',
-            name: 'settings',
+            path: '/diary',
+            name: 'diary',
+            builder: (context, state) => const DiaryPage(),
+          ),
+
+          // Tab 4: Profile
+          GoRoute(
+            path: '/profile',
+            name: 'profile',
             builder: (context, state) => const ProfilePage(),
           ),
         ],
@@ -99,12 +110,22 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // Full-screen routes (no bottom navigation)
       GoRoute(
+        path: '/scenarios',
+        name: 'scenarios',
+        builder: (context, state) => const ScenarioListPage(),
+      ),
+      GoRoute(
         path: '/scenarios/:id',
         name: 'scenarioDetail',
         builder: (context, state) {
           final id = state.pathParameters['id']!;
           return ScenarioDetailPage(scenarioId: id);
         },
+      ),
+      GoRoute(
+        path: '/conversations',
+        name: 'conversations',
+        builder: (context, state) => const ConversationListPage(),
       ),
       GoRoute(
         path: '/chat',
@@ -125,6 +146,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             tarotSessionId: state.uri.queryParameters['tarot_session_id'],
           );
         },
+      ),
+      GoRoute(
+        path: '/transits',
+        name: 'transits',
+        builder: (context, state) => const TransitListPage(),
       ),
       GoRoute(
         path: '/transits/:id',

@@ -52,7 +52,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       ref.invalidate(scenarioListProvider);
       ref.invalidate(scenarioCategoriesProvider);
       ref.invalidate(hotScenariosProvider);
-      context.go('/scenarios');
+      context.go('/home');
     }
   }
 

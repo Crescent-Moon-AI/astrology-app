@@ -826,4 +826,141 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get divinationMeihuaDesc => 'Cast by time, divine all things';
+
+  @override
+  String get homeTitle => 'Home';
+
+  @override
+  String get homeFortuneTitle => 'Daily Fortune';
+
+  @override
+  String get homeOverallScore => 'Overall';
+
+  @override
+  String get homeDimensionLove => 'Love';
+
+  @override
+  String get homeDimensionCareer => 'Career';
+
+  @override
+  String get homeDimensionWealth => 'Wealth';
+
+  @override
+  String get homeDimensionStudy => 'Study';
+
+  @override
+  String get homeLuckyColor => 'Lucky Color';
+
+  @override
+  String get homeLuckyNumber => 'Lucky Number';
+
+  @override
+  String get homeLuckyFlower => 'Lucky Flower';
+
+  @override
+  String get homeLuckyStone => 'Lucky Stone';
+
+  @override
+  String get homeQuickConsult => 'Consult';
+
+  @override
+  String get homeQuickTarot => 'Tarot';
+
+  @override
+  String get homeQuickPhoto => 'Photo Read';
+
+  @override
+  String get homeSceneExplore => 'Explore Scenarios';
+
+  @override
+  String get homeExploreMore => 'Explore More';
+
+  @override
+  String get homeFortuneAdvice => 'Do';
+
+  @override
+  String get homeFortuneAvoid => 'Avoid';
+
+  @override
+  String get insightTitle => 'Insight';
+
+  @override
+  String get insightQuote => 'What you resist, persists.';
+
+  @override
+  String get insightQuoteAuthor => '— Carl Jung';
+
+  @override
+  String get insightMyChart => 'My Chart';
+
+  @override
+  String get insightSynastry => 'Synastry';
+
+  @override
+  String get insightDeepExplore => 'Deep Explore';
+
+  @override
+  String get insightComingSoon => 'Coming Soon';
+
+  @override
+  String get consultTitle => 'Consult';
+
+  @override
+  String get consultRoomTitle => 'Consultation Room';
+
+  @override
+  String get consultFreeAsk => 'Free Ask';
+
+  @override
+  String get consultTarot => 'Tarot';
+
+  @override
+  String get consultChart => 'Chart';
+
+  @override
+  String get consultPrompt => 'What would you like to ask?';
+
+  @override
+  String get consultTarotPrompt => 'Want to explore with tarot cards?';
+
+  @override
+  String get consultChartPrompt => 'Explore your natal chart mysteries';
+
+  @override
+  String get consultSubtext => 'I will answer with the wisdom of the stars';
+
+  @override
+  String get consultStart => 'Start Consultation';
+
+  @override
+  String get diaryTitle => 'Diary';
+
+  @override
+  String get diaryAddNew => 'Add New Diary';
+
+  @override
+  String get diaryEmptyHint =>
+      'Record your every day\nLet the stars paint your mood';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get aiDisclaimer =>
+      'All content is AI-generated, for reference and entertainment only';
+
+  @override
+  String get tabHome => 'Home';
+
+  @override
+  String get tabInsight => 'Insight';
+
+  @override
+  String get tabConsult => 'Consult';
+
+  @override
+  String get tabDiary => 'Diary';
+
+  @override
+  String get tabProfile => 'Profile';
 }

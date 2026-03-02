@@ -5,7 +5,7 @@ import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../shared/theme/cosmic_colors.dart';
 
 /// Main shell with bottom navigation bar.
-/// Wraps the 4 main tabs: Explore, Chat, Calendar, Profile.
+/// Wraps the 5 main tabs: Home, Insight, Consult, Diary, Profile.
 class MainShellPage extends ConsumerStatefulWidget {
   final Widget child;
 
@@ -19,10 +19,11 @@ class _MainShellPageState extends ConsumerState<MainShellPage> {
   int _currentIndex = 0;
 
   static const _tabRoutes = [
-    '/scenarios',
-    '/conversations',
-    '/transits',
-    '/settings',
+    '/home',
+    '/insight',
+    '/consult',
+    '/diary',
+    '/profile',
   ];
 
   @override
@@ -52,7 +53,6 @@ class _MainShellPageState extends ConsumerState<MainShellPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
 
     return Scaffold(
       body: widget.child,
@@ -63,12 +63,12 @@ class _MainShellPageState extends ConsumerState<MainShellPage> {
           setState(() => _currentIndex = index);
           context.go(_tabRoutes[index]);
         },
-        onCenterTap: () => context.push('/divination'),
         labels: [
-          l10n.scenarioExploreTitle,
-          l10n.chatTitle,
-          l10n.calendarTitle,
-          isZh ? '\u6211\u7684' : 'Profile',
+          l10n.tabHome,
+          l10n.tabInsight,
+          l10n.tabConsult,
+          l10n.tabDiary,
+          l10n.tabProfile,
         ],
       ),
     );
@@ -78,27 +78,27 @@ class _MainShellPageState extends ConsumerState<MainShellPage> {
 class _CosmicBottomBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTabSelected;
-  final VoidCallback onCenterTap;
   final List<String> labels;
 
   const _CosmicBottomBar({
     required this.currentIndex,
     required this.onTabSelected,
-    required this.onCenterTap,
     required this.labels,
   });
 
   static const _unselectedIcons = [
-    Icons.explore_outlined,
-    Icons.question_answer_outlined,
-    Icons.nights_stay_outlined,
-    Icons.person_outline,
+    Icons.home_outlined, // Tab 0: Home
+    Icons.auto_graph_outlined, // Tab 1: Insight
+    Icons.auto_awesome, // Tab 2: Consult (center)
+    Icons.menu_book_outlined, // Tab 3: Diary
+    Icons.person_outline, // Tab 4: Profile
   ];
 
   static const _selectedIcons = [
-    Icons.explore,
-    Icons.question_answer,
-    Icons.nights_stay,
+    Icons.home,
+    Icons.auto_graph,
+    Icons.auto_awesome,
+    Icons.menu_book,
     Icons.person,
   ];
 
@@ -127,13 +127,13 @@ class _CosmicBottomBar extends StatelessWidget {
                   _buildTab(0),
                   _buildTab(1),
                   const Spacer(), // placeholder for center button
-                  _buildTab(2),
                   _buildTab(3),
+                  _buildTab(4),
                 ],
               ),
             ),
           ),
-          // Raised center button — centered horizontally, raised above bar
+          // Raised center button (Tab 2: Consult)
           Positioned(
             bottom: bottomPadding + (64 - 56) / 2,
             left: 0,
@@ -180,11 +180,13 @@ class _CosmicBottomBar extends StatelessWidget {
   }
 
   Widget _buildCenterButton() {
+    final isSelected = currentIndex == 2;
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: onCenterTap,
+      onTap: () => onTabSelected(2),
       child: SizedBox(
-        width: 72, // larger tap target
+        width: 72,
         height: 72,
         child: Center(
           child: Container(
@@ -195,16 +197,29 @@ class _CosmicBottomBar extends StatelessWidget {
               gradient: CosmicColors.primaryGradient,
               boxShadow: [
                 BoxShadow(
-                  color: CosmicColors.primary.withAlpha(77), // 30%
-                  blurRadius: 16,
+                  color: CosmicColors.primary.withAlpha(isSelected ? 128 : 77),
+                  blurRadius: isSelected ? 20 : 16,
                   spreadRadius: 0,
                 ),
               ],
             ),
-            child: const Icon(
-              Icons.auto_awesome,
-              color: CosmicColors.textPrimary,
-              size: 28,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  isSelected ? _selectedIcons[2] : _unselectedIcons[2],
+                  color: CosmicColors.textPrimary,
+                  size: 24,
+                ),
+                Text(
+                  labels[2],
+                  style: const TextStyle(
+                    color: CosmicColors.textPrimary,
+                    fontSize: 9,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
