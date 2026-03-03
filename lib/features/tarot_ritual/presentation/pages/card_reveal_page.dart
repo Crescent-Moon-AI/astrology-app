@@ -24,17 +24,7 @@ class CardRevealPage extends ConsumerWidget {
     final currentIndex = revealIndex < cards.length ? revealIndex : null;
 
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            CosmicColors.background,
-            Color(0xFF1A0A3E),
-            CosmicColors.background,
-          ],
-        ),
-      ),
+      color: CosmicColors.backgroundDeep,
       child: SafeArea(
         child: Column(
           children: [
@@ -139,16 +129,26 @@ class _CardRevealItem extends StatelessWidget {
     final card = resolvedCard.card;
     final isZh = Localizations.localeOf(context).languageCode == 'zh';
 
+    // Responsive card sizing: ~65% of screen width
+    final screenWidth = MediaQuery.of(context).size.width;
+    final cardWidth = screenWidth * 0.65;
+    final cardHeight = cardWidth / 0.6;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         // Position label
         PositionIndicator(label: resolvedCard.positionLabel, isActive: true),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
 
-        // 3D flip card — larger
-        TarotCard3D(card: card, showFace: true, width: 200, height: 340),
-        const SizedBox(height: 16),
+        // 3D flip card — large, near-fullscreen
+        TarotCard3D(
+          card: card,
+          showFace: true,
+          width: cardWidth,
+          height: cardHeight,
+        ),
+        const SizedBox(height: 12),
 
         // Card name + element tag
         Text(

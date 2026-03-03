@@ -38,6 +38,7 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
         'three_card' => '\u4E07\u80FD\u4E09\u724C\u9635',
         'celtic_cross' => '\u51EF\u5C14\u7279\u5341\u5B57',
         'single_card' => '\u5355\u724C',
+        'love_spread' => '\u7231\u60C5\u724C\u9635',
         _ => spreadType,
       };
     }
@@ -45,6 +46,7 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
       'three_card' => 'Three Card',
       'celtic_cross' => 'Celtic Cross',
       'single_card' => 'Single Card',
+      'love_spread' => 'Love Spread',
       _ => spreadType,
     };
   }
@@ -55,17 +57,7 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
     final ritualState = ref.watch(tarotRitualProvider);
 
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            CosmicColors.background,
-            Color(0xFF1A0A3E),
-            CosmicColors.background,
-          ],
-        ),
-      ),
+      color: CosmicColors.backgroundDeep,
       child: SafeArea(
         child: Column(
           children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,7 @@ import 'shared/theme/cosmic_theme.dart';
 import 'config/router.dart';
 import 'core/providers/core_providers.dart';
 import 'shared/providers/locale_provider.dart';
+import 'shared/theme/theme_provider.dart';
 import 'features/auth/presentation/providers/auth_providers.dart';
 
 void main() async {
@@ -66,6 +68,15 @@ class _YuejianAppState extends ConsumerState<YuejianApp> {
     final router = ref.watch(routerProvider);
     // forceLocale (dev) takes priority over user preference
     final locale = widget.forceLocale ?? ref.watch(appLocaleProvider);
+
+    // Globally disable flutter_animate when reduced-motion is enabled
+    final reducedMotion = ref.watch(reducedMotionProvider);
+    Animate.restartOnHotReload = true;
+    if (reducedMotion) {
+      Animate.defaultDuration = Duration.zero;
+    } else {
+      Animate.defaultDuration = const Duration(milliseconds: 300);
+    }
 
     return MaterialApp.router(
       title: '月见',

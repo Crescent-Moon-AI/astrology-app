@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
+import '../../../scenario/l10n/scenario_strings.dart';
 import '../../../scenario/presentation/providers/scenario_providers.dart';
 
 class ConsultScenarioCards extends ConsumerWidget {
@@ -45,7 +46,10 @@ class ConsultScenarioCards extends ConsumerWidget {
   }
 
   Widget _buildHotCard(BuildContext context, dynamic scenario) {
-    final title = scenario.title as String;
+    final rawTitle = scenario.title as String;
+    final locale = Localizations.localeOf(context).languageCode;
+    final strings = scenarioStrings[locale] ?? scenarioStrings['zh']!;
+    final title = strings[rawTitle] ?? rawTitle;
 
     return GestureDetector(
       onTap: () => context.push('/chat?scenario_id=${scenario.id}'),

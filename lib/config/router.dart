@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../features/auth/presentation/pages/login_page.dart';
@@ -112,14 +113,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/scenarios',
         name: 'scenarios',
-        builder: (context, state) => const ScenarioListPage(),
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const ScenarioListPage()),
       ),
       GoRoute(
         path: '/scenarios/:id',
         name: 'scenarioDetail',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final id = state.pathParameters['id']!;
-          return ScenarioDetailPage(scenarioId: id);
+          return _cosmicFadePage(state, ScenarioDetailPage(scenarioId: id));
         },
       ),
       GoRoute(
@@ -130,20 +132,26 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/chat',
         name: 'chat',
-        builder: (context, state) => ChatPage(
-          scenarioId: state.uri.queryParameters['scenario_id'],
-          initialMessage: state.uri.queryParameters['initial_message'],
-          tarotSessionId: state.uri.queryParameters['tarot_session_id'],
+        pageBuilder: (context, state) => _cosmicFadePage(
+          state,
+          ChatPage(
+            scenarioId: state.uri.queryParameters['scenario_id'],
+            initialMessage: state.uri.queryParameters['initial_message'],
+            tarotSessionId: state.uri.queryParameters['tarot_session_id'],
+          ),
         ),
       ),
       GoRoute(
         path: '/chat/:id',
         name: 'chatConversation',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final id = state.pathParameters['id']!;
-          return ChatPage(
-            conversationId: id,
-            tarotSessionId: state.uri.queryParameters['tarot_session_id'],
+          return _cosmicFadePage(
+            state,
+            ChatPage(
+              conversationId: id,
+              tarotSessionId: state.uri.queryParameters['tarot_session_id'],
+            ),
           );
         },
       ),
@@ -183,21 +191,27 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/tarot',
         name: 'tarot',
-        builder: (context, state) => const SpreadSelectionPage(),
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const SpreadSelectionPage()),
       ),
       GoRoute(
         path: '/tarot/spread-select',
         name: 'tarotSpreadSelect',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final conversationId = state.uri.queryParameters['conversation_id'];
-          return SpreadSelectionPage(conversationId: conversationId);
+          return _cosmicFadePage(
+            state,
+            SpreadSelectionPage(conversationId: conversationId),
+          );
         },
       ),
       GoRoute(
         path: '/tarot/ritual/:sessionId',
         name: 'tarotRitual',
-        builder: (context, state) =>
-            TarotRitualPage(sessionId: state.pathParameters['sessionId']!),
+        pageBuilder: (context, state) => _cosmicFadePage(
+          state,
+          TarotRitualPage(sessionId: state.pathParameters['sessionId']!),
+        ),
       ),
       GoRoute(
         path: '/mood/history',
@@ -240,68 +254,94 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/divination',
         name: 'divination',
-        builder: (context, state) => const DivinationHubPage(),
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const DivinationHubPage()),
       ),
 
       // Dice Ritual
       GoRoute(
         path: '/dice',
         name: 'dice',
-        builder: (context, state) => const DiceRitualPage(),
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const DiceRitualPage()),
       ),
 
       // Numerology
       GoRoute(
         path: '/numerology',
         name: 'numerology',
-        builder: (context, state) => const NumerologyInputPage(),
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const NumerologyInputPage()),
       ),
 
       // Rune Ritual
       GoRoute(
         path: '/rune',
         name: 'rune',
-        builder: (context, state) => const RuneSpreadSelect(),
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const RuneSpreadSelect()),
       ),
       GoRoute(
         path: '/rune/ritual/:sessionId',
         name: 'runeRitual',
-        builder: (context, state) =>
-            RuneRitualPage(sessionId: state.pathParameters['sessionId']!),
+        pageBuilder: (context, state) => _cosmicFadePage(
+          state,
+          RuneRitualPage(sessionId: state.pathParameters['sessionId']!),
+        ),
       ),
 
       // Lenormand Ritual
       GoRoute(
         path: '/lenormand',
         name: 'lenormand',
-        builder: (context, state) => const LenormandSpreadSelect(),
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const LenormandSpreadSelect()),
       ),
       GoRoute(
         path: '/lenormand/ritual/:sessionId',
         name: 'lenormandRitual',
-        builder: (context, state) =>
-            LenormandRitualPage(sessionId: state.pathParameters['sessionId']!),
+        pageBuilder: (context, state) => _cosmicFadePage(
+          state,
+          LenormandRitualPage(sessionId: state.pathParameters['sessionId']!),
+        ),
       ),
 
       // I Ching Ritual
       GoRoute(
         path: '/iching',
         name: 'iching',
-        builder: (context, state) => const IChingQuestionPage(),
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const IChingQuestionPage()),
       ),
       GoRoute(
         path: '/iching/ritual/:sessionId',
         name: 'ichingRitual',
-        builder: (context, state) =>
-            IChingRitualPage(sessionId: state.pathParameters['sessionId']!),
+        pageBuilder: (context, state) => _cosmicFadePage(
+          state,
+          IChingRitualPage(sessionId: state.pathParameters['sessionId']!),
+        ),
       ),
 
       // Meihua Ritual
       GoRoute(
         path: '/meihua',
         name: 'meihua',
-        builder: (context, state) => const MeihuaMethodPage(),
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const MeihuaMethodPage()),
       ),
     ],
   );
 });
+
+/// Cosmic fade transition for full-screen immersive routes.
+CustomTransitionPage<void> _cosmicFadePage(GoRouterState state, Widget child) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: const Duration(milliseconds: 400),
+    reverseTransitionDuration: const Duration(milliseconds: 300),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(opacity: animation, child: child);
+    },
+  );
+}

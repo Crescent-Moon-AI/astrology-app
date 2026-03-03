@@ -26,13 +26,7 @@ class SpreadOverviewPage extends ConsumerWidget {
     final cards = session.selectedCards ?? [];
 
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [CosmicColors.background, Color(0xFF1A0A3E)],
-        ),
-      ),
+      color: CosmicColors.backgroundDeep,
       child: SafeArea(
         child: Column(
           children: [

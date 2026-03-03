@@ -152,13 +152,7 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
     final l10n = AppLocalizations.of(context)!;
 
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [CosmicColors.background, Color(0xFF1A0A3E)],
-        ),
-      ),
+      color: CosmicColors.backgroundDeep,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
