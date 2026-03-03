@@ -27,7 +27,7 @@ class MockInterceptor extends Interceptor {
       'element': 'air',
       'upright_keywords': ['新开始', '冒险'],
       'reversed_keywords': ['鲁莽', '犹豫'],
-      'image_key': 'major_00',
+      'image_key': 'major_00_fool',
     },
     {
       'id': 1,
@@ -39,7 +39,7 @@ class MockInterceptor extends Interceptor {
       'element': 'air',
       'upright_keywords': ['创造力', '意志'],
       'reversed_keywords': ['欺骗', '浪费'],
-      'image_key': 'major_01',
+      'image_key': 'major_01_magician',
     },
     {
       'id': 2,
@@ -51,7 +51,7 @@ class MockInterceptor extends Interceptor {
       'element': 'water',
       'upright_keywords': ['直觉', '智慧'],
       'reversed_keywords': ['隐秘', '迷茫'],
-      'image_key': 'major_02',
+      'image_key': 'major_02_high_priestess',
     },
     {
       'id': 6,
@@ -63,7 +63,7 @@ class MockInterceptor extends Interceptor {
       'element': 'air',
       'upright_keywords': ['爱情', '和谐'],
       'reversed_keywords': ['失衡', '分离'],
-      'image_key': 'major_06',
+      'image_key': 'major_06_lovers',
     },
     {
       'id': 10,
@@ -75,7 +75,7 @@ class MockInterceptor extends Interceptor {
       'element': 'fire',
       'upright_keywords': ['转运', '机遇'],
       'reversed_keywords': ['倒退', '阻碍'],
-      'image_key': 'major_10',
+      'image_key': 'major_10_wheel_of_fortune',
     },
     {
       'id': 17,
@@ -87,7 +87,7 @@ class MockInterceptor extends Interceptor {
       'element': 'air',
       'upright_keywords': ['希望', '灵感'],
       'reversed_keywords': ['失望', '迷失'],
-      'image_key': 'major_17',
+      'image_key': 'major_17_star',
     },
     // Wands
     {
@@ -100,7 +100,7 @@ class MockInterceptor extends Interceptor {
       'element': 'fire',
       'upright_keywords': ['创造', '激情'],
       'reversed_keywords': ['延迟', '消沉'],
-      'image_key': 'wands_01',
+      'image_key': 'minor_wands_01',
     },
     {
       'id': 29,
@@ -112,7 +112,7 @@ class MockInterceptor extends Interceptor {
       'element': 'fire',
       'upright_keywords': ['快速', '行动'],
       'reversed_keywords': ['拖延', '阻碍'],
-      'image_key': 'wands_08',
+      'image_key': 'minor_wands_08',
     },
     // Cups
     {
@@ -125,7 +125,7 @@ class MockInterceptor extends Interceptor {
       'element': 'water',
       'upright_keywords': ['温柔', '直觉'],
       'reversed_keywords': ['情绪化', '脆弱'],
-      'image_key': 'cups_13',
+      'image_key': 'minor_cups_13',
     },
     {
       'id': 38,
@@ -137,7 +137,7 @@ class MockInterceptor extends Interceptor {
       'element': 'water',
       'upright_keywords': ['连结', '和谐'],
       'reversed_keywords': ['失衡', '误解'],
-      'image_key': 'cups_02',
+      'image_key': 'minor_cups_02',
     },
     {
       'id': 43,
@@ -149,7 +149,7 @@ class MockInterceptor extends Interceptor {
       'element': 'water',
       'upright_keywords': ['幻想', '选择'],
       'reversed_keywords': ['清醒', '决断'],
-      'image_key': 'cups_07',
+      'image_key': 'minor_cups_07',
     },
     // Swords
     {
@@ -162,7 +162,7 @@ class MockInterceptor extends Interceptor {
       'element': 'air',
       'upright_keywords': ['真相', '清晰'],
       'reversed_keywords': ['混乱', '误判'],
-      'image_key': 'swords_01',
+      'image_key': 'minor_swords_01',
     },
     {
       'id': 55,
@@ -174,7 +174,7 @@ class MockInterceptor extends Interceptor {
       'element': 'air',
       'upright_keywords': ['过渡', '前进'],
       'reversed_keywords': ['停滞', '抗拒'],
-      'image_key': 'swords_06',
+      'image_key': 'minor_swords_06',
     },
     // Pentacles
     {
@@ -187,7 +187,7 @@ class MockInterceptor extends Interceptor {
       'element': 'earth',
       'upright_keywords': ['富足', '传承'],
       'reversed_keywords': ['损失', '孤立'],
-      'image_key': 'pentacles_10',
+      'image_key': 'minor_pentacles_10',
     },
     {
       'id': 70,
@@ -199,7 +199,7 @@ class MockInterceptor extends Interceptor {
       'element': 'earth',
       'upright_keywords': ['勤勉', '务实'],
       'reversed_keywords': ['懒惰', '停滞'],
-      'image_key': 'pentacles_12',
+      'image_key': 'minor_pentacles_12',
     },
   ];
 
@@ -984,7 +984,7 @@ class MockInterceptor extends Interceptor {
               'orientation': 'upright',
               'upright_keywords': ['温柔', '直觉'],
               'reversed_keywords': ['情绪化', '脆弱'],
-              'image_key': 'cups_13',
+              'image_key': 'minor_cups_13',
             },
           },
           {
@@ -1001,7 +1001,7 @@ class MockInterceptor extends Interceptor {
               'orientation': 'upright',
               'upright_keywords': ['爱情', '和谐'],
               'reversed_keywords': ['失衡', '分离'],
-              'image_key': 'major_06',
+              'image_key': 'major_06_lovers',
             },
           },
           {
@@ -1018,7 +1018,7 @@ class MockInterceptor extends Interceptor {
               'orientation': 'reversed',
               'upright_keywords': ['富足', '传承'],
               'reversed_keywords': ['损失', '孤立'],
-              'image_key': 'pentacles_10',
+              'image_key': 'minor_pentacles_10',
             },
           },
         ],

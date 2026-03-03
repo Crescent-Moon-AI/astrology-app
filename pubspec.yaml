@@ -55,5 +55,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/tarot/
+    - assets/images/lenormand/
     - assets/icons/
     - assets/lottie/

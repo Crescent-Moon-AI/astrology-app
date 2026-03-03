@@ -42,9 +42,16 @@ class _ShuffleAnimationState extends State<ShuffleAnimation>
 
   @override
   Widget build(BuildContext context) {
+    // Responsive card sizing: ~38% of screen width
+    final screenWidth = MediaQuery.of(context).size.width;
+    final cardWidth = screenWidth * 0.38;
+    final cardHeight = cardWidth / 0.6; // maintain 3:5 aspect ratio
+    final containerWidth = cardWidth * 1.6;
+    final containerHeight = cardHeight * 1.35;
+
     return SizedBox(
-      width: 200,
-      height: 280,
+      width: containerWidth,
+      height: containerHeight,
       child: AnimatedBuilder(
         animation: Listenable.merge([_breatheController, _floatController]),
         builder: (context, child) {
@@ -62,9 +69,9 @@ class _ShuffleAnimationState extends State<ShuffleAnimation>
                   Transform(
                     alignment: Alignment.center,
                     transform: Matrix4.identity()
-                      ..translateByDouble(-8.0, 8.0, 0.0, 1.0)
+                      ..translateByDouble(-10.0, 10.0, 0.0, 1.0)
                       ..rotateZ(-0.05),
-                    child: const TarotCardBack(width: 110, height: 185),
+                    child: TarotCardBack(width: cardWidth, height: cardHeight),
                   ),
                   // Middle card (slight offset)
                   Transform(
@@ -72,15 +79,15 @@ class _ShuffleAnimationState extends State<ShuffleAnimation>
                     transform: Matrix4.identity()
                       ..translateByDouble(0.0, 0.0, 0.0, 1.0)
                       ..rotateZ(0.02),
-                    child: const TarotCardBack(width: 110, height: 185),
+                    child: TarotCardBack(width: cardWidth, height: cardHeight),
                   ),
                   // Top card (offset right and up)
                   Transform(
                     alignment: Alignment.center,
                     transform: Matrix4.identity()
-                      ..translateByDouble(8.0, -8.0, 0.0, 1.0)
+                      ..translateByDouble(10.0, -10.0, 0.0, 1.0)
                       ..rotateZ(0.05),
-                    child: const TarotCardBack(width: 110, height: 185),
+                    child: TarotCardBack(width: cardWidth, height: cardHeight),
                   ),
                 ],
               ),

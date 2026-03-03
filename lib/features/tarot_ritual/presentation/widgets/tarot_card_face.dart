@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../shared/theme/cosmic_colors.dart';
+import '../../../../shared/utils/card_asset_paths.dart';
 import '../../domain/models/tarot_card.dart';
 
 class TarotCardFace extends StatelessWidget {
@@ -18,30 +19,129 @@ class TarotCardFace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isZh = Localizations.localeOf(context).languageCode == 'zh';
+    final hasImageKey = card.imageKey.isNotEmpty;
 
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            _arcanaColor.withAlpha(204), // 80%
-            _arcanaColor.withAlpha(128), // 50%
-            CosmicColors.background,
-          ],
-          stops: const [0.0, 0.5, 1.0],
-        ),
-        border: Border.all(color: CosmicColors.secondary, width: 2),
+        border: Border.all(color: CosmicColors.tarotGold, width: 2),
         boxShadow: [
           BoxShadow(
-            color: CosmicColors.secondary.withAlpha(51), // 20%
+            color: CosmicColors.tarotGold.withAlpha(51),
             blurRadius: 8,
             spreadRadius: 1,
           ),
         ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: hasImageKey ? _buildImageCard(isZh) : _buildProceduralCard(isZh),
+      ),
+    );
+  }
+
+  /// Image-based card face with RWS artwork.
+  Widget _buildImageCard(bool isZh) {
+    final assetPath = CardAssetPaths.tarotAssetPath(card.imageKey);
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Card artwork — reversed cards rotate 180°
+        Transform.rotate(
+          angle: card.isReversed ? 3.14159 : 0,
+          child: Image.asset(
+            assetPath,
+            fit: BoxFit.cover,
+            cacheWidth: 300,
+            errorBuilder: (_, __, ___) => _buildProceduralCard(isZh),
+          ),
+        ),
+        // Semi-transparent overlay at bottom for name + orientation
+        // Tall gradient covers the PNG's embedded text for a clean layered look
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(6, 30, 6, 6),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withAlpha(230),
+                  Colors.black,
+                ],
+                stops: const [0.0, 0.3, 0.7],
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  card.nameZH.isNotEmpty ? card.nameZH : _displayName,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    shadows: [Shadow(blurRadius: 4, color: Colors.black)],
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      card.isReversed
+                          ? Icons.arrow_downward
+                          : Icons.arrow_upward,
+                      size: 10,
+                      color: card.isReversed
+                          ? CosmicColors.error
+                          : CosmicColors.success,
+                    ),
+                    const SizedBox(width: 2),
+                    Text(
+                      card.isReversed
+                          ? (isZh ? '\u9006\u4F4D' : 'Reversed')
+                          : (isZh ? '\u6B63\u4F4D' : 'Upright'),
+                      style: TextStyle(
+                        color: card.isReversed
+                            ? CosmicColors.error
+                            : CosmicColors.success,
+                        fontSize: 9,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Fallback procedural card (emoji + text, original design).
+  Widget _buildProceduralCard(bool isZh) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            _arcanaColor.withAlpha(204),
+            _arcanaColor.withAlpha(128),
+            CosmicColors.background,
+          ],
+          stops: const [0.0, 0.5, 1.0],
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
@@ -59,11 +159,11 @@ class TarotCardFace extends StatelessWidget {
             ),
             const SizedBox(height: 6),
 
-            // Suit/element icon — larger
+            // Suit/element icon
             Text(_suitIcon, style: const TextStyle(fontSize: 40)),
             const SizedBox(height: 6),
 
-            // Chinese name — prominent
+            // Chinese name
             if (card.nameZH.isNotEmpty)
               Text(
                 card.nameZH,
@@ -77,7 +177,7 @@ class TarotCardFace extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
 
-            // English name (display name, not internal key)
+            // English name
             Text(
               _displayName,
               textAlign: TextAlign.center,
@@ -96,11 +196,9 @@ class TarotCardFace extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: CosmicColors.primary.withAlpha(51), // 20%
+                  color: CosmicColors.primary.withAlpha(51),
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: CosmicColors.primary.withAlpha(77), // 30%
-                  ),
+                  border: Border.all(color: CosmicColors.primary.withAlpha(77)),
                 ),
                 child: Text(
                   _elementLabel(isZh),
@@ -128,7 +226,7 @@ class TarotCardFace extends StatelessWidget {
             ],
             const SizedBox(height: 8),
 
-            // Orientation indicator — Chinese
+            // Orientation indicator
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -213,23 +311,18 @@ class TarotCardFace extends StatelessWidget {
   }
 
   String get _suitIcon {
-    if (card.arcana == 'major') return '\u2727'; // ✧
+    if (card.arcana == 'major') return '\u2727';
     return switch (card.suit) {
-      'wands' => '\uD83D\uDD25', // 🔥
-      'cups' => '\uD83C\uDFC6', // 🏆
-      'swords' => '\u2694\uFE0F', // ⚔️
-      'pentacles' => '\u2B50', // ⭐
+      'wands' => '\uD83D\uDD25',
+      'cups' => '\uD83C\uDFC6',
+      'swords' => '\u2694\uFE0F',
+      'pentacles' => '\u2B50',
       _ => '\u2727',
     };
   }
 
-  /// Human-readable English display name.
-  /// Falls back to [card.name] if it already looks like a display name.
   String get _displayName {
-    // If name contains underscores, it's an internal key — use nameZH as
-    // display, but we still want English here. Try to derive from card data.
     if (!card.name.contains('_')) return card.name;
-    // Convert snake_case to Title Case as best-effort
     return card.name
         .split('_')
         .map((w) => w.isEmpty ? '' : '${w[0].toUpperCase()}${w.substring(1)}')
