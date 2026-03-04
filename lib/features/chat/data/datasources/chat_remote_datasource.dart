@@ -1,28 +1,30 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:web_socket_channel/web_socket_channel.dart';
-
+import '../../../../core/network/native_websocket.dart';
 import '../models/ws_message.dart';
 
 class ChatRemoteDatasource {
-  WebSocketChannel? _channel;
+  NativeWebSocket? _ws;
   final StreamController<WsServerMessage> _messageController =
       StreamController<WsServerMessage>.broadcast();
   String? _sessionId;
 
   Stream<WsServerMessage> get messageStream => _messageController.stream;
-  bool get isConnected => _channel != null;
+  bool get isConnected => _ws?.isConnected ?? false;
   String? get sessionId => _sessionId;
 
   Future<void> connect(String wsUrl, String ticket) async {
-    final uri = Uri.parse('$wsUrl/ws?ticket=$ticket');
-    _channel = WebSocketChannel.connect(uri);
-    await _channel!.ready;
+    _ws?.dispose();
+    _ws = NativeWebSocket();
 
-    _channel!.stream.listen(
+    final uri = '$wsUrl/ws?ticket=$ticket';
+    await _ws!.connect(uri);
+    await _ws!.ready;
+
+    _ws!.stream.listen(
       (data) {
-        final json = jsonDecode(data as String) as Map<String, dynamic>;
+        final json = jsonDecode(data) as Map<String, dynamic>;
         final msg = WsServerMessage.fromJson(json);
         if (msg.type == 'connected') {
           _sessionId = msg.sessionId;
@@ -32,10 +34,11 @@ class ChatRemoteDatasource {
       onError: (Object error) {
         _messageController.addError(error);
       },
-      onDone: () {
-        _channel = null;
-      },
     );
+
+    _ws!.done.listen((_) {
+      _ws = null;
+    });
   }
 
   void sendMessage({
@@ -55,16 +58,16 @@ class ChatRemoteDatasource {
       id: requestId,
       scenarioId: scenarioId,
     );
-    _channel?.sink.add(jsonEncode(msg.toJson()));
+    _ws?.send(jsonEncode(msg.toJson()));
   }
 
   void sendPing() {
-    _channel?.sink.add(jsonEncode({'type': 'ping'}));
+    _ws?.send(jsonEncode({'type': 'ping'}));
   }
 
   void disconnect() {
-    _channel?.sink.close();
-    _channel = null;
+    _ws?.disconnect();
+    _ws = null;
   }
 
   void dispose() {

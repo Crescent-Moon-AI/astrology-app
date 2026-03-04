@@ -58,11 +58,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
     try {
       final ticket = await repo.getWsTicket();
-      final httpUri = Uri.parse(ApiConstants.baseUrl);
-      final wsScheme = httpUri.scheme == 'https' ? 'wss' : 'ws';
-      final wsBaseUrl = '$wsScheme://${httpUri.host}:${httpUri.port}';
-
-      await datasource.connect(wsBaseUrl, ticket);
+      await datasource.connect(ApiConstants.wsUrl, ticket);
 
       if (mounted) {
         setState(() => _wsConnected = true);

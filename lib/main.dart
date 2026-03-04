@@ -52,12 +52,14 @@ class _YuejianAppState extends ConsumerState<YuejianApp> {
       ref
           .read(dioClientProvider)
           .addAuthInterceptor(onUnauthorized: () => notifier.tryRefresh());
-      // Auto-login for dev testing
+      // Auto-login for dev testing (also login when user data is missing,
+      // e.g. stale token from previous session without user profile)
       final email = widget.autoLoginEmail;
       final password = widget.autoLoginPassword;
+      final auth = ref.read(authProvider);
       if (email != null &&
           password != null &&
-          ref.read(authProvider).status != AuthStatus.authenticated) {
+          (auth.status != AuthStatus.authenticated || auth.user == null)) {
         await notifier.login(email, password);
       }
     });
