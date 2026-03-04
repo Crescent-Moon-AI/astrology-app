@@ -1,0 +1,11 @@
+[package]
+name = "rust_lib_astro"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["staticlib", "cdylib"]
+
+[dependencies]
+astro-ffi = { path = "../../astrology-core/crates/astro-ffi" }
+flutter_rust_bridge = "=2.11.1"

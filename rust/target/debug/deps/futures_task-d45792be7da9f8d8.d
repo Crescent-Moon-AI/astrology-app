@@ -1,0 +1,11 @@
+/Users/qiufeng/work/astrology/astrology-app/rust/target/debug/deps/futures_task-d45792be7da9f8d8.d: /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/lib.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/spawn.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/arc_wake.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/waker.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/waker_ref.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/future_obj.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/noop_waker.rs
+
+/Users/qiufeng/work/astrology/astrology-app/rust/target/debug/deps/libfutures_task-d45792be7da9f8d8.rmeta: /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/lib.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/spawn.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/arc_wake.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/waker.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/waker_ref.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/future_obj.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/noop_waker.rs
+
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/lib.rs:
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/spawn.rs:
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/arc_wake.rs:
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/waker.rs:
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/waker_ref.rs:
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/future_obj.rs:
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/futures-task-0.3.32/src/noop_waker.rs:

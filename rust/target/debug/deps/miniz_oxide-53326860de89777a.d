@@ -1,0 +1,10 @@
+/Users/qiufeng/work/astrology/astrology-app/rust/target/debug/deps/miniz_oxide-53326860de89777a.d: /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/lib.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/mod.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/core.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/output_buffer.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/stream.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/shared.rs
+
+/Users/qiufeng/work/astrology/astrology-app/rust/target/debug/deps/libminiz_oxide-53326860de89777a.rmeta: /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/lib.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/mod.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/core.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/output_buffer.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/stream.rs /Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/shared.rs
+
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/lib.rs:
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/mod.rs:
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/core.rs:
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/output_buffer.rs:
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/inflate/stream.rs:
+/Users/qiufeng/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/miniz_oxide-0.8.9/src/shared.rs:
