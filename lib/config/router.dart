@@ -41,12 +41,14 @@ import '../features/social/presentation/pages/share_preview_page.dart';
 import '../features/social/domain/models/shared_card.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authProvider);
+  // Only watch auth STATUS to avoid router rebuilds on token refresh
+  // (which updates the user field but keeps status as authenticated).
+  final authStatus = ref.watch(authProvider.select((s) => s.status));
 
   return GoRouter(
     initialLocation: '/home',
     redirect: (context, state) {
-      final isAuth = authState.status == AuthStatus.authenticated;
+      final isAuth = authStatus == AuthStatus.authenticated;
       final isAuthRoute =
           state.matchedLocation == '/login' ||
           state.matchedLocation == '/register';

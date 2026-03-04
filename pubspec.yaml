@@ -38,6 +38,7 @@ dependencies:
   # Utils
   freezed_annotation: ^3.0.0
   json_annotation: ^4.11.0
+  native_dio_adapter: ^1.5.1
 
 dev_dependencies:
   flutter_test:

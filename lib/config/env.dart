@@ -29,6 +29,20 @@ class EnvConfig {
     wsBaseUrl: 'ws://192.168.50.101:3000',
   );
 
+  /// Dev server (ECS) — for release APK testing against dev environment.
+  static const devServer = EnvConfig(
+    env: Environment.dev,
+    apiBaseUrl: 'https://dev.astrology.net.cn',
+    wsBaseUrl: 'wss://dev.astrology.net.cn',
+  );
+
+  /// Test server (ECS) — for release APK testing against test environment.
+  static const testServer = EnvConfig(
+    env: Environment.staging,
+    apiBaseUrl: 'https://test.astrology.net.cn',
+    wsBaseUrl: 'wss://test.astrology.net.cn',
+  );
+
   static const staging = EnvConfig(
     env: Environment.staging,
     apiBaseUrl: 'https://staging-api.yuejian.app',

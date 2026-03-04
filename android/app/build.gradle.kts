@@ -39,6 +39,11 @@ android {
     }
 }
 
+dependencies {
+    // OkHttp no longer needed — WebSocket now uses WebView's Chrome network stack
+    // to bypass ISP DPI that blocks non-browser TLS connections.
+}
+
 flutter {
     source = "../.."
 }
