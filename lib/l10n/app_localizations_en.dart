@@ -963,4 +963,106 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tabProfile => 'Profile';
+
+  @override
+  String get chartMyChart => 'My Chart';
+
+  @override
+  String get chartNatal => 'Natal';
+
+  @override
+  String get chartTransit => 'Transit';
+
+  @override
+  String get chartProgression => 'Progressions';
+
+  @override
+  String get chartReturn => 'Returns';
+
+  @override
+  String get chartSynastry => 'Synastry';
+
+  @override
+  String get chartSecondaryProgression => 'Secondary';
+
+  @override
+  String get chartSolarArc => 'Solar Arc';
+
+  @override
+  String get chartSolarReturn => 'Solar Return';
+
+  @override
+  String get chartLunarReturn => 'Lunar Return';
+
+  @override
+  String get chartLocalEngine => 'Local Engine';
+
+  @override
+  String get chartTransitDate => 'Transit Date';
+
+  @override
+  String get chartProgressionDate => 'Progression Date';
+
+  @override
+  String get chartLunarReturnDate => 'Target Date';
+
+  @override
+  String get chartCalculate => 'Calculate';
+
+  @override
+  String get chartPerson1 => 'Person 1';
+
+  @override
+  String get chartPerson2 => 'Person 2';
+
+  @override
+  String get chartMe => 'Me';
+
+  @override
+  String get chartCrossAspects => 'Cross Aspects';
+
+  @override
+  String get chartPersonName => 'Name';
+
+  @override
+  String get chartBirthDate => 'Birth Date';
+
+  @override
+  String get chartBirthTime => 'Birth Time';
+
+  @override
+  String get chartLatitude => 'Latitude';
+
+  @override
+  String get chartLongitude => 'Longitude';
+
+  @override
+  String get chartNoBirthData => 'Birth data required for chart calculation';
+
+  @override
+  String get chartGoToSettings => 'Go to Settings';
+
+  @override
+  String get chartPlanet => 'Planet';
+
+  @override
+  String get chartSign => 'Sign';
+
+  @override
+  String get chartHouse => 'House';
+
+  @override
+  String get chartAspects => 'Aspects';
+
+  @override
+  String get chartHouses => 'Houses';
+
+  @override
+  String get chartOrb => 'Orb';
+
+  @override
+  String get chartApplying => 'Applying';
+
+  @override
+  String get chartSeparating => 'Separating';
 }

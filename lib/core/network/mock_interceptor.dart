@@ -1343,38 +1343,56 @@ class MockInterceptor extends Interceptor {
   // Profile
   // ============================================================
 
-  Map<String, dynamic> _profile() => {
-    'data': {
-      'core': {
-        'user_id': 'mock-user-001',
-        'birth_date': null,
-        'birth_time': null,
-        'birth_time_accuracy': 'unknown',
-        'current_birth_place_id': null,
-        'completeness_score': 0,
-        'created_at': DateTime.now().toIso8601String(),
-        'updated_at': DateTime.now().toIso8601String(),
+  // Stateful: stores saved birth data so GET returns it after PUT
+  Map<String, dynamic>? _savedBirthCore;
+
+  Map<String, dynamic> _profile() {
+    return {
+      'data': {
+        'core': _savedBirthCore ??
+            {
+              'user_id': 'mock-user-001',
+              'birth_date': '1990-06-25',
+              'birth_time': '12:00',
+              'birth_time_accuracy': 'exact',
+              'current_birth_place_id': 'mock-place-001',
+              'completeness_score': 0.8,
+              'created_at': DateTime.now().toIso8601String(),
+              'updated_at': DateTime.now().toIso8601String(),
+            },
+        'current_birth_place': {
+          'id': 'mock-place-001',
+          'name': '北京',
+          'normalized_name': '北京',
+          'formatted_address': '北京市, 中国',
+          'latitude': 39.9042,
+          'longitude': 116.4074,
+          'timezone': 'Asia/Shanghai',
+          'country_code': 'CN',
+        },
+        'birth_places': <Map<String, dynamic>>[],
+        'values': <Map<String, dynamic>>[],
       },
-      'current_birth_place': null,
-      'birth_places': <Map<String, dynamic>>[],
-      'values': <Map<String, dynamic>>[],
-    },
-  };
+    };
+  }
 
   Map<String, dynamic> _profileUpsertCore(dynamic body) {
     final b = body as Map<String, dynamic>? ?? {};
+    final core = {
+      'user_id': 'mock-user-001',
+      'birth_date': b['birth_date'],
+      'birth_time': b['birth_time'],
+      'birth_time_accuracy': b['birth_time_accuracy'] ?? 'unknown',
+      'current_birth_place_id': 'mock-place-001',
+      'completeness_score': 0.8,
+      'created_at': DateTime.now().toIso8601String(),
+      'updated_at': DateTime.now().toIso8601String(),
+    };
+    // Persist so subsequent GET /user-profile returns saved data
+    _savedBirthCore = core;
     return {
       'data': {
-        'core': {
-          'user_id': 'mock-user-001',
-          'birth_date': b['birth_date'],
-          'birth_time': b['birth_time'],
-          'birth_time_accuracy': b['birth_time_accuracy'] ?? 'unknown',
-          'current_birth_place_id': 'mock-place-001',
-          'completeness_score': 0.8,
-          'created_at': DateTime.now().toIso8601String(),
-          'updated_at': DateTime.now().toIso8601String(),
-        },
+        'core': core,
       },
     };
   }

@@ -954,4 +954,106 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tabProfile => '我的';
+
+  @override
+  String get chartMyChart => '我的星盘';
+
+  @override
+  String get chartNatal => '本命';
+
+  @override
+  String get chartTransit => '行运';
+
+  @override
+  String get chartProgression => '推运';
+
+  @override
+  String get chartReturn => '返照';
+
+  @override
+  String get chartSynastry => '合盘分析';
+
+  @override
+  String get chartSecondaryProgression => '次限推运';
+
+  @override
+  String get chartSolarArc => '太阳弧';
+
+  @override
+  String get chartSolarReturn => '日返';
+
+  @override
+  String get chartLunarReturn => '月返';
+
+  @override
+  String get chartLocalEngine => '本地引擎';
+
+  @override
+  String get chartTransitDate => '行运日期';
+
+  @override
+  String get chartProgressionDate => '推运日期';
+
+  @override
+  String get chartLunarReturnDate => '目标日期';
+
+  @override
+  String get chartCalculate => '计算';
+
+  @override
+  String get chartPerson1 => '本人';
+
+  @override
+  String get chartPerson2 => '对方';
+
+  @override
+  String get chartMe => '我';
+
+  @override
+  String get chartCrossAspects => '交叉相位';
+
+  @override
+  String get chartPersonName => '姓名';
+
+  @override
+  String get chartBirthDate => '出生日期';
+
+  @override
+  String get chartBirthTime => '出生时间';
+
+  @override
+  String get chartLatitude => '纬度';
+
+  @override
+  String get chartLongitude => '经度';
+
+  @override
+  String get chartNoBirthData => '需要出生数据才能计算星盘';
+
+  @override
+  String get chartGoToSettings => '前往设置';
+
+  @override
+  String get chartPlanet => '行星';
+
+  @override
+  String get chartSign => '星座';
+
+  @override
+  String get chartHouse => '宫位';
+
+  @override
+  String get chartAspects => '相位';
+
+  @override
+  String get chartHouses => '宫位表';
+
+  @override
+  String get chartOrb => '容许度';
+
+  @override
+  String get chartApplying => '入相';
+
+  @override
+  String get chartSeparating => '出相';
 }

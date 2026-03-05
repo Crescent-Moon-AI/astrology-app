@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Sun",
+    "longitude": 280.0291,
+    "sign": "Capricorn"
+  },
+  {
+    "name": "Moon",
+    "longitude": 219.3081,
+    "sign": "Scorpio"
+  },
+  {
+    "name": "Mercury",
+    "longitude": 271.3708,
+    "sign": "Capricorn"
+  },
+  {
+    "name": "Venus",
+    "longitude": 241.1628,
+    "sign": "Sagittarius"
+  },
+  {
+    "name": "Mars",
+    "longitude": 327.7048,
+    "sign": "Aquarius"
+  },
+  {
+    "name": "Jupiter",
+    "longitude": 25.2396,
+    "sign": "Aries"
+  },
+  {
+    "name": "Saturn",
+    "longitude": 40.4024,
+    "sign": "Taurus"
+  },
+  {
+    "name": "Uranus",
+    "longitude": 314.7925,
+    "sign": "Aquarius"
+  },
+  {
+    "name": "Neptune",
+    "longitude": 303.1811,
+    "sign": "Aquarius"
+  },
+  {
+    "name": "Pluto",
+    "longitude": 251.443,
+    "sign": "Sagittarius"
+  },
+  {
+    "name": "NorthNode",
+    "longitude": 125.0583,
+    "sign": "Leo"
+  },
+  {
+    "name": "SouthNode",
+    "longitude": 305.0583,
+    "sign": "Aquarius"
+  }
+]

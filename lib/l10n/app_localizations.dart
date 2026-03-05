@@ -1957,6 +1957,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile'**
   String get tabProfile;
+
+  /// No description provided for @chartMyChart.
+  ///
+  /// In en, this message translates to:
+  /// **'My Chart'**
+  String get chartMyChart;
+
+  /// No description provided for @chartNatal.
+  ///
+  /// In en, this message translates to:
+  /// **'Natal'**
+  String get chartNatal;
+
+  /// No description provided for @chartTransit.
+  ///
+  /// In en, this message translates to:
+  /// **'Transit'**
+  String get chartTransit;
+
+  /// No description provided for @chartProgression.
+  ///
+  /// In en, this message translates to:
+  /// **'Progressions'**
+  String get chartProgression;
+
+  /// No description provided for @chartReturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Returns'**
+  String get chartReturn;
+
+  /// No description provided for @chartSynastry.
+  ///
+  /// In en, this message translates to:
+  /// **'Synastry'**
+  String get chartSynastry;
+
+  /// No description provided for @chartSecondaryProgression.
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary'**
+  String get chartSecondaryProgression;
+
+  /// No description provided for @chartSolarArc.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar Arc'**
+  String get chartSolarArc;
+
+  /// No description provided for @chartSolarReturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar Return'**
+  String get chartSolarReturn;
+
+  /// No description provided for @chartLunarReturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunar Return'**
+  String get chartLunarReturn;
+
+  /// No description provided for @chartLocalEngine.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Engine'**
+  String get chartLocalEngine;
+
+  /// No description provided for @chartTransitDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Transit Date'**
+  String get chartTransitDate;
+
+  /// No description provided for @chartProgressionDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Progression Date'**
+  String get chartProgressionDate;
+
+  /// No description provided for @chartLunarReturnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Target Date'**
+  String get chartLunarReturnDate;
+
+  /// No description provided for @chartCalculate.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculate'**
+  String get chartCalculate;
+
+  /// No description provided for @chartPerson1.
+  ///
+  /// In en, this message translates to:
+  /// **'Person 1'**
+  String get chartPerson1;
+
+  /// No description provided for @chartPerson2.
+  ///
+  /// In en, this message translates to:
+  /// **'Person 2'**
+  String get chartPerson2;
+
+  /// No description provided for @chartMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get chartMe;
+
+  /// No description provided for @chartCrossAspects.
+  ///
+  /// In en, this message translates to:
+  /// **'Cross Aspects'**
+  String get chartCrossAspects;
+
+  /// No description provided for @chartPersonName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get chartPersonName;
+
+  /// No description provided for @chartBirthDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Date'**
+  String get chartBirthDate;
+
+  /// No description provided for @chartBirthTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Time'**
+  String get chartBirthTime;
+
+  /// No description provided for @chartLatitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get chartLatitude;
+
+  /// No description provided for @chartLongitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get chartLongitude;
+
+  /// No description provided for @chartNoBirthData.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth data required for chart calculation'**
+  String get chartNoBirthData;
+
+  /// No description provided for @chartGoToSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Settings'**
+  String get chartGoToSettings;
+
+  /// No description provided for @chartPlanet.
+  ///
+  /// In en, this message translates to:
+  /// **'Planet'**
+  String get chartPlanet;
+
+  /// No description provided for @chartSign.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign'**
+  String get chartSign;
+
+  /// No description provided for @chartHouse.
+  ///
+  /// In en, this message translates to:
+  /// **'House'**
+  String get chartHouse;
+
+  /// No description provided for @chartAspects.
+  ///
+  /// In en, this message translates to:
+  /// **'Aspects'**
+  String get chartAspects;
+
+  /// No description provided for @chartHouses.
+  ///
+  /// In en, this message translates to:
+  /// **'Houses'**
+  String get chartHouses;
+
+  /// No description provided for @chartOrb.
+  ///
+  /// In en, this message translates to:
+  /// **'Orb'**
+  String get chartOrb;
+
+  /// No description provided for @chartApplying.
+  ///
+  /// In en, this message translates to:
+  /// **'Applying'**
+  String get chartApplying;
+
+  /// No description provided for @chartSeparating.
+  ///
+  /// In en, this message translates to:
+  /// **'Separating'**
+  String get chartSeparating;
 }
 
 class _AppLocalizationsDelegate
