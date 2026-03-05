@@ -1,41 +1,19 @@
 /// Local astrology calculation engine via Rust FFI (flutter_rust_bridge).
 ///
-/// This provides offline-capable chart calculations by calling the Rust
+/// Provides offline-capable chart calculations by calling the Rust
 /// astro-core library directly via FFI, without needing the backend API.
-///
-/// ## Setup
-///
-/// After running `flutter_rust_bridge_codegen generate`, the generated
-/// `bridge_generated.dart` file will be placed alongside this file.
-/// Then uncomment the import and implementation below.
-///
-/// ## Usage
-///
-/// ```dart
-/// final engine = AstroEngine();
-/// await engine.init();
-/// final chart = await engine.calculateNatalChart(
-///   birthDate: '1990-01-15',
-///   birthTime: '14:30',
-///   latitude: 39.9042,
-///   longitude: 116.4074,
-///   timezone: 8.0,
-/// );
-/// ```
 library;
 
 import 'dart:convert';
 
-// TODO(phase3): Uncomment after running flutter_rust_bridge_codegen generate
-// import 'bridge_generated.dart';
+import 'package:astrology_app/src/rust/api/api/astro.dart' as rust_astro;
+import 'package:astrology_app/src/rust/api/frb_generated.dart';
 
 /// Astrology calculation engine backed by native Rust FFI.
 ///
 /// Falls back gracefully if the native library is not available.
 class AstroEngine {
   bool _initialized = false;
-  // TODO(phase3): Replace with actual FRB instance
-  // late final RustLibAstro _bridge;
 
   /// Whether the native engine is available.
   bool get isAvailable => _initialized;
@@ -47,12 +25,9 @@ class AstroEngine {
   /// and callers should fall back to the API.
   Future<void> init() async {
     try {
-      // TODO(phase3): Initialize FRB
-      // _bridge = RustLibAstro();
-      // await _bridge.init();
-      // _initialized = true;
-      _initialized = false; // Not yet implemented
-    } catch (e) {
+      await RustLib.init();
+      _initialized = true;
+    } catch (_) {
       _initialized = false;
     }
   }
@@ -71,20 +46,21 @@ class AstroEngine {
     String location = '',
   }) async {
     if (!_initialized) return null;
-
-    // TODO(phase3): Call FRB
-    // final json = await _bridge.calculateNatalChart(
-    //   birthDate: birthDate,
-    //   birthTime: birthTime,
-    //   latitude: latitude,
-    //   longitude: longitude,
-    //   timezone: timezone,
-    //   houseSystem: houseSystem,
-    //   name: name,
-    //   location: location,
-    // );
-    // return jsonDecode(json) as Map<String, dynamic>;
-    return null;
+    try {
+      final json = await rust_astro.calculateNatalChart(
+        birthDate: birthDate,
+        birthTime: birthTime,
+        latitude: latitude,
+        longitude: longitude,
+        timezone: timezone,
+        houseSystem: houseSystem,
+        name: name,
+        location: location,
+      );
+      return jsonDecode(json) as Map<String, dynamic>;
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Calculate all chart types (natal, transit, progressions, returns).
@@ -94,12 +70,13 @@ class AstroEngine {
     required Map<String, dynamic> input,
   }) async {
     if (!_initialized) return null;
-
-    // TODO(phase3): Call FRB
-    // final inputJson = jsonEncode(input);
-    // final json = await _bridge.calculateMulti(inputJson: inputJson);
-    // return jsonDecode(json) as Map<String, dynamic>;
-    return null;
+    try {
+      final inputJson = jsonEncode(input);
+      final json = await rust_astro.calculateMulti(inputJson: inputJson);
+      return jsonDecode(json) as Map<String, dynamic>;
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Calculate synastry between two people.
@@ -109,11 +86,96 @@ class AstroEngine {
     required Map<String, dynamic> input,
   }) async {
     if (!_initialized) return null;
+    try {
+      final inputJson = jsonEncode(input);
+      final json =
+          await rust_astro.calculateSynastryChart(inputJson: inputJson);
+      return jsonDecode(json) as Map<String, dynamic>;
+    } catch (e) {
+      return null;
+    }
+  }
 
-    // TODO(phase3): Call FRB
-    // final inputJson = jsonEncode(input);
-    // final json = await _bridge.calculateSynastryChart(inputJson: inputJson);
-    // return jsonDecode(json) as Map<String, dynamic>;
-    return null;
+  /// Calculate progressions (secondary progressions or solar arc).
+  Future<Map<String, dynamic>?> calculateProgressions({
+    required String birthDate,
+    required String birthTime,
+    required double latitude,
+    required double longitude,
+    required double timezone,
+    String houseSystem = 'Placidus',
+    required String progressionDate,
+    String method = 'secondary',
+  }) async {
+    if (!_initialized) return null;
+    try {
+      final json = await rust_astro.calculateProgressions(
+        birthDate: birthDate,
+        birthTime: birthTime,
+        latitude: latitude,
+        longitude: longitude,
+        timezone: timezone,
+        houseSystem: houseSystem,
+        progressionDate: progressionDate,
+        method: method,
+      );
+      return jsonDecode(json) as Map<String, dynamic>;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Find solar return chart for a given year.
+  Future<Map<String, dynamic>?> findSolarReturn({
+    required String birthDate,
+    required String birthTime,
+    required double latitude,
+    required double longitude,
+    required double timezone,
+    String houseSystem = 'Placidus',
+    required int year,
+  }) async {
+    if (!_initialized) return null;
+    try {
+      final json = await rust_astro.findSolarReturn(
+        birthDate: birthDate,
+        birthTime: birthTime,
+        latitude: latitude,
+        longitude: longitude,
+        timezone: timezone,
+        houseSystem: houseSystem,
+        year: year,
+      );
+      return jsonDecode(json) as Map<String, dynamic>;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Find lunar return chart closest to target date.
+  Future<Map<String, dynamic>?> findLunarReturn({
+    required String birthDate,
+    required String birthTime,
+    required double latitude,
+    required double longitude,
+    required double timezone,
+    String houseSystem = 'Placidus',
+    required String targetDate,
+  }) async {
+    if (!_initialized) return null;
+    try {
+      final json = await rust_astro.findLunarReturn(
+        birthDate: birthDate,
+        birthTime: birthTime,
+        latitude: latitude,
+        longitude: longitude,
+        timezone: timezone,
+        houseSystem: houseSystem,
+        targetDate: targetDate,
+      );
+      return jsonDecode(json) as Map<String, dynamic>;
+    } catch (e) {
+      return null;
+    }
   }
 }

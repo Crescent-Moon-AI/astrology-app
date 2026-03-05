@@ -39,6 +39,9 @@ dependencies:
   freezed_annotation: ^3.0.0
   json_annotation: ^4.11.0
   native_dio_adapter: ^1.5.1
+  rust_lib_astro:
+    path: rust_builder
+  flutter_rust_bridge: 2.11.1
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +52,8 @@ dev_dependencies:
   json_serializable: ^6.13.0
   riverpod_generator: ^4.0.3
   mocktail: ^1.0.4
+  integration_test:
+    sdk: flutter
 
 flutter:
   uses-material-design: true

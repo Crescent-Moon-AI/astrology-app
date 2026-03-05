@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'config/env.dart';
+import 'core/astro/astro_engine.dart';
 import 'core/network/dio_client.dart';
 import 'core/network/mock_chat_datasource.dart';
 import 'core/network/mock_interceptor.dart';
@@ -21,6 +22,11 @@ import 'main.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppConfig.init(EnvConfig.dev);
+
+  // Initialize Rust FFI bridge for offline calculations
+  final astroEngine = AstroEngine();
+  await astroEngine.init();
+
   final prefs = await SharedPreferences.getInstance();
 
   // Build a DioClient with the mock interceptor installed

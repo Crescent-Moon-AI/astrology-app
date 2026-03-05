@@ -9,3 +9,6 @@ crate-type = ["staticlib", "cdylib"]
 [dependencies]
 astro-ffi = { path = "../../astrology-core/crates/astro-ffi" }
 flutter_rust_bridge = "=2.11.1"
+
+[patch.crates-io]
+swiss-eph = { path = "../../astrology-core/vendor/swiss-eph" }

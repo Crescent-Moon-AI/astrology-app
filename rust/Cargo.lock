@@ -673,8 +673,6 @@ checksum = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
 [[package]]
 name = "swiss-eph"
 version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cf31af1cc5359e9bc07028fecc2317e759b167ca75c6f81caf6f7abe91b89e28"
 dependencies = [
  "cc",
  "swiss-eph-data",
