@@ -57,7 +57,10 @@ jobs:
         with:
           repository: Crescent-Moon-AI/astrology-core
           token: ${{ secrets.CORE_ACCESS_TOKEN }}
-          path: ../astrology-core
+          path: _astrology-core
+
+      - name: Link astrology-core to expected path
+        run: ln -s "$GITHUB_WORKSPACE/_astrology-core" "$GITHUB_WORKSPACE/../astrology-core"
 
       - uses: actions/setup-java@v5
         with:
