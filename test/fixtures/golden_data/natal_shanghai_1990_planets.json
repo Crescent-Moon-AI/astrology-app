@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Sun",
+    "longitude": 83.9107,
+    "sign": "Gemini",
+    "degree": 23,
+    "minute": 54,
+    "retrograde": false,
+    "house": 8
+  },
+  {
+    "name": "Moon",
+    "longitude": 342.3052,
+    "sign": "Pisces",
+    "degree": 12,
+    "minute": 18,
+    "retrograde": false,
+    "house": 5
+  },
+  {
+    "name": "Mercury",
+    "longitude": 65.2987,
+    "sign": "Gemini",
+    "degree": 5,
+    "minute": 17,
+    "retrograde": false,
+    "house": 8
+  },
+  {
+    "name": "Venus",
+    "longitude": 48.5081,
+    "sign": "Taurus",
+    "degree": 18,
+    "minute": 30,
+    "retrograde": false,
+    "house": 7
+  },
+  {
+    "name": "Mars",
+    "longitude": 10.8765,
+    "sign": "Aries",
+    "degree": 10,
+    "minute": 52,
+    "retrograde": false,
+    "house": 6
+  },
+  {
+    "name": "Jupiter",
+    "longitude": 105.8398,
+    "sign": "Cancer",
+    "degree": 15,
+    "minute": 50,
+    "retrograde": false,
+    "house": 9
+  },
+  {
+    "name": "Saturn",
+    "longitude": 294.0454,
+    "sign": "Capricorn",
+    "degree": 24,
+    "minute": 2,
+    "retrograde": true,
+    "house": 3
+  },
+  {
+    "name": "Uranus",
+    "longitude": 278.1742,
+    "sign": "Capricorn",
+    "degree": 8,
+    "minute": 10,
+    "retrograde": true,
+    "house": 3
+  },
+  {
+    "name": "Neptune",
+    "longitude": 283.7228,
+    "sign": "Capricorn",
+    "degree": 13,
+    "minute": 43,
+    "retrograde": true,
+    "house": 3
+  },
+  {
+    "name": "Pluto",
+    "longitude": 225.4062,
+    "sign": "Scorpio",
+    "degree": 15,
+    "minute": 24,
+    "retrograde": true,
+    "house": 1
+  },
+  {
+    "name": "NorthNode",
+    "longitude": 309.71,
+    "sign": "Aquarius",
+    "degree": 9,
+    "minute": 42,
+    "retrograde": true,
+    "house": 4
+  },
+  {
+    "name": "SouthNode",
+    "longitude": 129.71,
+    "sign": "Leo",
+    "degree": 9,
+    "minute": 42,
+    "retrograde": true,
+    "house": 10
+  }
+]

@@ -28,6 +28,8 @@ import '../features/lenormand_ritual/presentation/pages/lenormand_ritual_page.da
 import '../features/iching_ritual/presentation/pages/iching_question_page.dart';
 import '../features/iching_ritual/presentation/pages/iching_ritual_page.dart';
 import '../features/meihua_ritual/presentation/pages/meihua_method_page.dart';
+import '../features/chart/presentation/pages/chart_hub_page.dart';
+import '../features/chart/presentation/pages/synastry_page.dart';
 import '../features/divination/presentation/pages/divination_hub_page.dart';
 import '../features/transit/presentation/pages/transit_list_page.dart';
 import '../features/transit/presentation/pages/transit_detail_page.dart';
@@ -330,6 +332,20 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'meihua',
         pageBuilder: (context, state) =>
             _cosmicFadePage(state, const MeihuaMethodPage()),
+      ),
+
+      // Chart Engine
+      GoRoute(
+        path: '/charts',
+        name: 'charts',
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const ChartHubPage()),
+      ),
+      GoRoute(
+        path: '/charts/synastry',
+        name: 'synastry',
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const SynastryPage()),
       ),
     ],
   );

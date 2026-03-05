@@ -39,6 +39,7 @@ void main() async {
     ProviderScope(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
+        astroEngineProvider.overrideWithValue(astroEngine),
         dioClientProvider.overrideWithValue(mockDioClient),
         chatDatasourceProvider.overrideWithValue(mockChatDatasource),
       ],

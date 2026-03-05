@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
 import '../../../../shared/theme/cosmic_colors.dart';
+import '../../../chart/presentation/widgets/chart_result_card.dart';
 import '../../domain/models/message.dart';
 
 class ToolResultCard extends StatefulWidget {
@@ -53,6 +54,17 @@ class _ToolResultCardState extends State<ToolResultCard> {
       BlockStatus.error => '\u274C', // cross mark
       _ => '\uD83D\uDD27', // wrench
     };
+  }
+
+  bool get _isChartTool {
+    final name = widget.block.toolName ?? '';
+    return const {
+      'calculate_chart',
+      'calculate_synastry',
+      'natal_chart',
+      'synastry',
+      'transit',
+    }.contains(name);
   }
 
   Map<String, dynamic>? get _parsedPayload {
@@ -133,8 +145,15 @@ class _ToolResultCardState extends State<ToolResultCard> {
                       ),
                     ),
                   ],
-                  // Detail toggle
+                  // Chart-specific structured display
                   if (widget.block.status == BlockStatus.success &&
+                      _isChartTool &&
+                      widget.block.payloadJson != null) ...[
+                    ChartResultCard(payloadJson: widget.block.payloadJson!),
+                  ],
+                  // Detail toggle for non-chart tools
+                  if (widget.block.status == BlockStatus.success &&
+                      !_isChartTool &&
                       _parsedPayload != null) ...[
                     const SizedBox(height: 8),
                     AnimatedCrossFade(

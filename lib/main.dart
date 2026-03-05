@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 import 'config/env.dart';
+import 'core/astro/astro_engine.dart';
 import 'shared/theme/cosmic_theme.dart';
 import 'config/router.dart';
 import 'core/providers/core_providers.dart';
@@ -15,10 +16,17 @@ import 'features/auth/presentation/providers/auth_providers.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppConfig.init(EnvConfig.dev);
+
+  final astroEngine = AstroEngine();
+  await astroEngine.init();
+
   final prefs = await SharedPreferences.getInstance();
   runApp(
     ProviderScope(
-      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        astroEngineProvider.overrideWithValue(astroEngine),
+      ],
       child: const YuejianApp(),
     ),
   );
