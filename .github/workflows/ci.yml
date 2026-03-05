@@ -52,6 +52,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Checkout astrology-core (Rust FFI dependency)
+        uses: actions/checkout@v6
+        with:
+          repository: Crescent-Moon-AI/astrology-core
+          token: ${{ secrets.CORE_ACCESS_TOKEN }}
+          path: ../astrology-core
+
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
