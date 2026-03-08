@@ -18,6 +18,8 @@ import '../widgets/chart_info_header.dart';
 import '../widgets/no_birth_data_prompt.dart';
 import '../widgets/planet_keyword_grid.dart';
 import '../widgets/personality_tags.dart';
+import 'package:astrology_app/shared/widgets/breathing_loader.dart';
+import 'package:astrology_app/features/settings/presentation/providers/profile_providers.dart';
 
 class ChartHubPage extends ConsumerStatefulWidget {
   const ChartHubPage({super.key});
@@ -47,9 +49,10 @@ class _ChartHubPageState extends ConsumerState<ChartHubPage>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isZh = Localizations.localeOf(context).languageCode == 'zh';
-    final birth = ref.watch(currentBirthDataProvider);
+    final birthAsync = ref.watch(currentBirthDataProvider);
 
     // Auto-calculate natal chart once birth data becomes available
+    final birth = birthAsync.value;
     if (birth != null && !_hasAutoCalculated) {
       _hasAutoCalculated = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -72,18 +75,59 @@ class _ChartHubPageState extends ConsumerState<ChartHubPage>
               const SizedBox(height: 4),
               // Content
               Expanded(
-                child: birth == null
-                    ? const NoBirthDataPrompt()
-                    : TabBarView(
-                        controller: _tabController,
-                        children: [
-                          _ChartOverviewTab(birth: birth),
-                          _BirthChartTab(birth: birth),
-                        ],
-                      ),
+                child: birthAsync.when(
+                  loading: () => const Center(child: BreathingLoader()),
+                  error: (_, __) => _buildErrorState(l10n, isZh, ref),
+                  data: (birthData) => birthData == null
+                      ? const NoBirthDataPrompt()
+                      : TabBarView(
+                          controller: _tabController,
+                          children: [
+                            _ChartOverviewTab(birth: birthData),
+                            _BirthChartTab(birth: birthData),
+                          ],
+                        ),
+                ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorState(AppLocalizations l10n, bool isZh, WidgetRef ref) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.error_outline,
+              color: CosmicColors.textTertiary,
+              size: 48,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              l10n.errorLoadFailed,
+              style: const TextStyle(
+                color: CosmicColors.textSecondary,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 8),
+            GestureDetector(
+              onTap: () => ref.invalidate(userProfileProvider),
+              child: Text(
+                l10n.retry,
+                style: const TextStyle(
+                  color: CosmicColors.primaryLight,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -95,14 +139,20 @@ class _ChartHubPageState extends ConsumerState<ChartHubPage>
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new,
-                color: CosmicColors.textPrimary, size: 20),
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: CosmicColors.textPrimary,
+              size: 20,
+            ),
             onPressed: () => context.pop(),
           ),
           const Spacer(),
           IconButton(
-            icon: const Icon(Icons.share_outlined,
-                color: CosmicColors.textPrimary, size: 20),
+            icon: const Icon(
+              Icons.share_outlined,
+              color: CosmicColors.textPrimary,
+              size: 20,
+            ),
             onPressed: () {},
           ),
         ],
@@ -128,8 +178,11 @@ class _ChartHubPageState extends ConsumerState<ChartHubPage>
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.compare_arrows,
-                      color: CosmicColors.textSecondary, size: 16),
+                  const Icon(
+                    Icons.compare_arrows,
+                    color: CosmicColors.textSecondary,
+                    size: 16,
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     isZh ? '合盘' : 'Synastry',
@@ -196,13 +249,18 @@ class _ChartOverviewTab extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.error_outline,
-                  color: CosmicColors.textTertiary, size: 48),
+              const Icon(
+                Icons.error_outline,
+                color: CosmicColors.textTertiary,
+                size: 48,
+              ),
               const SizedBox(height: 12),
               Text(
                 isZh ? '星盘计算出错' : 'Chart calculation failed',
                 style: const TextStyle(
-                    color: CosmicColors.textSecondary, fontSize: 15),
+                  color: CosmicColors.textSecondary,
+                  fontSize: 15,
+                ),
               ),
               const SizedBox(height: 8),
               GestureDetector(
@@ -211,7 +269,9 @@ class _ChartOverviewTab extends ConsumerWidget {
                 child: Text(
                   isZh ? '重试' : 'Retry',
                   style: const TextStyle(
-                      color: CosmicColors.primaryLight, fontSize: 14),
+                    color: CosmicColors.primaryLight,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ],
@@ -224,16 +284,17 @@ class _ChartOverviewTab extends ConsumerWidget {
     if (result is! NatalChartResult) return const SizedBox.shrink();
 
     final chart = result.chart;
-    final description = _buildDescription(chart.planets, chart.houses.angles, isZh);
+    final description = _buildDescription(
+      chart.planets,
+      chart.houses.angles,
+      isZh,
+    );
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       children: [
         // Personality tags
-        PersonalityTags(
-          planets: chart.planets,
-          angles: chart.houses.angles,
-        ),
+        PersonalityTags(planets: chart.planets, angles: chart.houses.angles),
         const SizedBox(height: 20),
 
         // Personality description
@@ -276,15 +337,20 @@ class _ChartOverviewTab extends ConsumerWidget {
             child: Row(
               children: [
                 Text(
-                  isZh ? '查看深度解读：天赋·性格·爱情' : 'Deep reading: Gifts, Personality, Love',
+                  isZh
+                      ? '查看深度解读：天赋·性格·爱情'
+                      : 'Deep reading: Gifts, Personality, Love',
                   style: const TextStyle(
                     color: CosmicColors.textSecondary,
                     fontSize: 13,
                   ),
                 ),
                 const Spacer(),
-                const Icon(Icons.chevron_right,
-                    color: CosmicColors.textTertiary, size: 20),
+                const Icon(
+                  Icons.chevron_right,
+                  color: CosmicColors.textTertiary,
+                  size: 20,
+                ),
               ],
             ),
           ),
@@ -295,7 +361,10 @@ class _ChartOverviewTab extends ConsumerWidget {
   }
 
   String _buildDescription(
-      List<PlanetData> planets, AnglesData angles, bool isZh) {
+    List<PlanetData> planets,
+    AnglesData angles,
+    bool isZh,
+  ) {
     String? sunSign, moonSign, ascSign;
     for (final p in planets) {
       if (p.name == 'Sun') sunSign = isZh ? p.signCn : p.sign;
@@ -333,8 +402,10 @@ class _BirthChartTab extends ConsumerWidget {
 
     if (state.error != null) {
       return Center(
-        child: Text(state.error!,
-            style: const TextStyle(color: CosmicColors.error)),
+        child: Text(
+          state.error!,
+          style: const TextStyle(color: CosmicColors.error),
+        ),
       );
     }
 

@@ -75,6 +75,14 @@ pub fn find_solar_return(
     )
 }
 
+/// Geocode a Chinese location by name. Returns JSON array of GeoLocation.
+///
+/// Accepts "省 - 市 - 区" format or direct city/district name.
+/// Returns empty array for non-Chinese or unknown locations.
+pub fn geocode_china(query: String) -> Result<String, String> {
+    astro_ffi::geocode_china(query)
+}
+
 /// Find lunar return chart closest to target_date. Returns JSON string.
 pub fn find_lunar_return(
     birth_date: String,

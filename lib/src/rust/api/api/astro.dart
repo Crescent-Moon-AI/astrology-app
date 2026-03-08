@@ -78,6 +78,13 @@ Future<String> findSolarReturn({
   year: year,
 );
 
+/// Geocode a Chinese location by name. Returns JSON array of GeoLocation.
+///
+/// Accepts "省 - 市 - 区" format or direct city/district name.
+/// Returns empty array for non-Chinese or unknown locations.
+Future<String> geocodeChina({required String query}) =>
+    RustLib.instance.api.crateApiAstroGeocodeChina(query: query);
+
 /// Find lunar return chart closest to target_date. Returns JSON string.
 Future<String> findLunarReturn({
   required String birthDate,
