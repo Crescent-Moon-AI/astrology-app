@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 import 'config/env.dart';
 import 'core/astro/astro_engine.dart';
+import 'core/utils/debug_observer.dart';
 import 'shared/theme/cosmic_theme.dart';
 import 'config/router.dart';
 import 'core/providers/core_providers.dart';
@@ -13,14 +14,22 @@ import 'shared/providers/locale_provider.dart';
 import 'shared/theme/theme_provider.dart';
 import 'features/auth/presentation/providers/auth_providers.dart';
 
-/// Default entry point — dev mode against local backend.
+/// Default entry point — dev mode against dev server.
 ///
 /// Run with:
-///   flutter run                           (emulator / desktop)
-///   flutter run -d DEVICE_ID               (real device over WiFi)
+///   flutter run                                          (dev server)
+///   flutter run --dart-define=API_HOST=local              (local backend via emulator)
+///   flutter run --dart-define=API_HOST=lan                (local backend via LAN IP)
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AppConfig.init(EnvConfig.dev, mode: AppMode.dev);
+
+  const apiHost = String.fromEnvironment('API_HOST');
+  final env = switch (apiHost) {
+    'local' => EnvConfig.local,
+    'lan' => EnvConfig.lan,
+    _ => EnvConfig.dev,
+  };
+  AppConfig.init(env, mode: AppMode.dev);
 
   final astroEngine = AstroEngine();
   await astroEngine.init();
@@ -28,6 +37,9 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   runApp(
     ProviderScope(
+      observers: [
+        if (AppConfig.mode.showStackTrace) DebugProviderObserver(),
+      ],
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
         astroEngineProvider.overrideWithValue(astroEngine),

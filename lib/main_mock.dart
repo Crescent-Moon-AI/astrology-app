@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'config/env.dart';
 import 'core/astro/astro_engine.dart';
+import 'core/utils/debug_observer.dart';
 import 'core/network/dio_client.dart';
 import 'core/network/mock_chat_datasource.dart';
 import 'core/network/mock_interceptor.dart';
@@ -37,6 +38,7 @@ void main() async {
 
   runApp(
     ProviderScope(
+      observers: [DebugProviderObserver()],
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
         astroEngineProvider.overrideWithValue(astroEngine),

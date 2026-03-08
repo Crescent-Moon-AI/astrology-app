@@ -16,27 +16,27 @@ class EnvConfig {
     required this.wsBaseUrl,
   });
 
-  /// Default dev config: Android emulator uses 10.0.2.2 to reach host machine.
-  /// iOS simulator and desktop can use localhost directly.
-  static final dev = EnvConfig(
+  /// Dev server (ECS) — default for dev mode.
+  static const dev = EnvConfig(
+    env: Environment.dev,
+    apiBaseUrl: 'https://dev.astrology.net.cn',
+    wsBaseUrl: 'wss://dev.astrology.net.cn',
+  );
+
+  /// Local backend via emulator loopback or localhost.
+  /// Use with: flutter run --dart-define=API_HOST=local
+  static final local = EnvConfig(
     env: Environment.dev,
     apiBaseUrl: 'http://${Platform.isAndroid ? '10.0.2.2' : 'localhost'}:3000',
     wsBaseUrl: 'ws://${Platform.isAndroid ? '10.0.2.2' : 'localhost'}:3000',
   );
 
-  /// Dev config for real device testing over WiFi.
-  /// Set the host IP to your dev machine's LAN address.
-  static const devDevice = EnvConfig(
+  /// Local backend via LAN IP for real device WiFi testing.
+  /// Use with: flutter run --dart-define=API_HOST=lan
+  static const lan = EnvConfig(
     env: Environment.dev,
     apiBaseUrl: 'http://192.168.50.101:3000',
     wsBaseUrl: 'ws://192.168.50.101:3000',
-  );
-
-  /// Dev server (ECS) — for release APK testing against dev environment.
-  static const devServer = EnvConfig(
-    env: Environment.dev,
-    apiBaseUrl: 'https://dev.astrology.net.cn',
-    wsBaseUrl: 'wss://dev.astrology.net.cn',
   );
 
   /// Test server (ECS) — for release APK testing against test environment.

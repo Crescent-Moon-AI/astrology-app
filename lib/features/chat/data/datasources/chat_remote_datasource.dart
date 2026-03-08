@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer' as dev;
 
+import '../../../../config/env.dart';
 import '../../../../core/network/native_websocket.dart';
 import '../models/ws_message.dart';
 
@@ -19,11 +21,14 @@ class ChatRemoteDatasource {
     _ws = NativeWebSocket();
 
     final uri = '$wsUrl/ws?ticket=$ticket';
+    _log('WS connecting to $wsUrl');
     await _ws!.connect(uri);
     await _ws!.ready;
+    _log('WS connected');
 
     _ws!.stream.listen(
       (data) {
+        _log('WS ← $data');
         final json = jsonDecode(data) as Map<String, dynamic>;
         final msg = WsServerMessage.fromJson(json);
         if (msg.type == 'connected') {
@@ -58,11 +63,19 @@ class ChatRemoteDatasource {
       id: requestId,
       scenarioId: scenarioId,
     );
-    _ws?.send(jsonEncode(msg.toJson()));
+    final payload = jsonEncode(msg.toJson());
+    _log('WS → $payload');
+    _ws?.send(payload);
   }
 
   void sendPing() {
     _ws?.send(jsonEncode({'type': 'ping'}));
+  }
+
+  void _log(String message) {
+    if (AppConfig.mode.showStackTrace) {
+      dev.log(message, name: 'WS');
+    }
   }
 
   void disconnect() {
