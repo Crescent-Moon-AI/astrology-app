@@ -49,7 +49,7 @@ class ExploreMoreSection extends StatelessWidget {
           const SizedBox(height: 8),
           _buildExploreCard(
             isZh ? '了解你们的关系' : 'Your Relationship',
-            isZh ? '月见 · 关系深度解读报告' : 'Deep relationship analysis',
+            isZh ? '星见 · 关系深度解读报告' : 'Deep relationship analysis',
             () => context.push('/charts/synastry'),
           ),
         ],

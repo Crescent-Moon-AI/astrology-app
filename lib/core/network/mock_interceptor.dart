@@ -439,7 +439,7 @@ class MockInterceptor extends Interceptor {
     'expires_in': 86400,
     'user': {
       'id': 'mock-user-001',
-      'email': 'demo@yuejian.app',
+      'email': 'demo@xingjian.app',
       'username': '星辰旅人',
       'email_verified': true,
       'role': 'user',

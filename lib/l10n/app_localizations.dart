@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Yuejian'**
+  /// **'Xingjian'**
   String get appTitle;
 
   /// No description provided for @scenarioCategoryLoveRelationship.
@@ -2027,13 +2027,13 @@ abstract class AppLocalizations {
   /// No description provided for @diaryEditHint.
   ///
   /// In en, this message translates to:
-  /// **'Feel free to write down any thoughts or feelings here~ Yuejian will be your most loyal companion and listener.'**
+  /// **'Feel free to write down any thoughts or feelings here~ Xingjian will be your most loyal companion and listener.'**
   String get diaryEditHint;
 
   /// No description provided for @diaryAIName.
   ///
   /// In en, this message translates to:
-  /// **'Yuejian Spirit'**
+  /// **'Xingjian Spirit'**
   String get diaryAIName;
 
   /// No description provided for @diaryYou.
@@ -2045,7 +2045,7 @@ abstract class AppLocalizations {
   /// No description provided for @diaryReplyHint.
   ///
   /// In en, this message translates to:
-  /// **'Reply to Yuejian Spirit'**
+  /// **'Reply to Xingjian Spirit'**
   String get diaryReplyHint;
 
   /// No description provided for @diaryDeleteTitle.

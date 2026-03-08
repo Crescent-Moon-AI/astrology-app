@@ -27,17 +27,17 @@ void main() async {
         sharedPreferencesProvider.overrideWithValue(prefs),
         astroEngineProvider.overrideWithValue(astroEngine),
       ],
-      child: const YuejianApp(),
+      child: const XingjianApp(),
     ),
   );
 }
 
-class YuejianApp extends ConsumerStatefulWidget {
+class XingjianApp extends ConsumerStatefulWidget {
   final Locale? forceLocale;
   final String? autoLoginEmail;
   final String? autoLoginPassword;
 
-  const YuejianApp({
+  const XingjianApp({
     super.key,
     this.forceLocale,
     this.autoLoginEmail,
@@ -45,10 +45,10 @@ class YuejianApp extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<YuejianApp> createState() => _YuejianAppState();
+  ConsumerState<XingjianApp> createState() => _XingjianAppState();
 }
 
-class _YuejianAppState extends ConsumerState<YuejianApp> {
+class _XingjianAppState extends ConsumerState<XingjianApp> {
   @override
   void initState() {
     super.initState();
@@ -89,7 +89,7 @@ class _YuejianAppState extends ConsumerState<YuejianApp> {
     }
 
     return MaterialApp.router(
-      title: '月见',
+      title: '星见',
       debugShowCheckedModeBanner: false,
       theme: CosmicTheme.dark,
       darkTheme: CosmicTheme.dark,

@@ -90,11 +90,11 @@ jobs:
       - name: Rename APK
         run: |
           mv build/app/outputs/flutter-apk/app-release.apk \
-             build/app/outputs/flutter-apk/yuejian-${{ matrix.variant }}-v${{ steps.version.outputs.version }}.apk
+             build/app/outputs/flutter-apk/xingjian-${{ matrix.variant }}-v${{ steps.version.outputs.version }}.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v7
         with:
-          name: yuejian-${{ matrix.variant }}-v${{ steps.version.outputs.version }}
-          path: build/app/outputs/flutter-apk/yuejian-${{ matrix.variant }}-*.apk
+          name: xingjian-${{ matrix.variant }}-v${{ steps.version.outputs.version }}
+          path: build/app/outputs/flutter-apk/xingjian-${{ matrix.variant }}-*.apk
           retention-days: 14

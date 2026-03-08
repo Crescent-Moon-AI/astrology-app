@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Yuejian';
+  String get appTitle => 'Xingjian';
 
   @override
   String get scenarioCategoryLoveRelationship => 'Love & Relationships';
@@ -999,16 +999,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get diaryEditHint =>
-      'Feel free to write down any thoughts or feelings here~ Yuejian will be your most loyal companion and listener.';
+      'Feel free to write down any thoughts or feelings here~ Xingjian will be your most loyal companion and listener.';
 
   @override
-  String get diaryAIName => 'Yuejian Spirit';
+  String get diaryAIName => 'Xingjian Spirit';
 
   @override
   String get diaryYou => 'Me';
 
   @override
-  String get diaryReplyHint => 'Reply to Yuejian Spirit';
+  String get diaryReplyHint => 'Reply to Xingjian Spirit';
 
   @override
   String get diaryDeleteTitle => 'Delete Diary';

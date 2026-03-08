@@ -97,7 +97,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ),
                     const SizedBox(height: 12),
                     const Text(
-                      '月见',
+                      '星见',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,

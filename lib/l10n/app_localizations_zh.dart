@@ -9,7 +9,7 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get appTitle => '月见';
+  String get appTitle => '星见';
 
   @override
   String get scenarioCategoryLoveRelationship => '恋爱关系';
@@ -962,7 +962,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get consultChart => '星盘咨询';
 
   @override
-  String get consultPrompt => '此刻，有什么想问月见的？';
+  String get consultPrompt => '此刻，有什么想问星见的？';
 
   @override
   String get consultTarotPrompt => '想用塔罗牌探索一下吗？';
@@ -989,16 +989,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get diaryPublish => '发表';
 
   @override
-  String get diaryEditHint => '在这里，你可以放心写下任何感性碎碎念～ 月见小精灵会给你最忠诚的陪伴与回应。';
+  String get diaryEditHint => '在这里，你可以放心写下任何感性碎碎念～ 星见小精灵会给你最忠诚的陪伴与回应。';
 
   @override
-  String get diaryAIName => '月见精灵';
+  String get diaryAIName => '星见精灵';
 
   @override
   String get diaryYou => '我';
 
   @override
-  String get diaryReplyHint => '回复月见精灵';
+  String get diaryReplyHint => '回复星见精灵';
 
   @override
   String get diaryDeleteTitle => '删除日记';

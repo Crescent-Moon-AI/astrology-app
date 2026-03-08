@@ -29,7 +29,7 @@ void main() async {
         sharedPreferencesProvider.overrideWithValue(prefs),
         astroEngineProvider.overrideWithValue(astroEngine),
       ],
-      child: const YuejianApp(
+      child: const XingjianApp(
         forceLocale: Locale('zh'),
         autoLoginEmail: 'dev@test.com',
         autoLoginPassword: 'Test12345678',

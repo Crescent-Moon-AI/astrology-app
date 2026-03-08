@@ -45,14 +45,14 @@ class EnvConfig {
 
   static const staging = EnvConfig(
     env: Environment.staging,
-    apiBaseUrl: 'https://staging-api.yuejian.app',
-    wsBaseUrl: 'wss://staging-api.yuejian.app',
+    apiBaseUrl: 'https://staging-api.xingjian.app',
+    wsBaseUrl: 'wss://staging-api.xingjian.app',
   );
 
   static const prod = EnvConfig(
     env: Environment.prod,
-    apiBaseUrl: 'https://api.yuejian.app',
-    wsBaseUrl: 'wss://api.yuejian.app',
+    apiBaseUrl: 'https://api.xingjian.app',
+    wsBaseUrl: 'wss://api.xingjian.app',
   );
 }
 

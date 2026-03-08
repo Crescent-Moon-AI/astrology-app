@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Yuejian",
+  "appTitle": "Xingjian",
   "scenarioCategoryLoveRelationship": "Love & Relationships",
   "scenarioCategoryCareerGrowth": "Career Growth",
   "scenarioCategoryDailyDecision": "Daily Decisions",
@@ -384,10 +384,10 @@
   "diaryAddNew": "Add New Diary",
   "diaryEmptyHint": "Rainy day~ No diary entry yet today. Tap \"+\" to record what's happening or how you're feeling~",
   "diaryPublish": "Publish",
-  "diaryEditHint": "Feel free to write down any thoughts or feelings here~ Yuejian will be your most loyal companion and listener.",
-  "diaryAIName": "Yuejian Spirit",
+  "diaryEditHint": "Feel free to write down any thoughts or feelings here~ Xingjian will be your most loyal companion and listener.",
+  "diaryAIName": "Xingjian Spirit",
   "diaryYou": "Me",
-  "diaryReplyHint": "Reply to Yuejian Spirit",
+  "diaryReplyHint": "Reply to Xingjian Spirit",
   "diaryDeleteTitle": "Delete Diary",
   "diaryDeleteConfirm": "Are you sure you want to delete this diary entry? This action cannot be undone.",
 

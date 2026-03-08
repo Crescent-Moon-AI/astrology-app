@@ -43,9 +43,9 @@ void main() async {
         dioClientProvider.overrideWithValue(mockDioClient),
         chatDatasourceProvider.overrideWithValue(mockChatDatasource),
       ],
-      child: const YuejianApp(
+      child: const XingjianApp(
         forceLocale: Locale('zh'),
-        autoLoginEmail: 'demo@yuejian.app',
+        autoLoginEmail: 'demo@xingjian.app',
         autoLoginPassword: 'mock',
       ),
     ),
