@@ -55,9 +55,7 @@ class _TarotGalleryPageState extends State<TarotGalleryPage>
           labelColor: CosmicColors.tarotGold,
           unselectedLabelColor: CosmicColors.textTertiary,
           tabs: _categories.map((cat) {
-            return Tab(
-              icon: Icon(IconData(cat.icon, fontFamily: 'MaterialIcons'), size: 24),
-            );
+            return Tab(icon: Icon(cat.icon, size: 24));
           }).toList(),
         ),
       ),
@@ -123,18 +121,15 @@ class _CategoryGrid extends StatelessWidget {
               crossAxisSpacing: 12,
               childAspectRatio: 0.58,
             ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final card = cards[index];
-                return _GalleryCardItem(
-                  card: card,
-                  allCards: cards,
-                  index: index,
-                  isZh: isZh,
-                );
-              },
-              childCount: cards.length,
-            ),
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final card = cards[index];
+              return _GalleryCardItem(
+                card: card,
+                allCards: cards,
+                index: index,
+                isZh: isZh,
+              );
+            }, childCount: cards.length),
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 24)),
@@ -178,7 +173,9 @@ class _GalleryCardItem extends StatelessWidget {
             // Card image
             Expanded(
               child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
                 child: Image.asset(
                   assetPath,
                   fit: BoxFit.cover,
