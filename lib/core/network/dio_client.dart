@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:native_dio_adapter/native_dio_adapter.dart';
+import '../../config/env.dart';
 import 'api_constants.dart';
 
 class DioClient {
@@ -21,6 +22,14 @@ class DioClient {
     // Use platform-native HTTP client for proper TLS 1.3 support.
     // Dart's built-in BoringSSL may use TLS 1.2 which can be blocked by DPI.
     _dio.httpClientAdapter = NativeAdapter();
+
+    // Log requests/responses in dev mode for easier debugging.
+    if (AppConfig.mode.enableNetworkLog) {
+      _dio.interceptors.add(LogInterceptor(
+        requestBody: true,
+        responseBody: true,
+      ));
+    }
   }
 
   Dio get dio => _dio;

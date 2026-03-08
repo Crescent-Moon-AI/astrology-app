@@ -13,9 +13,14 @@ import 'shared/providers/locale_provider.dart';
 import 'shared/theme/theme_provider.dart';
 import 'features/auth/presentation/providers/auth_providers.dart';
 
+/// Default entry point — dev mode against local backend.
+///
+/// Run with:
+///   flutter run                           (emulator / desktop)
+///   flutter run -d DEVICE_ID               (real device over WiFi)
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AppConfig.init(EnvConfig.dev);
+  AppConfig.init(EnvConfig.dev, mode: AppMode.dev);
 
   final astroEngine = AstroEngine();
   await astroEngine.init();
@@ -33,13 +38,11 @@ void main() async {
 }
 
 class XingjianApp extends ConsumerStatefulWidget {
-  final Locale? forceLocale;
   final String? autoLoginEmail;
   final String? autoLoginPassword;
 
   const XingjianApp({
     super.key,
-    this.forceLocale,
     this.autoLoginEmail,
     this.autoLoginPassword,
   });
@@ -60,8 +63,7 @@ class _XingjianAppState extends ConsumerState<XingjianApp> {
       ref
           .read(dioClientProvider)
           .addAuthInterceptor(onUnauthorized: () => notifier.tryRefresh());
-      // Auto-login for dev testing (also login when user data is missing,
-      // e.g. stale token from previous session without user profile)
+      // Auto-login (mock mode only)
       final email = widget.autoLoginEmail;
       final password = widget.autoLoginPassword;
       final auth = ref.read(authProvider);
@@ -76,8 +78,7 @@ class _XingjianAppState extends ConsumerState<XingjianApp> {
   @override
   Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
-    // forceLocale (dev) takes priority over user preference
-    final locale = widget.forceLocale ?? ref.watch(appLocaleProvider);
+    final locale = ref.watch(appLocaleProvider);
 
     // Globally disable flutter_animate when reduced-motion is enabled
     final reducedMotion = ref.watch(reducedMotionProvider);
@@ -90,7 +91,7 @@ class _XingjianAppState extends ConsumerState<XingjianApp> {
 
     return MaterialApp.router(
       title: '星见',
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: AppConfig.mode.showDebugBanner,
       theme: CosmicTheme.dark,
       darkTheme: CosmicTheme.dark,
       themeMode: ThemeMode.dark,

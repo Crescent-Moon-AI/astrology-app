@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../core/network/api_constants.dart';
+import '../../../../core/utils/error_format.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/character_avatar.dart';
 import '../../../../shared/widgets/starfield_background.dart';
@@ -379,7 +380,7 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
+          SnackBar(content: Text(formatError(e))),
         );
       }
     } finally {
@@ -422,7 +423,7 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.toString())),
+            SnackBar(content: Text(formatError(e))),
           );
         }
       }

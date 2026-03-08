@@ -6,18 +6,16 @@ import 'core/astro/astro_engine.dart';
 import 'core/providers/core_providers.dart';
 import 'main.dart';
 
-/// Entry point for real device testing over WiFi.
+/// Test entry point — connects to test server (ECS).
 ///
-/// Uses the dev machine's LAN IP so that a physical device on the same
-/// network can reach the backend.
-/// Forces Chinese locale for testing.
-/// Auto-logs in with test credentials.
+/// Moderate error detail (code + message, no stack trace).
+/// Forces Chinese locale.
 ///
-/// Run with:
-///   flutter run -t lib/main_dev.dart
+/// Build with:
+///   flutter build apk -t lib/main_test.dart --release
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AppConfig.init(EnvConfig.dev);
+  AppConfig.init(EnvConfig.testServer, mode: AppMode.test);
 
   final astroEngine = AstroEngine();
   await astroEngine.init();
@@ -29,11 +27,7 @@ void main() async {
         sharedPreferencesProvider.overrideWithValue(prefs),
         astroEngineProvider.overrideWithValue(astroEngine),
       ],
-      child: const XingjianApp(
-        forceLocale: Locale('zh'),
-        autoLoginEmail: 'dev@test.com',
-        autoLoginPassword: 'Test12345678',
-      ),
+      child: const XingjianApp(),
     ),
   );
 }

@@ -7,6 +7,7 @@ import 'package:astrology_app/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/network/api_constants.dart';
+import '../../../../core/utils/error_format.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/breathing_loader.dart';
 import '../../../../shared/widgets/character_avatar.dart';
@@ -116,7 +117,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         if (attempt >= maxAttempts) {
           if (mounted) {
             setState(() {
-              _wsError = e.toString();
+              _wsError = formatError(e);
             });
           }
         } else {

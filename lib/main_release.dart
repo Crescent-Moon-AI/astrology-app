@@ -6,17 +6,17 @@ import 'core/astro/astro_engine.dart';
 import 'core/providers/core_providers.dart';
 import 'main.dart';
 
-/// Entry point for release APK targeting dev server (ECS).
+/// Production release entry point.
 ///
-/// Connects to https://dev.astrology.net.cn
-/// Forces Chinese locale for testing.
-/// Auto-logs in with test credentials.
+/// Minimal error info. No auto-login. No forced locale.
+/// Currently points to testServer; switch to prod when ready.
 ///
 /// Build with:
 ///   flutter build apk -t lib/main_release.dart --release
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AppConfig.init(EnvConfig.devServer);
+  // TODO: switch to EnvConfig.prod when production is ready
+  AppConfig.init(EnvConfig.testServer, mode: AppMode.release);
 
   final astroEngine = AstroEngine();
   await astroEngine.init();
@@ -28,11 +28,7 @@ void main() async {
         sharedPreferencesProvider.overrideWithValue(prefs),
         astroEngineProvider.overrideWithValue(astroEngine),
       ],
-      child: const XingjianApp(
-        forceLocale: Locale('zh'),
-        autoLoginEmail: 'testzhui@test.com',
-        autoLoginPassword: 'Test12345678',
-      ),
+      child: const XingjianApp(),
     ),
   );
 }

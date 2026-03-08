@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import '../../../../core/utils/error_format.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/breathing_loader.dart';
 import '../providers/social_providers.dart';
@@ -365,7 +366,7 @@ class FriendDetailPage extends ConsumerWidget {
         if (context.mounted) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text('$e')));
+          ).showSnackBar(SnackBar(content: Text(formatError(e))));
         }
       }
     }

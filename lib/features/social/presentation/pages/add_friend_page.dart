@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
+import '../../../../core/utils/error_format.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../../../shared/widgets/character_avatar.dart';
@@ -230,7 +231,7 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('$e')));
+            .showSnackBar(SnackBar(content: Text(formatError(e))));
       }
     } finally {
       if (mounted) setState(() => _saving = false);

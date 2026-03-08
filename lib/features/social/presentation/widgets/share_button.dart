@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/utils/error_format.dart';
 import '../providers/social_providers.dart';
 
 class ShareButton extends ConsumerStatefulWidget {
@@ -37,7 +38,7 @@ class _ShareButtonState extends ConsumerState<ShareButton> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('$e')));
+        ).showSnackBar(SnackBar(content: Text(formatError(e))));
       }
     } finally {
       if (mounted) setState(() => _loading = false);

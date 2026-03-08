@@ -1,5 +1,8 @@
 import 'dart:io' show Platform;
 
+import 'app_mode.dart';
+export 'app_mode.dart';
+
 enum Environment { dev, staging, prod }
 
 class EnvConfig {
@@ -59,13 +62,16 @@ class EnvConfig {
 /// Global app configuration. Must be initialized before runApp().
 class AppConfig {
   static late EnvConfig _current;
+  static AppMode _mode = AppMode.release;
 
   /// Initialize the config. Call once from main() before runApp().
-  static void init(EnvConfig config) {
+  static void init(EnvConfig config, {AppMode mode = AppMode.release}) {
     _current = config;
+    _mode = mode;
   }
 
   static EnvConfig get current => _current;
+  static AppMode get mode => _mode;
   static String get apiBaseUrl => _current.apiBaseUrl;
   static String get wsBaseUrl => _current.wsBaseUrl;
   static Environment get environment => _current.env;

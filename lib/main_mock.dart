@@ -13,15 +13,15 @@ import 'main.dart';
 /// Mock entry point — self-contained, no backend required.
 ///
 /// Overrides:
-///   - dioClientProvider  → DioClient with MockInterceptor
-///   - chatDatasourceProvider → MockChatDatasource
+///   - dioClientProvider  -> DioClient with MockInterceptor
+///   - chatDatasourceProvider -> MockChatDatasource
 ///
 /// Run with:
 ///   flutter run -t lib/main_mock.dart
 ///   flutter build apk -t lib/main_mock.dart --release
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AppConfig.init(EnvConfig.dev);
+  AppConfig.init(EnvConfig.dev, mode: AppMode.mock);
 
   // Initialize Rust FFI bridge for offline calculations
   final astroEngine = AstroEngine();
@@ -44,7 +44,6 @@ void main() async {
         chatDatasourceProvider.overrideWithValue(mockChatDatasource),
       ],
       child: const XingjianApp(
-        forceLocale: Locale('zh'),
         autoLoginEmail: 'demo@xingjian.app',
         autoLoginPassword: 'mock',
       ),

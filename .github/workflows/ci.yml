@@ -47,6 +47,8 @@ jobs:
         include:
           - variant: mock
             target: lib/main_mock.dart
+          - variant: dev
+            target: lib/main.dart
           - variant: release
             target: lib/main_release.dart
     steps:
