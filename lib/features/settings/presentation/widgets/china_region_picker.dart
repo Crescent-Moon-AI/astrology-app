@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../shared/data/china_regions.dart';
-import '../../../../shared/theme/cosmic_colors.dart';
+
 
 /// Result from the China region picker.
 class RegionPickerResult {

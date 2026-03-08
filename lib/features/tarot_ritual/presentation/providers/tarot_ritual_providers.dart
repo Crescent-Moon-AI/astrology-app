@@ -227,7 +227,7 @@ class TarotRitualNotifier extends Notifier<TarotRitualState> {
     state = state.copyWith(isLoading: true, error: null);
     try {
       // First transition: picking_cards → confirming (sends positions, resolves cards)
-      final confirmed = await _api.updateSession(
+      await _api.updateSession(
         state.session!.id,
         ritualState: RitualState.confirming.value,
         selectedPositions: state.selectedPositions.toList()..sort(),

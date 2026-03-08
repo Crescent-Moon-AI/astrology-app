@@ -359,23 +359,18 @@ class _CardPickerPageState extends ConsumerState<CardPickerPage> {
 class _PositionSlots extends StatelessWidget {
   final int needed;
   final int filledCount;
-  final bool compact;
-  final ValueChanged<int>? onSlotTapped;
   final List<TarotCard> drawnCards;
 
   const _PositionSlots({
     required this.needed,
     required this.filledCount,
-    this.compact = false,
-    this.onSlotTapped,
     this.drawnCards = const [],
   });
 
   @override
   Widget build(BuildContext context) {
-    final slotWidth = compact
-        ? (needed <= 3 ? 40.0 : (needed <= 5 ? 32.0 : 28.0))
-        : (needed <= 3 ? 72.0 : (needed <= 5 ? 52.0 : 40.0));
+    final slotWidth =
+        needed <= 3 ? 72.0 : (needed <= 5 ? 52.0 : 40.0);
     final slotHeight = slotWidth / 0.6;
 
     return Row(
@@ -384,9 +379,8 @@ class _PositionSlots extends StatelessWidget {
         final isFilled = i < filledCount;
         final hasDrawnCard = i < drawnCards.length;
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: compact ? 4 : 8),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: GestureDetector(
-            onTap: isFilled ? () => onSlotTapped?.call(i) : null,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               width: slotWidth,
