@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 
+import 'package:go_router/go_router.dart';
+
 import '../../../../core/network/api_constants.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/breathing_loader.dart';
@@ -47,7 +49,37 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     super.initState();
     _autoScroll = AutoScrollController();
     _currentConversationId = widget.conversationId;
+
+    // When starting a new chat (no conversationId), clear any leftover
+    // messages from a previous session stored under the empty key.
+    if (widget.conversationId == null) {
+      Future.microtask(() {
+        ref.invalidate(chatMessagesProvider(''));
+      });
+    } else {
+      // Load existing messages for this conversation
+      _loadExistingMessages(widget.conversationId!);
+    }
+
     _connectWebSocket();
+  }
+
+  Future<void> _loadExistingMessages(String conversationId) async {
+    try {
+      final repo = ref.read(chatRepositoryProvider);
+      final messages = await repo.getMessages(conversationId);
+      if (mounted) {
+        final notifier = ref.read(
+          chatMessagesProvider(conversationId).notifier,
+        );
+        for (final msg in messages) {
+          notifier.addExistingMessage(msg);
+        }
+      }
+    } catch (e) {
+      // History load failure is non-fatal; user can still send new messages
+      debugPrint('Failed to load existing messages: $e');
+    }
   }
 
   Future<void> _connectWebSocket() async {
@@ -56,19 +88,41 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
     _wsSubscription = datasource.messageStream.listen(_handleServerMessage);
 
-    try {
-      final ticket = await repo.getWsTicket();
-      await datasource.connect(ApiConstants.wsUrl, ticket);
+    const maxAttempts = 3;
+    for (var attempt = 1; attempt <= maxAttempts; attempt++) {
+      if (!mounted) return;
 
-      if (mounted) {
-        setState(() => _wsConnected = true);
-        _sendInitialMessageIfNeeded();
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _wsError = e.toString();
-        });
+      try {
+        final ticket = await repo.getWsTicket()
+            .timeout(const Duration(seconds: 10),
+                onTimeout: () => throw TimeoutException('WebSocket ticket request timed out'));
+        await datasource.connect(ApiConstants.wsUrl, ticket)
+            .timeout(const Duration(seconds: 15),
+                onTimeout: () => throw TimeoutException('WebSocket connection timed out'));
+
+        if (mounted) {
+          setState(() {
+            _wsConnected = true;
+            _wsError = null;
+          });
+          _sendInitialMessageIfNeeded();
+        }
+        return; // success
+      } catch (e) {
+        // On timeout, the underlying connect() may still be running —
+        // disconnect explicitly to clean up before retrying.
+        datasource.disconnect();
+
+        if (attempt >= maxAttempts) {
+          if (mounted) {
+            setState(() {
+              _wsError = e.toString();
+            });
+          }
+        } else {
+          // Brief pause before retrying (WebView engine should be warm now)
+          await Future<void>.delayed(const Duration(milliseconds: 500));
+        }
       }
     }
   }
@@ -76,15 +130,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   void _sendInitialMessageIfNeeded() {
     String? msg = widget.initialMessage;
 
-    // Auto-send tarot reading prompt when coming from tarot ritual
-    if (msg == null && widget.tarotSessionId != null) {
-      final l10n = AppLocalizations.of(context);
-      msg = l10n?.tarotReadingPrompt ?? '请根据塔罗牌阵为我进行解读';
-    }
-
     if (msg != null && msg.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _sendMessage(msg!);
+        _sendMessage(msg);
       });
     }
   }
@@ -92,6 +140,18 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   void _handleServerMessage(WsServerMessage msg) {
     switch (msg.type) {
       case 'conversation_created':
+        final oldKey = _currentConversationId ?? '';
+        final newKey = msg.conversationId ?? '';
+        if (newKey.isNotEmpty && newKey != oldKey) {
+          // Transfer messages from temporary key to the real conversation key
+          final oldMessages = ref.read(chatMessagesProvider(oldKey));
+          final newNotifier = ref.read(chatMessagesProvider(newKey).notifier);
+          for (final m in oldMessages) {
+            newNotifier.addExistingMessage(m);
+          }
+          // Clear the temporary key so it doesn't show stale data next time
+          ref.invalidate(chatMessagesProvider(oldKey));
+        }
         setState(() {
           _currentConversationId = msg.conversationId;
         });
@@ -165,6 +225,16 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     _autoScroll.scrollToBottom();
   }
 
+  void _retryConnection() {
+    setState(() {
+      _wsError = null;
+      _wsConnected = false;
+    });
+    _wsSubscription?.cancel();
+    ref.read(chatDatasourceProvider).disconnect();
+    _connectWebSocket();
+  }
+
   @override
   void dispose() {
     _wsSubscription?.cancel();
@@ -181,6 +251,18 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            if (widget.tarotSessionId != null) {
+              context.go('/home');
+            } else if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/home');
+            }
+          },
+        ),
         title: Text(
           l10n?.chatTitle ?? '咨询',
           style: const TextStyle(
@@ -244,6 +326,30 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                         style: const TextStyle(
                           color: CosmicColors.error,
                           fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: _retryConnection,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: CosmicColors.primary.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          Localizations.localeOf(context).languageCode.startsWith('zh')
+                              ? '重试'
+                              : 'Retry',
+                          style: const TextStyle(
+                            color: CosmicColors.primaryLight,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),

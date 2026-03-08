@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 
+/// Quick action buttons matching real app: horizontally scrollable rectangular
+/// cards with text on top-left and icon on bottom-right.
 class QuickActionCards extends StatelessWidget {
   const QuickActionCards({super.key});
 
@@ -14,68 +16,76 @@ class QuickActionCards extends StatelessWidget {
       _QuickAction(
         icon: Icons.question_answer_rounded,
         label: l10n.homeQuickConsult,
-        gradient: [CosmicColors.primary, CosmicColors.primaryLight],
-        onTap: () => context.go('/consult'),
+        onTap: () => context.push('/chat'),
       ),
       _QuickAction(
         icon: Icons.style_rounded,
         label: l10n.homeQuickTarot,
-        gradient: [const Color(0xFFE17055), const Color(0xFFFDCB6E)],
         onTap: () => context.push('/tarot'),
       ),
       _QuickAction(
         icon: Icons.camera_alt_rounded,
         label: l10n.homeQuickPhoto,
-        gradient: [const Color(0xFF00CEC9), const Color(0xFF55EFC4)],
         onTap: () {}, // placeholder
+      ),
+      _QuickAction(
+        icon: Icons.auto_awesome_rounded,
+        label: l10n.homeQuickChartConsult,
+        onTap: () => context.push('/chat?scenario_id=chart-consultation'),
+      ),
+      _QuickAction(
+        icon: Icons.stars_rounded,
+        label: l10n.homeQuickMyChart,
+        onTap: () => context.push('/charts'),
       ),
     ];
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        children: actions
-            .map(
-              (a) => Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: _buildCard(context, a),
-                ),
-              ),
-            )
-            .toList(),
+    return SizedBox(
+      height: 88,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        itemCount: actions.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        itemBuilder: (context, index) => _buildCard(context, actions[index]),
       ),
     );
   }
 
   Widget _buildCard(BuildContext context, _QuickAction action) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    // Each card takes roughly 1/3 of screen width minus padding, so 3 cards
+    // are visible at once and the user can scroll to reveal the rest.
+    final cardWidth = (screenWidth - 48) / 3;
+
     return GestureDetector(
       onTap: action.onTap,
       child: Container(
-        height: 80,
+        width: cardWidth,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              action.gradient[0].withAlpha(51),
-              action.gradient[1].withAlpha(26),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: CosmicColors.surfaceElevated,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: action.gradient[0].withAlpha(38)),
+          border: Border.all(color: CosmicColors.borderGlow),
         ),
+        padding: const EdgeInsets.all(10),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(action.icon, color: action.gradient[0], size: 28),
-            const SizedBox(height: 6),
             Text(
               action.label,
               style: const TextStyle(
                 color: CosmicColors.textPrimary,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Icon(
+                action.icon,
+                color: CosmicColors.textTertiary,
+                size: 22,
               ),
             ),
           ],
@@ -88,13 +98,11 @@ class QuickActionCards extends StatelessWidget {
 class _QuickAction {
   final IconData icon;
   final String label;
-  final List<Color> gradient;
   final VoidCallback onTap;
 
   const _QuickAction({
     required this.icon,
     required this.label,
-    required this.gradient,
     required this.onTap,
   });
 }

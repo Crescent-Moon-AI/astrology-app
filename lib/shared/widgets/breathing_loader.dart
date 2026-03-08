@@ -64,12 +64,9 @@ class _BreathingLoaderState extends ConsumerState<BreathingLoader>
   Widget build(BuildContext context) {
     final reducedMotion = ref.watch(reducedMotionProvider);
     final l10n = AppLocalizations.of(context);
-    final isZh = Localizations.localeOf(context).languageCode == 'zh';
     final displayMessage =
         widget.message ??
-        (isZh
-            ? '\u5B87\u5B99\u7684\u8BAF\u606F\u6B63\u5728\u6C47\u805A...'
-            : l10n?.breathingLoaderMessage ?? '');
+        l10n?.breathingLoaderMessage ?? '';
 
     if (reducedMotion) {
       _controller.stop();
@@ -120,8 +117,8 @@ class _BreathingLoaderState extends ConsumerState<BreathingLoader>
                   // Breathing phase text
                   Text(
                     _controller.value < 0.5
-                        ? (isZh ? '\u5438\u6C14...' : 'Inhale...')
-                        : (isZh ? '\u547C\u6C14...' : 'Exhale...'),
+                        ? (l10n?.breathingInhale ?? 'Inhale...')
+                        : (l10n?.breathingExhale ?? 'Exhale...'),
                     style: const TextStyle(
                       color: CosmicColors.textTertiary,
                       fontSize: 14,

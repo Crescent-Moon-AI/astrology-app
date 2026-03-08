@@ -15,7 +15,7 @@ class LocaleNotifier extends Notifier<AppLocaleMode> {
     final value = prefs.getString(_key);
     return AppLocaleMode.values.firstWhere(
       (e) => e.name == value,
-      orElse: () => AppLocaleMode.system,
+      orElse: () => AppLocaleMode.zh,
     );
   }
 

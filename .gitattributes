@@ -1,0 +1,3 @@
+# Force LF line endings for scripts (avoid CRLF issues in containers)
+*.sh text eol=lf
+Dockerfile* text eol=lf

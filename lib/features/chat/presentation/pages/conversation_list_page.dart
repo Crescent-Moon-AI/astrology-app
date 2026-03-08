@@ -19,7 +19,6 @@ class ConversationListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).languageCode;
-    final isZh = locale.startsWith('zh');
     final conversationsAsync = ref.watch(conversationListProvider);
 
     return Scaffold(
@@ -33,7 +32,7 @@ class ConversationListPage extends ConsumerWidget {
         child: conversationsAsync.when(
           data: (conversations) {
             if (conversations.isEmpty) {
-              return _buildEmptyState(context, ref, isZh, locale);
+              return _buildEmptyState(context, ref, l10n, locale);
             }
             return ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -41,9 +40,9 @@ class ConversationListPage extends ConsumerWidget {
               itemBuilder: (context, index) {
                 final conv = conversations[index];
                 return _ConversationCard(
-                  title: conv.title ?? (isZh ? '新的对话' : 'New Conversation'),
+                  title: conv.title ?? l10n.conversationNewChat,
                   subtitle: conv.lastMessageAt != null
-                      ? _formatDate(conv.lastMessageAt!, isZh)
+                      ? _formatDate(conv.lastMessageAt!, l10n)
                       : null,
                   onTap: () => context.push('/chat/${conv.id}'),
                 );
@@ -64,13 +63,13 @@ class ConversationListPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  isZh ? '加载失败' : 'Failed to load',
+                  l10n.errorLoadFailed,
                   style: const TextStyle(color: CosmicColors.textSecondary),
                 ),
                 const SizedBox(height: 8),
                 TextButton(
                   onPressed: () => ref.invalidate(conversationListProvider),
-                  child: Text(isZh ? '重试' : 'Retry'),
+                  child: Text(l10n.retry),
                 ),
               ],
             ),
@@ -102,7 +101,7 @@ class ConversationListPage extends ConsumerWidget {
   Widget _buildEmptyState(
     BuildContext context,
     WidgetRef ref,
-    bool isZh,
+    AppLocalizations l10n,
     String locale,
   ) {
     final hotScenariosAsync = ref.watch(hotScenariosProvider);
@@ -119,7 +118,7 @@ class ConversationListPage extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              isZh ? '\u8FD8\u6CA1\u6709\u5BF9\u8BDD' : 'No conversations yet',
+              l10n.conversationNoChats,
               style: const TextStyle(
                 color: CosmicColors.textPrimary,
                 fontSize: 22,
@@ -135,9 +134,7 @@ class ConversationListPage extends ConsumerWidget {
                 ],
               ).createShader(bounds),
               child: Text(
-                isZh
-                    ? '开始一段新的对话，让星象为你指引方向'
-                    : 'Start a new conversation and let the stars guide you',
+                l10n.conversationEmptyHint,
                 style: const TextStyle(color: Colors.white, fontSize: 14),
                 textAlign: TextAlign.center,
               ),
@@ -159,7 +156,7 @@ class ConversationListPage extends ConsumerWidget {
                       vertical: 12,
                     ),
                     child: Text(
-                      isZh ? '开始咨询' : 'Start Consultation',
+                      l10n.conversationStartConsult,
                       style: const TextStyle(
                         color: CosmicColors.textPrimary,
                         fontWeight: FontWeight.w600,
@@ -178,7 +175,7 @@ class ConversationListPage extends ConsumerWidget {
                   child: Column(
                     children: [
                       Text(
-                        isZh ? '热门话题' : 'Popular Topics',
+                        l10n.conversationPopularTopics,
                         style: const TextStyle(
                           color: CosmicColors.textSecondary,
                           fontSize: 13,
@@ -243,18 +240,16 @@ class ConversationListPage extends ConsumerWidget {
     );
   }
 
-  String _formatDate(DateTime date, bool isZh) {
+  String _formatDate(DateTime date, AppLocalizations l10n) {
     final now = DateTime.now();
     final diff = now.difference(date);
-    if (diff.inMinutes < 1) return isZh ? '刚刚' : 'Just now';
-    if (diff.inHours < 1)
-      return isZh ? '${diff.inMinutes}分钟前' : '${diff.inMinutes}m ago';
+    if (diff.inMinutes < 1) return l10n.timeJustNow;
+    if (diff.inHours < 1) return l10n.timeMinutesAgo(diff.inMinutes);
     if (diff.inDays == 0) {
       return '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     }
-    if (diff.inDays == 1) return isZh ? '昨天' : 'Yesterday';
-    if (diff.inDays < 7)
-      return isZh ? '${diff.inDays}天前' : '${diff.inDays}d ago';
+    if (diff.inDays == 1) return l10n.timeYesterday;
+    if (diff.inDays < 7) return l10n.timeDaysAgo(diff.inDays);
     return '${date.month}/${date.day}';
   }
 }

@@ -27,7 +27,7 @@ class ScenarioDetailPage extends ConsumerWidget {
         child: scenarioAsync.when(
           data: (scenario) {
             if (scenario == null) {
-              return const Center(child: Text('Scenario not found'));
+              return const Center(child: Text(''));
             }
 
             final visual = getScenarioVisual(scenario.slug);
@@ -190,9 +190,7 @@ class ScenarioDetailPage extends ConsumerWidget {
                         const SizedBox(height: 24),
                         Center(
                           child: Text(
-                            locale == 'zh'
-                                ? '\u2728 AI 生成内容，仅供参考和娱乐'
-                                : '\u2728 AI-generated content for reference and entertainment only',
+                            '\u2728 ${l10n.aiDisclaimer}',
                             style: const TextStyle(
                               color: CosmicColors.textTertiary,
                               fontSize: 12,

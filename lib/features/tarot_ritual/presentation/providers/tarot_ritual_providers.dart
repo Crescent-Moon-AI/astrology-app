@@ -48,6 +48,9 @@ class TarotRitualState {
   final bool isLoading;
   final String? error;
 
+  /// Cards drawn during picking phase, keyed by deck position index.
+  final Map<int, TarotCard> drawnCards;
+
   const TarotRitualState({
     this.session,
     this.step = RitualState.shuffling,
@@ -55,6 +58,7 @@ class TarotRitualState {
     this.revealIndex = 0,
     this.isLoading = false,
     this.error,
+    this.drawnCards = const {},
   });
 
   TarotRitualState copyWith({
@@ -64,6 +68,7 @@ class TarotRitualState {
     int? revealIndex,
     bool? isLoading,
     String? error,
+    Map<int, TarotCard>? drawnCards,
   }) {
     return TarotRitualState(
       session: session ?? this.session,
@@ -72,6 +77,7 @@ class TarotRitualState {
       revealIndex: revealIndex ?? this.revealIndex,
       isLoading: isLoading ?? this.isLoading,
       error: error,
+      drawnCards: drawnCards ?? this.drawnCards,
     );
   }
 
@@ -91,6 +97,18 @@ class TarotRitualState {
     final cards = session?.selectedCards;
     if (cards == null) return false;
     return revealIndex >= cards.length;
+  }
+
+  /// Returns drawn cards in the order they were selected (by selectedPositions order).
+  List<TarotCard> get drawnCardsInOrder {
+    if (session == null) return [];
+    // selectedPositions in session is the ordered list from the set
+    // Use the order from selectedPositions
+    final positions = selectedPositions.toList();
+    return positions
+        .where((pos) => drawnCards.containsKey(pos))
+        .map((pos) => drawnCards[pos]!)
+        .toList();
   }
 }
 
@@ -177,6 +195,28 @@ class TarotRitualNotifier extends Notifier<TarotRitualState> {
     state = state.copyWith(selectedPositions: updated);
   }
 
+  /// Draw a single card from the deck: calls API to resolve the card,
+  /// adds it to selectedPositions, and stores the drawn card for display.
+  Future<TarotCard?> drawCard(int position) async {
+    if (state.session == null) return null;
+    if (!state.canSelectMore) return null;
+    try {
+      final card = await _api.drawCard(state.session!.id, position);
+      final updatedPositions = Set<int>.from(state.selectedPositions)
+        ..add(position);
+      final updatedDrawn = Map<int, TarotCard>.from(state.drawnCards)
+        ..[position] = card;
+      state = state.copyWith(
+        selectedPositions: updatedPositions,
+        drawnCards: updatedDrawn,
+      );
+      return card;
+    } catch (e) {
+      state = state.copyWith(error: e.toString());
+      return null;
+    }
+  }
+
   void deselectCard(int position) {
     final updated = Set<int>.from(state.selectedPositions)..remove(position);
     state = state.copyWith(selectedPositions: updated);
@@ -186,10 +226,16 @@ class TarotRitualNotifier extends Notifier<TarotRitualState> {
     if (state.session == null || !state.selectionComplete) return;
     state = state.copyWith(isLoading: true, error: null);
     try {
+      // First transition: picking_cards → confirming (sends positions, resolves cards)
+      final confirmed = await _api.updateSession(
+        state.session!.id,
+        ritualState: RitualState.confirming.value,
+        selectedPositions: state.selectedPositions.toList()..sort(),
+      );
+      // Second transition: confirming → revealing
       final session = await _api.updateSession(
         state.session!.id,
         ritualState: RitualState.revealing.value,
-        selectedPositions: state.selectedPositions.toList()..sort(),
       );
       state = state.copyWith(
         session: session,

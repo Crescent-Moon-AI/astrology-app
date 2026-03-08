@@ -213,7 +213,7 @@ class TarotCardFace extends StatelessWidget {
             if (card.activeKeywords.isNotEmpty) ...[
               const SizedBox(height: 4),
               Text(
-                card.activeKeywords.take(2).join(' · '),
+                card.localizedKeywords(isZh).take(2).join(' · '),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white38,

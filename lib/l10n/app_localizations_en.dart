@@ -298,7 +298,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String get friendRelCrush => 'Crush';
 
   @override
-  String get friendSave => 'Save Friend';
+  String get friendFillBirthInfo => 'Fill in their birth info';
+
+  @override
+  String get friendFillBirthInfoSubtitle =>
+      'Understand their personality, emotions, thinking, and unlock synastry';
+
+  @override
+  String get friendBasicInfo => 'Basic Info';
+
+  @override
+  String get friendNickname => 'Nickname';
+
+  @override
+  String get friendNicknamePlaceholder => 'Enter nickname';
+
+  @override
+  String get friendGenderFemale => 'Female';
+
+  @override
+  String get friendGenderMale => 'Male';
+
+  @override
+  String get friendTaRelationship => 'They are your';
+
+  @override
+  String get friendBirthInfo => 'Birth Info';
+
+  @override
+  String get friendCalendarSolar => 'Solar';
+
+  @override
+  String get friendCalendarLunar => 'Lunar';
+
+  @override
+  String get friendSelectBirthTime => 'Select birth time';
+
+  @override
+  String get friendUnknownExactTime => 'I don\'t know the exact time';
+
+  @override
+  String get friendSelectBirthCity => 'Select birth city';
+
+  @override
+  String get friendInvite => 'Invite Friend';
+
+  @override
+  String get friendSave => 'Save';
 
   @override
   String get friendDelete => 'Delete Friend';
@@ -870,6 +916,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeQuickPhoto => 'Photo Read';
 
   @override
+  String get homeQuickChartConsult => 'Chart Consult';
+
+  @override
+  String get homeQuickMyChart => 'My Chart';
+
+  @override
   String get homeSceneExplore => 'Explore Scenarios';
 
   @override
@@ -940,7 +992,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get diaryEmptyHint =>
-      'Record your every day\nLet the stars paint your mood';
+      'Rainy day~ No diary entry yet today. Tap \"+\" to record what\'s happening or how you\'re feeling~';
+
+  @override
+  String get diaryPublish => 'Publish';
+
+  @override
+  String get diaryEditHint =>
+      'Feel free to write down any thoughts or feelings here~ Yuejian will be your most loyal companion and listener.';
+
+  @override
+  String get diaryAIName => 'Yuejian Spirit';
+
+  @override
+  String get diaryYou => 'Me';
+
+  @override
+  String get diaryReplyHint => 'Reply to Yuejian Spirit';
+
+  @override
+  String get diaryDeleteTitle => 'Delete Diary';
+
+  @override
+  String get diaryDeleteConfirm =>
+      'Are you sure you want to delete this diary entry? This action cannot be undone.';
 
   @override
   String get profileTitle => 'Profile';
@@ -1065,4 +1140,236 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chartSeparating => 'Separating';
+
+  @override
+  String get profileInviteCode => 'Invite +';
+
+  @override
+  String get profileNotLoggedIn => 'Not logged in';
+
+  @override
+  String profileCompanionDays(int count) {
+    return 'Together $count days';
+  }
+
+  @override
+  String get profileMyWallet => 'My Wallet';
+
+  @override
+  String get profileMyBenefits => 'My Benefits';
+
+  @override
+  String get profileFreeToday => 'Free today 1/1  Resets at 6:00';
+
+  @override
+  String get profileUnlockMore => 'Unlock more privileges';
+
+  @override
+  String get profileUpgrade => 'Upgrade';
+
+  @override
+  String get profileArchives => 'Archives';
+
+  @override
+  String get profileArchivesSubtitle => 'Add friend profiles';
+
+  @override
+  String get profileConsultHistory => 'History';
+
+  @override
+  String get profileReports => 'Reports';
+
+  @override
+  String get profileServicesTools => 'Services & Tools';
+
+  @override
+  String get profileTarotGallery => 'Tarot Card Gallery';
+
+  @override
+  String get profileHelpFeedback => 'Help & Feedback';
+
+  @override
+  String get profileShareApp => 'Share App';
+
+  @override
+  String get profileRateUs => 'Rate Us';
+
+  @override
+  String get profileSettingsItem => 'Settings';
+
+  @override
+  String get profileLogout => 'Logout';
+
+  @override
+  String get conversationNewChat => 'New Conversation';
+
+  @override
+  String get conversationNoChats => 'No conversations yet';
+
+  @override
+  String get conversationEmptyHint =>
+      'Start a new conversation and let the stars guide you';
+
+  @override
+  String get conversationStartConsult => 'Start Consultation';
+
+  @override
+  String get conversationPopularTopics => 'Popular Topics';
+
+  @override
+  String get timeJustNow => 'Just now';
+
+  @override
+  String timeMinutesAgo(int count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String get timeYesterday => 'Yesterday';
+
+  @override
+  String timeDaysAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String timeDateFormat(int month, int day) {
+    return '$month/$day';
+  }
+
+  @override
+  String get transitTransitPlanet => 'Transit Planet';
+
+  @override
+  String get transitNatalPlanet => 'Natal Planet';
+
+  @override
+  String get transitHouse => 'House';
+
+  @override
+  String get transitExactDate => 'Exact Date';
+
+  @override
+  String get transitActivePeriod => 'Active Period';
+
+  @override
+  String transitExactLabel(String date) {
+    return 'Exact: $date';
+  }
+
+  @override
+  String transitOrbLabel(String value) {
+    return 'Orb: $value';
+  }
+
+  @override
+  String get scenarioNotFound => 'Scenario not found';
+
+  @override
+  String get scenarioLoadFailed => 'Failed to load scenarios';
+
+  @override
+  String get scenarioNoneFound => 'No scenarios found';
+
+  @override
+  String get scenarioExploreSubline => 'Explore cosmic mysteries';
+
+  @override
+  String get moodMonthlySummary => 'Monthly Summary';
+
+  @override
+  String get moodTotalEntries => 'Total Entries';
+
+  @override
+  String get moodAverageScore => 'Average Score';
+
+  @override
+  String get moodCurrentStreak => 'Current Streak';
+
+  @override
+  String get moodLongestStreak => 'Longest Streak';
+
+  @override
+  String get moodTopTag => 'Top Tag';
+
+  @override
+  String get moodTrendLabel => 'Trend';
+
+  @override
+  String get moodDaysUnit => 'days';
+
+  @override
+  String get moodOk => 'OK';
+
+  @override
+  String get moodNoData => 'No data yet';
+
+  @override
+  String get friendNoFriends => 'No friends yet';
+
+  @override
+  String get friendNoFriendsHint =>
+      'Add friends to see your astrological compatibility';
+
+  @override
+  String get friendSynastryTitle => 'Synastry';
+
+  @override
+  String get chartArchivesTitle => 'Chart Archives';
+
+  @override
+  String get chartArchivesMyChart => 'Your Chart';
+
+  @override
+  String get chartArchivesFriendChart => 'Their Charts';
+
+  @override
+  String get chartArchivesSelf => 'Self';
+
+  @override
+  String get chartArchivesNoData => 'No data yet';
+
+  @override
+  String get chartArchivesAddChart => '+ Add Chart Profile';
+
+  @override
+  String get chartArchivesNotSet => 'Birth info not set';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get shareChartLabel => 'Birth Chart';
+
+  @override
+  String get shareHoroscopeLabel => 'Horoscope';
+
+  @override
+  String get shareTarotLabel => 'Tarot Reading';
+
+  @override
+  String get shareSynastryLabel => 'Synastry';
+
+  @override
+  String get shareDefaultLabel => 'Share Card';
+
+  @override
+  String get breathingInhale => 'Inhale...';
+
+  @override
+  String get breathingExhale => 'Exhale...';
+
+  @override
+  String get accessibilitySection => 'Accessibility';
+
+  @override
+  String get errorGeneric => 'An error occurred';
 }

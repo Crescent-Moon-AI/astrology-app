@@ -159,7 +159,7 @@ class AppearanceSettingsPage extends ConsumerWidget {
 
           // Section: Accessibility
           Text(
-            isZh ? '辅助功能' : 'Accessibility',
+            l10n?.accessibilitySection ?? 'Accessibility',
             style: const TextStyle(
               color: CosmicColors.textSecondary,
               fontSize: 13,

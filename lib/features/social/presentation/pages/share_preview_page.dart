@@ -56,10 +56,10 @@ class SharePreviewPage extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) =>
                             _PlaceholderCard(
                               cardType: card.cardType,
-                              isZh: isZh,
+                              l10n: l10n,
                             ),
                       )
-                    : _PlaceholderCard(cardType: card.cardType, isZh: isZh),
+                    : _PlaceholderCard(cardType: card.cardType, l10n: l10n),
               ),
             ),
             const SizedBox(height: 16),
@@ -208,18 +208,18 @@ class SharePreviewPage extends StatelessWidget {
 
 class _PlaceholderCard extends StatelessWidget {
   final String cardType;
-  final bool isZh;
+  final AppLocalizations l10n;
 
-  const _PlaceholderCard({required this.cardType, required this.isZh});
+  const _PlaceholderCard({required this.cardType, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
     final (emoji, label) = switch (cardType) {
-      'chart' => ('\uD83C\uDF1F', isZh ? '星盘' : 'Birth Chart'),
-      'horoscope' => ('\u2728', isZh ? '运势' : 'Horoscope'),
-      'tarot' => ('\uD83C\uDCCF', isZh ? '塔罗牌' : 'Tarot Reading'),
-      'synastry' => ('\uD83D\uDC95', isZh ? '合盘' : 'Synastry'),
-      _ => ('\uD83C\uDF0C', isZh ? '分享卡片' : 'Share Card'),
+      'chart' => ('\uD83C\uDF1F', l10n.shareChartLabel),
+      'horoscope' => ('\u2728', l10n.shareHoroscopeLabel),
+      'tarot' => ('\uD83C\uDCCF', l10n.shareTarotLabel),
+      'synastry' => ('\uD83D\uDC95', l10n.shareSynastryLabel),
+      _ => ('\uD83C\uDF0C', l10n.shareDefaultLabel),
     };
 
     return Container(

@@ -26,7 +26,6 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
   @override
   void initState() {
     super.initState();
-    // Load session data on init
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(tarotRitualProvider.notifier).loadSession(widget.sessionId);
     });
@@ -34,19 +33,19 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     final ritualState = ref.watch(tarotRitualProvider);
 
-    // Listen for reading state to navigate to chat
     ref.listen<TarotRitualState>(tarotRitualProvider, (prev, next) {
       if (next.step == RitualState.reading &&
           prev?.step != RitualState.reading) {
         final conversationId = next.session?.conversationId;
         if (conversationId != null && context.mounted) {
           context.pushNamed(
-            'chatConversation',
-            pathParameters: {'id': conversationId},
-            queryParameters: {'tarot_session_id': widget.sessionId},
+            'tarotQuestion',
+            queryParameters: {
+              'conversation_id': conversationId,
+              'tarot_session_id': widget.sessionId,
+            },
           );
         }
       }
@@ -58,23 +57,7 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          l10n.tarotRitualTitle,
-          style: const TextStyle(
-            color: CosmicColors.textPrimary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: CosmicColors.textPrimary),
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () => _showCancelDialog(context, ref),
-        ),
-      ),
-      extendBodyBehindAppBar: true,
+      backgroundColor: CosmicColors.backgroundDeep,
       body: _buildBody(ritualState),
     );
   }
@@ -123,7 +106,7 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
                     ),
                     child: Text(
                       l10n.retry,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: CosmicColors.textPrimary,
                         fontWeight: FontWeight.w600,
                       ),
@@ -144,13 +127,11 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
       RitualState.revealing => const CardRevealPage(),
       RitualState.reading ||
       RitualState.completed => const SpreadOverviewPage(),
-      RitualState.cancelled || RitualState.expired => _buildEndedView(),
+      RitualState.cancelled || RitualState.expired => _buildEndedView(l10n),
     };
   }
 
-  Widget _buildEndedView() {
-    final l10n = AppLocalizations.of(context)!;
-
+  Widget _buildEndedView(AppLocalizations l10n) {
     return Container(
       color: CosmicColors.backgroundDeep,
       child: Center(
@@ -188,31 +169,6 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _showCancelDialog(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
-
-    showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(l10n.tarotCancel),
-        content: Text(l10n.tarotCancelConfirm),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(l10n.tarotResume),
-          ),
-          FilledButton(
-            onPressed: () {
-              Navigator.of(dialogContext).pop();
-              ref.read(tarotRitualProvider.notifier).cancel();
-            },
-            child: Text(l10n.tarotCancel),
-          ),
-        ],
       ),
     );
   }

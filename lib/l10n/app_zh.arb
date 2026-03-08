@@ -102,7 +102,22 @@
   "friendRelFriend": "朋友",
   "friendRelColleague": "同事",
   "friendRelCrush": "心仪的人",
-  "friendSave": "保存好友",
+  "friendFillBirthInfo": "填写TA的出生信息",
+  "friendFillBirthInfoSubtitle": "深入了解TA的性格、情感、思维，还能解锁合盘",
+  "friendBasicInfo": "基础信息",
+  "friendNickname": "昵称",
+  "friendNicknamePlaceholder": "输入昵称",
+  "friendGenderFemale": "女",
+  "friendGenderMale": "男",
+  "friendTaRelationship": "Ta是你的",
+  "friendBirthInfo": "出生信息",
+  "friendCalendarSolar": "公历",
+  "friendCalendarLunar": "农历",
+  "friendSelectBirthTime": "请选择出生时间",
+  "friendUnknownExactTime": "我不知道确切时间",
+  "friendSelectBirthCity": "请选择出生城市",
+  "friendInvite": "邀请好友",
+  "friendSave": "保存",
   "friendDelete": "删除好友",
   "friendDeleteConfirm": "确定要删除这位好友吗？",
   "friendLimit": "最多添加 50 位好友",
@@ -339,6 +354,8 @@
   "homeQuickConsult": "开始咨询",
   "homeQuickTarot": "塔罗抽牌",
   "homeQuickPhoto": "拍照解盘",
+  "homeQuickChartConsult": "星盘咨询",
+  "homeQuickMyChart": "我的星盘",
   "homeSceneExplore": "场景探索",
   "homeExploreMore": "探索更多",
   "homeFortuneAdvice": "宜",
@@ -365,7 +382,14 @@
 
   "diaryTitle": "日记",
   "diaryAddNew": "添加新日记",
-  "diaryEmptyHint": "记录你的每一天\n让星象为你的心情画像",
+  "diaryEmptyHint": "下雨天～今日暂无日记哦，快点\"+\"记录此刻正在发生的事情或者心情吧～",
+  "diaryPublish": "发表",
+  "diaryEditHint": "在这里，你可以放心写下任何感性碎碎念～ 月见小精灵会给你最忠诚的陪伴与回应。",
+  "diaryAIName": "月见精灵",
+  "diaryYou": "我",
+  "diaryReplyHint": "回复月见精灵",
+  "diaryDeleteTitle": "删除日记",
+  "diaryDeleteConfirm": "确定要删除这篇日记吗？删除后无法恢复。",
 
   "profileTitle": "我的",
   "aiDisclaimer": "以上内容均由AI生成，仅供参考和娱乐",
@@ -409,5 +433,122 @@
   "chartHouses": "宫位表",
   "chartOrb": "容许度",
   "chartApplying": "入相",
-  "chartSeparating": "出相"
+  "chartSeparating": "出相",
+
+  "profileInviteCode": "邀请码 +",
+  "profileNotLoggedIn": "未登录",
+  "profileCompanionDays": "已陪伴{count}天",
+  "@profileCompanionDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "profileMyWallet": "我的钱包",
+  "profileMyBenefits": "我的权益",
+  "profileFreeToday": "今日免费次数 1/1  每日6:00刷新",
+  "profileUnlockMore": "解锁更多特权，拥抱命中注定的美好",
+  "profileUpgrade": "升级权益",
+  "profileArchives": "档案管理",
+  "profileArchivesSubtitle": "去添加好友档案",
+  "profileConsultHistory": "咨询历史",
+  "profileReports": "我的报告",
+  "profileServicesTools": "服务与工具",
+  "profileTarotGallery": "塔罗牌图鉴",
+  "profileHelpFeedback": "帮助与反馈",
+  "profileShareApp": "分享APP",
+  "profileRateUs": "五星鼓励",
+  "profileSettingsItem": "设置",
+  "profileLogout": "退出登录",
+
+  "conversationNewChat": "新的对话",
+  "conversationNoChats": "还没有对话",
+  "conversationEmptyHint": "开始一段新的对话，让星象为你指引方向",
+  "conversationStartConsult": "开始咨询",
+  "conversationPopularTopics": "热门话题",
+  "timeJustNow": "刚刚",
+  "timeMinutesAgo": "{count}分钟前",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "timeYesterday": "昨天",
+  "timeDaysAgo": "{count}天前",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "timeHoursAgo": "{count}小时前",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "timeDateFormat": "{month}月{day}日",
+  "@timeDateFormat": {
+    "placeholders": {
+      "month": { "type": "int" },
+      "day": { "type": "int" }
+    }
+  },
+
+  "transitTransitPlanet": "行运行星",
+  "transitNatalPlanet": "本命行星",
+  "transitHouse": "宫位",
+  "transitExactDate": "精确日期",
+  "transitActivePeriod": "活跃期间",
+  "transitExactLabel": "精确: {date}",
+  "@transitExactLabel": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "transitOrbLabel": "容许度: {value}",
+  "@transitOrbLabel": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+
+  "scenarioNotFound": "场景未找到",
+  "scenarioLoadFailed": "加载场景失败",
+  "scenarioNoneFound": "未找到场景",
+  "scenarioExploreSubline": "探索宇宙的奥秘",
+
+  "moodMonthlySummary": "月度总结",
+  "moodTotalEntries": "记录总数",
+  "moodAverageScore": "平均分数",
+  "moodCurrentStreak": "当前连续",
+  "moodLongestStreak": "最长连续",
+  "moodTopTag": "热门标签",
+  "moodTrendLabel": "趋势",
+  "moodDaysUnit": "天",
+  "moodOk": "好的",
+  "moodNoData": "暂无数据",
+
+  "friendNoFriends": "还没有好友",
+  "friendNoFriendsHint": "添加好友，查看你们的星象关系",
+  "friendSynastryTitle": "合盘分析",
+  "chartArchivesTitle": "星盘档案",
+  "chartArchivesMyChart": "你的星盘",
+  "chartArchivesFriendChart": "Ta的星盘",
+  "chartArchivesSelf": "本人",
+  "chartArchivesNoData": "暂无数据",
+  "chartArchivesAddChart": "+ 添加星盘档案",
+  "chartArchivesNotSet": "未设置出生信息",
+  "cancel": "取消",
+  "confirm": "确定",
+
+  "shareChartLabel": "星盘",
+  "shareHoroscopeLabel": "运势",
+  "shareTarotLabel": "塔罗牌",
+  "shareSynastryLabel": "合盘",
+  "shareDefaultLabel": "分享卡片",
+
+  "breathingInhale": "吸气...",
+  "breathingExhale": "呼气...",
+
+  "accessibilitySection": "辅助功能",
+  "errorGeneric": "发生错误"
 }

@@ -38,7 +38,7 @@ class ChatMessagesNotifier extends Notifier<List<ChatMessage>> {
   ChatMessagesNotifier(this.conversationId);
 
   final String conversationId;
-  late final ChatRemoteDatasource _datasource;
+  late ChatRemoteDatasource _datasource;
 
   // Keep a reference to the datasource for potential future use
   ChatRemoteDatasource get datasource => _datasource;
@@ -57,6 +57,12 @@ class ChatMessagesNotifier extends Notifier<List<ChatMessage>> {
       createdAt: DateTime.now(),
     );
     state = [...state, msg];
+  }
+
+  void addExistingMessage(ChatMessage message) {
+    if (!state.any((m) => m.id == message.id)) {
+      state = [...state, message];
+    }
   }
 
   void handleBlockUpsert(Map<String, dynamic> blockData, String messageId) {

@@ -7,7 +7,6 @@ import '../../../../shared/widgets/character_avatar.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../../../shared/models/expression.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
-import '../providers/profile_providers.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -15,144 +14,287 @@ class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context).languageCode;
-    final isZh = locale.startsWith('zh');
     final authState = ref.watch(authProvider);
     final user = authState.user;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(isZh ? '我的' : 'Profile'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       body: StarfieldBackground(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            // User info card
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                gradient: LinearGradient(
-                  colors: [
-                    CosmicColors.primary.withValues(alpha: 0.15),
-                    CosmicColors.surfaceElevated,
+        child: SafeArea(
+          bottom: false,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                // Top bar with invite code and message icon
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    children: [
+                      Text(
+                        l10n.profileInviteCode,
+                        style: const TextStyle(
+                          color: CosmicColors.textTertiary,
+                          fontSize: 13,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        user?.username ?? user?.email ?? '',
+                        style: const TextStyle(
+                          color: CosmicColors.textPrimary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const Spacer(),
+                      const Icon(Icons.mail_outline,
+                          color: CosmicColors.textSecondary, size: 22),
+                    ],
+                  ),
+                ),
+
+                // Avatar section
+                const SizedBox(height: 8),
+                const CharacterAvatar(
+                  expression: ExpressionId.greeting,
+                  size: CharacterAvatarSize.lg,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  user?.username ?? user?.email ?? l10n.profileNotLoggedIn,
+                  style: const TextStyle(
+                    color: CosmicColors.textPrimary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.access_time, color: CosmicColors.textTertiary, size: 14),
+                    const SizedBox(width: 4),
+                    Text(
+                      l10n.profileCompanionDays(23),
+                      style: const TextStyle(
+                        color: CosmicColors.textTertiary,
+                        fontSize: 13,
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              child: Row(
-                children: [
-                  const CharacterAvatar(
-                    expression: ExpressionId.greeting,
-                    size: CharacterAvatarSize.md,
+                const SizedBox(height: 12),
+                // Wallet button
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: CosmicColors.surfaceElevated,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: CosmicColors.borderGlow),
+                    ),
+                    child: Text(
+                      '${l10n.profileMyWallet} >',
+                      style: const TextStyle(
+                        color: CosmicColors.textSecondary,
+                        fontSize: 13,
+                      ),
+                    ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          user?.username ??
-                              user?.email ??
-                              (isZh ? '\u672A\u767B\u5F55' : 'Not logged in'),
-                          style: const TextStyle(
-                            color: CosmicColors.textPrimary,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                ),
+                const SizedBox(height: 20),
+
+                // Benefits section
+                _buildBenefitsCard(l10n),
+                const SizedBox(height: 16),
+
+                // Grid: Archives, History, Reports
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _buildGridCard(
+                          icon: Icons.folder_outlined,
+                          label: l10n.profileArchives,
+                          subtitle: l10n.profileArchivesSubtitle,
+                          onTap: () => context.push('/friends'),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          user?.email ?? '',
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            _buildSmallGridCard(
+                              icon: Icons.history,
+                              label: l10n.profileConsultHistory,
+                              onTap: () => context.push('/conversations'),
+                            ),
+                            const SizedBox(height: 8),
+                            _buildSmallGridCard(
+                              icon: Icons.description_outlined,
+                              label: l10n.profileReports,
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Services section
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4, bottom: 8),
+                        child: Text(
+                          l10n.profileServicesTools,
                           style: const TextStyle(
                             color: CosmicColors.textSecondary,
                             fontSize: 13,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ],
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: CosmicColors.surfaceElevated,
+                        ),
+                        child: Column(
+                          children: [
+                            _buildServiceItem(
+                              Icons.style_outlined,
+                              l10n.profileTarotGallery,
+                              () => context.push('/divination'),
+                            ),
+                            const Divider(height: 1, indent: 48, color: CosmicColors.divider),
+                            _buildServiceItem(
+                              Icons.help_outline,
+                              l10n.profileHelpFeedback,
+                              () {},
+                            ),
+                            const Divider(height: 1, indent: 48, color: CosmicColors.divider),
+                            _buildServiceItem(
+                              Icons.share_outlined,
+                              l10n.profileShareApp,
+                              () {},
+                            ),
+                            const Divider(height: 1, indent: 48, color: CosmicColors.divider),
+                            _buildServiceItem(
+                              Icons.star_outline,
+                              l10n.profileRateUs,
+                              () {},
+                            ),
+                            const Divider(height: 1, indent: 48, color: CosmicColors.divider),
+                            _buildServiceItem(
+                              Icons.settings_outlined,
+                              l10n.profileSettingsItem,
+                              () => context.push('/settings/appearance'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Logout button
+                Center(
+                  child: TextButton.icon(
+                    onPressed: () async {
+                      await ref.read(authProvider.notifier).logout();
+                      if (context.mounted) {
+                        context.go('/login');
+                      }
+                    },
+                    icon: const Icon(Icons.logout, size: 18),
+                    label: Text(l10n.profileLogout),
+                    style: TextButton.styleFrom(
+                      foregroundColor: CosmicColors.error,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 100), // bottom padding for nav bar
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBenefitsCard(AppLocalizations l10n) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              CosmicColors.primary.withAlpha(38),
+              CosmicColors.surfaceElevated,
+            ],
+          ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: CosmicColors.borderGlow),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.auto_awesome,
+                color: CosmicColors.primaryLight, size: 20),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.profileMyBenefits,
+                    style: const TextStyle(
+                      color: CosmicColors.primaryLight,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.profileFreeToday,
+                    style: const TextStyle(
+                      color: CosmicColors.textTertiary,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    l10n.profileUnlockMore,
+                    style: const TextStyle(
+                      color: CosmicColors.textTertiary,
+                      fontSize: 12,
                     ),
                   ),
                 ],
               ),
             ),
-
-            const SizedBox(height: 24),
-
-            // Birth data section
-            _BirthDataSection(isZh: isZh, l10n: l10n),
-
-            const SizedBox(height: 16),
-
-            // Menu items
-            _MenuSection(
-              title: isZh ? '功能' : 'Features',
-              items: [
-                _MenuItem(
-                  icon: Icons.people_outline,
-                  label: l10n.friendsTitle,
-                  onTap: () => context.push('/friends'),
-                ),
-                _MenuItem(
-                  icon: Icons.mood_outlined,
-                  label: l10n.moodHistoryTitle,
-                  onTap: () => context.push('/mood/history'),
-                ),
-                _MenuItem(
-                  icon: Icons.insights_outlined,
-                  label: l10n.moodInsightsTitle,
-                  onTap: () => context.push('/mood/insights'),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 16),
-
-            _MenuSection(
-              title: isZh ? '设置' : 'Settings',
-              items: [
-                _MenuItem(
-                  icon: Icons.palette_outlined,
-                  label: l10n.appearanceSettings,
-                  onTap: () => context.push('/settings/appearance'),
-                ),
-                _MenuItem(
-                  icon: Icons.auto_awesome_outlined,
-                  label: l10n.characterAboutTitle,
-                  onTap: () => context.push('/character'),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-
-            // Logout button
-            Center(
-              child: TextButton.icon(
-                onPressed: () async {
-                  await ref.read(authProvider.notifier).logout();
-                  if (context.mounted) {
-                    context.go('/login');
-                  }
-                },
-                icon: const Icon(Icons.logout, size: 18),
-                label: Text(isZh ? '退出登录' : 'Logout'),
-                style: TextButton.styleFrom(
-                  foregroundColor: CosmicColors.error,
-                ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                gradient: CosmicColors.primaryGradient,
+                borderRadius: BorderRadius.circular(16),
               ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Version
-            Center(
               child: Text(
-                'v0.1.0',
-                style: TextStyle(
-                  color: CosmicColors.textTertiary,
+                l10n.profileUpgrade,
+                style: const TextStyle(
+                  color: CosmicColors.textPrimary,
                   fontSize: 12,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -161,67 +303,101 @@ class ProfilePage extends ConsumerWidget {
       ),
     );
   }
-}
 
-class _MenuSection extends StatelessWidget {
-  final String title;
-  final List<_MenuItem> items;
-
-  const _MenuSection({required this.title, required this.items});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 4, bottom: 8),
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: CosmicColors.textSecondary,
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+  Widget _buildGridCard({
+    required IconData icon,
+    required String label,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 120,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: CosmicColors.surfaceElevated,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: CosmicColors.borderGlow),
         ),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: CosmicColors.surfaceElevated,
-          ),
-          child: Column(
-            children: [
-              for (int i = 0; i < items.length; i++) ...[
-                items[i],
-                if (i < items.length - 1)
-                  const Divider(
-                    height: 1,
-                    indent: 48,
-                    color: CosmicColors.divider,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: CosmicColors.textPrimary, size: 20),
+                const SizedBox(width: 6),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    color: CosmicColors.textPrimary,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
                   ),
+                ),
+                const Spacer(),
+                const Icon(Icons.chevron_right,
+                    color: CosmicColors.textTertiary, size: 18),
               ],
-            ],
-          ),
+            ),
+            const Spacer(),
+            Row(
+              children: [
+                const Icon(Icons.add_circle_outline,
+                    color: CosmicColors.textTertiary, size: 16),
+                const SizedBox(width: 4),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    color: CosmicColors.textTertiary,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
-}
 
-class _MenuItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
+  Widget _buildSmallGridCard({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 56,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: CosmicColors.surfaceElevated,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: CosmicColors.borderGlow),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: CosmicColors.textPrimary, size: 18),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                color: CosmicColors.textPrimary,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const Spacer(),
+            const Icon(Icons.chevron_right,
+                color: CosmicColors.textTertiary, size: 18),
+          ],
+        ),
+      ),
+    );
+  }
 
-  const _MenuItem({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildServiceItem(IconData icon, String label, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
@@ -248,110 +424,6 @@ class _MenuItem extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _BirthDataSection extends ConsumerWidget {
-  final bool isZh;
-  final AppLocalizations l10n;
-
-  const _BirthDataSection({required this.isZh, required this.l10n});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final profileAsync = ref.watch(userProfileProvider);
-
-    return profileAsync.when(
-      data: (profile) {
-        final core = profile.core;
-        final place = profile.currentBirthPlace;
-        final hasBirthData = core.birthDate != null;
-
-        if (!hasBirthData) {
-          // Empty state prompt card
-          return GestureDetector(
-            onTap: () => context.push('/settings/birth-data'),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                gradient: LinearGradient(
-                  colors: [
-                    CosmicColors.primary.withValues(alpha: 0.12),
-                    CosmicColors.surfaceElevated,
-                  ],
-                ),
-                border: Border.all(color: CosmicColors.borderGlow),
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.stars_outlined,
-                    color: CosmicColors.primaryLight,
-                    size: 28,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.profileBirthData,
-                          style: const TextStyle(
-                            color: CosmicColors.textPrimary,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          l10n.profileBirthDataEmpty,
-                          style: const TextStyle(
-                            color: CosmicColors.textTertiary,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(
-                    Icons.add_circle_outline,
-                    color: CosmicColors.primary,
-                    size: 22,
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        // Has birth data — show summary
-        return _MenuSection(
-          title: l10n.profileBirthData,
-          items: [
-            _MenuItem(
-              icon: Icons.cake_outlined,
-              label: core.birthDate ?? '',
-              onTap: () => context.push('/settings/birth-data'),
-            ),
-            if (core.birthTime != null)
-              _MenuItem(
-                icon: Icons.schedule_outlined,
-                label: core.birthTime!,
-                onTap: () => context.push('/settings/birth-data'),
-              ),
-            if (place?.normalizedName != null)
-              _MenuItem(
-                icon: Icons.place_outlined,
-                label: place!.normalizedName!,
-                onTap: () => context.push('/settings/birth-data'),
-              ),
-          ],
-        );
-      },
-      loading: () => const SizedBox.shrink(),
-      error: (_, __) => const SizedBox.shrink(),
     );
   }
 }

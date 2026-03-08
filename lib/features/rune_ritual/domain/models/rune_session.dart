@@ -46,9 +46,9 @@ class RuneSession {
           [],
       startedAt: DateTime.parse(
         json['started_at'] as String? ?? DateTime.now().toIso8601String(),
-      ),
+      ).toLocal(),
       completedAt: json['completed_at'] != null
-          ? DateTime.parse(json['completed_at'] as String)
+          ? DateTime.parse(json['completed_at'] as String).toLocal()
           : null,
     );
   }

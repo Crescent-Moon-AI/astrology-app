@@ -102,7 +102,22 @@
   "friendRelFriend": "Friend",
   "friendRelColleague": "Colleague",
   "friendRelCrush": "Crush",
-  "friendSave": "Save Friend",
+  "friendFillBirthInfo": "Fill in their birth info",
+  "friendFillBirthInfoSubtitle": "Understand their personality, emotions, thinking, and unlock synastry",
+  "friendBasicInfo": "Basic Info",
+  "friendNickname": "Nickname",
+  "friendNicknamePlaceholder": "Enter nickname",
+  "friendGenderFemale": "Female",
+  "friendGenderMale": "Male",
+  "friendTaRelationship": "They are your",
+  "friendBirthInfo": "Birth Info",
+  "friendCalendarSolar": "Solar",
+  "friendCalendarLunar": "Lunar",
+  "friendSelectBirthTime": "Select birth time",
+  "friendUnknownExactTime": "I don't know the exact time",
+  "friendSelectBirthCity": "Select birth city",
+  "friendInvite": "Invite Friend",
+  "friendSave": "Save",
   "friendDelete": "Delete Friend",
   "friendDeleteConfirm": "Are you sure you want to delete this friend?",
   "friendLimit": "Maximum 50 friends reached",
@@ -339,6 +354,8 @@
   "homeQuickConsult": "Consult",
   "homeQuickTarot": "Tarot",
   "homeQuickPhoto": "Photo Read",
+  "homeQuickChartConsult": "Chart Consult",
+  "homeQuickMyChart": "My Chart",
   "homeSceneExplore": "Explore Scenarios",
   "homeExploreMore": "Explore More",
   "homeFortuneAdvice": "Do",
@@ -365,7 +382,14 @@
 
   "diaryTitle": "Diary",
   "diaryAddNew": "Add New Diary",
-  "diaryEmptyHint": "Record your every day\nLet the stars paint your mood",
+  "diaryEmptyHint": "Rainy day~ No diary entry yet today. Tap \"+\" to record what's happening or how you're feeling~",
+  "diaryPublish": "Publish",
+  "diaryEditHint": "Feel free to write down any thoughts or feelings here~ Yuejian will be your most loyal companion and listener.",
+  "diaryAIName": "Yuejian Spirit",
+  "diaryYou": "Me",
+  "diaryReplyHint": "Reply to Yuejian Spirit",
+  "diaryDeleteTitle": "Delete Diary",
+  "diaryDeleteConfirm": "Are you sure you want to delete this diary entry? This action cannot be undone.",
 
   "profileTitle": "Profile",
   "aiDisclaimer": "All content is AI-generated, for reference and entertainment only",
@@ -409,5 +433,122 @@
   "chartHouses": "Houses",
   "chartOrb": "Orb",
   "chartApplying": "Applying",
-  "chartSeparating": "Separating"
+  "chartSeparating": "Separating",
+
+  "profileInviteCode": "Invite +",
+  "profileNotLoggedIn": "Not logged in",
+  "profileCompanionDays": "Together {count} days",
+  "@profileCompanionDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "profileMyWallet": "My Wallet",
+  "profileMyBenefits": "My Benefits",
+  "profileFreeToday": "Free today 1/1  Resets at 6:00",
+  "profileUnlockMore": "Unlock more privileges",
+  "profileUpgrade": "Upgrade",
+  "profileArchives": "Archives",
+  "profileArchivesSubtitle": "Add friend profiles",
+  "profileConsultHistory": "History",
+  "profileReports": "Reports",
+  "profileServicesTools": "Services & Tools",
+  "profileTarotGallery": "Tarot Card Gallery",
+  "profileHelpFeedback": "Help & Feedback",
+  "profileShareApp": "Share App",
+  "profileRateUs": "Rate Us",
+  "profileSettingsItem": "Settings",
+  "profileLogout": "Logout",
+
+  "conversationNewChat": "New Conversation",
+  "conversationNoChats": "No conversations yet",
+  "conversationEmptyHint": "Start a new conversation and let the stars guide you",
+  "conversationStartConsult": "Start Consultation",
+  "conversationPopularTopics": "Popular Topics",
+  "timeJustNow": "Just now",
+  "timeMinutesAgo": "{count}m ago",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "timeYesterday": "Yesterday",
+  "timeDaysAgo": "{count}d ago",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "timeHoursAgo": "{count}h ago",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "timeDateFormat": "{month}/{day}",
+  "@timeDateFormat": {
+    "placeholders": {
+      "month": { "type": "int" },
+      "day": { "type": "int" }
+    }
+  },
+
+  "transitTransitPlanet": "Transit Planet",
+  "transitNatalPlanet": "Natal Planet",
+  "transitHouse": "House",
+  "transitExactDate": "Exact Date",
+  "transitActivePeriod": "Active Period",
+  "transitExactLabel": "Exact: {date}",
+  "@transitExactLabel": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "transitOrbLabel": "Orb: {value}",
+  "@transitOrbLabel": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+
+  "scenarioNotFound": "Scenario not found",
+  "scenarioLoadFailed": "Failed to load scenarios",
+  "scenarioNoneFound": "No scenarios found",
+  "scenarioExploreSubline": "Explore cosmic mysteries",
+
+  "moodMonthlySummary": "Monthly Summary",
+  "moodTotalEntries": "Total Entries",
+  "moodAverageScore": "Average Score",
+  "moodCurrentStreak": "Current Streak",
+  "moodLongestStreak": "Longest Streak",
+  "moodTopTag": "Top Tag",
+  "moodTrendLabel": "Trend",
+  "moodDaysUnit": "days",
+  "moodOk": "OK",
+  "moodNoData": "No data yet",
+
+  "friendNoFriends": "No friends yet",
+  "friendNoFriendsHint": "Add friends to see your astrological compatibility",
+  "friendSynastryTitle": "Synastry",
+  "chartArchivesTitle": "Chart Archives",
+  "chartArchivesMyChart": "Your Chart",
+  "chartArchivesFriendChart": "Their Charts",
+  "chartArchivesSelf": "Self",
+  "chartArchivesNoData": "No data yet",
+  "chartArchivesAddChart": "+ Add Chart Profile",
+  "chartArchivesNotSet": "Birth info not set",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+
+  "shareChartLabel": "Birth Chart",
+  "shareHoroscopeLabel": "Horoscope",
+  "shareTarotLabel": "Tarot Reading",
+  "shareSynastryLabel": "Synastry",
+  "shareDefaultLabel": "Share Card",
+
+  "breathingInhale": "Inhale...",
+  "breathingExhale": "Exhale...",
+
+  "accessibilitySection": "Accessibility",
+  "errorGeneric": "An error occurred"
 }

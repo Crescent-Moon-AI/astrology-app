@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:astrology_app/l10n/app_localizations.dart';
 
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/starfield_background.dart';
+import '../../../../shared/widgets/cosmic_ritual_button.dart';
+import '../../domain/models/ritual_state.dart';
 import '../../domain/models/spread_type.dart';
 import '../providers/tarot_ritual_providers.dart';
+import '../widgets/shuffle_animation.dart';
 
+/// Entry page for the tarot ritual flow.
+///
+/// Matches the real app: shows "牌洗好了" with a card back stack,
+/// a tappable spread selector badge, and a "继续" button.
+/// Auto-creates a session with the selected spread when the user taps continue.
 class SpreadSelectionPage extends ConsumerStatefulWidget {
   final String? conversationId;
 
@@ -20,234 +27,138 @@ class SpreadSelectionPage extends ConsumerStatefulWidget {
 
 class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
   SpreadType _selectedSpread = SpreadType.threeCard;
-  final _questionController = TextEditingController();
-
-  @override
-  void dispose() {
-    _questionController.dispose();
-    super.dispose();
-  }
-
-  static const _spreadEmojis = {
-    SpreadType.single: '\uD83C\uDCCF',
-    SpreadType.threeCard: '\uD83C\uDCA0',
-    SpreadType.loveSpread: '\u2764\uFE0F',
-    SpreadType.celticCross: '\u2726',
-  };
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context).languageCode;
-    final isZh = locale.startsWith('zh');
+    final isZh =
+        Localizations.localeOf(context).languageCode.startsWith('zh');
     final ritualState = ref.watch(tarotRitualProvider);
 
+    // Navigate to ritual page when session advances past shuffling
     ref.listen<TarotRitualState>(tarotRitualProvider, (prev, next) {
-      if (next.session != null && prev?.session == null) {
+      if (next.session != null &&
+          next.step == RitualState.pickingCards &&
+          prev?.step != RitualState.pickingCards) {
         context.pushReplacementNamed(
           'tarotRitual',
           pathParameters: {'sessionId': next.session!.id},
         );
       }
       if (next.error != null && prev?.error == null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(next.error!)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(next.error!)),
+        );
       }
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          l10n.tarotSelectSpread,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            color: CosmicColors.textPrimary,
-          ),
-        ),
-        backgroundColor: CosmicColors.background.withValues(alpha: 0.9),
-        elevation: 0,
-      ),
+      backgroundColor: CosmicColors.backgroundDeep,
       body: StarfieldBackground(
         child: SafeArea(
           child: Column(
             children: [
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.all(16),
-                  children: [
-                    // Header
-                    Center(
-                      child: Text(
-                        isZh
-                            ? '让问题在心中浮现'
-                            : 'Let the question arise in your mind',
-                        style: const TextStyle(
-                          color: CosmicColors.textSecondary,
-                          fontSize: 15,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
+              // Back button
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8, top: 8),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.chevron_left,
+                      color: CosmicColors.textPrimary,
+                      size: 28,
                     ),
-                    const SizedBox(height: 16),
-
-                    // Question input
-                    TextField(
-                      controller: _questionController,
-                      style: const TextStyle(
-                        color: CosmicColors.textPrimary,
-                        fontSize: 15,
-                      ),
-                      decoration: InputDecoration(
-                        labelText: l10n.tarotEnterQuestion,
-                        labelStyle: const TextStyle(
-                          color: CosmicColors.textSecondary,
-                        ),
-                        prefixIcon: const Icon(
-                          Icons.help_outline,
-                          color: CosmicColors.primaryLight,
-                          size: 20,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          borderSide: const BorderSide(
-                            color: CosmicColors.borderGlow,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          borderSide: const BorderSide(
-                            color: CosmicColors.borderGlow,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          borderSide: const BorderSide(
-                            color: CosmicColors.primary,
-                            width: 1.5,
-                          ),
-                        ),
-                        filled: true,
-                        fillColor: CosmicColors.surfaceElevated,
-                      ),
-                      maxLines: 2,
-                      textInputAction: TextInputAction.done,
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Spread type grid
-                    GridView.count(
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 0.85,
-                      children: [
-                        _SpreadTypeCard(
-                          emoji: _spreadEmojis[SpreadType.single]!,
-                          title: l10n.tarotSpreadSingle,
-                          description: l10n.tarotSpreadSingleDesc,
-                          cardCount: SpreadType.single.cardCount,
-                          isSelected: _selectedSpread == SpreadType.single,
-                          onTap: () => setState(
-                            () => _selectedSpread = SpreadType.single,
-                          ),
-                        ),
-                        _SpreadTypeCard(
-                          emoji: _spreadEmojis[SpreadType.threeCard]!,
-                          title: l10n.tarotSpreadThreeCard,
-                          description: l10n.tarotSpreadThreeCardDesc,
-                          cardCount: SpreadType.threeCard.cardCount,
-                          isSelected: _selectedSpread == SpreadType.threeCard,
-                          onTap: () => setState(
-                            () => _selectedSpread = SpreadType.threeCard,
-                          ),
-                        ),
-                        _SpreadTypeCard(
-                          emoji: _spreadEmojis[SpreadType.loveSpread]!,
-                          title: l10n.tarotSpreadLove,
-                          description: l10n.tarotSpreadLoveDesc,
-                          cardCount: SpreadType.loveSpread.cardCount,
-                          isSelected: _selectedSpread == SpreadType.loveSpread,
-                          onTap: () => setState(
-                            () => _selectedSpread = SpreadType.loveSpread,
-                          ),
-                        ),
-                        _SpreadTypeCard(
-                          emoji: _spreadEmojis[SpreadType.celticCross]!,
-                          title: l10n.tarotSpreadCelticCross,
-                          description: l10n.tarotSpreadCelticCrossDesc,
-                          cardCount: SpreadType.celticCross.cardCount,
-                          isSelected: _selectedSpread == SpreadType.celticCross,
-                          onTap: () => setState(
-                            () => _selectedSpread = SpreadType.celticCross,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                    onPressed: () {
+                      if (context.canPop()) context.pop();
+                    },
+                  ),
                 ),
               ),
 
-              // Start button
-              Padding(
-                padding: const EdgeInsets.all(16),
+              const Spacer(flex: 1),
+
+              // Title: "牌洗好了"
+              Text(
+                isZh ? '牌洗好了' : 'Cards Shuffled',
+                style: const TextStyle(
+                  color: CosmicColors.textPrimary,
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              // Subtitle
+              Text(
+                isZh ? '请保持专注，准备好后点击继续' : 'Stay focused and tap to continue',
+                style: const TextStyle(
+                  color: CosmicColors.textSecondary,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Tappable spread badge
+              GestureDetector(
+                onTap: () => _showSpreadPicker(context, isZh),
                 child: Container(
-                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    gradient: CosmicColors.primaryGradient,
-                    borderRadius: BorderRadius.circular(24),
-                    boxShadow: [
-                      BoxShadow(
-                        color: CosmicColors.primary.withValues(alpha: 0.3),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
+                    color: Colors.white.withAlpha(13), // ~5%
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Colors.white.withAlpha(26), // ~10%
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        isZh ? '牌阵：' : 'Spread: ',
+                        style: const TextStyle(
+                          color: CosmicColors.textSecondary,
+                          fontSize: 13,
+                        ),
+                      ),
+                      Text(
+                        isZh
+                            ? _selectedSpread.nameZH
+                            : _selectedSpread.nameEN,
+                        style: const TextStyle(
+                          color: CosmicColors.textPrimary,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      const Icon(
+                        Icons.swap_horiz,
+                        color: CosmicColors.textSecondary,
+                        size: 16,
                       ),
                     ],
                   ),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: ritualState.isLoading ? null : _startRitual,
-                      borderRadius: BorderRadius.circular(24),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        child: Center(
-                          child: ritualState.isLoading
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: CosmicColors.textPrimary,
-                                  ),
-                                )
-                              : Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(
-                                      Icons.style,
-                                      color: CosmicColors.textPrimary,
-                                      size: 20,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      l10n.tarotRitualTitle,
-                                      style: const TextStyle(
-                                        color: CosmicColors.textPrimary,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
               ),
+
+              const Spacer(flex: 1),
+
+              // Card stack animation (center)
+              const ShuffleAnimation(),
+
+              const Spacer(flex: 2),
+
+              // Continue button
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: CosmicRitualButton(
+                  label: isZh ? '继续' : 'Continue',
+                  onPressed: ritualState.isLoading ? null : _startRitual,
+                  isLoading: ritualState.isLoading,
+                ),
+              ),
+              const SizedBox(height: 32),
             ],
           ),
         ),
@@ -255,114 +166,81 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
     );
   }
 
-  void _startRitual() {
-    ref
-        .read(tarotRitualProvider.notifier)
-        .createSession(
-          conversationId: widget.conversationId ?? '',
-          spreadType: _selectedSpread.value,
-          question: _questionController.text.trim(),
-        );
+  void _startRitual() async {
+    final notifier = ref.read(tarotRitualProvider.notifier);
+    await notifier.createSession(
+      conversationId: widget.conversationId ?? '',
+      spreadType: _selectedSpread.value,
+    );
+    await notifier.advanceShuffle();
   }
-}
 
-class _SpreadTypeCard extends StatelessWidget {
-  final String emoji;
-  final String title;
-  final String description;
-  final int cardCount;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _SpreadTypeCard({
-    required this.emoji,
-    required this.title,
-    required this.description,
-    required this.cardCount,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          gradient: isSelected
-              ? LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    CosmicColors.primary.withValues(alpha: 0.35),
-                    CosmicColors.surfaceElevated,
-                  ],
-                )
-              : null,
-          color: isSelected ? null : CosmicColors.surfaceElevated,
-          border: Border.all(
-            color: isSelected ? CosmicColors.primary : CosmicColors.borderGlow,
-            width: isSelected ? 2 : 1,
-          ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: CosmicColors.primary.withValues(alpha: 0.2),
-                    blurRadius: 12,
-                    spreadRadius: 2,
-                  ),
-                ]
-              : null,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(emoji, style: const TextStyle(fontSize: 32)),
-              const SizedBox(height: 10),
-              Text(
-                title,
-                style: TextStyle(
-                  color: isSelected
-                      ? CosmicColors.textPrimary
-                      : CosmicColors.textSecondary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                description,
-                style: TextStyle(
-                  color: isSelected
-                      ? CosmicColors.textSecondary
-                      : CosmicColors.textTertiary,
-                  fontSize: 12,
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 6),
-              Text(
-                l10n.tarotCardCount(cardCount),
-                style: TextStyle(
-                  color: isSelected
-                      ? CosmicColors.secondary
-                      : CosmicColors.textTertiary,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
+  void _showSpreadPicker(BuildContext context, bool isZh) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: CosmicColors.surfaceElevated,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Text(
+                    isZh ? '选择牌阵' : 'Select Spread',
+                    style: const TextStyle(
+                      color: CosmicColors.textPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                for (final spread in SpreadType.values)
+                  ListTile(
+                    leading: Icon(
+                      _selectedSpread == spread
+                          ? Icons.radio_button_checked
+                          : Icons.radio_button_off,
+                      color: _selectedSpread == spread
+                          ? CosmicColors.primary
+                          : CosmicColors.textTertiary,
+                      size: 20,
+                    ),
+                    title: Text(
+                      isZh ? spread.nameZH : spread.nameEN,
+                      style: TextStyle(
+                        color: _selectedSpread == spread
+                            ? CosmicColors.textPrimary
+                            : CosmicColors.textSecondary,
+                        fontWeight: _selectedSpread == spread
+                            ? FontWeight.w600
+                            : FontWeight.normal,
+                      ),
+                    ),
+                    subtitle: Text(
+                      isZh
+                          ? '${spread.cardCount} 张牌'
+                          : '${spread.cardCount} cards',
+                      style: const TextStyle(
+                        color: CosmicColors.textTertiary,
+                        fontSize: 12,
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() => _selectedSpread = spread);
+                      Navigator.pop(ctx);
+                    },
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

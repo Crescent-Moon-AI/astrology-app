@@ -1,10 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/cosmic_ritual_button.dart';
+import '../../../../shared/widgets/starfield_background.dart';
 import '../providers/tarot_ritual_providers.dart';
 import '../widgets/shuffle_animation.dart';
 
@@ -18,27 +18,20 @@ class TarotShufflePage extends ConsumerStatefulWidget {
 class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
   bool _shuffleComplete = false;
 
-  @override
-  void initState() {
-    super.initState();
-    // Shuffle completes after 3 seconds
-    Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        setState(() => _shuffleComplete = true);
-      }
-    });
+  void _onShuffleComplete() {
+    if (mounted) setState(() => _shuffleComplete = true);
   }
 
   static String _spreadDisplayName(String? spreadType, bool isZh) {
     if (spreadType == null) {
-      return isZh ? '\u4E07\u80FD\u4E09\u724C\u9635' : 'Three Card';
+      return isZh ? '万能三牌阵' : 'Three Card';
     }
     if (isZh) {
       return switch (spreadType) {
-        'three_card' => '\u4E07\u80FD\u4E09\u724C\u9635',
-        'celtic_cross' => '\u51EF\u5C14\u7279\u5341\u5B57',
-        'single_card' => '\u5355\u724C',
-        'love_spread' => '\u7231\u60C5\u724C\u9635',
+        'three_card' => '万能三牌阵',
+        'celtic_cross' => '凯尔特十字',
+        'single_card' => '单牌',
+        'love_spread' => '爱情牌阵',
         _ => spreadType,
       };
     }
@@ -53,34 +46,48 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
 
   @override
   Widget build(BuildContext context) {
-    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
+    final isZh =
+        Localizations.localeOf(context).languageCode.startsWith('zh');
     final ritualState = ref.watch(tarotRitualProvider);
 
-    return Container(
-      color: CosmicColors.backgroundDeep,
+    return StarfieldBackground(
       child: SafeArea(
         child: Column(
           children: [
-            const Spacer(flex: 1),
+            // Back button
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8, top: 8),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.chevron_left,
+                    color: CosmicColors.textPrimary,
+                    size: 28,
+                  ),
+                  onPressed: () {
+                    if (context.canPop()) context.pop();
+                  },
+                ),
+              ),
+            ),
 
-            // Shuffle animation
-            const ShuffleAnimation(),
-            const SizedBox(height: 32),
+            const Spacer(flex: 1),
 
             // Title
             AnimatedOpacity(
               opacity: _shuffleComplete ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 600),
               child: Text(
-                isZh ? '\u724C\u6D17\u597D\u4E86' : 'Cards Shuffled',
+                isZh ? '牌洗好了' : 'Cards Shuffled',
                 style: const TextStyle(
                   color: CosmicColors.textPrimary,
-                  fontSize: 24,
+                  fontSize: 26,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
 
             // Subtitle
             AnimatedOpacity(
@@ -88,36 +95,56 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
               duration: const Duration(milliseconds: 600),
               child: Text(
                 isZh
-                    ? '\u8BF7\u4FDD\u6301\u4E13\u6CE8\uFF0C\u51C6\u5907\u597D\u540E\u70B9\u51FB\u7EE7\u7EED'
+                    ? '请保持专注，准备好后点击继续'
                     : 'Stay focused and tap to continue',
                 style: const TextStyle(
                   color: CosmicColors.textSecondary,
-                  fontSize: 15,
+                  fontSize: 14,
                 ),
               ),
             ),
             const SizedBox(height: 16),
 
             // Spread badge
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: CosmicColors.primary.withAlpha(38), // 15%
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(
-                  color: CosmicColors.primary.withAlpha(51), // 20%
+            AnimatedOpacity(
+              opacity: _shuffleComplete ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 600),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withAlpha(13),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.white.withAlpha(26)),
                 ),
-              ),
-              child: Text(
-                isZh
-                    ? '\u724C\u9635\uFF1A${_spreadDisplayName(ritualState.session?.spreadType, isZh)}'
-                    : 'Spread: ${_spreadDisplayName(ritualState.session?.spreadType, isZh)}',
-                style: const TextStyle(
-                  color: CosmicColors.primaryLight,
-                  fontSize: 12,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      isZh ? '牌阵：' : 'Spread: ',
+                      style: const TextStyle(
+                        color: CosmicColors.textSecondary,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      _spreadDisplayName(
+                          ritualState.session?.spreadType, isZh),
+                      style: const TextStyle(
+                        color: CosmicColors.textPrimary,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
+
+            const Spacer(flex: 1),
+
+            // Card stack animation
+            ShuffleAnimation(onComplete: _onShuffleComplete),
 
             const Spacer(flex: 2),
 
@@ -128,16 +155,15 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
                 opacity: _shuffleComplete ? 1.0 : 0.0,
                 duration: const Duration(milliseconds: 600),
                 child: CosmicRitualButton(
-                  label: isZh ? '\u7EE7\u7EED' : 'Continue',
+                  label: isZh ? '继续' : 'Continue',
                   onPressed: _shuffleComplete
-                      ? () => ref
-                            .read(tarotRitualProvider.notifier)
-                            .advanceShuffle()
+                      ? () =>
+                          ref.read(tarotRitualProvider.notifier).advanceShuffle()
                       : null,
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
           ],
         ),
       ),

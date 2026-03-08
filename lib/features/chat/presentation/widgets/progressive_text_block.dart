@@ -4,7 +4,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/message.dart';
 import '../../domain/utils/section_parser.dart';
-import 'section_reveal_button.dart';
 
 class ProgressiveTextBlock extends StatefulWidget {
   final MessageBlock block;
@@ -22,7 +21,7 @@ class ProgressiveTextBlock extends StatefulWidget {
 
 class _ProgressiveTextBlockState extends State<ProgressiveTextBlock> {
   late List<ParsedSection> _sections;
-  final Set<int> _expandedSections = {0}; // First section expanded by default
+  Set<int> _expandedSections = {};
   final Map<int, GlobalKey> _sectionKeys = {};
 
   @override
@@ -45,20 +44,8 @@ class _ProgressiveTextBlockState extends State<ProgressiveTextBlock> {
     for (var i = 0; i < _sections.length; i++) {
       _sectionKeys.putIfAbsent(i, () => GlobalKey());
     }
-  }
-
-  void _expandSection(int index) {
-    setState(() {
-      _expandedSections.add(index);
-      // Auto-expand final section when second-to-last is expanded
-      if (index == _sections.length - 2 && _sections.length > 1) {
-        _expandedSections.add(_sections.length - 1);
-      }
-    });
-    // Auto-scroll to the newly expanded section
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToSection(index);
-    });
+    // Expand all sections by default
+    _expandedSections = Set<int>.from(List.generate(_sections.length, (i) => i));
   }
 
   void _toggleSection(int index) {
@@ -69,18 +56,6 @@ class _ProgressiveTextBlockState extends State<ProgressiveTextBlock> {
         _expandedSections.add(index);
       }
     });
-  }
-
-  void _scrollToSection(int index) {
-    final key = _sectionKeys[index];
-    if (key?.currentContext != null) {
-      Scrollable.ensureVisible(
-        key!.currentContext!,
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        alignment: 0.1,
-      );
-    }
   }
 
   @override
@@ -104,9 +79,6 @@ class _ProgressiveTextBlockState extends State<ProgressiveTextBlock> {
   Widget _buildSection(int index) {
     final section = _sections[index];
     final isExpanded = _expandedSections.contains(index);
-    final isLast = index == _sections.length - 1;
-    final showContinue =
-        isExpanded && !isLast && !_expandedSections.contains(index + 1);
 
     return Column(
       key: _sectionKeys[index],
@@ -160,14 +132,6 @@ class _ProgressiveTextBlockState extends State<ProgressiveTextBlock> {
               : CrossFadeState.showFirst,
           duration: const Duration(milliseconds: 300),
         ),
-        // "Continue Reading" button
-        if (showContinue)
-          Padding(
-            padding: const EdgeInsets.only(left: 32),
-            child: SectionRevealButton(
-              onPressed: () => _expandSection(index + 1),
-            ),
-          ),
       ],
     );
   }

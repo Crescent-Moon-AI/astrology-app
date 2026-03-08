@@ -5,8 +5,10 @@ import 'package:astrology_app/l10n/app_localizations.dart';
 
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/starfield_background.dart';
+import '../../domain/models/location_candidate.dart';
 import '../../domain/models/user_profile.dart';
 import '../providers/profile_providers.dart';
+import '../widgets/china_region_picker.dart';
 
 class EditBirthDataPage extends ConsumerStatefulWidget {
   const EditBirthDataPage({super.key});
@@ -18,11 +20,34 @@ class EditBirthDataPage extends ConsumerStatefulWidget {
 class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
   final _locationController = TextEditingController();
   bool _initialized = false;
+  String? _selectedRegionDisplay;
+  String? _initialProvince;
+  String? _initialCity;
+  String? _initialDistrict;
 
   @override
   void dispose() {
     _locationController.dispose();
     super.dispose();
+  }
+
+  void _initFromProfile(UserProfile p) {
+    if (_initialized) return;
+    _initialized = true;
+
+    ref.read(birthDataFormProvider.notifier).initFromProfile(p);
+    if (p.currentBirthPlace?.normalizedName != null) {
+      final name = p.currentBirthPlace!.normalizedName!;
+      _locationController.text = name;
+      _selectedRegionDisplay = name;
+      // Try to parse "省 - 市 - 区" format for initial picker position
+      final parts = name.split(' - ');
+      if (parts.length >= 3) {
+        _initialProvince = parts[0].trim();
+        _initialCity = parts[1].trim();
+        _initialDistrict = parts[2].trim();
+      }
+    }
   }
 
   @override
@@ -31,15 +56,23 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
     final profile = ref.watch(userProfileProvider);
     final formState = ref.watch(birthDataFormProvider);
 
-    // Initialize form from profile data once
+    // Listen for loading → data transitions (e.g. provider was still
+    // loading on the first build and resolves on a later frame).
+    ref.listen<AsyncValue<UserProfile>>(
+      userProfileProvider,
+      (_, next) {
+        next.whenData((p) {
+          if (!_initialized) {
+            setState(() => _initFromProfile(p));
+          }
+        });
+      },
+    );
+
+    // If data is already available on first build, init synchronously
+    // (local state is set before the rest of build() reads it).
     if (!_initialized) {
-      profile.whenData((p) {
-        ref.read(birthDataFormProvider.notifier).initFromProfile(p);
-        if (p.currentBirthPlace?.normalizedName != null) {
-          _locationController.text = p.currentBirthPlace!.normalizedName!;
-        }
-        _initialized = true;
-      });
+      profile.whenData((p) => _initFromProfile(p));
     }
 
     return Scaffold(
@@ -184,33 +217,41 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
 
               const SizedBox(height: 16),
 
-              // Birth place
+              // Birth place — tap to open region picker
               _SectionCard(
                 title: l10n.birthPlace,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextField(
-                      controller: _locationController,
-                      style: const TextStyle(
-                        color: CosmicColors.textPrimary,
-                        fontSize: 15,
+                    InkWell(
+                      onTap: () => _pickRegion(context),
+                      borderRadius: BorderRadius.circular(12),
+                      child: InputDecorator(
+                        decoration: _inputDecoration(l10n.birthPlaceSearch),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                _selectedRegionDisplay ?? l10n.birthPlaceSearch,
+                                style: TextStyle(
+                                  color: _selectedRegionDisplay != null
+                                      ? CosmicColors.textPrimary
+                                      : CosmicColors.textTertiary,
+                                  fontSize: 15,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.chevron_right,
+                              color: CosmicColors.textTertiary,
+                              size: 20,
+                            ),
+                          ],
+                        ),
                       ),
-                      decoration: _inputDecoration(l10n.birthPlaceSearch),
-                      onChanged: (_) => setState(() {}),
                     ),
-                    if (_locationController.text.trim().length >= 2)
-                      _LocationResults(
-                        query: _locationController.text.trim(),
-                        onSelect: (candidate) {
-                          ref
-                              .read(birthDataFormProvider.notifier)
-                              .setLocation(candidate);
-                          _locationController.text = candidate.name;
-                          // Dismiss keyboard
-                          FocusScope.of(context).unfocus();
-                        },
-                      ),
                     if (formState.selectedLocation != null &&
                         formState.selectedLocation!.timezone != null) ...[
                       const SizedBox(height: 8),
@@ -364,6 +405,52 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
     }
   }
 
+  Future<void> _pickRegion(BuildContext context) async {
+    final result = await showChinaRegionPicker(
+      context,
+      initialProvince: _initialProvince,
+      initialCity: _initialCity,
+      initialDistrict: _initialDistrict,
+    );
+    if (result == null || !mounted) return;
+
+    setState(() {
+      _selectedRegionDisplay = result.displayName;
+      _initialProvince = result.province;
+      _initialCity = result.city;
+      _initialDistrict = result.district;
+    });
+
+    // Geocode the selected region to get lat/lng/timezone
+    final repo = ref.read(profileRepositoryProvider);
+    try {
+      final geocode = await repo.resolveLocation(result.displayName);
+      if (geocode.candidates.isNotEmpty) {
+        ref
+            .read(birthDataFormProvider.notifier)
+            .setLocation(geocode.candidates.first);
+      } else {
+        // Fallback: store as a location candidate without coordinates
+        ref.read(birthDataFormProvider.notifier).setLocation(
+              LocationCandidate(
+                name: result.displayName,
+                latitude: 0,
+                longitude: 0,
+              ),
+            );
+      }
+    } catch (_) {
+      // Still store the name even if geocoding fails
+      ref.read(birthDataFormProvider.notifier).setLocation(
+            LocationCandidate(
+              name: result.displayName,
+              latitude: 0,
+              longitude: 0,
+            ),
+          );
+    }
+  }
+
   Future<void> _save(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
     final formState = ref.read(birthDataFormProvider);
@@ -463,84 +550,6 @@ class _AccuracyChip extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _LocationResults extends ConsumerWidget {
-  final String query;
-  final ValueChanged<dynamic> onSelect;
-
-  const _LocationResults({required this.query, required this.onSelect});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final results = ref.watch(locationSearchProvider(query));
-
-    return results.when(
-      data: (candidates) {
-        if (candidates.isEmpty) return const SizedBox.shrink();
-        return Container(
-          margin: const EdgeInsets.only(top: 4),
-          constraints: const BoxConstraints(maxHeight: 200),
-          decoration: BoxDecoration(
-            color: CosmicColors.surfaceHighlight,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: candidates.length,
-            itemBuilder: (context, index) {
-              final c = candidates[index];
-              return InkWell(
-                onTap: () => onSelect(c),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 10,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        c.name,
-                        style: const TextStyle(
-                          color: CosmicColors.textPrimary,
-                          fontSize: 14,
-                        ),
-                      ),
-                      if (c.formattedAddress != null) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          c.formattedAddress!,
-                          style: const TextStyle(
-                            color: CosmicColors.textTertiary,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        );
-      },
-      loading: () => const Padding(
-        padding: EdgeInsets.all(8),
-        child: Center(
-          child: SizedBox(
-            width: 16,
-            height: 16,
-            child: CircularProgressIndicator(
-              color: CosmicColors.primary,
-              strokeWidth: 2,
-            ),
-          ),
-        ),
-      ),
-      error: (_, __) => const SizedBox.shrink(),
     );
   }
 }

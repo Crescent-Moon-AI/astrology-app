@@ -297,7 +297,52 @@ class AppLocalizationsZh extends AppLocalizations {
   String get friendRelCrush => '心仪的人';
 
   @override
-  String get friendSave => '保存好友';
+  String get friendFillBirthInfo => '填写TA的出生信息';
+
+  @override
+  String get friendFillBirthInfoSubtitle => '深入了解TA的性格、情感、思维，还能解锁合盘';
+
+  @override
+  String get friendBasicInfo => '基础信息';
+
+  @override
+  String get friendNickname => '昵称';
+
+  @override
+  String get friendNicknamePlaceholder => '输入昵称';
+
+  @override
+  String get friendGenderFemale => '女';
+
+  @override
+  String get friendGenderMale => '男';
+
+  @override
+  String get friendTaRelationship => 'Ta是你的';
+
+  @override
+  String get friendBirthInfo => '出生信息';
+
+  @override
+  String get friendCalendarSolar => '公历';
+
+  @override
+  String get friendCalendarLunar => '农历';
+
+  @override
+  String get friendSelectBirthTime => '请选择出生时间';
+
+  @override
+  String get friendUnknownExactTime => '我不知道确切时间';
+
+  @override
+  String get friendSelectBirthCity => '请选择出生城市';
+
+  @override
+  String get friendInvite => '邀请好友';
+
+  @override
+  String get friendSave => '保存';
 
   @override
   String get friendDelete => '删除好友';
@@ -863,6 +908,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeQuickPhoto => '拍照解盘';
 
   @override
+  String get homeQuickChartConsult => '星盘咨询';
+
+  @override
+  String get homeQuickMyChart => '我的星盘';
+
+  @override
   String get homeSceneExplore => '场景探索';
 
   @override
@@ -932,7 +983,28 @@ class AppLocalizationsZh extends AppLocalizations {
   String get diaryAddNew => '添加新日记';
 
   @override
-  String get diaryEmptyHint => '记录你的每一天\n让星象为你的心情画像';
+  String get diaryEmptyHint => '下雨天～今日暂无日记哦，快点\"+\"记录此刻正在发生的事情或者心情吧～';
+
+  @override
+  String get diaryPublish => '发表';
+
+  @override
+  String get diaryEditHint => '在这里，你可以放心写下任何感性碎碎念～ 月见小精灵会给你最忠诚的陪伴与回应。';
+
+  @override
+  String get diaryAIName => '月见精灵';
+
+  @override
+  String get diaryYou => '我';
+
+  @override
+  String get diaryReplyHint => '回复月见精灵';
+
+  @override
+  String get diaryDeleteTitle => '删除日记';
+
+  @override
+  String get diaryDeleteConfirm => '确定要删除这篇日记吗？删除后无法恢复。';
 
   @override
   String get profileTitle => '我的';
@@ -1056,4 +1128,234 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get chartSeparating => '出相';
+
+  @override
+  String get profileInviteCode => '邀请码 +';
+
+  @override
+  String get profileNotLoggedIn => '未登录';
+
+  @override
+  String profileCompanionDays(int count) {
+    return '已陪伴$count天';
+  }
+
+  @override
+  String get profileMyWallet => '我的钱包';
+
+  @override
+  String get profileMyBenefits => '我的权益';
+
+  @override
+  String get profileFreeToday => '今日免费次数 1/1  每日6:00刷新';
+
+  @override
+  String get profileUnlockMore => '解锁更多特权，拥抱命中注定的美好';
+
+  @override
+  String get profileUpgrade => '升级权益';
+
+  @override
+  String get profileArchives => '档案管理';
+
+  @override
+  String get profileArchivesSubtitle => '去添加好友档案';
+
+  @override
+  String get profileConsultHistory => '咨询历史';
+
+  @override
+  String get profileReports => '我的报告';
+
+  @override
+  String get profileServicesTools => '服务与工具';
+
+  @override
+  String get profileTarotGallery => '塔罗牌图鉴';
+
+  @override
+  String get profileHelpFeedback => '帮助与反馈';
+
+  @override
+  String get profileShareApp => '分享APP';
+
+  @override
+  String get profileRateUs => '五星鼓励';
+
+  @override
+  String get profileSettingsItem => '设置';
+
+  @override
+  String get profileLogout => '退出登录';
+
+  @override
+  String get conversationNewChat => '新的对话';
+
+  @override
+  String get conversationNoChats => '还没有对话';
+
+  @override
+  String get conversationEmptyHint => '开始一段新的对话，让星象为你指引方向';
+
+  @override
+  String get conversationStartConsult => '开始咨询';
+
+  @override
+  String get conversationPopularTopics => '热门话题';
+
+  @override
+  String get timeJustNow => '刚刚';
+
+  @override
+  String timeMinutesAgo(int count) {
+    return '$count分钟前';
+  }
+
+  @override
+  String get timeYesterday => '昨天';
+
+  @override
+  String timeDaysAgo(int count) {
+    return '$count天前';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    return '$count小时前';
+  }
+
+  @override
+  String timeDateFormat(int month, int day) {
+    return '$month月$day日';
+  }
+
+  @override
+  String get transitTransitPlanet => '行运行星';
+
+  @override
+  String get transitNatalPlanet => '本命行星';
+
+  @override
+  String get transitHouse => '宫位';
+
+  @override
+  String get transitExactDate => '精确日期';
+
+  @override
+  String get transitActivePeriod => '活跃期间';
+
+  @override
+  String transitExactLabel(String date) {
+    return '精确: $date';
+  }
+
+  @override
+  String transitOrbLabel(String value) {
+    return '容许度: $value';
+  }
+
+  @override
+  String get scenarioNotFound => '场景未找到';
+
+  @override
+  String get scenarioLoadFailed => '加载场景失败';
+
+  @override
+  String get scenarioNoneFound => '未找到场景';
+
+  @override
+  String get scenarioExploreSubline => '探索宇宙的奥秘';
+
+  @override
+  String get moodMonthlySummary => '月度总结';
+
+  @override
+  String get moodTotalEntries => '记录总数';
+
+  @override
+  String get moodAverageScore => '平均分数';
+
+  @override
+  String get moodCurrentStreak => '当前连续';
+
+  @override
+  String get moodLongestStreak => '最长连续';
+
+  @override
+  String get moodTopTag => '热门标签';
+
+  @override
+  String get moodTrendLabel => '趋势';
+
+  @override
+  String get moodDaysUnit => '天';
+
+  @override
+  String get moodOk => '好的';
+
+  @override
+  String get moodNoData => '暂无数据';
+
+  @override
+  String get friendNoFriends => '还没有好友';
+
+  @override
+  String get friendNoFriendsHint => '添加好友，查看你们的星象关系';
+
+  @override
+  String get friendSynastryTitle => '合盘分析';
+
+  @override
+  String get chartArchivesTitle => '星盘档案';
+
+  @override
+  String get chartArchivesMyChart => '你的星盘';
+
+  @override
+  String get chartArchivesFriendChart => 'Ta的星盘';
+
+  @override
+  String get chartArchivesSelf => '本人';
+
+  @override
+  String get chartArchivesNoData => '暂无数据';
+
+  @override
+  String get chartArchivesAddChart => '+ 添加星盘档案';
+
+  @override
+  String get chartArchivesNotSet => '未设置出生信息';
+
+  @override
+  String get cancel => '取消';
+
+  @override
+  String get confirm => '确定';
+
+  @override
+  String get shareChartLabel => '星盘';
+
+  @override
+  String get shareHoroscopeLabel => '运势';
+
+  @override
+  String get shareTarotLabel => '塔罗牌';
+
+  @override
+  String get shareSynastryLabel => '合盘';
+
+  @override
+  String get shareDefaultLabel => '分享卡片';
+
+  @override
+  String get breathingInhale => '吸气...';
+
+  @override
+  String get breathingExhale => '呼气...';
+
+  @override
+  String get accessibilitySection => '辅助功能';
+
+  @override
+  String get errorGeneric => '发生错误';
 }

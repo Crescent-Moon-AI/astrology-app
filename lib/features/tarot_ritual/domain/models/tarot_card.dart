@@ -9,6 +9,8 @@ class TarotCard {
   final String element;
   final List<String> uprightKeywords;
   final List<String> reversedKeywords;
+  final List<String> uprightKeywordsZH;
+  final List<String> reversedKeywordsZH;
   final String imageKey;
 
   const TarotCard({
@@ -22,6 +24,8 @@ class TarotCard {
     required this.element,
     required this.uprightKeywords,
     required this.reversedKeywords,
+    required this.uprightKeywordsZH,
+    required this.reversedKeywordsZH,
     required this.imageKey,
   });
 
@@ -30,6 +34,17 @@ class TarotCard {
 
   List<String> get activeKeywords =>
       isUpright ? uprightKeywords : reversedKeywords;
+
+  List<String> get activeKeywordsZH =>
+      isUpright ? uprightKeywordsZH : reversedKeywordsZH;
+
+  /// Returns locale-appropriate active keywords.
+  /// Falls back to English if Chinese keywords are empty.
+  List<String> localizedKeywords(bool isZh) {
+    if (!isZh) return activeKeywords;
+    final zh = activeKeywordsZH;
+    return zh.isNotEmpty ? zh : activeKeywords;
+  }
 
   factory TarotCard.fromJson(Map<String, dynamic> json) {
     return TarotCard(
@@ -51,6 +66,16 @@ class TarotCard {
               ?.map((e) => e as String)
               .toList() ??
           [],
+      uprightKeywordsZH:
+          (json['upright_keywords_zh'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      reversedKeywordsZH:
+          (json['reversed_keywords_zh'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
       imageKey: json['image_key'] as String? ?? '',
     );
   }
@@ -68,10 +93,32 @@ class ResolvedCard {
   });
 
   factory ResolvedCard.fromJson(Map<String, dynamic> json) {
+    // Backend sends "position" as a SpreadPosition object { index, label, label_zh, meaning }
+    // or as a plain int — handle both.
+    final posRaw = json['position'];
+    int position;
+    String positionLabel;
+    if (posRaw is Map<String, dynamic>) {
+      position = posRaw['index'] as int? ?? 0;
+      positionLabel = (posRaw['label_zh'] as String?) ??
+          (posRaw['label'] as String?) ??
+          '';
+    } else {
+      position = posRaw as int? ?? 0;
+      positionLabel = json['position_label'] as String? ?? '';
+    }
+
+    // Backend sends orientation at top level; merge into card data
+    final cardJson = json['card'] as Map<String, dynamic>;
+    final orientation = json['orientation'] as String?;
+    if (orientation != null && !cardJson.containsKey('orientation')) {
+      cardJson['orientation'] = orientation;
+    }
+
     return ResolvedCard(
-      position: json['position'] as int,
-      positionLabel: json['position_label'] as String? ?? '',
-      card: TarotCard.fromJson(json['card'] as Map<String, dynamic>),
+      position: position,
+      positionLabel: positionLabel,
+      card: TarotCard.fromJson(cardJson),
     );
   }
 }

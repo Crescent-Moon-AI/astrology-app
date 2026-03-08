@@ -95,7 +95,7 @@ class TransitDetailPage extends ConsumerWidget {
                           ),
                           const SizedBox(width: 16),
                           Text(
-                            'Orb: ${alert.orb.toStringAsFixed(2)}\u00B0',
+                            l10n.transitOrbLabel(alert.orb.toStringAsFixed(2)),
                             style: const TextStyle(
                               color: CosmicColors.textSecondary,
                               fontSize: 14,
@@ -121,7 +121,7 @@ class TransitDetailPage extends ConsumerWidget {
                     children: [
                       _DetailRow(
                         icon: Icons.wb_sunny_outlined,
-                        label: 'Transit Planet',
+                        label: l10n.transitTransitPlanet,
                         value:
                             '${event.planet} ${alert.transitDegree.toStringAsFixed(1)}\u00B0 ${alert.transitSign}',
                       ),
@@ -131,7 +131,7 @@ class TransitDetailPage extends ConsumerWidget {
                       ),
                       _DetailRow(
                         icon: Icons.dark_mode_outlined,
-                        label: 'Natal Planet',
+                        label: l10n.transitNatalPlanet,
                         value:
                             '${alert.natalPlanet} ${alert.natalDegree.toStringAsFixed(1)}\u00B0 ${alert.natalSign}',
                       ),
@@ -142,7 +142,7 @@ class TransitDetailPage extends ConsumerWidget {
                         ),
                         _DetailRow(
                           icon: Icons.home_outlined,
-                          label: 'House',
+                          label: l10n.transitHouse,
                           value: '${alert.natalHouse}',
                         ),
                       ],
@@ -152,7 +152,7 @@ class TransitDetailPage extends ConsumerWidget {
                       ),
                       _DetailRow(
                         icon: Icons.pin_drop_outlined,
-                        label: 'Exact Date',
+                        label: l10n.transitExactDate,
                         value: event.exactDate,
                       ),
                       const Padding(
@@ -161,7 +161,7 @@ class TransitDetailPage extends ConsumerWidget {
                       ),
                       _DetailRow(
                         icon: Icons.date_range_outlined,
-                        label: 'Active Period',
+                        label: l10n.transitActivePeriod,
                         value: '${event.startDate} \u2013 ${event.endDate}',
                       ),
                     ],

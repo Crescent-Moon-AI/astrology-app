@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/moon_phase_widget.dart';
 import '../../domain/models/daily_fortune.dart';
@@ -10,32 +11,34 @@ class FortuneHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Moon phase icon
-          const MoonPhaseWidget(size: 48),
+          // Moon phase icon centered
+          const Center(child: MoonPhaseWidget(size: 48)),
           const SizedBox(height: 12),
-          // Fortune title — poetic
+          // Fortune title — large poetic text, left-aligned like real app
           Text(
             fortune.title,
             style: const TextStyle(
               color: CosmicColors.textPrimary,
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
+              fontSize: 26,
+              fontWeight: FontWeight.w800,
               letterSpacing: 2,
+              height: 1.4,
             ),
-            textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           // Advice + Avoid row
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildTag('宜', fortune.advice, CosmicColors.success),
+              _buildTag(l10n.homeFortuneAdvice, fortune.advice, CosmicColors.success),
               const SizedBox(width: 16),
-              _buildTag('忌', fortune.avoid, CosmicColors.error),
+              _buildTag(l10n.homeFortuneAvoid, fortune.avoid, CosmicColors.error),
             ],
           ),
         ],

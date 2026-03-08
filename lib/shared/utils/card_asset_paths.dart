@@ -7,7 +7,7 @@ class CardAssetPaths {
   /// The [imageKey] should match the filename without extension, e.g.
   /// `major_00_fool` → `assets/images/tarot/major_00_fool.png`.
   static String tarotAssetPath(String imageKey) =>
-      'assets/images/tarot/$imageKey.png';
+      'assets/images/tarot/$imageKey.webp';
 
   /// Returns the asset path for a Lenormand card given its [number] (1-36).
   ///

@@ -54,4 +54,14 @@ class AuthRemoteDatasource {
       options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
     );
   }
+
+  /// Fetch current user profile using stored auth token.
+  Future<Map<String, dynamic>> getMe() async {
+    final response = await _dio.get('/api/auth/me');
+    final data = response.data as Map<String, dynamic>;
+    if (data.containsKey('data') && data['data'] is Map<String, dynamic>) {
+      return data['data'] as Map<String, dynamic>;
+    }
+    return data;
+  }
 }

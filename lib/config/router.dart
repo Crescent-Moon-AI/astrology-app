@@ -8,6 +8,8 @@ import '../features/chat/presentation/pages/chat_page.dart';
 import '../features/chat/presentation/pages/conversation_list_page.dart';
 import '../features/consult/presentation/pages/consult_page.dart';
 import '../features/diary/presentation/pages/diary_page.dart';
+import '../features/diary/presentation/pages/diary_edit_page.dart';
+import '../features/diary/presentation/pages/diary_detail_page.dart';
 import '../features/home/presentation/pages/home_page.dart';
 import '../features/insight/presentation/pages/insight_page.dart';
 import '../features/scenario/presentation/pages/scenario_list_page.dart';
@@ -19,6 +21,7 @@ import '../features/settings/presentation/pages/profile_page.dart';
 import '../features/shell/main_shell_page.dart';
 import '../features/tarot_ritual/presentation/pages/spread_selection_page.dart';
 import '../features/tarot_ritual/presentation/pages/tarot_ritual_page.dart';
+import '../features/tarot_ritual/presentation/pages/tarot_question_page.dart';
 import '../features/dice_ritual/presentation/pages/dice_ritual_page.dart';
 import '../features/numerology/presentation/pages/numerology_input_page.dart';
 import '../features/rune_ritual/presentation/pages/rune_spread_select.dart';
@@ -72,7 +75,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const RegisterPage(),
       ),
 
-      // Main shell with bottom navigation — 5 tabs
+      // Main shell with bottom navigation — 4 tabs (matching real app)
       ShellRoute(
         builder: (context, state, child) => MainShellPage(child: child),
         routes: [
@@ -83,28 +86,21 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => const HomePage(),
           ),
 
-          // Tab 1: Insight
+          // Tab 1: Insight (洞见)
           GoRoute(
             path: '/insight',
             name: 'insight',
             builder: (context, state) => const InsightPage(),
           ),
 
-          // Tab 2: Consult (center button)
-          GoRoute(
-            path: '/consult',
-            name: 'consult',
-            builder: (context, state) => const ConsultPage(),
-          ),
-
-          // Tab 3: Diary
+          // Tab 2: Diary (日记)
           GoRoute(
             path: '/diary',
             name: 'diary',
             builder: (context, state) => const DiaryPage(),
           ),
 
-          // Tab 4: Profile
+          // Tab 3: Profile (我的)
           GoRoute(
             path: '/profile',
             name: 'profile',
@@ -114,6 +110,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       // Full-screen routes (no bottom navigation)
+      GoRoute(
+        path: '/consult',
+        name: 'consult',
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const ConsultPage()),
+      ),
       GoRoute(
         path: '/scenarios',
         name: 'scenarios',
@@ -155,6 +157,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             ChatPage(
               conversationId: id,
               tarotSessionId: state.uri.queryParameters['tarot_session_id'],
+              initialMessage: state.uri.queryParameters['initial_message'],
             ),
           );
         },
@@ -218,9 +221,33 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
       ),
       GoRoute(
+        path: '/tarot/question',
+        name: 'tarotQuestion',
+        pageBuilder: (context, state) => _cosmicFadePage(
+          state,
+          TarotQuestionPage(
+            conversationId: state.uri.queryParameters['conversation_id']!,
+            tarotSessionId: state.uri.queryParameters['tarot_session_id']!,
+          ),
+        ),
+      ),
+      GoRoute(
         path: '/mood/history',
         name: 'moodHistory',
         builder: (context, state) => const MoodHistoryPage(),
+      ),
+      GoRoute(
+        path: '/diary/edit',
+        name: 'diaryEdit',
+        builder: (context, state) => const DiaryEditPage(),
+      ),
+      GoRoute(
+        path: '/diary/:id',
+        name: 'diaryDetail',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return DiaryDetailPage(diaryId: id);
+        },
       ),
       GoRoute(
         path: '/mood/insights',

@@ -5,7 +5,8 @@ import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../shared/theme/cosmic_colors.dart';
 
 /// Main shell with bottom navigation bar.
-/// Wraps the 5 main tabs: Home, Insight, Consult, Diary, Profile.
+/// Wraps the 5 main tabs: Home, Insight, Consult (center), Diary, Profile
+/// (matching real app layout).
 class MainShellPage extends ConsumerStatefulWidget {
   final Widget child;
 
@@ -21,7 +22,7 @@ class _MainShellPageState extends ConsumerState<MainShellPage> {
   static const _tabRoutes = [
     '/home',
     '/insight',
-    '/consult',
+    '/consult', // center tab
     '/diary',
     '/profile',
   ];
@@ -59,6 +60,11 @@ class _MainShellPageState extends ConsumerState<MainShellPage> {
       bottomNavigationBar: _CosmicBottomBar(
         currentIndex: _currentIndex,
         onTabSelected: (index) {
+          if (index == 2) {
+            // Center "consult" tab navigates to full-screen consult page
+            context.push('/consult');
+            return;
+          }
           if (index == _currentIndex) return;
           setState(() => _currentIndex = index);
           context.go(_tabRoutes[index]);
@@ -87,17 +93,17 @@ class _CosmicBottomBar extends StatelessWidget {
   });
 
   static const _unselectedIcons = [
-    Icons.home_outlined, // Tab 0: Home
-    Icons.auto_graph_outlined, // Tab 1: Insight
-    Icons.auto_awesome, // Tab 2: Consult (center)
-    Icons.menu_book_outlined, // Tab 3: Diary
-    Icons.person_outline, // Tab 4: Profile
+    Icons.home_outlined,
+    Icons.auto_graph_outlined,
+    null, // center button — custom widget
+    Icons.menu_book_outlined,
+    Icons.person_outline,
   ];
 
   static const _selectedIcons = [
     Icons.home,
     Icons.auto_graph,
-    Icons.auto_awesome,
+    null, // center button — custom widget
     Icons.menu_book,
     Icons.person,
   ];
@@ -106,45 +112,25 @@ class _CosmicBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
 
-    return SizedBox(
-      height: 64 + bottomPadding + 14, // extra 14 for raised button
-      child: Stack(
-        clipBehavior: Clip.none,
+    return Container(
+      height: 64 + bottomPadding,
+      padding: EdgeInsets.only(bottom: bottomPadding),
+      decoration: BoxDecoration(
+        color: CosmicColors.backgroundDeep.withAlpha(230),
+        border: const Border(
+          top: BorderSide(color: CosmicColors.borderGlow, width: 0.5),
+        ),
+      ),
+      child: Row(
         children: [
-          // Nav bar background
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: 64 + bottomPadding,
-            child: Container(
-              padding: EdgeInsets.only(bottom: bottomPadding),
-              decoration: BoxDecoration(
-                color: CosmicColors.backgroundDeep.withAlpha(230),
-              ),
-              child: Row(
-                children: [
-                  _buildTab(0),
-                  _buildTab(1),
-                  const Spacer(), // placeholder for center button
-                  _buildTab(3),
-                  _buildTab(4),
-                ],
-              ),
-            ),
-          ),
-          // Raised center button (Tab 2: Consult)
-          Positioned(
-            bottom: bottomPadding + (64 - 56) / 2,
-            left: 0,
-            right: 0,
-            child: Center(child: _buildCenterButton()),
-          ),
+          for (int i = 0; i < labels.length; i++)
+            i == 2 ? _buildCenterTab() : _buildTab(i),
         ],
       ),
     );
   }
 
+  /// Regular tab item.
   Widget _buildTab(int index) {
     final isSelected = currentIndex == index;
 
@@ -179,49 +165,55 @@ class _CosmicBottomBar extends StatelessWidget {
     );
   }
 
-  Widget _buildCenterButton() {
-    final isSelected = currentIndex == 2;
-
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () => onTabSelected(2),
-      child: SizedBox(
-        width: 72,
-        height: 72,
-        child: Center(
-          child: Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: CosmicColors.primaryGradient,
-              boxShadow: [
-                BoxShadow(
-                  color: CosmicColors.primary.withAlpha(isSelected ? 128 : 77),
-                  blurRadius: isSelected ? 20 : 16,
-                  spreadRadius: 0,
+  /// Center elevated "consult" button matching real app.
+  Widget _buildCenterTab() {
+    return Expanded(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => onTabSelected(2),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    CosmicColors.primary.withAlpha(180),
+                    CosmicColors.primaryLight.withAlpha(120),
+                  ],
                 ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  isSelected ? _selectedIcons[2] : _unselectedIcons[2],
-                  color: CosmicColors.textPrimary,
-                  size: 24,
+                border: Border.all(
+                  color: CosmicColors.primaryLight.withAlpha(100),
+                  width: 1.5,
                 ),
-                Text(
-                  labels[2],
-                  style: const TextStyle(
-                    color: CosmicColors.textPrimary,
-                    fontSize: 9,
-                    fontWeight: FontWeight.w500,
+                boxShadow: [
+                  BoxShadow(
+                    color: CosmicColors.primary.withAlpha(60),
+                    blurRadius: 12,
+                    spreadRadius: 0,
                   ),
-                ),
-              ],
+                ],
+              ),
+              child: const Icon(
+                Icons.question_answer_outlined,
+                color: CosmicColors.textPrimary,
+                size: 22,
+              ),
             ),
-          ),
+            const SizedBox(height: 2),
+            Text(
+              labels[2],
+              style: const TextStyle(
+                fontSize: 11,
+                color: CosmicColors.textTertiary,
+              ),
+            ),
+          ],
         ),
       ),
     );

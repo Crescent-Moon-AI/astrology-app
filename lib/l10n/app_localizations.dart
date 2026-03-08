@@ -668,10 +668,100 @@ abstract class AppLocalizations {
   /// **'Crush'**
   String get friendRelCrush;
 
+  /// No description provided for @friendFillBirthInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in their birth info'**
+  String get friendFillBirthInfo;
+
+  /// No description provided for @friendFillBirthInfoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Understand their personality, emotions, thinking, and unlock synastry'**
+  String get friendFillBirthInfoSubtitle;
+
+  /// No description provided for @friendBasicInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Info'**
+  String get friendBasicInfo;
+
+  /// No description provided for @friendNickname.
+  ///
+  /// In en, this message translates to:
+  /// **'Nickname'**
+  String get friendNickname;
+
+  /// No description provided for @friendNicknamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter nickname'**
+  String get friendNicknamePlaceholder;
+
+  /// No description provided for @friendGenderFemale.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get friendGenderFemale;
+
+  /// No description provided for @friendGenderMale.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get friendGenderMale;
+
+  /// No description provided for @friendTaRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'They are your'**
+  String get friendTaRelationship;
+
+  /// No description provided for @friendBirthInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Info'**
+  String get friendBirthInfo;
+
+  /// No description provided for @friendCalendarSolar.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar'**
+  String get friendCalendarSolar;
+
+  /// No description provided for @friendCalendarLunar.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunar'**
+  String get friendCalendarLunar;
+
+  /// No description provided for @friendSelectBirthTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Select birth time'**
+  String get friendSelectBirthTime;
+
+  /// No description provided for @friendUnknownExactTime.
+  ///
+  /// In en, this message translates to:
+  /// **'I don\'t know the exact time'**
+  String get friendUnknownExactTime;
+
+  /// No description provided for @friendSelectBirthCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Select birth city'**
+  String get friendSelectBirthCity;
+
+  /// No description provided for @friendInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Friend'**
+  String get friendInvite;
+
   /// No description provided for @friendSave.
   ///
   /// In en, this message translates to:
-  /// **'Save Friend'**
+  /// **'Save'**
   String get friendSave;
 
   /// No description provided for @friendDelete.
@@ -1772,6 +1862,18 @@ abstract class AppLocalizations {
   /// **'Photo Read'**
   String get homeQuickPhoto;
 
+  /// No description provided for @homeQuickChartConsult.
+  ///
+  /// In en, this message translates to:
+  /// **'Chart Consult'**
+  String get homeQuickChartConsult;
+
+  /// No description provided for @homeQuickMyChart.
+  ///
+  /// In en, this message translates to:
+  /// **'My Chart'**
+  String get homeQuickMyChart;
+
   /// No description provided for @homeSceneExplore.
   ///
   /// In en, this message translates to:
@@ -1913,8 +2015,50 @@ abstract class AppLocalizations {
   /// No description provided for @diaryEmptyHint.
   ///
   /// In en, this message translates to:
-  /// **'Record your every day\nLet the stars paint your mood'**
+  /// **'Rainy day~ No diary entry yet today. Tap \"+\" to record what\'s happening or how you\'re feeling~'**
   String get diaryEmptyHint;
+
+  /// No description provided for @diaryPublish.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish'**
+  String get diaryPublish;
+
+  /// No description provided for @diaryEditHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Feel free to write down any thoughts or feelings here~ Yuejian will be your most loyal companion and listener.'**
+  String get diaryEditHint;
+
+  /// No description provided for @diaryAIName.
+  ///
+  /// In en, this message translates to:
+  /// **'Yuejian Spirit'**
+  String get diaryAIName;
+
+  /// No description provided for @diaryYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get diaryYou;
+
+  /// No description provided for @diaryReplyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply to Yuejian Spirit'**
+  String get diaryReplyHint;
+
+  /// No description provided for @diaryDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Diary'**
+  String get diaryDeleteTitle;
+
+  /// No description provided for @diaryDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this diary entry? This action cannot be undone.'**
+  String get diaryDeleteConfirm;
 
   /// No description provided for @profileTitle.
   ///
@@ -2161,6 +2305,438 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Separating'**
   String get chartSeparating;
+
+  /// No description provided for @profileInviteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite +'**
+  String get profileInviteCode;
+
+  /// No description provided for @profileNotLoggedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Not logged in'**
+  String get profileNotLoggedIn;
+
+  /// No description provided for @profileCompanionDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Together {count} days'**
+  String profileCompanionDays(int count);
+
+  /// No description provided for @profileMyWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'My Wallet'**
+  String get profileMyWallet;
+
+  /// No description provided for @profileMyBenefits.
+  ///
+  /// In en, this message translates to:
+  /// **'My Benefits'**
+  String get profileMyBenefits;
+
+  /// No description provided for @profileFreeToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Free today 1/1  Resets at 6:00'**
+  String get profileFreeToday;
+
+  /// No description provided for @profileUnlockMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock more privileges'**
+  String get profileUnlockMore;
+
+  /// No description provided for @profileUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get profileUpgrade;
+
+  /// No description provided for @profileArchives.
+  ///
+  /// In en, this message translates to:
+  /// **'Archives'**
+  String get profileArchives;
+
+  /// No description provided for @profileArchivesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add friend profiles'**
+  String get profileArchivesSubtitle;
+
+  /// No description provided for @profileConsultHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get profileConsultHistory;
+
+  /// No description provided for @profileReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get profileReports;
+
+  /// No description provided for @profileServicesTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Services & Tools'**
+  String get profileServicesTools;
+
+  /// No description provided for @profileTarotGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Tarot Card Gallery'**
+  String get profileTarotGallery;
+
+  /// No description provided for @profileHelpFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Feedback'**
+  String get profileHelpFeedback;
+
+  /// No description provided for @profileShareApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share App'**
+  String get profileShareApp;
+
+  /// No description provided for @profileRateUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Us'**
+  String get profileRateUs;
+
+  /// No description provided for @profileSettingsItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get profileSettingsItem;
+
+  /// No description provided for @profileLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get profileLogout;
+
+  /// No description provided for @conversationNewChat.
+  ///
+  /// In en, this message translates to:
+  /// **'New Conversation'**
+  String get conversationNewChat;
+
+  /// No description provided for @conversationNoChats.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations yet'**
+  String get conversationNoChats;
+
+  /// No description provided for @conversationEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a new conversation and let the stars guide you'**
+  String get conversationEmptyHint;
+
+  /// No description provided for @conversationStartConsult.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Consultation'**
+  String get conversationStartConsult;
+
+  /// No description provided for @conversationPopularTopics.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular Topics'**
+  String get conversationPopularTopics;
+
+  /// No description provided for @timeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get timeJustNow;
+
+  /// No description provided for @timeMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}m ago'**
+  String timeMinutesAgo(int count);
+
+  /// No description provided for @timeYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get timeYesterday;
+
+  /// No description provided for @timeDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d ago'**
+  String timeDaysAgo(int count);
+
+  /// No description provided for @timeHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}h ago'**
+  String timeHoursAgo(int count);
+
+  /// No description provided for @timeDateFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'{month}/{day}'**
+  String timeDateFormat(int month, int day);
+
+  /// No description provided for @transitTransitPlanet.
+  ///
+  /// In en, this message translates to:
+  /// **'Transit Planet'**
+  String get transitTransitPlanet;
+
+  /// No description provided for @transitNatalPlanet.
+  ///
+  /// In en, this message translates to:
+  /// **'Natal Planet'**
+  String get transitNatalPlanet;
+
+  /// No description provided for @transitHouse.
+  ///
+  /// In en, this message translates to:
+  /// **'House'**
+  String get transitHouse;
+
+  /// No description provided for @transitExactDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact Date'**
+  String get transitExactDate;
+
+  /// No description provided for @transitActivePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Period'**
+  String get transitActivePeriod;
+
+  /// No description provided for @transitExactLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact: {date}'**
+  String transitExactLabel(String date);
+
+  /// No description provided for @transitOrbLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Orb: {value}'**
+  String transitOrbLabel(String value);
+
+  /// No description provided for @scenarioNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario not found'**
+  String get scenarioNotFound;
+
+  /// No description provided for @scenarioLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load scenarios'**
+  String get scenarioLoadFailed;
+
+  /// No description provided for @scenarioNoneFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No scenarios found'**
+  String get scenarioNoneFound;
+
+  /// No description provided for @scenarioExploreSubline.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore cosmic mysteries'**
+  String get scenarioExploreSubline;
+
+  /// No description provided for @moodMonthlySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Summary'**
+  String get moodMonthlySummary;
+
+  /// No description provided for @moodTotalEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Entries'**
+  String get moodTotalEntries;
+
+  /// No description provided for @moodAverageScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Score'**
+  String get moodAverageScore;
+
+  /// No description provided for @moodCurrentStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Streak'**
+  String get moodCurrentStreak;
+
+  /// No description provided for @moodLongestStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest Streak'**
+  String get moodLongestStreak;
+
+  /// No description provided for @moodTopTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Tag'**
+  String get moodTopTag;
+
+  /// No description provided for @moodTrendLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Trend'**
+  String get moodTrendLabel;
+
+  /// No description provided for @moodDaysUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get moodDaysUnit;
+
+  /// No description provided for @moodOk.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get moodOk;
+
+  /// No description provided for @moodNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data yet'**
+  String get moodNoData;
+
+  /// No description provided for @friendNoFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'No friends yet'**
+  String get friendNoFriends;
+
+  /// No description provided for @friendNoFriendsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add friends to see your astrological compatibility'**
+  String get friendNoFriendsHint;
+
+  /// No description provided for @friendSynastryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Synastry'**
+  String get friendSynastryTitle;
+
+  /// No description provided for @chartArchivesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chart Archives'**
+  String get chartArchivesTitle;
+
+  /// No description provided for @chartArchivesMyChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Chart'**
+  String get chartArchivesMyChart;
+
+  /// No description provided for @chartArchivesFriendChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Their Charts'**
+  String get chartArchivesFriendChart;
+
+  /// No description provided for @chartArchivesSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'Self'**
+  String get chartArchivesSelf;
+
+  /// No description provided for @chartArchivesNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data yet'**
+  String get chartArchivesNoData;
+
+  /// No description provided for @chartArchivesAddChart.
+  ///
+  /// In en, this message translates to:
+  /// **'+ Add Chart Profile'**
+  String get chartArchivesAddChart;
+
+  /// No description provided for @chartArchivesNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth info not set'**
+  String get chartArchivesNotSet;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @shareChartLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Chart'**
+  String get shareChartLabel;
+
+  /// No description provided for @shareHoroscopeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Horoscope'**
+  String get shareHoroscopeLabel;
+
+  /// No description provided for @shareTarotLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tarot Reading'**
+  String get shareTarotLabel;
+
+  /// No description provided for @shareSynastryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Synastry'**
+  String get shareSynastryLabel;
+
+  /// No description provided for @shareDefaultLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Card'**
+  String get shareDefaultLabel;
+
+  /// No description provided for @breathingInhale.
+  ///
+  /// In en, this message translates to:
+  /// **'Inhale...'**
+  String get breathingInhale;
+
+  /// No description provided for @breathingExhale.
+  ///
+  /// In en, this message translates to:
+  /// **'Exhale...'**
+  String get breathingExhale;
+
+  /// No description provided for @accessibilitySection.
+  ///
+  /// In en, this message translates to:
+  /// **'Accessibility'**
+  String get accessibilitySection;
+
+  /// No description provided for @errorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred'**
+  String get errorGeneric;
 }
 
 class _AppLocalizationsDelegate

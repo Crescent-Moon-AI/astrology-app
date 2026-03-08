@@ -42,6 +42,7 @@ dependencies:
   rust_lib_astro:
     path: rust_builder
   flutter_rust_bridge: 2.11.1
+  image_picker: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +55,14 @@ dev_dependencies:
   mocktail: ^1.0.4
   integration_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "icon.jpg"
+  min_sdk_android: 21
+  remove_alpha_ios: true
 
 flutter:
   uses-material-design: true

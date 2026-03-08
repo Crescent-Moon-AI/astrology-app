@@ -13,8 +13,6 @@ class MoodHistoryPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context).languageCode;
-    final isZh = locale.startsWith('zh');
     final statsAsync = ref.watch(moodStatsProvider('30d'));
 
     return Scaffold(
@@ -37,14 +35,14 @@ class MoodHistoryPage extends ConsumerWidget {
             // Calendar heatmap
             MoodCalendarHeatmap(
               onDayTapped: (entry) =>
-                  _showDayDetail(context, l10n, isZh, entry),
+                  _showDayDetail(context, l10n, entry),
             ),
 
             const SizedBox(height: 24),
 
             // Month stats summary
             statsAsync.when(
-              data: (stats) => _buildStatsSummary(context, isZh, stats),
+              data: (stats) => _buildStatsSummary(context, l10n, stats),
               loading: () => const Padding(
                 padding: EdgeInsets.symmetric(vertical: 32),
                 child: Center(child: BreathingLoader()),
@@ -59,7 +57,7 @@ class MoodHistoryPage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Error: $error',
+                      l10n.errorLoadFailed,
                       style: const TextStyle(
                         color: CosmicColors.textSecondary,
                         fontSize: 13,
@@ -75,7 +73,7 @@ class MoodHistoryPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatsSummary(BuildContext context, bool isZh, dynamic stats) {
+  Widget _buildStatsSummary(BuildContext context, AppLocalizations l10n, dynamic stats) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -95,7 +93,7 @@ class MoodHistoryPage extends ConsumerWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                isZh ? '月度总结' : 'Summary',
+                l10n.moodMonthlySummary,
                 style: const TextStyle(
                   color: CosmicColors.textPrimary,
                   fontWeight: FontWeight.bold,
@@ -107,7 +105,7 @@ class MoodHistoryPage extends ConsumerWidget {
           const SizedBox(height: 14),
           _StatRow(
             icon: Icons.edit_note,
-            label: isZh ? '记录总数' : 'Total Entries',
+            label: l10n.moodTotalEntries,
             value: '${stats.totalEntries}',
           ),
           const Padding(
@@ -116,7 +114,7 @@ class MoodHistoryPage extends ConsumerWidget {
           ),
           _StatRow(
             icon: Icons.sentiment_satisfied,
-            label: isZh ? '平均分数' : 'Average Score',
+            label: l10n.moodAverageScore,
             value: stats.averageScore.toStringAsFixed(1),
           ),
           const Padding(
@@ -125,8 +123,8 @@ class MoodHistoryPage extends ConsumerWidget {
           ),
           _StatRow(
             icon: Icons.local_fire_department,
-            label: isZh ? '当前连续' : 'Current Streak',
-            value: '${stats.streak.current} ${isZh ? "天" : "days"}',
+            label: l10n.moodCurrentStreak,
+            value: '${stats.streak.current} ${l10n.moodDaysUnit}',
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 2),
@@ -134,8 +132,8 @@ class MoodHistoryPage extends ConsumerWidget {
           ),
           _StatRow(
             icon: Icons.emoji_events,
-            label: isZh ? '最长连续' : 'Longest Streak',
-            value: '${stats.streak.longest} ${isZh ? "天" : "days"}',
+            label: l10n.moodLongestStreak,
+            value: '${stats.streak.longest} ${l10n.moodDaysUnit}',
           ),
           if (stats.topTags.isNotEmpty) ...[
             const Padding(
@@ -144,7 +142,7 @@ class MoodHistoryPage extends ConsumerWidget {
             ),
             _StatRow(
               icon: Icons.tag,
-              label: isZh ? '热门标签' : 'Top Tag',
+              label: l10n.moodTopTag,
               value:
                   '${stats.topTags.first.tag} (${stats.topTags.first.count})',
             ),
@@ -155,7 +153,7 @@ class MoodHistoryPage extends ConsumerWidget {
           ),
           _StatRow(
             icon: Icons.trending_up,
-            label: isZh ? '趋势' : 'Trend',
+            label: l10n.moodTrendLabel,
             value:
                 '${stats.trend.direction} (${stats.trend.delta >= 0 ? "+" : ""}${stats.trend.delta.toStringAsFixed(2)})',
           ),
@@ -167,7 +165,6 @@ class MoodHistoryPage extends ConsumerWidget {
   void _showDayDetail(
     BuildContext context,
     AppLocalizations l10n,
-    bool isZh,
     MoodEntry entry,
   ) {
     const scoreEmojis = [
@@ -243,7 +240,7 @@ class MoodHistoryPage extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text(isZh ? '好的' : 'OK'),
+            child: Text(l10n.moodOk),
           ),
         ],
       ),

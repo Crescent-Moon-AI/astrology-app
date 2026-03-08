@@ -25,31 +25,6 @@ class HomePage extends ConsumerWidget {
           bottom: false,
           child: Column(
             children: [
-              // Title bar
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 8,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      l10n.appTitle,
-                      style: const TextStyle(
-                        color: CosmicColors.textPrimary,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const Icon(
-                      Icons.notifications_none_rounded,
-                      color: CosmicColors.textSecondary,
-                      size: 24,
-                    ),
-                  ],
-                ),
-              ),
               // Scrollable content
               Expanded(
                 child: SingleChildScrollView(

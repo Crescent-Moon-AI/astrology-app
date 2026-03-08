@@ -42,7 +42,7 @@ class FriendApi {
       queryParameters: {'limit': limit},
     );
     final data = response.data['data'] as Map<String, dynamic>;
-    final items = data['friends'] as List<dynamic>? ?? [];
+    final items = data['items'] as List<dynamic>? ?? [];
     return items
         .map((e) => FriendProfile.fromJson(e as Map<String, dynamic>))
         .toList();

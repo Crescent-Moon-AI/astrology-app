@@ -9,103 +9,99 @@ class ExploreMoreSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.homeExploreMore,
-            style: const TextStyle(
-              color: CosmicColors.textPrimary,
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-            ),
+          // Section header with "see all" link
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                l10n.homeExploreMore,
+                style: const TextStyle(
+                  color: CosmicColors.textPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              GestureDetector(
+                onTap: () => context.go('/insight'),
+                child: Text(
+                  isZh ? '查看全部 >' : 'See All >',
+                  style: const TextStyle(
+                    color: CosmicColors.textTertiary,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 12),
-          _buildReportCard(
-            context,
-            icon: Icons.auto_graph_rounded,
-            title: l10n.insightDeepExplore,
-            subtitle: l10n.insightComingSoon,
-            gradient: [CosmicColors.primary, const Color(0xFF0984E3)],
-            onTap: () => context.go('/insight'),
+          _buildExploreCard(
+            isZh ? '全面了解自己' : 'Know Yourself',
+            isZh ? '探索你未被发现的天赋' : 'Explore your hidden talents',
+            () => context.push('/charts'),
           ),
           const SizedBox(height: 8),
-          _buildReportCard(
-            context,
-            icon: Icons.style_rounded,
-            title: l10n.divinationHubTitle,
-            subtitle: l10n.divinationHubSubtitle,
-            gradient: [const Color(0xFFE17055), const Color(0xFFFDCB6E)],
-            onTap: () => context.push('/divination'),
+          _buildExploreCard(
+            isZh ? '了解你们的关系' : 'Your Relationship',
+            isZh ? '月见 · 关系深度解读报告' : 'Deep relationship analysis',
+            () => context.push('/charts/synastry'),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildReportCard(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required List<Color> gradient,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildExploreCard(
+    String title,
+    String subtitle,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [gradient[0].withAlpha(38), gradient[1].withAlpha(13)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: CosmicColors.surfaceElevated,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: gradient[0].withAlpha(26)),
+          border: Border.all(color: CosmicColors.borderGlow),
         ),
         child: Row(
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: gradient[0].withAlpha(51),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: gradient[0], size: 24),
-            ),
-            const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      color: CosmicColors.textPrimary,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          color: CosmicColors.textPrimary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      const Icon(Icons.chevron_right,
+                          color: CosmicColors.textTertiary, size: 18),
+                    ],
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 4),
                   Text(
                     subtitle,
                     style: const TextStyle(
-                      color: CosmicColors.textSecondary,
+                      color: CosmicColors.textTertiary,
                       fontSize: 13,
                     ),
                   ),
                 ],
               ),
-            ),
-            const Icon(
-              Icons.chevron_right,
-              color: CosmicColors.textTertiary,
-              size: 20,
             ),
           ],
         ),

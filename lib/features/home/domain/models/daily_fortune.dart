@@ -1,6 +1,7 @@
 class DailyFortune {
   final String date;
   final String title;
+  final String description;
   final String advice;
   final String avoid;
   final String moonPhase;
@@ -11,6 +12,7 @@ class DailyFortune {
   const DailyFortune({
     required this.date,
     required this.title,
+    this.description = '',
     required this.advice,
     required this.avoid,
     required this.moonPhase,
@@ -23,6 +25,7 @@ class DailyFortune {
     return DailyFortune(
       date: json['date'] as String,
       title: json['title'] as String,
+      description: json['description'] as String? ?? '',
       advice: json['advice'] as String? ?? '',
       avoid: json['avoid'] as String? ?? '',
       moonPhase: json['moon_phase'] as String? ?? 'waxing_crescent',

@@ -20,7 +20,7 @@ class DimensionArc extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: size,
-      height: size + 20,
+      height: size + 22,
       child: Column(
         children: [
           SizedBox(

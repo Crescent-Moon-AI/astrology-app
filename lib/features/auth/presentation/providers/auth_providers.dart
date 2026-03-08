@@ -51,7 +51,17 @@ class AuthNotifier extends Notifier<AuthState> {
     final token = await _storage.getAccessToken();
     if (token != null && token.isNotEmpty) {
       _dioClient.setAuthToken(token);
-      state = state.copyWith(status: AuthStatus.authenticated);
+      try {
+        final json = await _datasource.getMe();
+        final user = User.fromJson(json);
+        state = AuthState(status: AuthStatus.authenticated, user: user);
+      } catch (_) {
+        // Token might be expired — try refresh
+        final refreshed = await tryRefresh();
+        if (!refreshed) {
+          state = const AuthState(status: AuthStatus.unauthenticated);
+        }
+      }
     } else {
       state = state.copyWith(status: AuthStatus.unauthenticated);
     }

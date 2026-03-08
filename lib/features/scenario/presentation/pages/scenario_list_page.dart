@@ -16,7 +16,6 @@ class ScenarioListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final isZh = Localizations.localeOf(context).languageCode == 'zh';
     final categoriesAsync = ref.watch(scenarioCategoriesProvider);
     final scenariosAsync = ref.watch(scenarioListProvider);
 
@@ -44,9 +43,7 @@ class ScenarioListPage extends ConsumerWidget {
                 ],
               ).createShader(bounds),
               child: Text(
-                isZh
-                    ? '\u63A2\u7D22\u5B87\u5B99\u7684\u5965\u79D8'
-                    : 'Explore cosmic mysteries',
+                l10n.scenarioExploreSubline,
                 style: const TextStyle(fontSize: 12, color: Colors.white),
               ),
             ),
@@ -78,7 +75,7 @@ class ScenarioListPage extends ConsumerWidget {
             // Scenario list
             Expanded(
               child: scenariosAsync.when(
-                data: (scenarios) => _buildList(context, scenarios),
+                data: (scenarios) => _buildList(context, l10n, scenarios),
                 loading: () => const Center(child: BreathingLoader()),
                 error: (error, _) => Center(
                   child: Column(
@@ -91,7 +88,7 @@ class ScenarioListPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        'Failed to load scenarios',
+                        l10n.scenarioLoadFailed,
                         style: TextStyle(color: CosmicColors.textSecondary),
                       ),
                       const SizedBox(height: 12),
@@ -101,7 +98,7 @@ class ScenarioListPage extends ConsumerWidget {
                           ref.invalidate(scenarioCategoriesProvider);
                         },
                         icon: const Icon(Icons.refresh),
-                        label: const Text('Retry'),
+                        label: Text(l10n.retry),
                         style: TextButton.styleFrom(
                           foregroundColor: CosmicColors.primaryLight,
                         ),
@@ -117,7 +114,7 @@ class ScenarioListPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildList(BuildContext context, List<Scenario> scenarios) {
+  Widget _buildList(BuildContext context, AppLocalizations l10n, List<Scenario> scenarios) {
     if (scenarios.isEmpty) {
       return Center(
         child: Column(
@@ -126,7 +123,7 @@ class ScenarioListPage extends ConsumerWidget {
             const Text('\uD83C\uDF0C', style: TextStyle(fontSize: 48)),
             const SizedBox(height: 12),
             Text(
-              'No scenarios found',
+              l10n.scenarioNoneFound,
               style: TextStyle(color: CosmicColors.textSecondary),
             ),
           ],

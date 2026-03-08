@@ -15,7 +15,7 @@ class ChatRemoteDatasource {
   String? get sessionId => _sessionId;
 
   Future<void> connect(String wsUrl, String ticket) async {
-    _ws?.dispose();
+    await _ws?.disconnect();
     _ws = NativeWebSocket();
 
     final uri = '$wsUrl/ws?ticket=$ticket';
@@ -66,8 +66,9 @@ class ChatRemoteDatasource {
   }
 
   void disconnect() {
-    _ws?.disconnect();
+    final ws = _ws;
     _ws = null;
+    ws?.disconnect();
   }
 
   void dispose() {

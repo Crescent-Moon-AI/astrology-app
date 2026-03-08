@@ -37,7 +37,7 @@ class AstroCalendarEvent {
       eventType: json['event_type'] as String,
       planet: json['planet'] as String,
       sign: json['sign'] as String,
-      exactDatetime: DateTime.parse(json['exact_datetime'] as String),
+      exactDatetime: DateTime.parse(json['exact_datetime'] as String).toLocal(),
       descriptionKey: json['description_key'] as String? ?? '',
       metadata: meta,
     );

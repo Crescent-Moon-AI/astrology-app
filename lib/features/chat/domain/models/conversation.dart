@@ -18,9 +18,9 @@ class Conversation {
       id: json['id'] as String,
       title: json['title'] as String?,
       metadata: json['metadata'] as String?,
-      createdAt: DateTime.parse(json['created_at'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String).toLocal(),
       lastMessageAt: json['last_message_at'] != null
-          ? DateTime.parse(json['last_message_at'] as String)
+          ? DateTime.parse(json['last_message_at'] as String).toLocal()
           : null,
     );
   }

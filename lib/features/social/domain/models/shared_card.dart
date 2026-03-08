@@ -29,9 +29,9 @@ class SharedCard {
       shareToken: json['share_token'] as String,
       imageUrl: json['image_url'] as String?,
       shareUrl: json['share_url'] as String,
-      expiresAt: DateTime.parse(json['expires_at'] as String),
+      expiresAt: DateTime.parse(json['expires_at'] as String).toLocal(),
       viewCount: json['view_count'] as int? ?? 0,
-      createdAt: DateTime.parse(json['created_at'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String).toLocal(),
     );
   }
 }

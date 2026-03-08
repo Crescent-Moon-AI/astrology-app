@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/mood_stats.dart';
 import '../providers/mood_providers.dart';
@@ -17,6 +18,7 @@ class _MoodTrendChartState extends ConsumerState<MoodTrendChart> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final statsAsync = ref.watch(moodStatsProvider(_selectedPeriod));
 
     return Column(
@@ -44,13 +46,13 @@ class _MoodTrendChartState extends ConsumerState<MoodTrendChart> {
         SizedBox(
           height: 200,
           child: statsAsync.when(
-            data: (stats) => _buildChart(context, stats),
+            data: (stats) => _buildChart(context, l10n, stats),
             loading: () => const Center(
               child: CircularProgressIndicator(color: CosmicColors.primary),
             ),
             error: (error, _) => Center(
               child: Text(
-                'Error: $error',
+                l10n.errorLoadFailed,
                 style: const TextStyle(color: CosmicColors.error, fontSize: 12),
               ),
             ),
@@ -60,11 +62,11 @@ class _MoodTrendChartState extends ConsumerState<MoodTrendChart> {
     );
   }
 
-  Widget _buildChart(BuildContext context, MoodStats stats) {
+  Widget _buildChart(BuildContext context, AppLocalizations l10n, MoodStats stats) {
     if (stats.dailyAverages.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'No data yet',
+          l10n.moodNoData,
           style: TextStyle(color: CosmicColors.textTertiary, fontSize: 14),
         ),
       );

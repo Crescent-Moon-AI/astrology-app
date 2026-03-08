@@ -180,7 +180,7 @@ class FriendDetailPage extends ConsumerWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      isZh ? '合盘分析' : 'Synastry',
+                      l10n.friendSynastryTitle,
                       style: const TextStyle(
                         color: CosmicColors.textPrimary,
                         fontWeight: FontWeight.bold,
@@ -305,7 +305,7 @@ class FriendDetailPage extends ConsumerWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Error: $error',
+                l10n.errorLoadFailed,
                 style: const TextStyle(color: CosmicColors.textSecondary),
               ),
             ],
@@ -340,7 +340,7 @@ class FriendDetailPage extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(isZh ? '取消' : 'Cancel'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),

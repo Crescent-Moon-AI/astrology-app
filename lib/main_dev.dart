@@ -17,7 +17,7 @@ import 'main.dart';
 ///   flutter run -t lib/main_dev.dart
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AppConfig.init(EnvConfig.devDevice);
+  AppConfig.init(EnvConfig.dev);
 
   final astroEngine = AstroEngine();
   await astroEngine.init();
@@ -31,7 +31,7 @@ void main() async {
       ],
       child: const YuejianApp(
         forceLocale: Locale('zh'),
-        autoLoginEmail: 'testzhui@test.com',
+        autoLoginEmail: 'dev@test.com',
         autoLoginPassword: 'Test12345678',
       ),
     ),

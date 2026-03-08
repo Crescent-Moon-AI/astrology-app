@@ -6,6 +6,7 @@ import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../chart/presentation/widgets/chart_result_card.dart';
 import '../../domain/models/message.dart';
+import 'tarot_reading_card.dart';
 
 class ToolResultCard extends StatefulWidget {
   final MessageBlock block;
@@ -54,6 +55,11 @@ class _ToolResultCardState extends State<ToolResultCard> {
       BlockStatus.error => '\u274C', // cross mark
       _ => '\uD83D\uDD27', // wrench
     };
+  }
+
+  bool get _isTarotTool {
+    final name = widget.block.toolName ?? '';
+    return const {'tarot_reading', 'tarot'}.contains(name);
   }
 
   bool get _isChartTool {
@@ -151,9 +157,16 @@ class _ToolResultCardState extends State<ToolResultCard> {
                       widget.block.payloadJson != null) ...[
                     ChartResultCard(payloadJson: widget.block.payloadJson!),
                   ],
-                  // Detail toggle for non-chart tools
+                  // Tarot-specific structured display
+                  if (widget.block.status == BlockStatus.success &&
+                      _isTarotTool &&
+                      widget.block.payloadJson != null) ...[
+                    TarotReadingCard(payloadJson: widget.block.payloadJson!),
+                  ],
+                  // Detail toggle for non-chart/non-tarot tools
                   if (widget.block.status == BlockStatus.success &&
                       !_isChartTool &&
+                      !_isTarotTool &&
                       _parsedPayload != null) ...[
                     const SizedBox(height: 8),
                     AnimatedCrossFade(

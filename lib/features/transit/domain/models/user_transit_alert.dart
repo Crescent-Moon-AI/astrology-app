@@ -44,7 +44,7 @@ class UserTransitAlert {
       orb: (json['orb'] as num).toDouble(),
       applying: json['applying'] as bool? ?? true,
       descriptionKey: json['description_key'] as String?,
-      createdAt: DateTime.parse(json['created_at'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String).toLocal(),
     );
   }
 }
