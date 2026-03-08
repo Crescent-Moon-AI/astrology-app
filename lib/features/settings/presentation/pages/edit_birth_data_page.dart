@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
+import 'package:astrology_app/src/rust/api/api/astro.dart' as astro_ffi;
 
 import '../../../../shared/theme/cosmic_colors.dart';
+import '../../../../shared/widgets/breathing_loader.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../domain/models/location_candidate.dart';
 import '../../domain/models/user_profile.dart';
@@ -47,6 +51,58 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
         _initialCity = parts[1].trim();
         _initialDistrict = parts[2].trim();
       }
+
+      // If coordinates are missing/invalid, re-geocode from name
+      final place = p.currentBirthPlace!;
+      final hasValidCoords =
+          place.latitude != null &&
+          place.longitude != null &&
+          (place.latitude != 0 || place.longitude != 0) &&
+          place.timezone != null;
+      if (!hasValidCoords) {
+        _resolveLocation(name);
+      }
+    }
+  }
+
+  /// Unified geocoding: local FFI first, then backend API fallback.
+  Future<void> _resolveLocation(String displayName) async {
+    // Try local FFI geocoding first (embedded Chinese city data)
+    try {
+      final jsonStr = await astro_ffi.geocodeChina(query: displayName);
+      final List<dynamic> locations = json.decode(jsonStr) as List<dynamic>;
+      if (locations.isNotEmpty) {
+        final loc = locations[0] as Map<String, dynamic>;
+        ref
+            .read(birthDataFormProvider.notifier)
+            .setLocation(
+              LocationCandidate(
+                name: loc['formatted_address'] as String? ?? displayName,
+                latitude: (loc['latitude'] as num?)?.toDouble() ?? 0,
+                longitude: (loc['longitude'] as num?)?.toDouble() ?? 0,
+                timezone: loc['timezone'] as String?,
+                countryCode: loc['country_code'] as String?,
+                adminArea: loc['admin_area'] as String?,
+                confidence: (loc['confidence'] as num?)?.toDouble(),
+              ),
+            );
+        return;
+      }
+    } catch (_) {
+      // FFI failed, fall through to backend API
+    }
+
+    // Fallback: backend geocoding API
+    try {
+      final repo = ref.read(profileRepositoryProvider);
+      final geocode = await repo.resolveLocation(displayName);
+      if (geocode.candidates.isNotEmpty) {
+        ref
+            .read(birthDataFormProvider.notifier)
+            .setLocation(geocode.candidates.first);
+      }
+    } catch (_) {
+      // Both failed, keep existing location data
     }
   }
 
@@ -58,16 +114,13 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
 
     // Listen for loading → data transitions (e.g. provider was still
     // loading on the first build and resolves on a later frame).
-    ref.listen<AsyncValue<UserProfile>>(
-      userProfileProvider,
-      (_, next) {
-        next.whenData((p) {
-          if (!_initialized) {
-            setState(() => _initFromProfile(p));
-          }
-        });
-      },
-    );
+    ref.listen<AsyncValue<UserProfile>>(userProfileProvider, (_, next) {
+      next.whenData((p) {
+        if (!_initialized) {
+          setState(() => _initFromProfile(p));
+        }
+      });
+    });
 
     // If data is already available on first build, init synchronously
     // (local state is set before the rest of build() reads it).
@@ -89,252 +142,292 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
         iconTheme: const IconThemeData(color: CosmicColors.textPrimary),
       ),
       body: StarfieldBackground(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Birth date
-              _SectionCard(
-                title: l10n.birthDate,
-                child: InkWell(
-                  onTap: () => _pickDate(context),
-                  borderRadius: BorderRadius.circular(12),
-                  child: InputDecorator(
-                    decoration: _inputDecoration(l10n.birthDate),
+        child: profile.when(
+          loading: () => const Center(child: BreathingLoader()),
+          error: (_, __) => Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.error_outline,
+                    color: CosmicColors.textTertiary,
+                    size: 48,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    l10n.errorLoadFailed,
+                    style: const TextStyle(
+                      color: CosmicColors.textSecondary,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: () => ref.invalidate(userProfileProvider),
                     child: Text(
-                      formState.birthDate != null
-                          ? _formatDate(formState.birthDate!)
-                          : l10n.birthDate,
-                      style: TextStyle(
-                        color: formState.birthDate != null
-                            ? CosmicColors.textPrimary
-                            : CosmicColors.textTertiary,
-                        fontSize: 15,
+                      l10n.retry,
+                      style: const TextStyle(
+                        color: CosmicColors.primaryLight,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          data: (_) => SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Birth date
+                _SectionCard(
+                  title: l10n.birthDate,
+                  child: InkWell(
+                    onTap: () => _pickDate(context),
+                    borderRadius: BorderRadius.circular(12),
+                    child: InputDecorator(
+                      decoration: _inputDecoration(l10n.birthDate),
+                      child: Text(
+                        formState.birthDate != null
+                            ? _formatDate(formState.birthDate!)
+                            : l10n.birthDate,
+                        style: TextStyle(
+                          color: formState.birthDate != null
+                              ? CosmicColors.textPrimary
+                              : CosmicColors.textTertiary,
+                          fontSize: 15,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // Birth time
-              _SectionCard(
-                title: l10n.birthTime,
-                child: Column(
-                  children: [
-                    // Time unknown toggle
-                    Row(
-                      children: [
-                        Checkbox(
-                          value:
-                              formState.birthTimeAccuracy ==
-                              BirthTimeAccuracy.unknown,
-                          onChanged: (checked) {
-                            final notifier = ref.read(
-                              birthDataFormProvider.notifier,
-                            );
-                            if (checked == true) {
-                              notifier.setBirthTimeAccuracy(
-                                BirthTimeAccuracy.unknown,
-                              );
-                            } else {
-                              notifier.setBirthTimeAccuracy(
-                                BirthTimeAccuracy.exact,
-                              );
-                            }
-                          },
-                          activeColor: CosmicColors.primary,
-                          checkColor: CosmicColors.textPrimary,
-                          side: const BorderSide(
-                            color: CosmicColors.textTertiary,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            l10n.birthTimeUnknown,
-                            style: const TextStyle(
-                              color: CosmicColors.textSecondary,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    if (formState.birthTimeAccuracy !=
-                        BirthTimeAccuracy.unknown) ...[
-                      const SizedBox(height: 8),
-                      InkWell(
-                        onTap: () => _pickTime(context),
-                        borderRadius: BorderRadius.circular(12),
-                        child: InputDecorator(
-                          decoration: _inputDecoration(l10n.birthTime),
-                          child: Text(
-                            formState.birthTime != null
-                                ? _formatTime(formState.birthTime!)
-                                : l10n.birthTime,
-                            style: TextStyle(
-                              color: formState.birthTime != null
-                                  ? CosmicColors.textPrimary
-                                  : CosmicColors.textTertiary,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // Accuracy selector
+                // Birth time
+                _SectionCard(
+                  title: l10n.birthTime,
+                  child: Column(
+                    children: [
+                      // Time unknown toggle
                       Row(
                         children: [
-                          _AccuracyChip(
-                            label: l10n.birthTimeExact,
-                            selected:
+                          Checkbox(
+                            value:
                                 formState.birthTimeAccuracy ==
-                                BirthTimeAccuracy.exact,
-                            onTap: () => ref
-                                .read(birthDataFormProvider.notifier)
-                                .setBirthTimeAccuracy(BirthTimeAccuracy.exact),
+                                BirthTimeAccuracy.unknown,
+                            onChanged: (checked) {
+                              final notifier = ref.read(
+                                birthDataFormProvider.notifier,
+                              );
+                              if (checked == true) {
+                                notifier.setBirthTimeAccuracy(
+                                  BirthTimeAccuracy.unknown,
+                                );
+                              } else {
+                                notifier.setBirthTimeAccuracy(
+                                  BirthTimeAccuracy.exact,
+                                );
+                              }
+                            },
+                            activeColor: CosmicColors.primary,
+                            checkColor: CosmicColors.textPrimary,
+                            side: const BorderSide(
+                              color: CosmicColors.textTertiary,
+                            ),
                           ),
-                          const SizedBox(width: 8),
-                          _AccuracyChip(
-                            label: l10n.birthTimeApproximate,
-                            selected:
-                                formState.birthTimeAccuracy ==
-                                BirthTimeAccuracy.approximate,
-                            onTap: () => ref
-                                .read(birthDataFormProvider.notifier)
-                                .setBirthTimeAccuracy(
-                                  BirthTimeAccuracy.approximate,
-                                ),
+                          Expanded(
+                            child: Text(
+                              l10n.birthTimeUnknown,
+                              style: const TextStyle(
+                                color: CosmicColors.textSecondary,
+                                fontSize: 14,
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                    ],
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Birth place — tap to open region picker
-              _SectionCard(
-                title: l10n.birthPlace,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () => _pickRegion(context),
-                      borderRadius: BorderRadius.circular(12),
-                      child: InputDecorator(
-                        decoration: _inputDecoration(l10n.birthPlaceSearch),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                _selectedRegionDisplay ?? l10n.birthPlaceSearch,
-                                style: TextStyle(
-                                  color: _selectedRegionDisplay != null
-                                      ? CosmicColors.textPrimary
-                                      : CosmicColors.textTertiary,
-                                  fontSize: 15,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                      if (formState.birthTimeAccuracy !=
+                          BirthTimeAccuracy.unknown) ...[
+                        const SizedBox(height: 8),
+                        InkWell(
+                          onTap: () => _pickTime(context),
+                          borderRadius: BorderRadius.circular(12),
+                          child: InputDecorator(
+                            decoration: _inputDecoration(l10n.birthTime),
+                            child: Text(
+                              formState.birthTime != null
+                                  ? _formatTime(formState.birthTime!)
+                                  : l10n.birthTime,
+                              style: TextStyle(
+                                color: formState.birthTime != null
+                                    ? CosmicColors.textPrimary
+                                    : CosmicColors.textTertiary,
+                                fontSize: 15,
                               ),
                             ),
-                            const Icon(
-                              Icons.chevron_right,
-                              color: CosmicColors.textTertiary,
-                              size: 20,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        // Accuracy selector
+                        Row(
+                          children: [
+                            _AccuracyChip(
+                              label: l10n.birthTimeExact,
+                              selected:
+                                  formState.birthTimeAccuracy ==
+                                  BirthTimeAccuracy.exact,
+                              onTap: () => ref
+                                  .read(birthDataFormProvider.notifier)
+                                  .setBirthTimeAccuracy(
+                                    BirthTimeAccuracy.exact,
+                                  ),
+                            ),
+                            const SizedBox(width: 8),
+                            _AccuracyChip(
+                              label: l10n.birthTimeApproximate,
+                              selected:
+                                  formState.birthTimeAccuracy ==
+                                  BirthTimeAccuracy.approximate,
+                              onTap: () => ref
+                                  .read(birthDataFormProvider.notifier)
+                                  .setBirthTimeAccuracy(
+                                    BirthTimeAccuracy.approximate,
+                                  ),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                    if (formState.selectedLocation != null &&
-                        formState.selectedLocation!.timezone != null) ...[
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.schedule,
-                            size: 14,
-                            color: CosmicColors.textTertiary,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            l10n.birthPlaceTimezone(
-                              formState.selectedLocation!.timezone!,
-                            ),
-                            style: const TextStyle(
-                              color: CosmicColors.textTertiary,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
+                      ],
                     ],
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 32),
-
-              // Error
-              if (formState.error != null) ...[
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: CosmicColors.error.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    formState.error!,
-                    style: const TextStyle(
-                      color: CosmicColors.error,
-                      fontSize: 13,
-                    ),
                   ),
                 ),
+
                 const SizedBox(height: 16),
-              ],
 
-              // Save button
-              Container(
-                height: 48,
-                decoration: BoxDecoration(
-                  gradient: CosmicColors.primaryGradient,
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: formState.isSaving ? null : () => _save(context),
-                    borderRadius: BorderRadius.circular(24),
-                    child: Center(
-                      child: formState.isSaving
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: CosmicColors.textPrimary,
-                                strokeWidth: 2,
+                // Birth place — tap to open region picker
+                _SectionCard(
+                  title: l10n.birthPlace,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: () => _pickRegion(context),
+                        borderRadius: BorderRadius.circular(12),
+                        child: InputDecorator(
+                          decoration: _inputDecoration(l10n.birthPlaceSearch),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  _selectedRegionDisplay ??
+                                      l10n.birthPlaceSearch,
+                                  style: TextStyle(
+                                    color: _selectedRegionDisplay != null
+                                        ? CosmicColors.textPrimary
+                                        : CosmicColors.textTertiary,
+                                    fontSize: 15,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                            )
-                          : Text(
-                              l10n.birthDataSave,
+                              const Icon(
+                                Icons.chevron_right,
+                                color: CosmicColors.textTertiary,
+                                size: 20,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      if (formState.selectedLocation != null &&
+                          formState.selectedLocation!.timezone != null) ...[
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.schedule,
+                              size: 14,
+                              color: CosmicColors.textTertiary,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              l10n.birthPlaceTimezone(
+                                formState.selectedLocation!.timezone!,
+                              ),
                               style: const TextStyle(
-                                color: CosmicColors.textPrimary,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                color: CosmicColors.textTertiary,
+                                fontSize: 12,
                               ),
                             ),
+                          ],
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 32),
+
+                // Error
+                if (formState.error != null) ...[
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: CosmicColors.error.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      formState.error!,
+                      style: const TextStyle(
+                        color: CosmicColors.error,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+
+                // Save button
+                Container(
+                  height: 48,
+                  decoration: BoxDecoration(
+                    gradient: CosmicColors.primaryGradient,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: formState.isSaving ? null : () => _save(context),
+                      borderRadius: BorderRadius.circular(24),
+                      child: Center(
+                        child: formState.isSaving
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: CosmicColors.textPrimary,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                l10n.birthDataSave,
+                                style: const TextStyle(
+                                  color: CosmicColors.textPrimary,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -421,34 +514,7 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
       _initialDistrict = result.district;
     });
 
-    // Geocode the selected region to get lat/lng/timezone
-    final repo = ref.read(profileRepositoryProvider);
-    try {
-      final geocode = await repo.resolveLocation(result.displayName);
-      if (geocode.candidates.isNotEmpty) {
-        ref
-            .read(birthDataFormProvider.notifier)
-            .setLocation(geocode.candidates.first);
-      } else {
-        // Fallback: store as a location candidate without coordinates
-        ref.read(birthDataFormProvider.notifier).setLocation(
-              LocationCandidate(
-                name: result.displayName,
-                latitude: 0,
-                longitude: 0,
-              ),
-            );
-      }
-    } catch (_) {
-      // Still store the name even if geocoding fails
-      ref.read(birthDataFormProvider.notifier).setLocation(
-            LocationCandidate(
-              name: result.displayName,
-              latitude: 0,
-              longitude: 0,
-            ),
-          );
-    }
+    await _resolveLocation(result.displayName);
   }
 
   Future<void> _save(BuildContext context) async {

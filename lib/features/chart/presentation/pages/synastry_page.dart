@@ -10,6 +10,8 @@ import '../widgets/cross_aspect_table.dart';
 import '../widgets/house_overlay_table.dart';
 import '../widgets/no_birth_data_prompt.dart';
 import '../widgets/person_selector.dart';
+import 'package:astrology_app/shared/widgets/breathing_loader.dart';
+import 'package:astrology_app/features/settings/presentation/providers/profile_providers.dart';
 
 class SynastryPage extends ConsumerStatefulWidget {
   const SynastryPage({super.key});
@@ -51,71 +53,111 @@ class _SynastryPageState extends ConsumerState<SynastryPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final birth = ref.watch(currentBirthDataProvider);
+    final birthAsync = ref.watch(currentBirthDataProvider);
 
     return Scaffold(
       backgroundColor: CosmicColors.background,
       appBar: AppBar(
         backgroundColor: CosmicColors.background,
-        title: Text(l10n.chartSynastry,
-            style: const TextStyle(color: CosmicColors.textPrimary)),
+        title: Text(
+          l10n.chartSynastry,
+          style: const TextStyle(color: CosmicColors.textPrimary),
+        ),
         iconTheme: const IconThemeData(color: CosmicColors.textPrimary),
       ),
-      body: birth == null
-          ? const NoBirthDataPrompt()
-          : ListView(
-              padding: const EdgeInsets.all(16),
+      body: birthAsync.when(
+        loading: () => const Center(child: BreathingLoader()),
+        error: (_, __) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                _PersonCard(
-                  label: l10n.chartPerson1,
-                  name: birth.name.isEmpty ? l10n.chartMe : birth.name,
-                  subtitle: '${birth.birthDate} ${birth.birthTime}',
+                const Icon(
+                  Icons.error_outline,
+                  color: CosmicColors.textTertiary,
+                  size: 48,
                 ),
                 const SizedBox(height: 12),
-                PersonSelector(
-                  label: l10n.chartPerson2,
-                  person: _person2,
-                  onPersonChanged: (p) => setState(() => _person2 = p),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CosmicColors.primary,
-                      foregroundColor: CosmicColors.textPrimary,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                    ),
-                    onPressed:
-                        _person2 == null || _isLoading
-                            ? null
-                            : () => _calculate(birth),
-                    child: _isLoading
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: CosmicColors.textPrimary,
-                            ),
-                          )
-                        : Text(l10n.chartCalculate),
+                Text(
+                  l10n.errorLoadFailed,
+                  style: const TextStyle(
+                    color: CosmicColors.textSecondary,
+                    fontSize: 15,
                   ),
                 ),
-                if (_error != null) ...[
-                  const SizedBox(height: 12),
-                  Text(_error!,
-                      style: const TextStyle(color: CosmicColors.error)),
-                ],
-                if (_result != null) ...[
-                  const SizedBox(height: 20),
-                  _SynastryResult(result: _result!),
-                ],
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () => ref.invalidate(userProfileProvider),
+                  child: Text(
+                    l10n.retry,
+                    style: const TextStyle(
+                      color: CosmicColors.primaryLight,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
               ],
             ),
+          ),
+        ),
+        data: (birth) => birth == null
+            ? const NoBirthDataPrompt()
+            : ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  _PersonCard(
+                    label: l10n.chartPerson1,
+                    name: birth.name.isEmpty ? l10n.chartMe : birth.name,
+                    subtitle: '${birth.birthDate} ${birth.birthTime}',
+                  ),
+                  const SizedBox(height: 12),
+                  PersonSelector(
+                    label: l10n.chartPerson2,
+                    person: _person2,
+                    onPersonChanged: (p) => setState(() => _person2 = p),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CosmicColors.primary,
+                        foregroundColor: CosmicColors.textPrimary,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                      onPressed: _person2 == null || _isLoading
+                          ? null
+                          : () => _calculate(birth),
+                      child: _isLoading
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: CosmicColors.textPrimary,
+                              ),
+                            )
+                          : Text(l10n.chartCalculate),
+                    ),
+                  ),
+                  if (_error != null) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      _error!,
+                      style: const TextStyle(color: CosmicColors.error),
+                    ),
+                  ],
+                  if (_result != null) ...[
+                    const SizedBox(height: 20),
+                    _SynastryResult(result: _result!),
+                  ],
+                ],
+              ),
+      ),
     );
   }
 }
@@ -143,18 +185,29 @@ class _PersonCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label,
-              style: const TextStyle(
-                  color: CosmicColors.textSecondary, fontSize: 12)),
+          Text(
+            label,
+            style: const TextStyle(
+              color: CosmicColors.textSecondary,
+              fontSize: 12,
+            ),
+          ),
           const SizedBox(height: 4),
-          Text(name,
-              style: const TextStyle(
-                  color: CosmicColors.secondary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600)),
-          Text(subtitle,
-              style: const TextStyle(
-                  color: CosmicColors.textTertiary, fontSize: 13)),
+          Text(
+            name,
+            style: const TextStyle(
+              color: CosmicColors.secondary,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Text(
+            subtitle,
+            style: const TextStyle(
+              color: CosmicColors.textTertiary,
+              fontSize: 13,
+            ),
+          ),
         ],
       ),
     );

@@ -48,7 +48,10 @@ class FriendListPage extends ConsumerWidget {
                   ref.invalidate(userProfileProvider);
                 },
                 child: ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   children: [
                     // -- "你的星盘" section --
                     _SectionHeader(title: l10n.chartArchivesMyChart),
@@ -86,7 +89,7 @@ class FriendListPage extends ConsumerWidget {
                       ),
                       error: (_, __) => _MyChartCard(
                         username: user?.username ?? user?.email ?? '',
-                        subtitle: l10n.chartArchivesNotSet,
+                        subtitle: l10n.errorLoadFailed,
                         selfLabel: l10n.chartArchivesSelf,
                         onEdit: () => context.push('/settings/birth-data'),
                       ),
@@ -100,7 +103,9 @@ class FriendListPage extends ConsumerWidget {
                     friendsAsync.when(
                       data: (friends) {
                         if (friends.isEmpty) {
-                          return _FriendEmptyState(label: l10n.chartArchivesNoData);
+                          return _FriendEmptyState(
+                            label: l10n.chartArchivesNoData,
+                          );
                         }
                         return Column(
                           children: friends.map((friend) {
@@ -128,7 +133,9 @@ class FriendListPage extends ConsumerWidget {
                           padding: const EdgeInsets.all(20),
                           child: Text(
                             'Error: $error',
-                            style: const TextStyle(color: CosmicColors.textSecondary),
+                            style: const TextStyle(
+                              color: CosmicColors.textSecondary,
+                            ),
                           ),
                         ),
                       ),
@@ -266,7 +273,10 @@ class _MyChartCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: CosmicColors.primary.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(10),
