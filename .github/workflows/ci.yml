@@ -100,3 +100,32 @@ jobs:
           name: xingjian-${{ matrix.variant }}-v${{ steps.version.outputs.version }}
           path: build/app/outputs/flutter-apk/xingjian-${{ matrix.variant }}-*.apk
           retention-days: 14
+
+      - name: Upload APK to Alibaba Cloud OSS
+        if: github.event_name == 'push'
+        continue-on-error: true
+        env:
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+        run: |
+          curl -fsSL https://gosspublic.alicdn.com/ossutil/install.sh | bash
+          VERSION="${{ steps.version.outputs.version }}"
+          VARIANT="${{ matrix.variant }}"
+          SHORT_SHA="${GITHUB_SHA::7}"
+          APK="build/app/outputs/flutter-apk/xingjian-${VARIANT}-v${VERSION}.apk"
+          OSS_FLAGS="-e oss-cn-beijing.aliyuncs.com -i $OSS_ACCESS_KEY_ID -k $OSS_ACCESS_KEY_SECRET"
+          # Archive build (never overwritten)
+          ossutil cp "$APK" \
+            "oss://astrology-application/releases/${VARIANT}/xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk" \
+            $OSS_FLAGS
+          # Latest pointer (always overwritten)
+          ossutil cp "$APK" \
+            "oss://astrology-application/releases/${VARIANT}/xingjian-${VARIANT}-latest.apk" \
+            $OSS_FLAGS
+          # Write download links to job summary
+          OSS_BASE="https://astrology-application.oss-cn-beijing.aliyuncs.com/releases/${VARIANT}"
+          echo "### 📦 OSS Download — ${VARIANT}" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Build | Link |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|-------|------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Archive | [xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk](${OSS_BASE}/xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk) |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Latest | [xingjian-${VARIANT}-latest.apk](${OSS_BASE}/xingjian-${VARIANT}-latest.apk) |" >> "$GITHUB_STEP_SUMMARY"
