@@ -171,6 +171,12 @@ class ProfilePage extends ConsumerWidget {
                             _buildServiceItem(
                               Icons.style_outlined,
                               l10n.profileTarotGallery,
+                              () => context.push('/tarot-gallery'),
+                            ),
+                            const Divider(height: 1, indent: 48, color: CosmicColors.divider),
+                            _buildServiceItem(
+                              Icons.auto_awesome_mosaic_outlined,
+                              l10n.divinationHubTitle,
                               () => context.push('/divination'),
                             ),
                             const Divider(height: 1, indent: 48, color: CosmicColors.divider),

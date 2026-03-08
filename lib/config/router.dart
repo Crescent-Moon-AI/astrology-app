@@ -34,6 +34,8 @@ import '../features/meihua_ritual/presentation/pages/meihua_method_page.dart';
 import '../features/chart/presentation/pages/chart_hub_page.dart';
 import '../features/chart/presentation/pages/synastry_page.dart';
 import '../features/divination/presentation/pages/divination_hub_page.dart';
+import '../features/tarot_gallery/presentation/pages/tarot_gallery_page.dart';
+import '../features/tarot_gallery/presentation/pages/tarot_card_detail_page.dart';
 import '../features/transit/presentation/pages/transit_list_page.dart';
 import '../features/transit/presentation/pages/transit_detail_page.dart';
 import '../features/transit/presentation/pages/astro_calendar_page.dart';
@@ -287,6 +289,25 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'divination',
         pageBuilder: (context, state) =>
             _cosmicFadePage(state, const DivinationHubPage()),
+      ),
+
+      // Tarot Gallery
+      GoRoute(
+        path: '/tarot-gallery',
+        name: 'tarotGallery',
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const TarotGalleryPage()),
+      ),
+      GoRoute(
+        path: '/tarot-gallery/detail',
+        name: 'tarotGalleryDetail',
+        pageBuilder: (context, state) {
+          final args = state.extra as TarotDetailArgs;
+          return _cosmicFadePage(
+            state,
+            TarotCardDetailPage(args: args),
+          );
+        },
       ),
 
       // Dice Ritual
