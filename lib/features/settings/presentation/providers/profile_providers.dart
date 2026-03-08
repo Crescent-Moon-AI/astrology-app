@@ -121,6 +121,7 @@ class BirthDataFormNotifier extends Notifier<BirthDataFormState> {
         timezone: place.timezone,
         countryCode: place.countryCode,
         adminArea: place.adminArea,
+        id: place.id,
       );
     }
 

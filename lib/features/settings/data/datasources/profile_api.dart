@@ -31,7 +31,7 @@ class ProfileApi {
     }
 
     if (birthPlace != null) {
-      body['birth_place'] = {
+      final placeMap = <String, dynamic>{
         'normalized_name': birthPlace.name,
         'latitude': birthPlace.latitude,
         'longitude': birthPlace.longitude,
@@ -41,6 +41,10 @@ class ProfileApi {
         'source': 'geocoded',
         'confidence': birthPlace.confidence,
       };
+      if (birthPlace.id != null) {
+        placeMap['id'] = birthPlace.id;
+      }
+      body['birth_place'] = placeMap;
     }
 
     await _dio.put(ApiConstants.profileCore, data: body);

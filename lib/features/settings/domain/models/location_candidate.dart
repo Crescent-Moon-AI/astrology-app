@@ -33,6 +33,7 @@ class LocationCandidate {
   final String? countryCode;
   final String? adminArea;
   final double? confidence;
+  final String? id;
 
   const LocationCandidate({
     required this.name,
@@ -43,6 +44,7 @@ class LocationCandidate {
     this.countryCode,
     this.adminArea,
     this.confidence,
+    this.id,
   });
 
   factory LocationCandidate.fromJson(Map<String, dynamic> json) {
