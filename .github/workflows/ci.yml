@@ -5,6 +5,14 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: 'APK variant to build'
+        required: true
+        default: mock
+        type: choice
+        options: [mock, dev, release, all]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,6 +24,7 @@ permissions:
 jobs:
   analyze-and-test:
     name: Analyze & Test
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -37,17 +46,20 @@ jobs:
       - name: Run tests
         run: flutter test
 
-  # Detect which files changed to decide whether APK build is needed
-  changes:
-    name: Detect Changes
+  # Detect file changes + compute build matrix
+  setup:
+    name: Setup Build Matrix
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event.pull_request.draft == false
     outputs:
-      needs_build: ${{ steps.filter.outputs.app }}
+      matrix: ${{ steps.matrix.outputs.result }}
+      should_build: ${{ steps.decide.outputs.should_build }}
     steps:
       - uses: actions/checkout@v6
+
+      # Path filter (only for push/PR, not manual)
       - uses: dorny/paths-filter@v3
         id: filter
+        if: github.event_name != 'workflow_dispatch'
         with:
           filters: |
             app:
@@ -58,14 +70,51 @@ jobs:
               - 'pubspec.lock'
               - '.github/workflows/ci.yml'
 
+      - name: Decide whether to build
+        id: decide
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "should_build=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_build=${{ steps.filter.outputs.app }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Compute matrix
+        id: matrix
+        run: |
+          MOCK='{"variant":"mock","target":"lib/main_mock.dart"}'
+          DEV='{"variant":"dev","target":"lib/main.dart"}'
+          REL='{"variant":"release","target":"lib/main_release.dart"}'
+
+          case "${{ github.event_name }}" in
+            workflow_dispatch)
+              case "${{ inputs.variant }}" in
+                all)  echo "result={\"include\":[$MOCK,$DEV,$REL]}" >> "$GITHUB_OUTPUT" ;;
+                mock) echo "result={\"include\":[$MOCK]}" >> "$GITHUB_OUTPUT" ;;
+                dev)  echo "result={\"include\":[$DEV]}" >> "$GITHUB_OUTPUT" ;;
+                release) echo "result={\"include\":[$REL]}" >> "$GITHUB_OUTPUT" ;;
+              esac
+              ;;
+            push)
+              # Push to main: dev + release
+              echo "result={\"include\":[$DEV,$REL]}" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              # PR: dev only
+              echo "result={\"include\":[$DEV]}" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
   build-apk:
     name: Build APK (${{ matrix.variant }})
     runs-on: ubuntu-latest
-    needs: [analyze-and-test, changes]
-    if: needs.changes.outputs.needs_build == 'true'
-    # PR: only mock (fast feedback); push to main: all 3 variants
+    needs: [analyze-and-test, setup]
+    if: |
+      always()
+      && (needs.analyze-and-test.result == 'success' || needs.analyze-and-test.result == 'skipped')
+      && needs.setup.outputs.should_build == 'true'
     strategy:
-      matrix: ${{ fromJSON(github.event_name == 'push' && '{"include":[{"variant":"mock","target":"lib/main_mock.dart"},{"variant":"dev","target":"lib/main.dart"},{"variant":"release","target":"lib/main_release.dart"}]}' || '{"include":[{"variant":"mock","target":"lib/main_mock.dart"}]}') }}
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v6
 
@@ -89,7 +138,6 @@ jobs:
           channel: stable
           cache: true
 
-      # Cache Gradle to speed up Android builds (~50% faster on cache hit)
       - name: Cache Gradle
         uses: actions/cache@v4
         with:
@@ -127,7 +175,7 @@ jobs:
           retention-days: 14
 
       - name: Upload APK to Alibaba Cloud OSS
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         continue-on-error: true
         env:
           OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
