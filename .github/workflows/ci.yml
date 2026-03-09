@@ -207,15 +207,34 @@ jobs:
             ossutil cp -f "$APK" "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}" $OSS_FLAGS
             LATEST_URL=$(sign_url "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}")
           fi
-          # Write download links to job summary
-          echo "### OSS Download — ${VARIANT}" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Build | Link |" >> "$GITHUB_STEP_SUMMARY"
-          echo "|-------|------|" >> "$GITHUB_STEP_SUMMARY"
+          # Write signed URLs to file (avoids GitHub secret masking in summary)
+          URL_FILE="build/app/outputs/flutter-apk/oss-download-urls-${VARIANT}.txt"
+          echo "OSS Download URLs — ${VARIANT}" > "$URL_FILE"
+          echo "Generated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$URL_FILE"
+          echo "Valid for: 30 days" >> "$URL_FILE"
+          echo "" >> "$URL_FILE"
           if [ -n "$ARCHIVE_URL" ]; then
-            echo "| Archive | [${ARCHIVE_NAME}](${ARCHIVE_URL}) |" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "| Archive | ${ARCHIVE_NAME} (sign failed) |" >> "$GITHUB_STEP_SUMMARY"
+            echo "Archive: $ARCHIVE_URL" >> "$URL_FILE"
           fi
           if [ -n "$LATEST_URL" ]; then
-            echo "| Latest | [${LATEST_NAME}](${LATEST_URL}) |" >> "$GITHUB_STEP_SUMMARY"
+            echo "Latest:  $LATEST_URL" >> "$URL_FILE"
           fi
+          # Job summary (file names only, URLs in artifact)
+          echo "### OSS Download — ${VARIANT}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Signed download URLs are in the \`oss-urls-${VARIANT}\` artifact (GitHub masks secrets in summaries)." >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| File | Status |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|------|--------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| ${ARCHIVE_NAME} | uploaded |" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$LATEST_URL" ]; then
+            echo "| ${LATEST_NAME} | updated |" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload OSS download URLs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: oss-urls-${{ matrix.variant }}
+          path: build/app/outputs/flutter-apk/oss-download-urls-*.txt
+          retention-days: 30
+          if-no-files-found: ignore
