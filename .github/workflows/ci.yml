@@ -37,20 +37,35 @@ jobs:
       - name: Run tests
         run: flutter test
 
+  # Detect which files changed to decide whether APK build is needed
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.draft == false
+    outputs:
+      needs_build: ${{ steps.filter.outputs.app }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            app:
+              - 'lib/**'
+              - 'android/**'
+              - 'rust/**'
+              - 'pubspec.yaml'
+              - 'pubspec.lock'
+              - '.github/workflows/ci.yml'
+
   build-apk:
     name: Build APK (${{ matrix.variant }})
     runs-on: ubuntu-latest
-    needs: analyze-and-test
-    if: github.event_name == 'push' || github.event.pull_request.draft == false
+    needs: [analyze-and-test, changes]
+    if: needs.changes.outputs.needs_build == 'true'
+    # PR: only mock (fast feedback); push to main: all 3 variants
     strategy:
-      matrix:
-        include:
-          - variant: mock
-            target: lib/main_mock.dart
-          - variant: dev
-            target: lib/main.dart
-          - variant: release
-            target: lib/main_release.dart
+      matrix: ${{ fromJSON(github.event_name == 'push' && '{"include":[{"variant":"mock","target":"lib/main_mock.dart"},{"variant":"dev","target":"lib/main.dart"},{"variant":"release","target":"lib/main_release.dart"}]}' || '{"include":[{"variant":"mock","target":"lib/main_mock.dart"}]}') }}
     steps:
       - uses: actions/checkout@v6
 
@@ -73,6 +88,16 @@ jobs:
         with:
           channel: stable
           cache: true
+
+      # Cache Gradle to speed up Android builds (~50% faster on cache hit)
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('android/**/*.gradle*', 'android/gradle-wrapper.properties') }}
+          restore-keys: gradle-${{ runner.os }}-
 
       - name: Install dependencies
         run: flutter pub get
@@ -119,7 +144,7 @@ jobs:
             "oss://astrology-application/releases/${VARIANT}/xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk" \
             $OSS_FLAGS
           # Latest pointer (always overwritten)
-          ossutil cp "$APK" \
+          ossutil cp -f "$APK" \
             "oss://astrology-application/releases/${VARIANT}/xingjian-${VARIANT}-latest.apk" \
             $OSS_FLAGS
           # Generate signed download URLs (30 days = 2592000s)
@@ -131,7 +156,7 @@ jobs:
             "oss://astrology-application/releases/${VARIANT}/xingjian-${VARIANT}-latest.apk" \
             --timeout $SIGN_TIMEOUT $OSS_FLAGS 2>&1 | grep -o 'https://[^ ]*')
           # Write download links to job summary
-          echo "### 📦 OSS Download — ${VARIANT}" >> "$GITHUB_STEP_SUMMARY"
+          echo "### OSS Download — ${VARIANT}" >> "$GITHUB_STEP_SUMMARY"
           echo "| Build | Link |" >> "$GITHUB_STEP_SUMMARY"
           echo "|-------|------|" >> "$GITHUB_STEP_SUMMARY"
           echo "| Archive | [xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk](${ARCHIVE_URL}) |" >> "$GITHUB_STEP_SUMMARY"
