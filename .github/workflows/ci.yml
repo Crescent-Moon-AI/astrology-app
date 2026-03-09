@@ -193,17 +193,27 @@ jobs:
           else
             OSS_PREFIX="releases/${VARIANT}"
           fi
+          # Detect sign command name (v1 uses "sign", older may use "signurl")
+          if ossutil sign --help >/dev/null 2>&1; then
+            SIGN_CMD="sign"
+          else
+            SIGN_CMD="signurl"
+          fi
+          sign_url() {
+            local raw
+            raw=$(ossutil $SIGN_CMD "$1" --timeout $SIGN_TIMEOUT $OSS_FLAGS 2>&1)
+            echo "ossutil $SIGN_CMD output: $raw" >&2
+            echo "$raw" | grep -o 'https://[^ ]*' || true
+          }
           # Archive build (never overwritten)
           ARCHIVE_NAME="xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk"
           ossutil cp "$APK" "oss://astrology-application/${OSS_PREFIX}/${ARCHIVE_NAME}" $OSS_FLAGS
-          ARCHIVE_URL=$(ossutil sign "oss://astrology-application/${OSS_PREFIX}/${ARCHIVE_NAME}" \
-            --timeout $SIGN_TIMEOUT $OSS_FLAGS 2>&1 | grep -o 'https://[^ ]*' || true)
+          ARCHIVE_URL=$(sign_url "oss://astrology-application/${OSS_PREFIX}/${ARCHIVE_NAME}")
           # Latest pointer (only on push to main or manual trigger)
           if [ "${{ github.event_name }}" != "pull_request" ]; then
             LATEST_NAME="xingjian-${VARIANT}-latest.apk"
             ossutil cp -f "$APK" "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}" $OSS_FLAGS
-            LATEST_URL=$(ossutil sign "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}" \
-              --timeout $SIGN_TIMEOUT $OSS_FLAGS 2>&1 | grep -o 'https://[^ ]*' || true)
+            LATEST_URL=$(sign_url "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}")
           fi
           # Write download links to job summary
           echo "### OSS Download — ${VARIANT}" >> "$GITHUB_STEP_SUMMARY"
