@@ -68,10 +68,49 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 
   Future<bool> login(String identifier, String password) async {
+    state = state.copyWith(
+      status: AuthStatus.unauthenticated,
+      error: 'Email login is no longer supported',
+    );
+    return false;
+  }
+
+  Future<bool> register(
+    String email,
+    String password, {
+    String? username,
+    String? inviteCode,
+  }) async {
+    state = state.copyWith(
+      status: AuthStatus.unauthenticated,
+      error: 'Email registration is no longer supported',
+    );
+    return false;
+  }
+
+  /// Send SMS OTP. Returns error message or null on success.
+  Future<String?> sendSMSOTP(String phone) async {
     try {
-      final response = await _datasource.login(
-        identifier: identifier,
-        password: password,
+      await _datasource.sendSMSOTP(phone);
+      return null;
+    } on DioException catch (e) {
+      return _extractError(e);
+    }
+  }
+
+  /// Register with phone + OTP.
+  Future<bool> smsRegister(
+    String phone,
+    String code, {
+    String? username,
+    String? inviteCode,
+  }) async {
+    try {
+      final response = await _datasource.smsRegister(
+        phone: phone,
+        code: code,
+        username: username,
+        inviteCode: inviteCode,
       );
       await _saveAuth(response);
       return true;
@@ -82,19 +121,10 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
-  Future<bool> register(
-    String email,
-    String password, {
-    String? username,
-    String? inviteCode,
-  }) async {
+  /// Login with phone + OTP.
+  Future<bool> smsLogin(String phone, String code) async {
     try {
-      final response = await _datasource.register(
-        email: email,
-        password: password,
-        username: username,
-        inviteCode: inviteCode,
-      );
+      final response = await _datasource.smsLogin(phone: phone, code: code);
       await _saveAuth(response);
       return true;
     } on DioException catch (e) {

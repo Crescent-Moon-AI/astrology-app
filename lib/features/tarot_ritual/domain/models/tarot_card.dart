@@ -12,6 +12,8 @@ class TarotCard {
   final List<String> uprightKeywordsZH;
   final List<String> reversedKeywordsZH;
   final String imageKey;
+  final String uprightMeaningZH;
+  final String reversedMeaningZH;
 
   const TarotCard({
     required this.id,
@@ -27,6 +29,8 @@ class TarotCard {
     required this.uprightKeywordsZH,
     required this.reversedKeywordsZH,
     required this.imageKey,
+    this.uprightMeaningZH = '',
+    this.reversedMeaningZH = '',
   });
 
   bool get isUpright => orientation == 'upright';
@@ -77,6 +81,8 @@ class TarotCard {
               .toList() ??
           [],
       imageKey: json['image_key'] as String? ?? '',
+      uprightMeaningZH: json['upright_meaning_zh'] as String? ?? '',
+      reversedMeaningZH: json['reversed_meaning_zh'] as String? ?? '',
     );
   }
 }
@@ -100,9 +106,8 @@ class ResolvedCard {
     String positionLabel;
     if (posRaw is Map<String, dynamic>) {
       position = posRaw['index'] as int? ?? 0;
-      positionLabel = (posRaw['label_zh'] as String?) ??
-          (posRaw['label'] as String?) ??
-          '';
+      positionLabel =
+          (posRaw['label_zh'] as String?) ?? (posRaw['label'] as String?) ?? '';
     } else {
       position = posRaw as int? ?? 0;
       positionLabel = json['position_label'] as String? ?? '';

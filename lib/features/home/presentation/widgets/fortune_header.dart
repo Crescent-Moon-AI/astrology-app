@@ -36,9 +36,17 @@ class FortuneHeader extends StatelessWidget {
           // Advice + Avoid row
           Row(
             children: [
-              _buildTag(l10n.homeFortuneAdvice, fortune.advice, CosmicColors.success),
+              _buildTag(
+                l10n.homeFortuneAdvice,
+                fortune.advice,
+                CosmicColors.success,
+              ),
               const SizedBox(width: 16),
-              _buildTag(l10n.homeFortuneAvoid, fortune.avoid, CosmicColors.error),
+              _buildTag(
+                l10n.homeFortuneAvoid,
+                fortune.avoid,
+                CosmicColors.error,
+              ),
             ],
           ),
         ],

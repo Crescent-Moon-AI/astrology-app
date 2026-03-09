@@ -29,7 +29,10 @@ class _InsightPageState extends State<InsightPage> {
               children: [
                 // Title bar with icons
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 8,
+                  ),
                   child: Row(
                     children: [
                       Text(
@@ -42,13 +45,19 @@ class _InsightPageState extends State<InsightPage> {
                       ),
                       const Spacer(),
                       IconButton(
-                        icon: const Icon(Icons.add_circle_outline,
-                            color: CosmicColors.textSecondary, size: 22),
+                        icon: const Icon(
+                          Icons.add_circle_outline,
+                          color: CosmicColors.textSecondary,
+                          size: 22,
+                        ),
                         onPressed: () {},
                       ),
                       IconButton(
-                        icon: const Icon(Icons.menu,
-                            color: CosmicColors.textSecondary, size: 22),
+                        icon: const Icon(
+                          Icons.menu,
+                          color: CosmicColors.textSecondary,
+                          size: 22,
+                        ),
                         onPressed: () {},
                       ),
                     ],
@@ -57,7 +66,10 @@ class _InsightPageState extends State<InsightPage> {
 
                 // Quote section
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 16,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -87,11 +99,7 @@ class _InsightPageState extends State<InsightPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
-                      _buildChip(
-                        0,
-                        l10n.insightMyChart,
-                        Icons.edit_outlined,
-                      ),
+                      _buildChip(0, l10n.insightMyChart, Icons.edit_outlined),
                       const SizedBox(width: 12),
                       _buildChip(
                         1,
@@ -169,9 +177,7 @@ class _InsightPageState extends State<InsightPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected
-              ? CosmicColors.surfaceElevated
-              : Colors.transparent,
+          color: isSelected ? CosmicColors.surfaceElevated : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected
@@ -182,10 +188,13 @@ class _InsightPageState extends State<InsightPage> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 16,
-                color: isSelected
-                    ? CosmicColors.textPrimary
-                    : CosmicColors.textTertiary),
+            Icon(
+              icon,
+              size: 16,
+              color: isSelected
+                  ? CosmicColors.textPrimary
+                  : CosmicColors.textTertiary,
+            ),
             const SizedBox(width: 6),
             Text(
               label,

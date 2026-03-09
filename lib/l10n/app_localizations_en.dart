@@ -934,6 +934,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeFortuneAvoid => 'Avoid';
 
   @override
+  String get homeFortuneNoBirthData => 'Add info to view daily fortune';
+
+  @override
+  String get homeFortuneAddInfo => 'Add Info';
+
+  @override
   String get insightTitle => 'Insight';
 
   @override

@@ -11,6 +11,8 @@ import '../features/diary/presentation/pages/diary_page.dart';
 import '../features/diary/presentation/pages/diary_edit_page.dart';
 import '../features/diary/presentation/pages/diary_detail_page.dart';
 import '../features/home/presentation/pages/home_page.dart';
+import '../features/home/presentation/pages/fortune_detail_page.dart';
+import '../features/home/domain/models/daily_fortune.dart';
 import '../features/insight/presentation/pages/insight_page.dart';
 import '../features/scenario/presentation/pages/scenario_list_page.dart';
 import '../features/scenario/presentation/pages/scenario_detail_page.dart';
@@ -283,6 +285,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
 
+      // Fortune Detail
+      GoRoute(
+        path: '/fortune/detail',
+        name: 'fortuneDetail',
+        pageBuilder: (context, state) {
+          final fortune = state.extra as DailyFortune;
+          return _cosmicFadePage(state, FortuneDetailPage(fortune: fortune));
+        },
+      ),
+
       // Divination Hub
       GoRoute(
         path: '/divination',
@@ -303,10 +315,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'tarotGalleryDetail',
         pageBuilder: (context, state) {
           final args = state.extra as TarotDetailArgs;
-          return _cosmicFadePage(
-            state,
-            TarotCardDetailPage(args: args),
-          );
+          return _cosmicFadePage(state, TarotCardDetailPage(args: args));
         },
       ),
 

@@ -217,7 +217,8 @@ class _CardRevealItem extends StatelessWidget {
         // Keywords
         Wrap(
           spacing: 8,
-          children: card.localizedKeywords(isZh)
+          children: card
+              .localizedKeywords(isZh)
               .take(3)
               .map(
                 (kw) => Container(

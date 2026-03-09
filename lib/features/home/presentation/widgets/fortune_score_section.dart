@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/daily_fortune.dart';
@@ -31,27 +32,41 @@ class FortuneScoreSection extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              // Overall score
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${fortune.overallScore}',
-                    style: const TextStyle(
-                      color: CosmicColors.textPrimary,
-                      fontSize: 40,
-                      fontWeight: FontWeight.w800,
-                      height: 1.0,
+              // Overall score — tappable, opens detail page
+              GestureDetector(
+                onTap: () => context.push('/fortune/detail', extra: fortune),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${fortune.overallScore}',
+                      style: const TextStyle(
+                        color: CosmicColors.textPrimary,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w800,
+                        height: 1.0,
+                      ),
                     ),
-                  ),
-                  Text(
-                    l10n.homeOverallScore,
-                    style: const TextStyle(
-                      color: CosmicColors.textTertiary,
-                      fontSize: 11,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          l10n.homeOverallScore,
+                          style: const TextStyle(
+                            color: CosmicColors.textTertiary,
+                            fontSize: 11,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        const Icon(
+                          Icons.chevron_right,
+                          color: CosmicColors.textTertiary,
+                          size: 14,
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(width: 16),
               // Dimension score badges
@@ -59,9 +74,7 @@ class FortuneScoreSection extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    for (int i = 0;
-                        i < fortune.dimensions.length && i < 4;
-                        i++)
+                    for (int i = 0; i < fortune.dimensions.length && i < 4; i++)
                       _buildDimensionBadge(
                         fortune.dimensions[i],
                         _dimensionColors[i % _dimensionColors.length],

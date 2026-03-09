@@ -25,10 +25,9 @@ class DioClient {
 
     // Log requests/responses in dev mode for easier debugging.
     if (AppConfig.mode.enableNetworkLog) {
-      _dio.interceptors.add(LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-      ));
+      _dio.interceptors.add(
+        LogInterceptor(requestBody: true, responseBody: true),
+      );
     }
   }
 

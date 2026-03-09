@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/cosmic_ritual_button.dart';
 import '../../../../shared/widgets/starfield_background.dart';
+import '../../domain/models/spread_type.dart';
 import '../providers/tarot_ritual_providers.dart';
 import '../widgets/shuffle_animation.dart';
 
@@ -23,31 +24,13 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
   }
 
   static String _spreadDisplayName(String? spreadType, bool isZh) {
-    if (spreadType == null) {
-      return isZh ? '万能三牌阵' : 'Three Card';
-    }
-    if (isZh) {
-      return switch (spreadType) {
-        'three_card' => '万能三牌阵',
-        'celtic_cross' => '凯尔特十字',
-        'single_card' => '单牌',
-        'love_spread' => '爱情牌阵',
-        _ => spreadType,
-      };
-    }
-    return switch (spreadType) {
-      'three_card' => 'Three Card',
-      'celtic_cross' => 'Celtic Cross',
-      'single_card' => 'Single Card',
-      'love_spread' => 'Love Spread',
-      _ => spreadType,
-    };
+    final type = SpreadType.fromValue(spreadType ?? 'universal_three');
+    return isZh ? type.nameZH : type.nameEN;
   }
 
   @override
   Widget build(BuildContext context) {
-    final isZh =
-        Localizations.localeOf(context).languageCode.startsWith('zh');
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
     final ritualState = ref.watch(tarotRitualProvider);
 
     return StarfieldBackground(
@@ -94,9 +77,7 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
               opacity: _shuffleComplete ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 600),
               child: Text(
-                isZh
-                    ? '请保持专注，准备好后点击继续'
-                    : 'Stay focused and tap to continue',
+                isZh ? '请保持专注，准备好后点击继续' : 'Stay focused and tap to continue',
                 style: const TextStyle(
                   color: CosmicColors.textSecondary,
                   fontSize: 14,
@@ -110,8 +91,10 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
               opacity: _shuffleComplete ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 600),
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withAlpha(13),
                   borderRadius: BorderRadius.circular(20),
@@ -128,8 +111,7 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
                       ),
                     ),
                     Text(
-                      _spreadDisplayName(
-                          ritualState.session?.spreadType, isZh),
+                      _spreadDisplayName(ritualState.session?.spreadType, isZh),
                       style: const TextStyle(
                         color: CosmicColors.textPrimary,
                         fontSize: 13,
@@ -157,8 +139,9 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
                 child: CosmicRitualButton(
                   label: isZh ? '继续' : 'Continue',
                   onPressed: _shuffleComplete
-                      ? () =>
-                          ref.read(tarotRitualProvider.notifier).advanceShuffle()
+                      ? () => ref
+                            .read(tarotRitualProvider.notifier)
+                            .advanceShuffle()
                       : null,
                 ),
               ),

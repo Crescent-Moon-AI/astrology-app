@@ -926,6 +926,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeFortuneAvoid => '忌';
 
   @override
+  String get homeFortuneNoBirthData => '添加信息查看每日运势';
+
+  @override
+  String get homeFortuneAddInfo => '去添加';
+
+  @override
   String get insightTitle => '洞见';
 
   @override

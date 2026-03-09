@@ -75,7 +75,7 @@ class FriendListPage extends ConsumerWidget {
                         }
 
                         return _MyChartCard(
-                          username: user?.username ?? user?.email ?? '',
+                          username: user?.username ?? user?.phone ?? '',
                           subtitle: subtitle,
                           selfLabel: l10n.chartArchivesSelf,
                           onEdit: () => context.push('/settings/birth-data'),
@@ -88,7 +88,7 @@ class FriendListPage extends ConsumerWidget {
                         ),
                       ),
                       error: (_, __) => _MyChartCard(
-                        username: user?.username ?? user?.email ?? '',
+                        username: user?.username ?? user?.phone ?? '',
                         subtitle: l10n.errorLoadFailed,
                         selfLabel: l10n.chartArchivesSelf,
                         onEdit: () => context.push('/settings/birth-data'),

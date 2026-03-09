@@ -28,10 +28,7 @@ class AspectNatureDot extends StatelessWidget {
     return Container(
       width: 8,
       height: 8,
-      decoration: BoxDecoration(
-        color: _color,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: _color, shape: BoxShape.circle),
     );
   }
 }

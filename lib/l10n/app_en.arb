@@ -360,6 +360,8 @@
   "homeExploreMore": "Explore More",
   "homeFortuneAdvice": "Do",
   "homeFortuneAvoid": "Avoid",
+  "homeFortuneNoBirthData": "Add info to view daily fortune",
+  "homeFortuneAddInfo": "Add Info",
 
   "insightTitle": "Insight",
   "insightQuote": "What you resist, persists.",

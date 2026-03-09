@@ -1898,6 +1898,18 @@ abstract class AppLocalizations {
   /// **'Avoid'**
   String get homeFortuneAvoid;
 
+  /// No description provided for @homeFortuneNoBirthData.
+  ///
+  /// In en, this message translates to:
+  /// **'Add info to view daily fortune'**
+  String get homeFortuneNoBirthData;
+
+  /// No description provided for @homeFortuneAddInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Info'**
+  String get homeFortuneAddInfo;
+
   /// No description provided for @insightTitle.
   ///
   /// In en, this message translates to:

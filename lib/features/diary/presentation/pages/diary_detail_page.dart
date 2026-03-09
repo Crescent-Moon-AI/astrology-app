@@ -41,19 +41,21 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
           bottom: false,
           child: detailAsync.when(
             loading: () => const Center(
-                child: CircularProgressIndicator(
-                    color: CosmicColors.primaryLight)),
+              child: CircularProgressIndicator(
+                color: CosmicColors.primaryLight,
+              ),
+            ),
             error: (e, _) => Center(
-              child: Text(e.toString(),
-                  style: const TextStyle(color: CosmicColors.textTertiary)),
+              child: Text(
+                e.toString(),
+                style: const TextStyle(color: CosmicColors.textTertiary),
+              ),
             ),
             data: (data) {
               final entry = DiaryEntry.fromJson(data);
-              final commentsRaw =
-                  data['comments'] as List<dynamic>? ?? [];
+              final commentsRaw = data['comments'] as List<dynamic>? ?? [];
               final comments = commentsRaw
-                  .map((e) =>
-                      DiaryComment.fromJson(e as Map<String, dynamic>))
+                  .map((e) => DiaryComment.fromJson(e as Map<String, dynamic>))
                   .toList();
               return _buildContent(context, l10n, entry, comments);
             },
@@ -63,8 +65,12 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
     );
   }
 
-  Widget _buildContent(BuildContext context, AppLocalizations l10n,
-      DiaryEntry entry, List<DiaryComment> comments) {
+  Widget _buildContent(
+    BuildContext context,
+    AppLocalizations l10n,
+    DiaryEntry entry,
+    List<DiaryComment> comments,
+  ) {
     return Column(
       children: [
         // Top bar
@@ -73,14 +79,18 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
           child: Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.arrow_back,
-                    color: CosmicColors.textPrimary),
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: CosmicColors.textPrimary,
+                ),
                 onPressed: () => context.pop(),
               ),
               const Spacer(),
               IconButton(
-                icon: const Icon(Icons.delete_outline,
-                    color: CosmicColors.textTertiary),
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: CosmicColors.textTertiary,
+                ),
                 onPressed: () => _confirmDelete(context, l10n, entry.id),
               ),
             ],
@@ -118,8 +128,7 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
   }
 
   Widget _buildDateHeader(DateTime dt, AppLocalizations l10n) {
-    final isZh =
-        Localizations.localeOf(context).languageCode.startsWith('zh');
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
     final weekdays = isZh
         ? ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
         : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -196,8 +205,10 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
           errorBuilder: (_, e, st) => Container(
             height: 200,
             color: CosmicColors.surface,
-            child: const Icon(Icons.broken_image,
-                color: CosmicColors.textTertiary),
+            child: const Icon(
+              Icons.broken_image,
+              color: CosmicColors.textTertiary,
+            ),
           ),
         ),
       );
@@ -217,8 +228,10 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
                 fit: BoxFit.cover,
                 errorBuilder: (_, e, st) => Container(
                   color: CosmicColors.surface,
-                  child: const Icon(Icons.broken_image,
-                      color: CosmicColors.textTertiary),
+                  child: const Icon(
+                    Icons.broken_image,
+                    color: CosmicColors.textTertiary,
+                  ),
                 ),
               ),
             ),
@@ -250,8 +263,11 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
                     shape: BoxShape.circle,
                     color: CosmicColors.surfaceHighlight,
                   ),
-                  child: const Icon(Icons.person,
-                      size: 16, color: CosmicColors.textTertiary),
+                  child: const Icon(
+                    Icons.person,
+                    size: 16,
+                    color: CosmicColors.textTertiary,
+                  ),
                 ),
               const SizedBox(width: 8),
               Text(
@@ -302,9 +318,7 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
       ),
       decoration: const BoxDecoration(
         color: CosmicColors.backgroundDeep,
-        border: Border(
-          top: BorderSide(color: CosmicColors.borderGlow),
-        ),
+        border: Border(top: BorderSide(color: CosmicColors.borderGlow)),
       ),
       child: Row(
         children: [
@@ -319,15 +333,15 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
               child: TextField(
                 controller: _replyController,
                 style: const TextStyle(
-                    color: CosmicColors.textPrimary, fontSize: 14),
+                  color: CosmicColors.textPrimary,
+                  fontSize: 14,
+                ),
                 decoration: InputDecoration(
                   hintText: l10n.diaryReplyHint,
-                  hintStyle:
-                      const TextStyle(color: CosmicColors.textTertiary),
+                  hintStyle: const TextStyle(color: CosmicColors.textTertiary),
                   border: InputBorder.none,
                   isDense: true,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
                 ),
                 maxLines: 1,
                 textInputAction: TextInputAction.send,
@@ -343,10 +357,7 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
               height: 40,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    CosmicColors.primary,
-                    CosmicColors.primaryLight,
-                  ],
+                  colors: [CosmicColors.primary, CosmicColors.primaryLight],
                 ),
                 shape: BoxShape.circle,
               ),
@@ -358,8 +369,11 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
                         color: CosmicColors.textPrimary,
                       ),
                     )
-                  : const Icon(Icons.send,
-                      color: CosmicColors.textPrimary, size: 18),
+                  : const Icon(
+                      Icons.send,
+                      color: CosmicColors.textPrimary,
+                      size: 18,
+                    ),
             ),
           ),
         ],
@@ -379,9 +393,9 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
       ref.invalidate(diaryDetailProvider(widget.diaryId));
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(formatError(e))),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(formatError(e))));
       }
     } finally {
       if (mounted) setState(() => _sending = false);
@@ -389,25 +403,36 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
   }
 
   Future<void> _confirmDelete(
-      BuildContext context, AppLocalizations l10n, String id) async {
+    BuildContext context,
+    AppLocalizations l10n,
+    String id,
+  ) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: CosmicColors.backgroundDeep,
-        title: Text(l10n.diaryDeleteTitle,
-            style: const TextStyle(color: CosmicColors.textPrimary)),
-        content: Text(l10n.diaryDeleteConfirm,
-            style: const TextStyle(color: CosmicColors.textSecondary)),
+        title: Text(
+          l10n.diaryDeleteTitle,
+          style: const TextStyle(color: CosmicColors.textPrimary),
+        ),
+        content: Text(
+          l10n.diaryDeleteConfirm,
+          style: const TextStyle(color: CosmicColors.textSecondary),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text(l10n.cancel,
-                style: const TextStyle(color: CosmicColors.textTertiary)),
+            child: Text(
+              l10n.cancel,
+              style: const TextStyle(color: CosmicColors.textTertiary),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: Text(l10n.confirm,
-                style: const TextStyle(color: CosmicColors.error)),
+            child: Text(
+              l10n.confirm,
+              style: const TextStyle(color: CosmicColors.error),
+            ),
           ),
         ],
       ),
@@ -422,9 +447,9 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(formatError(e))),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(formatError(e))));
         }
       }
     }
@@ -449,8 +474,18 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
 
   String _monthName(int month) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return months[month - 1];
   }

@@ -30,9 +30,7 @@ class HouseOverlayTable extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             child: Text(
-              isZh
-                  ? '$personName 的行星落入宫位'
-                  : '$personName\'s planets in houses',
+              isZh ? '$personName 的行星落入宫位' : '$personName\'s planets in houses',
               style: const TextStyle(
                 color: CosmicColors.secondary,
                 fontSize: 13,

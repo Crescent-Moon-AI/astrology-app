@@ -45,7 +45,9 @@ class _ProgressiveTextBlockState extends State<ProgressiveTextBlock> {
       _sectionKeys.putIfAbsent(i, () => GlobalKey());
     }
     // Expand all sections by default
-    _expandedSections = Set<int>.from(List.generate(_sections.length, (i) => i));
+    _expandedSections = Set<int>.from(
+      List.generate(_sections.length, (i) => i),
+    );
   }
 
   void _toggleSection(int index) {
