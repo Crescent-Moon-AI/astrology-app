@@ -177,7 +177,7 @@ jobs:
       - name: Upload APK to Alibaba Cloud OSS
         continue-on-error: true
         env:
-          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_ID: ${{ vars.OSS_ACCESS_KEY_ID }}
           OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
         run: |
           curl -fsSL https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
@@ -186,7 +186,7 @@ jobs:
           SHORT_SHA="${GITHUB_SHA::7}"
           APK="build/app/outputs/flutter-apk/xingjian-${VARIANT}-v${VERSION}.apk"
           OSS_FLAGS="-e oss-cn-beijing.aliyuncs.com -i $OSS_ACCESS_KEY_ID -k $OSS_ACCESS_KEY_SECRET"
-          SIGN_TIMEOUT=2592000
+          SIGN_TIMEOUT=604800
           # PR builds go to pr/ subdirectory to avoid polluting main releases
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             OSS_PREFIX="releases/${VARIANT}/pr"
@@ -207,34 +207,15 @@ jobs:
             ossutil cp -f "$APK" "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}" $OSS_FLAGS
             LATEST_URL=$(sign_url "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}")
           fi
-          # Write signed URLs to file (avoids GitHub secret masking in summary)
-          URL_FILE="build/app/outputs/flutter-apk/oss-download-urls-${VARIANT}.txt"
-          echo "OSS Download URLs — ${VARIANT}" > "$URL_FILE"
-          echo "Generated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$URL_FILE"
-          echo "Valid for: 30 days" >> "$URL_FILE"
-          echo "" >> "$URL_FILE"
-          if [ -n "$ARCHIVE_URL" ]; then
-            echo "Archive: $ARCHIVE_URL" >> "$URL_FILE"
-          fi
-          if [ -n "$LATEST_URL" ]; then
-            echo "Latest:  $LATEST_URL" >> "$URL_FILE"
-          fi
-          # Job summary (file names only, URLs in artifact)
+          # Write download links to job summary
           echo "### OSS Download — ${VARIANT}" >> "$GITHUB_STEP_SUMMARY"
-          echo "Signed download URLs are in the \`oss-urls-${VARIANT}\` artifact (GitHub masks secrets in summaries)." >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "| File | Status |" >> "$GITHUB_STEP_SUMMARY"
-          echo "|------|--------|" >> "$GITHUB_STEP_SUMMARY"
-          echo "| ${ARCHIVE_NAME} | uploaded |" >> "$GITHUB_STEP_SUMMARY"
-          if [ -n "$LATEST_URL" ]; then
-            echo "| ${LATEST_NAME} | updated |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Build | Link |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|-------|------|" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$ARCHIVE_URL" ]; then
+            echo "| Archive | [${ARCHIVE_NAME}](${ARCHIVE_URL}) |" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "| Archive | ${ARCHIVE_NAME} (sign failed) |" >> "$GITHUB_STEP_SUMMARY"
           fi
-
-      - name: Upload OSS download URLs
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: oss-urls-${{ matrix.variant }}
-          path: build/app/outputs/flutter-apk/oss-download-urls-*.txt
-          retention-days: 30
-          if-no-files-found: ignore
+          if [ -n "$LATEST_URL" ]; then
+            echo "| Latest | [${LATEST_NAME}](${LATEST_URL}) |" >> "$GITHUB_STEP_SUMMARY"
+          fi
