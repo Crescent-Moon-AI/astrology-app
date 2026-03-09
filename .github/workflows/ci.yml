@@ -177,8 +177,10 @@ jobs:
       - name: Upload APK to Alibaba Cloud OSS
         continue-on-error: true
         env:
-          OSS_ACCESS_KEY_ID: ${{ vars.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
           OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+          # CNAME domain for APK downloads (OSS default endpoint blocks APK files)
+          OSS_CNAME: dl.astrology.net.cn
         run: |
           curl -fsSL https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
           VERSION="${{ steps.version.outputs.version }}"
@@ -186,36 +188,25 @@ jobs:
           SHORT_SHA="${GITHUB_SHA::7}"
           APK="build/app/outputs/flutter-apk/xingjian-${VARIANT}-v${VERSION}.apk"
           OSS_FLAGS="-e oss-cn-beijing.aliyuncs.com -i $OSS_ACCESS_KEY_ID -k $OSS_ACCESS_KEY_SECRET"
-          SIGN_TIMEOUT=604800
           # PR builds go to pr/ subdirectory to avoid polluting main releases
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             OSS_PREFIX="releases/${VARIANT}/pr"
           else
             OSS_PREFIX="releases/${VARIANT}"
           fi
-          sign_url() {
-            ossutil sign "$1" --timeout $SIGN_TIMEOUT $OSS_FLAGS 2>&1 \
-              | grep -o 'https\?://[^ ]*' | head -1 || true
-          }
           # Archive build (never overwritten)
           ARCHIVE_NAME="xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk"
           ossutil cp "$APK" "oss://astrology-application/${OSS_PREFIX}/${ARCHIVE_NAME}" $OSS_FLAGS
-          ARCHIVE_URL=$(sign_url "oss://astrology-application/${OSS_PREFIX}/${ARCHIVE_NAME}")
           # Latest pointer (only on push to main or manual trigger)
           if [ "${{ github.event_name }}" != "pull_request" ]; then
             LATEST_NAME="xingjian-${VARIANT}-latest.apk"
             ossutil cp -f "$APK" "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}" $OSS_FLAGS
-            LATEST_URL=$(sign_url "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}")
           fi
-          # Write download links to job summary
+          # Write download links to job summary (CNAME domain bypasses APK restriction)
           echo "### OSS Download — ${VARIANT}" >> "$GITHUB_STEP_SUMMARY"
           echo "| Build | Link |" >> "$GITHUB_STEP_SUMMARY"
           echo "|-------|------|" >> "$GITHUB_STEP_SUMMARY"
-          if [ -n "$ARCHIVE_URL" ]; then
-            echo "| Archive | [${ARCHIVE_NAME}](${ARCHIVE_URL}) |" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "| Archive | ${ARCHIVE_NAME} (sign failed) |" >> "$GITHUB_STEP_SUMMARY"
-          fi
-          if [ -n "$LATEST_URL" ]; then
-            echo "| Latest | [${LATEST_NAME}](${LATEST_URL}) |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Archive | [${ARCHIVE_NAME}](https://${OSS_CNAME}/${OSS_PREFIX}/${ARCHIVE_NAME}) |" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$LATEST_NAME" ]; then
+            echo "| Latest | [${LATEST_NAME}](https://${OSS_CNAME}/${OSS_PREFIX}/${LATEST_NAME}) |" >> "$GITHUB_STEP_SUMMARY"
           fi
