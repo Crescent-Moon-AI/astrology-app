@@ -187,27 +187,33 @@ jobs:
           APK="build/app/outputs/flutter-apk/xingjian-${VARIANT}-v${VERSION}.apk"
           OSS_FLAGS="-e oss-cn-beijing.aliyuncs.com -i $OSS_ACCESS_KEY_ID -k $OSS_ACCESS_KEY_SECRET"
           SIGN_TIMEOUT=2592000
+          # PR builds go to pr/ subdirectory to avoid polluting main releases
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            OSS_PREFIX="releases/${VARIANT}/pr"
+          else
+            OSS_PREFIX="releases/${VARIANT}"
+          fi
           # Archive build (never overwritten)
-          ossutil cp "$APK" \
-            "oss://astrology-application/releases/${VARIANT}/xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk" \
-            $OSS_FLAGS
-          ARCHIVE_URL=$(ossutil sign \
-            "oss://astrology-application/releases/${VARIANT}/xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk" \
-            --timeout $SIGN_TIMEOUT $OSS_FLAGS 2>&1 | grep -o 'https://[^ ]*')
+          ARCHIVE_NAME="xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk"
+          ossutil cp "$APK" "oss://astrology-application/${OSS_PREFIX}/${ARCHIVE_NAME}" $OSS_FLAGS
+          ARCHIVE_URL=$(ossutil sign "oss://astrology-application/${OSS_PREFIX}/${ARCHIVE_NAME}" \
+            --timeout $SIGN_TIMEOUT $OSS_FLAGS 2>&1 | grep -o 'https://[^ ]*' || true)
           # Latest pointer (only on push to main or manual trigger)
           if [ "${{ github.event_name }}" != "pull_request" ]; then
-            ossutil cp -f "$APK" \
-              "oss://astrology-application/releases/${VARIANT}/xingjian-${VARIANT}-latest.apk" \
-              $OSS_FLAGS
-            LATEST_URL=$(ossutil sign \
-              "oss://astrology-application/releases/${VARIANT}/xingjian-${VARIANT}-latest.apk" \
-              --timeout $SIGN_TIMEOUT $OSS_FLAGS 2>&1 | grep -o 'https://[^ ]*')
+            LATEST_NAME="xingjian-${VARIANT}-latest.apk"
+            ossutil cp -f "$APK" "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}" $OSS_FLAGS
+            LATEST_URL=$(ossutil sign "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}" \
+              --timeout $SIGN_TIMEOUT $OSS_FLAGS 2>&1 | grep -o 'https://[^ ]*' || true)
           fi
           # Write download links to job summary
           echo "### OSS Download — ${VARIANT}" >> "$GITHUB_STEP_SUMMARY"
           echo "| Build | Link |" >> "$GITHUB_STEP_SUMMARY"
           echo "|-------|------|" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Archive | [xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk](${ARCHIVE_URL}) |" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$ARCHIVE_URL" ]; then
+            echo "| Archive | [${ARCHIVE_NAME}](${ARCHIVE_URL}) |" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "| Archive | ${ARCHIVE_NAME} (sign failed) |" >> "$GITHUB_STEP_SUMMARY"
+          fi
           if [ -n "$LATEST_URL" ]; then
-            echo "| Latest | [xingjian-${VARIANT}-latest.apk](${LATEST_URL}) |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Latest | [${LATEST_NAME}](${LATEST_URL}) |" >> "$GITHUB_STEP_SUMMARY"
           fi
