@@ -58,7 +58,7 @@ class TarotSessionApi {
       '/api/tarot/sessions/$sessionId',
       data: {
         'ritual_state': ritualState,
-        if (selectedPositions != null) 'selected_positions': selectedPositions,
+        'selected_positions': ?selectedPositions,
       },
     );
     return TarotSession.fromJson(_unwrap(response.data));

@@ -125,8 +125,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       validator: (v) {
-                        if (v == null || v.trim().isEmpty)
+                        if (v == null || v.trim().isEmpty) {
                           return l10n.authRequired;
+                        }
                         if (!v.contains('@')) return l10n.authInvalidEmail;
                         return null;
                       },

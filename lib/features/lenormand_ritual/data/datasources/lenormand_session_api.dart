@@ -39,7 +39,7 @@ class LenormandSessionApi {
       '/api/lenormand/sessions/$sessionId',
       data: {
         'ritual_state': ritualState,
-        if (selectedPositions != null) 'selected_positions': selectedPositions,
+        'selected_positions': ?selectedPositions,
       },
     );
     final data = response.data['data'] as Map<String, dynamic>;

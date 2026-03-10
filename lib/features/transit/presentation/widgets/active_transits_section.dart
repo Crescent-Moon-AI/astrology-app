@@ -51,7 +51,7 @@ class ActiveTransitsSection extends ConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: alerts.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                separatorBuilder: (_, _) => const SizedBox(width: 12),
                 itemBuilder: (context, index) {
                   final alert = alerts[index];
                   return SizedBox(
@@ -76,7 +76,7 @@ class ActiveTransitsSection extends ConsumerWidget {
           child: CircularProgressIndicator(color: CosmicColors.primary),
         ),
       ),
-      error: (_, __) => const SizedBox.shrink(),
+      error: (_, _) => const SizedBox.shrink(),
     );
   }
 }

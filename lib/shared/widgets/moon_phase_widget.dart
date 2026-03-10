@@ -25,7 +25,7 @@ class MoonPhaseWidget extends ConsumerWidget {
         height: size,
         child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
       ),
-      error: (_, __) =>
+      error: (_, _) =>
           Icon(Icons.dark_mode, size: size, color: CosmicColors.textTertiary),
     );
   }

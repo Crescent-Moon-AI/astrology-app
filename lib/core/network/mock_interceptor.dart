@@ -1758,8 +1758,9 @@ class MockInterceptor extends Interceptor {
     }
 
     if (b['ritual_state'] != null) session['ritual_state'] = b['ritual_state'];
-    if (b['selected_positions'] != null)
+    if (b['selected_positions'] != null) {
       session['selected_positions'] = b['selected_positions'];
+    }
 
     // Generate resolved cards when revealing
     if (b['ritual_state'] == 'revealing' && b['selected_positions'] != null) {

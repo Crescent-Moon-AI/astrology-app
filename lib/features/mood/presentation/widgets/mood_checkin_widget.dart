@@ -80,7 +80,7 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
             child: CircularProgressIndicator(color: CosmicColors.primary),
           ),
         ),
-        error: (_, __) => _buildCheckinForm(context, l10n),
+        error: (_, _) => _buildCheckinForm(context, l10n),
       ),
     );
   }
@@ -312,7 +312,7 @@ class _MoodCheckinWidgetState extends ConsumerState<MoodCheckinWidget> {
         );
       },
       loading: () => const SizedBox.shrink(),
-      error: (_, __) => const SizedBox.shrink(),
+      error: (_, _) => const SizedBox.shrink(),
     );
   }
 }
