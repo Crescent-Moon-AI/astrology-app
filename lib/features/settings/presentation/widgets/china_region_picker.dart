@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../shared/data/china_regions.dart';
 
-
 /// Result from the China region picker.
 class RegionPickerResult {
   final String province;
@@ -97,12 +96,15 @@ class _ChinaRegionPickerBodyState extends State<_ChinaRegionPickerBody> {
       if (idx >= 0) _selectedDistrictIndex = idx;
     }
 
-    _provinceController =
-        FixedExtentScrollController(initialItem: _selectedProvinceIndex);
-    _cityController =
-        FixedExtentScrollController(initialItem: _selectedCityIndex);
-    _districtController =
-        FixedExtentScrollController(initialItem: _selectedDistrictIndex);
+    _provinceController = FixedExtentScrollController(
+      initialItem: _selectedProvinceIndex,
+    );
+    _cityController = FixedExtentScrollController(
+      initialItem: _selectedCityIndex,
+    );
+    _districtController = FixedExtentScrollController(
+      initialItem: _selectedDistrictIndex,
+    );
   }
 
   @override
@@ -156,16 +158,14 @@ class _ChinaRegionPickerBodyState extends State<_ChinaRegionPickerBody> {
 
   void _confirm() {
     final province = _provinces[_selectedProvinceIndex];
-    final city =
-        _cities.isNotEmpty ? _cities[_selectedCityIndex] : province;
-    final district =
-        _districts.isNotEmpty ? _districts[_selectedDistrictIndex] : city;
+    final city = _cities.isNotEmpty ? _cities[_selectedCityIndex] : province;
+    final district = _districts.isNotEmpty
+        ? _districts[_selectedDistrictIndex]
+        : city;
 
-    Navigator.of(context).pop(RegionPickerResult(
-      province: province,
-      city: city,
-      district: district,
-    ));
+    Navigator.of(context).pop(
+      RegionPickerResult(province: province, city: city, district: district),
+    );
   }
 
   @override
@@ -192,10 +192,7 @@ class _ChinaRegionPickerBodyState extends State<_ChinaRegionPickerBody> {
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text(
                     isZh ? '取消' : 'Cancel',
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16,
-                    ),
+                    style: const TextStyle(color: Colors.grey, fontSize: 16),
                   ),
                 ),
                 TextButton(
@@ -223,17 +220,19 @@ class _ChinaRegionPickerBodyState extends State<_ChinaRegionPickerBody> {
                     itemExtent: 40,
                     onSelectedItemChanged: _onProvinceChanged,
                     children: _provinces
-                        .map((p) => Center(
-                              child: Text(
-                                p,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black87,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                        .map(
+                          (p) => Center(
+                            child: Text(
+                              p,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.black87,
                               ),
-                            ))
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        )
                         .toList(),
                   ),
                 ),
@@ -244,17 +243,19 @@ class _ChinaRegionPickerBodyState extends State<_ChinaRegionPickerBody> {
                     itemExtent: 40,
                     onSelectedItemChanged: _onCityChanged,
                     children: _cities
-                        .map((c) => Center(
-                              child: Text(
-                                c,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black87,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                        .map(
+                          (c) => Center(
+                            child: Text(
+                              c,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.black87,
                               ),
-                            ))
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        )
                         .toList(),
                   ),
                 ),
@@ -265,17 +266,19 @@ class _ChinaRegionPickerBodyState extends State<_ChinaRegionPickerBody> {
                     itemExtent: 40,
                     onSelectedItemChanged: _onDistrictChanged,
                     children: _districts
-                        .map((d) => Center(
-                              child: Text(
-                                d,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black87,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                        .map(
+                          (d) => Center(
+                            child: Text(
+                              d,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.black87,
                               ),
-                            ))
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        )
                         .toList(),
                   ),
                 ),

@@ -34,8 +34,7 @@ class MoodHistoryPage extends ConsumerWidget {
           children: [
             // Calendar heatmap
             MoodCalendarHeatmap(
-              onDayTapped: (entry) =>
-                  _showDayDetail(context, l10n, entry),
+              onDayTapped: (entry) => _showDayDetail(context, l10n, entry),
             ),
 
             const SizedBox(height: 24),
@@ -73,7 +72,11 @@ class MoodHistoryPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatsSummary(BuildContext context, AppLocalizations l10n, dynamic stats) {
+  Widget _buildStatsSummary(
+    BuildContext context,
+    AppLocalizations l10n,
+    dynamic stats,
+  ) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(

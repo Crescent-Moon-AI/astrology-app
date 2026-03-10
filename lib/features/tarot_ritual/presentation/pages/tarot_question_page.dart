@@ -169,8 +169,9 @@ class _TarotQuestionPageState extends State<TarotQuestionPage> {
                       height: 44,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient:
-                            _hasText ? CosmicColors.primaryGradient : null,
+                        gradient: _hasText
+                            ? CosmicColors.primaryGradient
+                            : null,
                         color: _hasText ? null : CosmicColors.surface,
                       ),
                       child: IconButton(

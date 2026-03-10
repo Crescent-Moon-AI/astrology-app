@@ -88,8 +88,9 @@ class AstroEngine {
     if (!_initialized) return null;
     try {
       final inputJson = jsonEncode(input);
-      final json =
-          await rust_astro.calculateSynastryChart(inputJson: inputJson);
+      final json = await rust_astro.calculateSynastryChart(
+        inputJson: inputJson,
+      );
       return jsonDecode(json) as Map<String, dynamic>;
     } catch (e) {
       return null;

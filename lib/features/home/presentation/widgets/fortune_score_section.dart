@@ -59,9 +59,7 @@ class FortuneScoreSection extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    for (int i = 0;
-                        i < fortune.dimensions.length && i < 4;
-                        i++)
+                    for (int i = 0; i < fortune.dimensions.length && i < 4; i++)
                       _buildDimensionBadge(
                         fortune.dimensions[i],
                         _dimensionColors[i % _dimensionColors.length],

@@ -32,8 +32,10 @@ class ChartTypeSelector extends StatelessWidget {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeInOut,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: option.selected
                       ? CosmicColors.primary.withValues(alpha: 0.3)
@@ -53,8 +55,9 @@ class ChartTypeSelector extends StatelessWidget {
                         ? CosmicColors.textPrimary
                         : CosmicColors.textSecondary,
                     fontSize: 13,
-                    fontWeight:
-                        option.selected ? FontWeight.w600 : FontWeight.w400,
+                    fontWeight: option.selected
+                        ? FontWeight.w600
+                        : FontWeight.w400,
                   ),
                 ),
               ),

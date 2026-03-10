@@ -47,14 +47,16 @@ class _PersonSelectorState extends State<PersonSelector> {
       return;
     }
 
-    widget.onPersonChanged(BirthData(
-      name: _nameController.text.trim(),
-      birthDate: date,
-      birthTime: time,
-      latitude: lat,
-      longitude: lng,
-      timezone: 8.0,
-    ));
+    widget.onPersonChanged(
+      BirthData(
+        name: _nameController.text.trim(),
+        birthDate: date,
+        birthTime: time,
+        latitude: lat,
+        longitude: lng,
+        timezone: 8.0,
+      ),
+    );
   }
 
   @override
@@ -71,9 +73,13 @@ class _PersonSelectorState extends State<PersonSelector> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.label,
-              style: const TextStyle(
-                  color: CosmicColors.textSecondary, fontSize: 12)),
+          Text(
+            widget.label,
+            style: const TextStyle(
+              color: CosmicColors.textSecondary,
+              fontSize: 12,
+            ),
+          ),
           const SizedBox(height: 12),
           _field(_nameController, l10n.chartPersonName, ''),
           const SizedBox(height: 8),
@@ -84,10 +90,12 @@ class _PersonSelectorState extends State<PersonSelector> {
           Row(
             children: [
               Expanded(
-                  child: _field(_latController, l10n.chartLatitude, '31.23')),
+                child: _field(_latController, l10n.chartLatitude, '31.23'),
+              ),
               const SizedBox(width: 8),
               Expanded(
-                  child: _field(_lngController, l10n.chartLongitude, '121.47')),
+                child: _field(_lngController, l10n.chartLongitude, '121.47'),
+              ),
             ],
           ),
         ],
@@ -95,8 +103,7 @@ class _PersonSelectorState extends State<PersonSelector> {
     );
   }
 
-  Widget _field(
-      TextEditingController controller, String label, String hint) {
+  Widget _field(TextEditingController controller, String label, String hint) {
     return TextField(
       controller: controller,
       onChanged: (_) => _updatePerson(),
@@ -107,8 +114,10 @@ class _PersonSelectorState extends State<PersonSelector> {
         hintText: hint,
         hintStyle: const TextStyle(color: CosmicColors.textTertiary),
         isDense: true,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 10,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: CosmicColors.borderGlow),

@@ -26,7 +26,10 @@ class ProfilePage extends ConsumerWidget {
               children: [
                 // Top bar with invite code and message icon
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   child: Row(
                     children: [
                       Text(
@@ -46,8 +49,11 @@ class ProfilePage extends ConsumerWidget {
                         ),
                       ),
                       const Spacer(),
-                      const Icon(Icons.mail_outline,
-                          color: CosmicColors.textSecondary, size: 22),
+                      const Icon(
+                        Icons.mail_outline,
+                        color: CosmicColors.textSecondary,
+                        size: 22,
+                      ),
                     ],
                   ),
                 ),
@@ -71,7 +77,11 @@ class ProfilePage extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.access_time, color: CosmicColors.textTertiary, size: 14),
+                    const Icon(
+                      Icons.access_time,
+                      color: CosmicColors.textTertiary,
+                      size: 14,
+                    ),
                     const SizedBox(width: 4),
                     Text(
                       l10n.profileCompanionDays(23),
@@ -87,7 +97,10 @@ class ProfilePage extends ConsumerWidget {
                 GestureDetector(
                   onTap: () {},
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: CosmicColors.surfaceElevated,
                       borderRadius: BorderRadius.circular(20),
@@ -173,31 +186,51 @@ class ProfilePage extends ConsumerWidget {
                               l10n.profileTarotGallery,
                               () => context.push('/tarot-gallery'),
                             ),
-                            const Divider(height: 1, indent: 48, color: CosmicColors.divider),
+                            const Divider(
+                              height: 1,
+                              indent: 48,
+                              color: CosmicColors.divider,
+                            ),
                             _buildServiceItem(
                               Icons.auto_awesome_mosaic_outlined,
                               l10n.divinationHubTitle,
                               () => context.push('/divination'),
                             ),
-                            const Divider(height: 1, indent: 48, color: CosmicColors.divider),
+                            const Divider(
+                              height: 1,
+                              indent: 48,
+                              color: CosmicColors.divider,
+                            ),
                             _buildServiceItem(
                               Icons.help_outline,
                               l10n.profileHelpFeedback,
                               () {},
                             ),
-                            const Divider(height: 1, indent: 48, color: CosmicColors.divider),
+                            const Divider(
+                              height: 1,
+                              indent: 48,
+                              color: CosmicColors.divider,
+                            ),
                             _buildServiceItem(
                               Icons.share_outlined,
                               l10n.profileShareApp,
                               () {},
                             ),
-                            const Divider(height: 1, indent: 48, color: CosmicColors.divider),
+                            const Divider(
+                              height: 1,
+                              indent: 48,
+                              color: CosmicColors.divider,
+                            ),
                             _buildServiceItem(
                               Icons.star_outline,
                               l10n.profileRateUs,
                               () {},
                             ),
-                            const Divider(height: 1, indent: 48, color: CosmicColors.divider),
+                            const Divider(
+                              height: 1,
+                              indent: 48,
+                              color: CosmicColors.divider,
+                            ),
                             _buildServiceItem(
                               Icons.settings_outlined,
                               l10n.profileSettingsItem,
@@ -255,8 +288,11 @@ class ProfilePage extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.auto_awesome,
-                color: CosmicColors.primaryLight, size: 20),
+            const Icon(
+              Icons.auto_awesome,
+              color: CosmicColors.primaryLight,
+              size: 20,
+            ),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
@@ -342,15 +378,21 @@ class ProfilePage extends ConsumerWidget {
                   ),
                 ),
                 const Spacer(),
-                const Icon(Icons.chevron_right,
-                    color: CosmicColors.textTertiary, size: 18),
+                const Icon(
+                  Icons.chevron_right,
+                  color: CosmicColors.textTertiary,
+                  size: 18,
+                ),
               ],
             ),
             const Spacer(),
             Row(
               children: [
-                const Icon(Icons.add_circle_outline,
-                    color: CosmicColors.textTertiary, size: 16),
+                const Icon(
+                  Icons.add_circle_outline,
+                  color: CosmicColors.textTertiary,
+                  size: 16,
+                ),
                 const SizedBox(width: 4),
                 Text(
                   subtitle,
@@ -395,8 +437,11 @@ class ProfilePage extends ConsumerWidget {
               ),
             ),
             const Spacer(),
-            const Icon(Icons.chevron_right,
-                color: CosmicColors.textTertiary, size: 18),
+            const Icon(
+              Icons.chevron_right,
+              color: CosmicColors.textTertiary,
+              size: 18,
+            ),
           ],
         ),
       ),

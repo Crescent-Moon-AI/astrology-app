@@ -30,8 +30,7 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isZh =
-        Localizations.localeOf(context).languageCode.startsWith('zh');
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
     final ritualState = ref.watch(tarotRitualProvider);
 
     // Navigate to ritual page when session advances past shuffling
@@ -45,9 +44,9 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
         );
       }
       if (next.error != null && prev?.error == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error!)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
       }
     });
 
@@ -102,8 +101,10 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
               GestureDetector(
                 onTap: () => _showSpreadPicker(context, isZh),
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withAlpha(13), // ~5%
                     borderRadius: BorderRadius.circular(20),
@@ -122,9 +123,7 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
                         ),
                       ),
                       Text(
-                        isZh
-                            ? _selectedSpread.nameZH
-                            : _selectedSpread.nameEN,
+                        isZh ? _selectedSpread.nameZH : _selectedSpread.nameEN,
                         style: const TextStyle(
                           color: CosmicColors.textPrimary,
                           fontSize: 13,

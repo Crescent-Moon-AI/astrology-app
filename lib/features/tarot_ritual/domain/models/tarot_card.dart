@@ -100,9 +100,8 @@ class ResolvedCard {
     String positionLabel;
     if (posRaw is Map<String, dynamic>) {
       position = posRaw['index'] as int? ?? 0;
-      positionLabel = (posRaw['label_zh'] as String?) ??
-          (posRaw['label'] as String?) ??
-          '';
+      positionLabel =
+          (posRaw['label_zh'] as String?) ?? (posRaw['label'] as String?) ?? '';
     } else {
       position = posRaw as int? ?? 0;
       positionLabel = json['position_label'] as String? ?? '';

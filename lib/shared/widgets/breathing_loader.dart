@@ -64,9 +64,7 @@ class _BreathingLoaderState extends ConsumerState<BreathingLoader>
   Widget build(BuildContext context) {
     final reducedMotion = ref.watch(reducedMotionProvider);
     final l10n = AppLocalizations.of(context);
-    final displayMessage =
-        widget.message ??
-        l10n?.breathingLoaderMessage ?? '';
+    final displayMessage = widget.message ?? l10n?.breathingLoaderMessage ?? '';
 
     if (reducedMotion) {
       _controller.stop();

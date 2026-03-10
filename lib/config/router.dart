@@ -303,10 +303,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'tarotGalleryDetail',
         pageBuilder: (context, state) {
           final args = state.extra as TarotDetailArgs;
-          return _cosmicFadePage(
-            state,
-            TarotCardDetailPage(args: args),
-          );
+          return _cosmicFadePage(state, TarotCardDetailPage(args: args));
         },
       ),
 

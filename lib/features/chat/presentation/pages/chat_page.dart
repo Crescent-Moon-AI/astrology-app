@@ -94,12 +94,18 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       if (!mounted) return;
 
       try {
-        final ticket = await repo.getWsTicket()
-            .timeout(const Duration(seconds: 10),
-                onTimeout: () => throw TimeoutException('WebSocket ticket request timed out'));
-        await datasource.connect(ApiConstants.wsUrl, ticket)
-            .timeout(const Duration(seconds: 15),
-                onTimeout: () => throw TimeoutException('WebSocket connection timed out'));
+        final ticket = await repo.getWsTicket().timeout(
+          const Duration(seconds: 10),
+          onTimeout: () =>
+              throw TimeoutException('WebSocket ticket request timed out'),
+        );
+        await datasource
+            .connect(ApiConstants.wsUrl, ticket)
+            .timeout(
+              const Duration(seconds: 15),
+              onTimeout: () =>
+                  throw TimeoutException('WebSocket connection timed out'),
+            );
 
         if (mounted) {
           setState(() {
@@ -343,7 +349,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          Localizations.localeOf(context).languageCode.startsWith('zh')
+                          Localizations.localeOf(
+                                context,
+                              ).languageCode.startsWith('zh')
                               ? '重试'
                               : 'Retry',
                           style: const TextStyle(

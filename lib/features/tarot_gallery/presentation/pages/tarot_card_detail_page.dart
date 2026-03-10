@@ -140,8 +140,12 @@ class _CardDetailContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final assetPath = CardAssetPaths.tarotAssetPath(card.imageKey);
     final keywords = showReversed
-        ? (card.reversedKeywordsZH.isNotEmpty ? card.reversedKeywordsZH : card.reversedKeywords)
-        : (card.uprightKeywordsZH.isNotEmpty ? card.uprightKeywordsZH : card.uprightKeywords);
+        ? (card.reversedKeywordsZH.isNotEmpty
+              ? card.reversedKeywordsZH
+              : card.reversedKeywords)
+        : (card.uprightKeywordsZH.isNotEmpty
+              ? card.uprightKeywordsZH
+              : card.uprightKeywords);
 
     // Quotes for cards
     final quote = _getCardQuote(card);
@@ -211,7 +215,9 @@ class _CardDetailContent extends StatelessWidget {
                   ? (isZh ? '逆位' : 'Reversed')
                   : (isZh ? '正位' : 'Upright'),
               style: TextStyle(
-                color: showReversed ? CosmicColors.error : CosmicColors.tarotGold,
+                color: showReversed
+                    ? CosmicColors.error
+                    : CosmicColors.tarotGold,
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),
@@ -225,7 +231,10 @@ class _CardDetailContent extends StatelessWidget {
             runSpacing: 8,
             children: keywords.map((kw) {
               return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 7,
+                ),
                 decoration: BoxDecoration(
                   color: _chipColor(keywords.indexOf(kw)),
                   borderRadius: BorderRadius.circular(20),
@@ -459,13 +468,17 @@ class _OrientationToggle extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 10),
         decoration: BoxDecoration(
-          color: selected ? CosmicColors.primary.withAlpha(180) : Colors.transparent,
+          color: selected
+              ? CosmicColors.primary.withAlpha(180)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(24),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: selected ? CosmicColors.textPrimary : CosmicColors.textTertiary,
+            color: selected
+                ? CosmicColors.textPrimary
+                : CosmicColors.textTertiary,
             fontSize: 14,
             fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
           ),

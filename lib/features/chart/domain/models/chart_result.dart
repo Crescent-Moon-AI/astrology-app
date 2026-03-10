@@ -139,13 +139,15 @@ class SynastryChartResult extends ChartResult {
       // Python golden data format (flat)
       p1 = SynastryPerson(
         name: json['person1_name'] as String,
-        chart:
-            ChartData.fromJson(json['person1_chart'] as Map<String, dynamic>),
+        chart: ChartData.fromJson(
+          json['person1_chart'] as Map<String, dynamic>,
+        ),
       );
       p2 = SynastryPerson(
         name: json['person2_name'] as String,
-        chart:
-            ChartData.fromJson(json['person2_chart'] as Map<String, dynamic>),
+        chart: ChartData.fromJson(
+          json['person2_chart'] as Map<String, dynamic>,
+        ),
       );
     } else {
       // Rust serde format (nested)

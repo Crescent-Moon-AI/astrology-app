@@ -46,8 +46,7 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
 
   @override
   Widget build(BuildContext context) {
-    final isZh =
-        Localizations.localeOf(context).languageCode.startsWith('zh');
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
     final ritualState = ref.watch(tarotRitualProvider);
 
     return StarfieldBackground(
@@ -94,9 +93,7 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
               opacity: _shuffleComplete ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 600),
               child: Text(
-                isZh
-                    ? '请保持专注，准备好后点击继续'
-                    : 'Stay focused and tap to continue',
+                isZh ? '请保持专注，准备好后点击继续' : 'Stay focused and tap to continue',
                 style: const TextStyle(
                   color: CosmicColors.textSecondary,
                   fontSize: 14,
@@ -110,8 +107,10 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
               opacity: _shuffleComplete ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 600),
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withAlpha(13),
                   borderRadius: BorderRadius.circular(20),
@@ -128,8 +127,7 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
                       ),
                     ),
                     Text(
-                      _spreadDisplayName(
-                          ritualState.session?.spreadType, isZh),
+                      _spreadDisplayName(ritualState.session?.spreadType, isZh),
                       style: const TextStyle(
                         color: CosmicColors.textPrimary,
                         fontSize: 13,
@@ -157,8 +155,9 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
                 child: CosmicRitualButton(
                   label: isZh ? '继续' : 'Continue',
                   onPressed: _shuffleComplete
-                      ? () =>
-                          ref.read(tarotRitualProvider.notifier).advanceShuffle()
+                      ? () => ref
+                            .read(tarotRitualProvider.notifier)
+                            .advanceShuffle()
                       : null,
                 ),
               ),

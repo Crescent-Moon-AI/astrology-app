@@ -27,10 +27,7 @@ class SecondaryProgressionRequest extends ChartRequest {
 class SolarArcRequest extends ChartRequest {
   final BirthData birth;
   final DateTime progressionDate;
-  const SolarArcRequest({
-    required this.birth,
-    required this.progressionDate,
-  });
+  const SolarArcRequest({required this.birth, required this.progressionDate});
 }
 
 class SolarReturnRequest extends ChartRequest {
