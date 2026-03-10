@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../core/providers/core_providers.dart';
 import '../../data/datasources/chat_remote_datasource.dart';
@@ -51,7 +52,7 @@ class ChatMessagesNotifier extends Notifier<List<ChatMessage>> {
 
   void addUserMessage(String content) {
     final msg = ChatMessage(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      id: const Uuid().v4(),
       role: MessageRole.user,
       content: content,
       createdAt: DateTime.now(),
