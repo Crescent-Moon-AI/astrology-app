@@ -9,11 +9,13 @@ import '../../../../shared/models/expression.dart';
 class TarotQuestionPage extends StatefulWidget {
   final String conversationId;
   final String tarotSessionId;
+  final String? initialQuestion;
 
   const TarotQuestionPage({
     super.key,
     required this.conversationId,
     required this.tarotSessionId,
+    this.initialQuestion,
   });
 
   @override
@@ -27,6 +29,10 @@ class _TarotQuestionPageState extends State<TarotQuestionPage> {
   @override
   void initState() {
     super.initState();
+    if (widget.initialQuestion?.isNotEmpty == true) {
+      _controller.text = widget.initialQuestion!;
+      _hasText = true;
+    }
     _controller.addListener(() {
       final hasText = _controller.text.trim().isNotEmpty;
       if (hasText != _hasText) setState(() => _hasText = hasText);
@@ -169,8 +175,9 @@ class _TarotQuestionPageState extends State<TarotQuestionPage> {
                       height: 44,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient:
-                            _hasText ? CosmicColors.primaryGradient : null,
+                        gradient: _hasText
+                            ? CosmicColors.primaryGradient
+                            : null,
                         color: _hasText ? null : CosmicColors.surface,
                       ),
                       child: IconButton(

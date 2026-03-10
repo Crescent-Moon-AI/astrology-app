@@ -57,11 +57,7 @@ class ExploreMoreSection extends StatelessWidget {
     );
   }
 
-  Widget _buildExploreCard(
-    String title,
-    String subtitle,
-    VoidCallback onTap,
-  ) {
+  Widget _buildExploreCard(String title, String subtitle, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -88,8 +84,11 @@ class ExploreMoreSection extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 4),
-                      const Icon(Icons.chevron_right,
-                          color: CosmicColors.textTertiary, size: 18),
+                      const Icon(
+                        Icons.chevron_right,
+                        color: CosmicColors.textTertiary,
+                        size: 18,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 4),

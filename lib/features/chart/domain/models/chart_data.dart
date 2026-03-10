@@ -24,8 +24,9 @@ class ChartInfo {
 
   factory ChartInfo.fromJson(Map<String, dynamic> json) {
     // Support both flat (Python golden) and nested (Rust serde) formats
-    final infoJson =
-        json.containsKey('info') ? json['info'] as Map<String, dynamic> : json;
+    final infoJson = json.containsKey('info')
+        ? json['info'] as Map<String, dynamic>
+        : json;
     return ChartInfo(
       name: (infoJson['name'] as String?) ?? '',
       date: (infoJson['date'] as String?) ?? '',
@@ -63,22 +64,25 @@ class ChartData {
       planets: (json['planets'] as List<dynamic>)
           .map((e) => PlanetData.fromJson(e as Map<String, dynamic>))
           .toList(),
-      houses:
-          HouseSystemData.fromJson(json['houses'] as Map<String, dynamic>),
+      houses: HouseSystemData.fromJson(json['houses'] as Map<String, dynamic>),
       aspects: (json['aspects'] as List<dynamic>)
           .map((e) => AspectData.fromJson(e as Map<String, dynamic>))
           .toList(),
-      asteroids: (json['asteroids'] as List<dynamic>?)
+      asteroids:
+          (json['asteroids'] as List<dynamic>?)
               ?.map((e) => AsteroidData.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      fixedStars: (json['fixed_stars'] as List<dynamic>?)
+      fixedStars:
+          (json['fixed_stars'] as List<dynamic>?)
               ?.map((e) => FixedStarData.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      starConjunctions: (json['star_conjunctions'] as List<dynamic>?)
-              ?.map((e) =>
-                  StarConjunctionData.fromJson(e as Map<String, dynamic>))
+      starConjunctions:
+          (json['star_conjunctions'] as List<dynamic>?)
+              ?.map(
+                (e) => StarConjunctionData.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           [],
     );

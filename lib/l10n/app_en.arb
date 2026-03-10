@@ -347,6 +347,7 @@
   "homeDimensionCareer": "Career",
   "homeDimensionWealth": "Wealth",
   "homeDimensionStudy": "Study",
+  "homeDimensionSocial": "Social",
   "homeLuckyColor": "Lucky Color",
   "homeLuckyNumber": "Lucky Number",
   "homeLuckyFlower": "Lucky Flower",
@@ -360,6 +361,8 @@
   "homeExploreMore": "Explore More",
   "homeFortuneAdvice": "Do",
   "homeFortuneAvoid": "Avoid",
+  "homeFortuneNoBirthData": "Add info to view daily fortune",
+  "homeFortuneAddInfo": "Add Info",
 
   "insightTitle": "Insight",
   "insightQuote": "What you resist, persists.",
@@ -550,5 +553,15 @@
   "breathingExhale": "Exhale...",
 
   "accessibilitySection": "Accessibility",
-  "errorGeneric": "An error occurred"
+  "errorGeneric": "An error occurred",
+
+  "photoAnalysisTitle": "Photo Analysis",
+  "photoAnalysisPickImage": "Choose Image",
+  "photoAnalysisTakePhoto": "Take Photo",
+  "photoAnalysisGallery": "From Gallery",
+  "photoAnalysisQuestionHint": "What would you like to ask about this image? (optional)",
+  "photoAnalysisDefaultQuestion": "Please analyze this chart image",
+  "photoAnalysisSend": "Start Analysis",
+  "photoAnalysisNoImage": "Please select or take a photo first",
+  "photoAnalysisImageSelected": "Image selected"
 }

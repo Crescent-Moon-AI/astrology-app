@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/daily_fortune.dart';
+import 'dimension_arc.dart';
 
 /// Compact score display matching the real app layout:
-/// Overall score on the left, dimension scores as bordered badges on the right,
+/// Overall score on the left, dimension scores as arc rings on the right,
 /// followed by fortune description paragraph.
 class FortuneScoreSection extends StatelessWidget {
   final DailyFortune fortune;
@@ -27,45 +29,58 @@ class FortuneScoreSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Score row: overall score + dimension badges
+          // Score row: overall score + dimension arc rings
           Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Overall score
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${fortune.overallScore}',
-                    style: const TextStyle(
-                      color: CosmicColors.textPrimary,
-                      fontSize: 40,
-                      fontWeight: FontWeight.w800,
-                      height: 1.0,
+              // Overall score — tappable, opens detail page
+              GestureDetector(
+                onTap: () => context.push('/fortune/detail', extra: fortune),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${fortune.overallScore}',
+                      style: const TextStyle(
+                        color: CosmicColors.textPrimary,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w800,
+                        height: 1.0,
+                      ),
                     ),
-                  ),
-                  Text(
-                    l10n.homeOverallScore,
-                    style: const TextStyle(
-                      color: CosmicColors.textTertiary,
-                      fontSize: 11,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          l10n.homeOverallScore,
+                          style: const TextStyle(
+                            color: CosmicColors.textTertiary,
+                            fontSize: 11,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        const Icon(
+                          Icons.chevron_right,
+                          color: CosmicColors.textTertiary,
+                          size: 14,
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              const SizedBox(width: 16),
-              // Dimension score badges
+              const SizedBox(width: 12),
+              // Dimension arc rings
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    for (int i = 0;
-                        i < fortune.dimensions.length && i < 4;
-                        i++)
-                      _buildDimensionBadge(
-                        fortune.dimensions[i],
-                        _dimensionColors[i % _dimensionColors.length],
-                        l10n,
+                    for (int i = 0; i < fortune.dimensions.length && i < 4; i++)
+                      DimensionArc(
+                        label: _dimensionLabel(fortune.dimensions[i].key, l10n),
+                        score: fortune.dimensions[i].score,
+                        color: _dimensionColors[i % _dimensionColors.length],
+                        size: 62,
                       ),
                   ],
                 ),
@@ -86,42 +101,6 @@ class FortuneScoreSection extends StatelessWidget {
           ],
         ],
       ),
-    );
-  }
-
-  Widget _buildDimensionBadge(
-    FortuneDimension dim,
-    Color color,
-    AppLocalizations l10n,
-  ) {
-    final label = _dimensionLabel(dim.key, l10n);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: color.withAlpha(128), width: 1.5),
-          ),
-          child: Text(
-            '${dim.score}',
-            style: TextStyle(
-              color: color,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: const TextStyle(
-            color: CosmicColors.textTertiary,
-            fontSize: 11,
-          ),
-        ),
-      ],
     );
   }
 

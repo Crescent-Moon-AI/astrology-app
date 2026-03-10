@@ -9,11 +9,7 @@ class PlanetTable extends StatelessWidget {
   final List<PlanetData> planets;
   final bool showHouse;
 
-  const PlanetTable({
-    super.key,
-    required this.planets,
-    this.showHouse = true,
-  });
+  const PlanetTable({super.key, required this.planets, this.showHouse = true});
 
   @override
   Widget build(BuildContext context) {

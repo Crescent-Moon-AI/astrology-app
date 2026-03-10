@@ -114,7 +114,11 @@ class ScenarioListPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildList(BuildContext context, AppLocalizations l10n, List<Scenario> scenarios) {
+  Widget _buildList(
+    BuildContext context,
+    AppLocalizations l10n,
+    List<Scenario> scenarios,
+  ) {
     if (scenarios.isEmpty) {
       return Center(
         child: Column(

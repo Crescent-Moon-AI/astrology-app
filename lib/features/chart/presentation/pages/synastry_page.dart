@@ -14,7 +14,9 @@ import 'package:astrology_app/shared/widgets/breathing_loader.dart';
 import 'package:astrology_app/features/settings/presentation/providers/profile_providers.dart';
 
 class SynastryPage extends ConsumerStatefulWidget {
-  const SynastryPage({super.key});
+  final BirthData? preloadedPerson2;
+
+  const SynastryPage({super.key, this.preloadedPerson2});
 
   @override
   ConsumerState<SynastryPage> createState() => _SynastryPageState();
@@ -25,6 +27,12 @@ class _SynastryPageState extends ConsumerState<SynastryPage> {
   SynastryChartResult? _result;
   bool _isLoading = false;
   String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _person2 = widget.preloadedPerson2;
+  }
 
   Future<void> _calculate(BirthData person1) async {
     if (_person2 == null) return;

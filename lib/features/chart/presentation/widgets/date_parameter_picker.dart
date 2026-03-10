@@ -18,8 +18,9 @@ class DateParameterPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isZh = Localizations.localeOf(context).languageCode == 'zh';
-    final dateFormat =
-        isZh ? DateFormat('yyyy年M月d日') : DateFormat('MMM d, yyyy');
+    final dateFormat = isZh
+        ? DateFormat('yyyy年M月d日')
+        : DateFormat('MMM d, yyyy');
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),

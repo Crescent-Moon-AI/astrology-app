@@ -1349,7 +1349,8 @@ class MockInterceptor extends Interceptor {
   Map<String, dynamic> _profile() {
     return {
       'data': {
-        'core': _savedBirthCore ??
+        'core':
+            _savedBirthCore ??
             {
               'user_id': 'mock-user-001',
               'birth_date': '1990-06-25',
@@ -1391,9 +1392,7 @@ class MockInterceptor extends Interceptor {
     // Persist so subsequent GET /user-profile returns saved data
     _savedBirthCore = core;
     return {
-      'data': {
-        'core': core,
-      },
+      'data': {'core': core},
     };
   }
 

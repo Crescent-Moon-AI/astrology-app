@@ -116,25 +116,28 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
       if (geocode.candidates.isNotEmpty) {
         setState(() => _selectedLocation = geocode.candidates.first);
       } else {
-        setState(() => _selectedLocation = LocationCandidate(
-              name: result.displayName,
-              latitude: 0,
-              longitude: 0,
-            ));
-      }
-    } catch (_) {
-      setState(() => _selectedLocation = LocationCandidate(
+        setState(
+          () => _selectedLocation = LocationCandidate(
             name: result.displayName,
             latitude: 0,
             longitude: 0,
-          ));
+          ),
+        );
+      }
+    } catch (_) {
+      setState(
+        () => _selectedLocation = LocationCandidate(
+          name: result.displayName,
+          latitude: 0,
+          longitude: 0,
+        ),
+      );
     }
   }
 
   void _showRelationshipPicker() {
     final l10n = AppLocalizations.of(context)!;
-    final isZh =
-        Localizations.localeOf(context).languageCode.startsWith('zh');
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
 
     showModalBottomSheet(
       context: context,
@@ -168,12 +171,15 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                     color: selected
                         ? CosmicColors.primaryLight
                         : CosmicColors.textPrimary,
-                    fontWeight:
-                        selected ? FontWeight.w600 : FontWeight.normal,
+                    fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
                   ),
                 ),
                 trailing: selected
-                    ? const Icon(Icons.check, color: CosmicColors.primary, size: 20)
+                    ? const Icon(
+                        Icons.check,
+                        color: CosmicColors.primary,
+                        size: 20,
+                      )
                     : null,
                 onTap: () {
                   setState(() => _selectedRelationship = rel);
@@ -192,15 +198,15 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
     final l10n = AppLocalizations.of(context)!;
     final name = _nicknameController.text.trim();
     if (name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.friendNicknamePlaceholder)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.friendNicknamePlaceholder)));
       return;
     }
     if (_birthDate == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.birthDataRequired)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.birthDataRequired)));
       return;
     }
 
@@ -230,8 +236,9 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
       if (mounted) context.pop();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(formatError(e))));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(formatError(e))));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -241,8 +248,7 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isZh =
-        Localizations.localeOf(context).languageCode.startsWith('zh');
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
 
     return Scaffold(
       appBar: AppBar(
@@ -252,8 +258,11 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
         actions: [
           TextButton.icon(
             onPressed: () {},
-            icon: const Icon(Icons.person_add_alt_1,
-                color: CosmicColors.primaryLight, size: 18),
+            icon: const Icon(
+              Icons.person_add_alt_1,
+              color: CosmicColors.primaryLight,
+              size: 18,
+            ),
             label: Text(
               l10n.friendInvite,
               style: const TextStyle(
@@ -284,8 +293,11 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                           size: CharacterAvatarSize.md,
                         ),
                       ),
-                      const Icon(Icons.add,
-                          color: CosmicColors.textTertiary, size: 20),
+                      const Icon(
+                        Icons.add,
+                        color: CosmicColors.textTertiary,
+                        size: 20,
+                      ),
                       Positioned(
                         right: 0,
                         child: CharacterAvatar(
@@ -355,11 +367,14 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                   child: TextField(
                     controller: _nicknameController,
                     style: const TextStyle(
-                        color: CosmicColors.textPrimary, fontSize: 15),
+                      color: CosmicColors.textPrimary,
+                      fontSize: 15,
+                    ),
                     decoration: InputDecoration(
                       hintText: l10n.friendNicknamePlaceholder,
-                      hintStyle:
-                          const TextStyle(color: CosmicColors.textTertiary),
+                      hintStyle: const TextStyle(
+                        color: CosmicColors.textTertiary,
+                      ),
                       border: InputBorder.none,
                     ),
                   ),
@@ -377,8 +392,8 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                       Text(
                         _selectedRelationship != null
                             ? (isZh
-                                ? _selectedRelationship!.labelZH
-                                : _selectedRelationship!.labelEN)
+                                  ? _selectedRelationship!.labelZH
+                                  : _selectedRelationship!.labelEN)
                             : '',
                         style: TextStyle(
                           color: _selectedRelationship != null
@@ -388,8 +403,11 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                         ),
                       ),
                       const Spacer(),
-                      const Icon(Icons.chevron_right,
-                          color: CosmicColors.textTertiary, size: 20),
+                      const Icon(
+                        Icons.chevron_right,
+                        color: CosmicColors.textTertiary,
+                        size: 20,
+                      ),
                     ],
                   ),
                 ),
@@ -423,19 +441,25 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                         _DatePart(
                           text: _birthDate != null
                               ? '${_birthDate!.year}'
-                              : isZh ? '年' : 'Year',
+                              : isZh
+                              ? '年'
+                              : 'Year',
                           hasValue: _birthDate != null,
                         ),
                         _DatePart(
                           text: _birthDate != null
                               ? '${_birthDate!.month}'
-                              : isZh ? '月' : 'Mon',
+                              : isZh
+                              ? '月'
+                              : 'Mon',
                           hasValue: _birthDate != null,
                         ),
                         _DatePart(
                           text: _birthDate != null
                               ? '${_birthDate!.day}'
-                              : isZh ? '日' : 'Day',
+                              : isZh
+                              ? '日'
+                              : 'Day',
                           hasValue: _birthDate != null,
                         ),
                       ],
@@ -517,8 +541,11 @@ class _AddFriendPageState extends ConsumerState<AddFriendPage> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const Icon(Icons.chevron_right,
-                          color: CosmicColors.textTertiary, size: 20),
+                      const Icon(
+                        Icons.chevron_right,
+                        color: CosmicColors.textTertiary,
+                        size: 20,
+                      ),
                     ],
                   ),
                 ),
@@ -625,11 +652,13 @@ class _GenderButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon,
-                color: selected
-                    ? CosmicColors.primaryLight
-                    : CosmicColors.textTertiary,
-                size: 18),
+            Icon(
+              icon,
+              color: selected
+                  ? CosmicColors.primaryLight
+                  : CosmicColors.textTertiary,
+              size: 18,
+            ),
             const SizedBox(width: 6),
             Text(
               label,
@@ -653,11 +682,7 @@ class _FieldRow extends StatelessWidget {
   final Widget child;
   final VoidCallback? onTap;
 
-  const _FieldRow({
-    required this.label,
-    required this.child,
-    this.onTap,
-  });
+  const _FieldRow({required this.label, required this.child, this.onTap});
 
   @override
   Widget build(BuildContext context) {

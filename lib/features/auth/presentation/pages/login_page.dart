@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../../scenario/presentation/providers/scenario_providers.dart';
@@ -16,16 +18,55 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class _LoginPageState extends ConsumerState<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _identifierCtrl = TextEditingController();
-  final _passwordCtrl = TextEditingController();
-  bool _obscure = true;
+  final _phoneCtrl = TextEditingController();
+  final _codeCtrl = TextEditingController();
   bool _loading = false;
+  bool _sending = false;
+  int _countdown = 0;
+  Timer? _timer;
+  String? _sendError;
 
   @override
   void dispose() {
-    _identifierCtrl.dispose();
-    _passwordCtrl.dispose();
+    _phoneCtrl.dispose();
+    _codeCtrl.dispose();
+    _timer?.cancel();
     super.dispose();
+  }
+
+  void _startCountdown() {
+    setState(() => _countdown = 60);
+    _timer = Timer.periodic(const Duration(seconds: 1), (t) {
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
+      setState(() {
+        _countdown--;
+        if (_countdown <= 0) t.cancel();
+      });
+    });
+  }
+
+  Future<void> _sendCode() async {
+    final phone = _phoneCtrl.text.trim();
+    if (phone.isEmpty) {
+      setState(() => _sendError = '请输入手机号');
+      return;
+    }
+    setState(() {
+      _sending = true;
+      _sendError = null;
+    });
+
+    final err = await ref.read(authProvider.notifier).sendSMSOTP(phone);
+    if (!mounted) return;
+    setState(() => _sending = false);
+    if (err != null) {
+      setState(() => _sendError = err);
+    } else {
+      _startCountdown();
+    }
   }
 
   Future<void> _submit() async {
@@ -35,11 +76,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     final ok = await ref
         .read(authProvider.notifier)
-        .login(_identifierCtrl.text.trim(), _passwordCtrl.text);
+        .smsLogin(_phoneCtrl.text.trim(), _codeCtrl.text.trim());
 
     if (mounted) setState(() => _loading = false);
     if (ok && mounted) {
-      // Invalidate cached providers so they refetch with auth token
       ref.invalidate(scenarioListProvider);
       ref.invalidate(scenarioCategoriesProvider);
       ref.invalidate(hotScenariosProvider);
@@ -77,7 +117,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
-    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: StarfieldBackground(
@@ -90,7 +129,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Logo
                     const Text(
                       '\uD83C\uDF19', // 🌙
                       style: TextStyle(fontSize: 56),
@@ -105,52 +143,98 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      l10n.authSubtitle,
-                      style: const TextStyle(
+                    const Text(
+                      '手机号登录',
+                      style: TextStyle(
                         color: CosmicColors.textSecondary,
                         fontSize: 14,
                       ),
                     ),
                     const SizedBox(height: 48),
 
-                    // Email
+                    // Phone
                     TextFormField(
-                      controller: _identifierCtrl,
+                      controller: _phoneCtrl,
                       style: const TextStyle(color: CosmicColors.textPrimary),
                       decoration: _inputDecoration(
-                        label: l10n.authEmail,
-                        prefixIcon: Icons.email_outlined,
+                        label: '手机号',
+                        prefixIcon: Icons.phone_outlined,
                       ),
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9+]')),
+                      ],
                       textInputAction: TextInputAction.next,
-                      validator: (v) => v == null || v.trim().isEmpty
-                          ? l10n.authRequired
-                          : null,
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) return '请输入手机号';
+                        if (v.trim().length < 8) return '手机号格式不正确';
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 16),
 
-                    // Password
+                    // OTP code
                     TextFormField(
-                      controller: _passwordCtrl,
+                      controller: _codeCtrl,
                       style: const TextStyle(color: CosmicColors.textPrimary),
                       decoration: _inputDecoration(
-                        label: l10n.authPassword,
-                        prefixIcon: Icons.lock_outline,
-                        suffix: IconButton(
-                          icon: Icon(
-                            _obscure ? Icons.visibility_off : Icons.visibility,
-                            color: CosmicColors.textTertiary,
-                          ),
-                          onPressed: () => setState(() => _obscure = !_obscure),
-                        ),
+                        label: '验证码',
+                        prefixIcon: Icons.password_outlined,
+                        suffix: _countdown > 0
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                ),
+                                child: Text(
+                                  '${_countdown}s',
+                                  style: const TextStyle(
+                                    color: CosmicColors.textTertiary,
+                                  ),
+                                ),
+                              )
+                            : TextButton(
+                                onPressed: _sending ? null : _sendCode,
+                                child: _sending
+                                    ? const SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: CosmicColors.primary,
+                                        ),
+                                      )
+                                    : const Text(
+                                        '获取验证码',
+                                        style: TextStyle(
+                                          color: CosmicColors.primary,
+                                        ),
+                                      ),
+                              ),
                       ),
-                      obscureText: _obscure,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(6),
+                      ],
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => _submit(),
-                      validator: (v) =>
-                          v == null || v.isEmpty ? l10n.authRequired : null,
+                      validator: (v) {
+                        if (v == null || v.isEmpty) return '请输入验证码';
+                        if (v.length != 6) return '验证码为6位数字';
+                        return null;
+                      },
                     ),
+
+                    if (_sendError != null) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        _sendError!,
+                        style: const TextStyle(
+                          color: CosmicColors.error,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
 
                     // Error
                     if (authState.error != null) ...[
@@ -204,9 +288,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                         color: CosmicColors.textPrimary,
                                       ),
                                     )
-                                  : Text(
-                                      l10n.authLogin,
-                                      style: const TextStyle(
+                                  : const Text(
+                                      '登录',
+                                      style: TextStyle(
                                         color: CosmicColors.textPrimary,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 16,
@@ -225,7 +309,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       style: TextButton.styleFrom(
                         foregroundColor: CosmicColors.primaryLight,
                       ),
-                      child: Text(l10n.authNoAccount),
+                      child: const Text('没有账号？去注册'),
                     ),
                   ],
                 ),

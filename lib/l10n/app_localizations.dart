@@ -1820,6 +1820,12 @@ abstract class AppLocalizations {
   /// **'Study'**
   String get homeDimensionStudy;
 
+  /// No description provided for @homeDimensionSocial.
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get homeDimensionSocial;
+
   /// No description provided for @homeLuckyColor.
   ///
   /// In en, this message translates to:
@@ -1897,6 +1903,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Avoid'**
   String get homeFortuneAvoid;
+
+  /// No description provided for @homeFortuneNoBirthData.
+  ///
+  /// In en, this message translates to:
+  /// **'Add info to view daily fortune'**
+  String get homeFortuneNoBirthData;
+
+  /// No description provided for @homeFortuneAddInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Info'**
+  String get homeFortuneAddInfo;
 
   /// No description provided for @insightTitle.
   ///
@@ -2737,6 +2755,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred'**
   String get errorGeneric;
+
+  /// No description provided for @photoAnalysisTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo Analysis'**
+  String get photoAnalysisTitle;
+
+  /// No description provided for @photoAnalysisPickImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Image'**
+  String get photoAnalysisPickImage;
+
+  /// No description provided for @photoAnalysisTakePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take Photo'**
+  String get photoAnalysisTakePhoto;
+
+  /// No description provided for @photoAnalysisGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'From Gallery'**
+  String get photoAnalysisGallery;
+
+  /// No description provided for @photoAnalysisQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like to ask about this image? (optional)'**
+  String get photoAnalysisQuestionHint;
+
+  /// No description provided for @photoAnalysisDefaultQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Please analyze this chart image'**
+  String get photoAnalysisDefaultQuestion;
+
+  /// No description provided for @photoAnalysisSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Analysis'**
+  String get photoAnalysisSend;
+
+  /// No description provided for @photoAnalysisNoImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select or take a photo first'**
+  String get photoAnalysisNoImage;
+
+  /// No description provided for @photoAnalysisImageSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Image selected'**
+  String get photoAnalysisImageSelected;
 }
 
 class _AppLocalizationsDelegate

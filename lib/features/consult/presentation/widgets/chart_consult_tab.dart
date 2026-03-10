@@ -46,9 +46,7 @@ class ChartConsultTab extends ConsumerWidget {
                       ? l10n.chartLocalEngine
                       : l10n.insightComingSoon,
                   enabled: isAvailable,
-                  onTap: isAvailable
-                      ? () => context.push('/charts')
-                      : null,
+                  onTap: isAvailable ? () => context.push('/charts') : null,
                 ),
               ),
               const SizedBox(width: 12),

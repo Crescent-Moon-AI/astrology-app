@@ -27,41 +27,61 @@ class MessageBubble extends StatelessWidget {
   }
 
   Widget _buildUserBubble(BuildContext context) {
+    final hasImage = message.imageBytes != null;
+    final hasText = message.content?.isNotEmpty == true;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(width: 48),
         Flexible(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  CosmicColors.primary.withAlpha(128), // 50%
-                  CosmicColors.primary.withAlpha(89), // 35%
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(18),
-                topRight: Radius.circular(4),
-                bottomLeft: Radius.circular(18),
-                bottomRight: Radius.circular(18),
-              ),
-              border: Border.all(
-                color: CosmicColors.primary.withAlpha(77), // 30%
-              ),
-            ),
-            child: Text(
-              message.content ?? '',
-              style: const TextStyle(
-                color: CosmicColors.textPrimary,
-                fontSize: 15,
-                height: 1.5,
-              ),
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              if (hasImage)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: Image.memory(
+                    message.imageBytes!,
+                    width: 200,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              if (hasImage && hasText) const SizedBox(height: 6),
+              if (hasText)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        CosmicColors.primary.withAlpha(128),
+                        CosmicColors.primary.withAlpha(89),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(18),
+                      topRight: Radius.circular(4),
+                      bottomLeft: Radius.circular(18),
+                      bottomRight: Radius.circular(18),
+                    ),
+                    border: Border.all(
+                      color: CosmicColors.primary.withAlpha(77),
+                    ),
+                  ),
+                  child: Text(
+                    message.content!,
+                    style: const TextStyle(
+                      color: CosmicColors.textPrimary,
+                      fontSize: 15,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       ],

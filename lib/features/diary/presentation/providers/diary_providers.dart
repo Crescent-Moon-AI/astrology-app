@@ -9,14 +9,18 @@ final diaryApiProvider = Provider<DiaryApi>((ref) {
   return DiaryApi(dioClient.dio);
 });
 
-final diaryListProvider = FutureProvider.autoDispose<List<DiaryEntry>>((ref) async {
+final diaryListProvider = FutureProvider.autoDispose<List<DiaryEntry>>((
+  ref,
+) async {
   return ref.watch(diaryApiProvider).list();
 });
 
-final diaryDetailProvider = FutureProvider.autoDispose.family<Map<String, dynamic>, String>((ref, id) async {
-  return ref.watch(diaryApiProvider).getDetail(id);
-});
+final diaryDetailProvider = FutureProvider.autoDispose
+    .family<Map<String, dynamic>, String>((ref, id) async {
+      return ref.watch(diaryApiProvider).getDetail(id);
+    });
 
-final diaryCommentsProvider = FutureProvider.autoDispose.family<List<DiaryComment>, String>((ref, diaryId) async {
-  return ref.watch(diaryApiProvider).listComments(diaryId);
-});
+final diaryCommentsProvider = FutureProvider.autoDispose
+    .family<List<DiaryComment>, String>((ref, diaryId) async {
+      return ref.watch(diaryApiProvider).listComments(diaryId);
+    });

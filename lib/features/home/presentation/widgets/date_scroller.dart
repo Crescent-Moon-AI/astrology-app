@@ -12,17 +12,13 @@ class DateScroller extends ConsumerWidget {
     final today = DateTime.now();
     final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
 
-    // Generate 7 days centered on today
-    final days = List.generate(7, (i) => today.add(Duration(days: i - 3)));
+    // Generate 5 days centered on today
+    final days = List.generate(5, (i) => today.add(Duration(days: i - 2)));
 
     return SizedBox(
       height: 72,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        itemCount: days.length,
-        itemBuilder: (context, index) {
-          final day = days[index];
+      child: Row(
+        children: days.map((day) {
           final isSelected =
               day.year == selectedDate.year &&
               day.month == selectedDate.month &&
@@ -32,53 +28,54 @@ class DateScroller extends ConsumerWidget {
               day.month == today.month &&
               day.day == today.day;
 
-          return GestureDetector(
-            onTap: () => ref.read(selectedDateProvider.notifier).set(day),
-            child: Container(
-              width: 48,
-              margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? CosmicColors.primary.withAlpha(51)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(12),
-                border: isSelected
-                    ? Border.all(color: CosmicColors.primary.withAlpha(128))
-                    : null,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    isToday
-                        ? (isZh ? '今' : 'Now')
-                        : _weekday(day.weekday, isZh),
-                    style: TextStyle(
-                      color: isSelected
-                          ? CosmicColors.primaryLight
-                          : CosmicColors.textTertiary,
-                      fontSize: 12,
-                      fontWeight: isSelected
-                          ? FontWeight.w600
-                          : FontWeight.normal,
+          return Expanded(
+            child: GestureDetector(
+              onTap: () => ref.read(selectedDateProvider.notifier).set(day),
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? CosmicColors.primary.withAlpha(51)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                  border: isSelected
+                      ? Border.all(color: CosmicColors.primary.withAlpha(128))
+                      : null,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      isToday
+                          ? (isZh ? '今' : 'Now')
+                          : _weekday(day.weekday, isZh),
+                      style: TextStyle(
+                        color: isSelected
+                            ? CosmicColors.primaryLight
+                            : CosmicColors.textTertiary,
+                        fontSize: 12,
+                        fontWeight: isSelected
+                            ? FontWeight.w600
+                            : FontWeight.normal,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${day.day}',
-                    style: TextStyle(
-                      color: isSelected
-                          ? CosmicColors.textPrimary
-                          : CosmicColors.textSecondary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
+                    const SizedBox(height: 4),
+                    Text(
+                      '${day.day}',
+                      style: TextStyle(
+                        color: isSelected
+                            ? CosmicColors.textPrimary
+                            : CosmicColors.textSecondary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
-        },
+        }).toList(),
       ),
     );
   }

@@ -21,12 +21,16 @@ class ChartCalculationService {
         _calculateProgression(birth, progressionDate, 'secondary'),
       SolarArcRequest(:final birth, :final progressionDate) =>
         _calculateProgression(birth, progressionDate, 'solar_arc'),
-      SolarReturnRequest(:final birth, :final year) =>
-        _calculateSolarReturn(birth, year),
+      SolarReturnRequest(:final birth, :final year) => _calculateSolarReturn(
+        birth,
+        year,
+      ),
       LunarReturnRequest(:final birth, :final targetDate) =>
         _calculateLunarReturn(birth, targetDate),
-      SynastryRequest(:final person1, :final person2) =>
-        _calculateSynastry(person1, person2),
+      SynastryRequest(:final person1, :final person2) => _calculateSynastry(
+        person1,
+        person2,
+      ),
     };
   }
 

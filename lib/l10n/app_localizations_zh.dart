@@ -887,6 +887,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeDimensionStudy => '学业';
 
   @override
+  String get homeDimensionSocial => '人际';
+
+  @override
   String get homeLuckyColor => '幸运色';
 
   @override
@@ -924,6 +927,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get homeFortuneAvoid => '忌';
+
+  @override
+  String get homeFortuneNoBirthData => '添加信息查看每日运势';
+
+  @override
+  String get homeFortuneAddInfo => '去添加';
 
   @override
   String get insightTitle => '洞见';
@@ -1358,4 +1367,31 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get errorGeneric => '发生错误';
+
+  @override
+  String get photoAnalysisTitle => '拍照解盘';
+
+  @override
+  String get photoAnalysisPickImage => '选择图片';
+
+  @override
+  String get photoAnalysisTakePhoto => '拍照';
+
+  @override
+  String get photoAnalysisGallery => '从相册选择';
+
+  @override
+  String get photoAnalysisQuestionHint => '关于这张图片，你想问什么？（可选）';
+
+  @override
+  String get photoAnalysisDefaultQuestion => '请帮我解读这张星盘图片';
+
+  @override
+  String get photoAnalysisSend => '开始解读';
+
+  @override
+  String get photoAnalysisNoImage => '请先选择或拍摄图片';
+
+  @override
+  String get photoAnalysisImageSelected => '图片已选择';
 }

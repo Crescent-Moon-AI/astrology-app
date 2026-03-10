@@ -17,8 +17,9 @@ import '../widgets/shuffle_animation.dart';
 /// Auto-creates a session with the selected spread when the user taps continue.
 class SpreadSelectionPage extends ConsumerStatefulWidget {
   final String? conversationId;
+  final String? initialQuestion;
 
-  const SpreadSelectionPage({super.key, this.conversationId});
+  const SpreadSelectionPage({super.key, this.conversationId, this.initialQuestion});
 
   @override
   ConsumerState<SpreadSelectionPage> createState() =>
@@ -26,12 +27,11 @@ class SpreadSelectionPage extends ConsumerStatefulWidget {
 }
 
 class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
-  SpreadType _selectedSpread = SpreadType.threeCard;
+  SpreadType _selectedSpread = SpreadType.universalThree;
 
   @override
   Widget build(BuildContext context) {
-    final isZh =
-        Localizations.localeOf(context).languageCode.startsWith('zh');
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
     final ritualState = ref.watch(tarotRitualProvider);
 
     // Navigate to ritual page when session advances past shuffling
@@ -42,12 +42,15 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
         context.pushReplacementNamed(
           'tarotRitual',
           pathParameters: {'sessionId': next.session!.id},
+          queryParameters: widget.initialQuestion?.isNotEmpty == true
+              ? {'initial_question': widget.initialQuestion!}
+              : {},
         );
       }
       if (next.error != null && prev?.error == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error!)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
       }
     });
 
@@ -102,8 +105,10 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
               GestureDetector(
                 onTap: () => _showSpreadPicker(context, isZh),
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withAlpha(13), // ~5%
                     borderRadius: BorderRadius.circular(20),
@@ -122,9 +127,7 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
                         ),
                       ),
                       Text(
-                        isZh
-                            ? _selectedSpread.nameZH
-                            : _selectedSpread.nameEN,
+                        isZh ? _selectedSpread.nameZH : _selectedSpread.nameEN,
                         style: const TextStyle(
                           color: CosmicColors.textPrimary,
                           fontSize: 13,
@@ -179,18 +182,21 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
     showModalBottomSheet(
       context: context,
       backgroundColor: CosmicColors.surfaceElevated,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
         return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(ctx).size.height * 0.7,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.fromLTRB(0, 16, 0, 12),
                   child: Text(
                     isZh ? '选择牌阵' : 'Select Spread',
                     style: const TextStyle(
@@ -200,42 +206,50 @@ class _SpreadSelectionPageState extends ConsumerState<SpreadSelectionPage> {
                     ),
                   ),
                 ),
-                for (final spread in SpreadType.values)
-                  ListTile(
-                    leading: Icon(
-                      _selectedSpread == spread
-                          ? Icons.radio_button_checked
-                          : Icons.radio_button_off,
-                      color: _selectedSpread == spread
-                          ? CosmicColors.primary
-                          : CosmicColors.textTertiary,
-                      size: 20,
+                Flexible(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (final spread in SpreadType.values)
+                          ListTile(
+                            leading: Icon(
+                              _selectedSpread == spread
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_off,
+                              color: _selectedSpread == spread
+                                  ? CosmicColors.primary
+                                  : CosmicColors.textTertiary,
+                              size: 20,
+                            ),
+                            title: Text(
+                              isZh ? spread.nameZH : spread.nameEN,
+                              style: TextStyle(
+                                color: _selectedSpread == spread
+                                    ? CosmicColors.textPrimary
+                                    : CosmicColors.textSecondary,
+                                fontWeight: _selectedSpread == spread
+                                    ? FontWeight.w600
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                            subtitle: Text(
+                              isZh ? spread.descZH : spread.descEN,
+                              style: const TextStyle(
+                                color: CosmicColors.textTertiary,
+                                fontSize: 12,
+                              ),
+                            ),
+                            onTap: () {
+                              setState(() => _selectedSpread = spread);
+                              Navigator.pop(ctx);
+                            },
+                          ),
+                      ],
                     ),
-                    title: Text(
-                      isZh ? spread.nameZH : spread.nameEN,
-                      style: TextStyle(
-                        color: _selectedSpread == spread
-                            ? CosmicColors.textPrimary
-                            : CosmicColors.textSecondary,
-                        fontWeight: _selectedSpread == spread
-                            ? FontWeight.w600
-                            : FontWeight.normal,
-                      ),
-                    ),
-                    subtitle: Text(
-                      isZh
-                          ? '${spread.cardCount} 张牌'
-                          : '${spread.cardCount} cards',
-                      style: const TextStyle(
-                        color: CosmicColors.textTertiary,
-                        fontSize: 12,
-                      ),
-                    ),
-                    onTap: () {
-                      setState(() => _selectedSpread = spread);
-                      Navigator.pop(ctx);
-                    },
                   ),
+                ),
               ],
             ),
           ),

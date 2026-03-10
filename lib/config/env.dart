@@ -23,12 +23,20 @@ class EnvConfig {
     wsBaseUrl: 'wss://dev.astrology.net.cn',
   );
 
-  /// Local backend via emulator loopback or localhost.
+  /// Local backend via emulator loopback or localhost (HTTP, port 3000).
   /// Use with: flutter run --dart-define=API_HOST=local
   static final local = EnvConfig(
     env: Environment.dev,
     apiBaseUrl: 'http://${Platform.isAndroid ? '10.0.2.2' : 'localhost'}:3000',
     wsBaseUrl: 'ws://${Platform.isAndroid ? '10.0.2.2' : 'localhost'}:3000',
+  );
+
+  /// Local backend via emulator loopback — HTTPS (Docker nginx on port 443).
+  /// Use with: flutter run --dart-define=API_HOST=local-https
+  static final localHttps = EnvConfig(
+    env: Environment.dev,
+    apiBaseUrl: 'https://${Platform.isAndroid ? '10.0.2.2' : 'localhost'}',
+    wsBaseUrl: 'wss://${Platform.isAndroid ? '10.0.2.2' : 'localhost'}',
   );
 
   /// Local backend via LAN IP for real device WiFi testing.

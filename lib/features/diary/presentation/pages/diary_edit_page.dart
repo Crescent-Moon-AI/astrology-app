@@ -60,11 +60,14 @@ class _DiaryEditPageState extends ConsumerState<DiaryEditPage> {
                     child: ValueListenableBuilder<TextEditingValue>(
                       valueListenable: _controller,
                       builder: (context, value, _) {
-                        final hasContent = value.text.trim().isNotEmpty ||
+                        final hasContent =
+                            value.text.trim().isNotEmpty ||
                             _pickedImages.isNotEmpty;
                         return Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 8),
+                            horizontal: 20,
+                            vertical: 8,
+                          ),
                           decoration: BoxDecoration(
                             gradient: hasContent && !_isPublishing
                                 ? const LinearGradient(
@@ -247,17 +250,25 @@ class _DiaryEditPageState extends ConsumerState<DiaryEditPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading:
-                  const Icon(Icons.camera_alt, color: CosmicColors.textPrimary),
-              title: const Text('拍照',
-                  style: TextStyle(color: CosmicColors.textPrimary)),
+              leading: const Icon(
+                Icons.camera_alt,
+                color: CosmicColors.textPrimary,
+              ),
+              title: const Text(
+                '拍照',
+                style: TextStyle(color: CosmicColors.textPrimary),
+              ),
               onTap: () => Navigator.pop(ctx, ImageSource.camera),
             ),
             ListTile(
-              leading: const Icon(Icons.photo_library,
-                  color: CosmicColors.textPrimary),
-              title: const Text('从相册选择',
-                  style: TextStyle(color: CosmicColors.textPrimary)),
+              leading: const Icon(
+                Icons.photo_library,
+                color: CosmicColors.textPrimary,
+              ),
+              title: const Text(
+                '从相册选择',
+                style: TextStyle(color: CosmicColors.textPrimary),
+              ),
               onTap: () => Navigator.pop(ctx, ImageSource.gallery),
             ),
             const SizedBox(height: 8),
@@ -305,9 +316,9 @@ class _DiaryEditPageState extends ConsumerState<DiaryEditPage> {
       if (mounted) context.pop();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(formatError(e))),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(formatError(e))));
       }
     } finally {
       if (mounted) setState(() => _isPublishing = false);

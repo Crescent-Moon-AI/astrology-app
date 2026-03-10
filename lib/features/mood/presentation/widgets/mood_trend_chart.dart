@@ -62,7 +62,11 @@ class _MoodTrendChartState extends ConsumerState<MoodTrendChart> {
     );
   }
 
-  Widget _buildChart(BuildContext context, AppLocalizations l10n, MoodStats stats) {
+  Widget _buildChart(
+    BuildContext context,
+    AppLocalizations l10n,
+    MoodStats stats,
+  ) {
     if (stats.dailyAverages.isEmpty) {
       return Center(
         child: Text(

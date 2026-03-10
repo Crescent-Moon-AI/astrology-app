@@ -31,9 +31,8 @@ class TarotSession {
   factory TarotSession.fromJson(Map<String, dynamic> json) {
     // card_count and position_labels may be nested under "spread"
     final spread = json['spread'] as Map<String, dynamic>?;
-    final cardCount = json['card_count'] as int? ??
-        spread?['card_count'] as int? ??
-        0;
+    final cardCount =
+        json['card_count'] as int? ?? spread?['card_count'] as int? ?? 0;
 
     // Extract position labels from spread.positions
     List<String> positionLabels;
@@ -42,14 +41,10 @@ class TarotSession {
           .map((e) => e as String)
           .toList();
     } else if (spread != null && spread['positions'] != null) {
-      positionLabels = (spread['positions'] as List<dynamic>)
-          .map((e) {
-            final pos = e as Map<String, dynamic>;
-            return (pos['label_zh'] as String?) ??
-                (pos['label'] as String?) ??
-                '';
-          })
-          .toList();
+      positionLabels = (spread['positions'] as List<dynamic>).map((e) {
+        final pos = e as Map<String, dynamic>;
+        return (pos['label_zh'] as String?) ?? (pos['label'] as String?) ?? '';
+      }).toList();
     } else {
       positionLabels = [];
     }
@@ -57,7 +52,7 @@ class TarotSession {
     return TarotSession(
       id: json['id'] as String,
       conversationId: json['conversation_id'] as String,
-      spreadType: json['spread_type'] as String? ?? 'three_card',
+      spreadType: json['spread_type'] as String? ?? 'universal_three',
       cardCount: cardCount,
       question: json['question'] as String? ?? '',
       ritualState: RitualState.fromValue(json['ritual_state'] as String? ?? ''),

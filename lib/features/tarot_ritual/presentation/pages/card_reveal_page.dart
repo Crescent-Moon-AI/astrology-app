@@ -70,7 +70,7 @@ class CardRevealPage extends ConsumerWidget {
 
             const SizedBox(height: 24),
 
-            // Card reveal area
+            // Card reveal area — scrollable so tall cards don't overflow
             Expanded(
               child: GestureDetector(
                 onTap: () {
@@ -78,16 +78,19 @@ class CardRevealPage extends ConsumerWidget {
                     notifier.revealNextCard();
                   }
                 },
-                child: Center(
-                  child: currentIndex != null
-                      ? _CardRevealItem(
-                          key: ValueKey('card_$currentIndex'),
-                          resolvedCard: cards[currentIndex],
-                        )
-                      : _AllRevealedMessage(
-                          cards: cards,
-                          revealedCount: revealIndex,
-                        ),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                    child: currentIndex != null
+                        ? _CardRevealItem(
+                            key: ValueKey('card_$currentIndex'),
+                            resolvedCard: cards[currentIndex],
+                          )
+                        : _AllRevealedMessage(
+                            cards: cards,
+                            revealedCount: revealIndex,
+                          ),
+                  ),
                 ),
               ),
             ),
@@ -217,7 +220,8 @@ class _CardRevealItem extends StatelessWidget {
         // Keywords
         Wrap(
           spacing: 8,
-          children: card.localizedKeywords(isZh)
+          children: card
+              .localizedKeywords(isZh)
               .take(3)
               .map(
                 (kw) => Container(

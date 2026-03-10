@@ -20,8 +20,8 @@ class ChartPageState {
     this.error,
     DateTime? selectedDate,
     int? selectedYear,
-  })  : selectedDate = selectedDate ?? DateTime.now(),
-        selectedYear = selectedYear ?? DateTime.now().year;
+  }) : selectedDate = selectedDate ?? DateTime.now(),
+       selectedYear = selectedYear ?? DateTime.now().year;
 
   ChartPageState copyWith({
     ChartType? chartType,
@@ -48,7 +48,10 @@ class ChartPageNotifier extends Notifier<ChartPageState> {
 
   void setChartType(ChartType type) {
     state = state.copyWith(
-        chartType: type, result: () => null, error: () => null);
+      chartType: type,
+      result: () => null,
+      error: () => null,
+    );
   }
 
   void setDate(DateTime date) {
@@ -73,16 +76,10 @@ class ChartPageNotifier extends Notifier<ChartPageState> {
           error: () => 'engine_unavailable',
         );
       } else {
-        state = state.copyWith(
-          isCalculating: false,
-          result: () => result,
-        );
+        state = state.copyWith(isCalculating: false, result: () => result);
       }
     } catch (e) {
-      state = state.copyWith(
-        isCalculating: false,
-        error: () => e.toString(),
-      );
+      state = state.copyWith(isCalculating: false, error: () => e.toString());
     }
   }
 
@@ -90,32 +87,30 @@ class ChartPageNotifier extends Notifier<ChartPageState> {
     return switch (state.chartType) {
       ChartType.natal => NatalChartRequest(birth: birth),
       ChartType.transit => TransitChartRequest(
-          birth: birth,
-          transitDate: state.selectedDate,
-        ),
+        birth: birth,
+        transitDate: state.selectedDate,
+      ),
       ChartType.secondaryProgression => SecondaryProgressionRequest(
-          birth: birth,
-          progressionDate: state.selectedDate,
-        ),
+        birth: birth,
+        progressionDate: state.selectedDate,
+      ),
       ChartType.solarArc => SolarArcRequest(
-          birth: birth,
-          progressionDate: state.selectedDate,
-        ),
+        birth: birth,
+        progressionDate: state.selectedDate,
+      ),
       ChartType.solarReturn => SolarReturnRequest(
-          birth: birth,
-          year: state.selectedYear,
-        ),
+        birth: birth,
+        year: state.selectedYear,
+      ),
       ChartType.lunarReturn => LunarReturnRequest(
-          birth: birth,
-          targetDate: state.selectedDate,
-        ),
-      ChartType.synastry =>
-        throw StateError('Use SynastryPage for synastry'),
+        birth: birth,
+        targetDate: state.selectedDate,
+      ),
+      ChartType.synastry => throw StateError('Use SynastryPage for synastry'),
     };
   }
 }
 
-final chartPageProvider =
-    NotifierProvider<ChartPageNotifier, ChartPageState>(
+final chartPageProvider = NotifierProvider<ChartPageNotifier, ChartPageState>(
   ChartPageNotifier.new,
 );

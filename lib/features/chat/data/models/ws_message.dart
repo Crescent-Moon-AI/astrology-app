@@ -8,6 +8,8 @@ class WsClientMessage {
   final String? id;
   final bool? debug;
   final String? scenarioId;
+  final String? imageData;
+  final String? imageMediaType;
 
   WsClientMessage({
     required this.type,
@@ -18,6 +20,8 @@ class WsClientMessage {
     this.id,
     this.debug,
     this.scenarioId,
+    this.imageData,
+    this.imageMediaType,
   });
 
   Map<String, dynamic> toJson() => {
@@ -29,6 +33,8 @@ class WsClientMessage {
     if (id != null) 'id': id,
     if (debug != null) 'debug': debug,
     if (scenarioId != null) 'scenario_id': scenarioId,
+    if (imageData != null) 'image_data': imageData,
+    if (imageMediaType != null) 'image_media_type': imageMediaType,
   };
 }
 

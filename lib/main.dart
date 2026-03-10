@@ -26,6 +26,7 @@ void main() async {
   const apiHost = String.fromEnvironment('API_HOST');
   final env = switch (apiHost) {
     'local' => EnvConfig.local,
+    'local-https' => EnvConfig.localHttps,
     'lan' => EnvConfig.lan,
     _ => EnvConfig.dev,
   };
@@ -37,9 +38,7 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   runApp(
     ProviderScope(
-      observers: [
-        if (AppConfig.mode.showStackTrace) DebugProviderObserver(),
-      ],
+      observers: [if (AppConfig.mode.showStackTrace) DebugProviderObserver()],
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
         astroEngineProvider.overrideWithValue(astroEngine),
@@ -53,11 +52,7 @@ class XingjianApp extends ConsumerStatefulWidget {
   final String? autoLoginEmail;
   final String? autoLoginPassword;
 
-  const XingjianApp({
-    super.key,
-    this.autoLoginEmail,
-    this.autoLoginPassword,
-  });
+  const XingjianApp({super.key, this.autoLoginEmail, this.autoLoginPassword});
 
   @override
   ConsumerState<XingjianApp> createState() => _XingjianAppState();

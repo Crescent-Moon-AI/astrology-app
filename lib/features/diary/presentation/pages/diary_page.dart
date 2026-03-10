@@ -27,20 +27,29 @@ class DiaryPage extends ConsumerWidget {
             children: [
               // Title
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Row(
                     children: [
-                      const Text('✦ ',
-                          style: TextStyle(
-                              color: CosmicColors.primaryLight, fontSize: 18)),
-                      Text(l10n.diaryTitle,
-                          style: const TextStyle(
-                              color: CosmicColors.textPrimary,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700)),
+                      const Text(
+                        '✦ ',
+                        style: TextStyle(
+                          color: CosmicColors.primaryLight,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        l10n.diaryTitle,
+                        style: const TextStyle(
+                          color: CosmicColors.textPrimary,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -48,12 +57,15 @@ class DiaryPage extends ConsumerWidget {
               Expanded(
                 child: diaryAsync.when(
                   loading: () => const Center(
-                      child: CircularProgressIndicator(
-                          color: CosmicColors.primaryLight)),
+                    child: CircularProgressIndicator(
+                      color: CosmicColors.primaryLight,
+                    ),
+                  ),
                   error: (e, _) => Center(
-                    child: Text(e.toString(),
-                        style:
-                            const TextStyle(color: CosmicColors.textTertiary)),
+                    child: Text(
+                      e.toString(),
+                      style: const TextStyle(color: CosmicColors.textTertiary),
+                    ),
                   ),
                   data: (entries) => entries.isEmpty
                       ? _EmptyState(l10n: l10n)
@@ -76,17 +88,37 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isZh =
-        Localizations.localeOf(context).languageCode.startsWith('zh');
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
     final moodTags = isZh
         ? [
-            '树洞记录', '心情记录', '焦虑的', '快乐的', '兴奋的', '小秘密',
-            '情感记录', '新想法', '悲伤的', '忧郁的', '自信的', '沮丧的', '此刻发生',
+            '树洞记录',
+            '心情记录',
+            '焦虑的',
+            '快乐的',
+            '兴奋的',
+            '小秘密',
+            '情感记录',
+            '新想法',
+            '悲伤的',
+            '忧郁的',
+            '自信的',
+            '沮丧的',
+            '此刻发生',
           ]
         : [
-            'Diary', 'Mood Log', 'Anxious', 'Happy', 'Excited', 'Secret',
-            'Emotions', 'New Ideas', 'Sad', 'Melancholy', 'Confident',
-            'Frustrated', 'Right Now',
+            'Diary',
+            'Mood Log',
+            'Anxious',
+            'Happy',
+            'Excited',
+            'Secret',
+            'Emotions',
+            'New Ideas',
+            'Sad',
+            'Melancholy',
+            'Confident',
+            'Frustrated',
+            'Right Now',
           ];
 
     return Center(
@@ -123,12 +155,15 @@ class _EmptyState extends StatelessWidget {
                 const SizedBox(height: 16),
                 _AddDiaryButton(label: l10n.diaryAddNew),
                 const SizedBox(height: 16),
-                Text(l10n.diaryEmptyHint,
-                    style: const TextStyle(
-                        color: CosmicColors.textTertiary,
-                        fontSize: 14,
-                        height: 1.6),
-                    textAlign: TextAlign.center),
+                Text(
+                  l10n.diaryEmptyHint,
+                  style: const TextStyle(
+                    color: CosmicColors.textTertiary,
+                    fontSize: 14,
+                    height: 1.6,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
           ),
@@ -147,8 +182,7 @@ class _DiaryList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isZh =
-        Localizations.localeOf(context).languageCode.startsWith('zh');
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
     final compactTags = isZh
         ? ['平静的', '新想法', '心情记录', '感恩的', '焦虑的', '此刻发生']
         : ['Calm', 'New Ideas', 'Mood Log', 'Grateful', 'Anxious', 'Right Now'];
@@ -164,8 +198,7 @@ class _DiaryList extends ConsumerWidget {
         itemCount: entries.length + 1, // +1 for compact header
         itemBuilder: (context, index) {
           if (index == 0) {
-            return _CompactHeader(
-                l10n: l10n, tags: compactTags);
+            return _CompactHeader(l10n: l10n, tags: compactTags);
           }
           final entry = entries[index - 1];
           return _DiaryEntryCard(entry: entry, l10n: l10n);
@@ -191,10 +224,7 @@ class _CompactHeader extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              CosmicColors.surfaceElevated,
-              CosmicColors.surface,
-            ],
+            colors: [CosmicColors.surfaceElevated, CosmicColors.surface],
           ),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: CosmicColors.borderGlow),
@@ -229,18 +259,25 @@ class _CompactHeader extends StatelessWidget {
                     spacing: 6,
                     runSpacing: 4,
                     children: tags
-                        .map((tag) => Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: CosmicColors.surfaceHighlight,
-                                borderRadius: BorderRadius.circular(10),
+                        .map(
+                          (tag) => Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: CosmicColors.surfaceHighlight,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              tag,
+                              style: const TextStyle(
+                                color: CosmicColors.textTertiary,
+                                fontSize: 10,
                               ),
-                              child: Text(tag,
-                                  style: const TextStyle(
-                                      color: CosmicColors.textTertiary,
-                                      fontSize: 10)),
-                            ))
+                            ),
+                          ),
+                        )
                         .toList(),
                   ),
                   const SizedBox(height: 10),
@@ -310,22 +347,26 @@ class _DiaryEntryCard extends StatelessWidget {
                     spacing: 8,
                     runSpacing: 8,
                     children: entry.images
-                        .map((url) => ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                _resolveImageUrl(context, url),
+                        .map(
+                          (url) => ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              _resolveImageUrl(context, url),
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, e, st) => Container(
                                 width: 100,
                                 height: 100,
-                                fit: BoxFit.cover,
-                                errorBuilder: (_, e, st) => Container(
-                                  width: 100,
-                                  height: 100,
-                                  color: CosmicColors.surface,
-                                  child: const Icon(Icons.broken_image,
-                                      color: CosmicColors.textTertiary),
+                                color: CosmicColors.surface,
+                                child: const Icon(
+                                  Icons.broken_image,
+                                  color: CosmicColors.textTertiary,
                                 ),
                               ),
-                            ))
+                            ),
+                          ),
+                        )
                         .toList(),
                   ),
                 ],
@@ -370,7 +411,9 @@ class _AddDiaryButton extends StatelessWidget {
       child: Container(
         width: compact ? null : double.infinity,
         padding: EdgeInsets.symmetric(
-            vertical: compact ? 8 : 16, horizontal: compact ? 20 : 0),
+          vertical: compact ? 8 : 16,
+          horizontal: compact ? 20 : 0,
+        ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -385,14 +428,20 @@ class _AddDiaryButton extends StatelessWidget {
           mainAxisSize: compact ? MainAxisSize.min : MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.add,
-                color: CosmicColors.textPrimary, size: compact ? 16 : 22),
+            Icon(
+              Icons.add,
+              color: CosmicColors.textPrimary,
+              size: compact ? 16 : 22,
+            ),
             SizedBox(width: compact ? 4 : 8),
-            Text(label,
-                style: TextStyle(
-                    color: CosmicColors.textPrimary,
-                    fontSize: compact ? 13 : 17,
-                    fontWeight: FontWeight.w600)),
+            Text(
+              label,
+              style: TextStyle(
+                color: CosmicColors.textPrimary,
+                fontSize: compact ? 13 : 17,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ],
         ),
       ),
@@ -420,24 +469,33 @@ List<Widget> _buildFloatingTags(List<String> tags) {
   ];
 
   return List.generate(tags.length, (i) {
-    final opacity = (i % 3 == 0) ? 0.5 : (i % 3 == 1) ? 0.7 : 0.6;
+    final opacity = (i % 3 == 0)
+        ? 0.5
+        : (i % 3 == 1)
+        ? 0.7
+        : 0.6;
     return Align(
       alignment: positions[i % positions.length],
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: CosmicColors.surfaceElevated
-              .withAlpha((opacity * 255).round()),
+          color: CosmicColors.surfaceElevated.withAlpha(
+            (opacity * 255).round(),
+          ),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-              color:
-                  CosmicColors.borderGlow.withAlpha((opacity * 180).round())),
+            color: CosmicColors.borderGlow.withAlpha((opacity * 180).round()),
+          ),
         ),
-        child: Text(tags[i],
-            style: TextStyle(
-                color: CosmicColors.textSecondary
-                    .withAlpha((opacity * 255).round()),
-                fontSize: 12)),
+        child: Text(
+          tags[i],
+          style: TextStyle(
+            color: CosmicColors.textSecondary.withAlpha(
+              (opacity * 255).round(),
+            ),
+            fontSize: 12,
+          ),
+        ),
       ),
     );
   });

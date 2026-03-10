@@ -5,8 +5,14 @@ import '../../../../shared/theme/cosmic_colors.dart';
 class ChatInput extends StatefulWidget {
   final ValueChanged<String> onSend;
   final bool enabled;
+  final String? initialText;
 
-  const ChatInput({super.key, required this.onSend, this.enabled = true});
+  const ChatInput({
+    super.key,
+    required this.onSend,
+    this.enabled = true,
+    this.initialText,
+  });
 
   @override
   State<ChatInput> createState() => _ChatInputState();
@@ -19,6 +25,10 @@ class _ChatInputState extends State<ChatInput> {
   @override
   void initState() {
     super.initState();
+    if (widget.initialText != null && widget.initialText!.isNotEmpty) {
+      _controller.text = widget.initialText!;
+      _hasText = true;
+    }
     _controller.addListener(() {
       final hasText = _controller.text.trim().isNotEmpty;
       if (hasText != _hasText) setState(() => _hasText = hasText);

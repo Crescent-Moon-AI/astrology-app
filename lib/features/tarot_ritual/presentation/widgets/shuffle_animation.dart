@@ -98,7 +98,13 @@ class _ShuffleAnimationState extends State<ShuffleAnimation>
         return Stack(
           clipBehavior: Clip.none,
           children: List.generate(_cardCount, (i) {
-            final cardState = _computeCardState(i, t, containerSize, cardW, cardH);
+            final cardState = _computeCardState(
+              i,
+              t,
+              containerSize,
+              cardW,
+              cardH,
+            );
             return Positioned(
               left: cardState.x,
               top: cardState.y,
@@ -239,9 +245,9 @@ class _ShuffleAnimationState extends State<ShuffleAnimation>
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF7B5EBF).withAlpha(
-                          (30 + _idleController.value * 20).round(),
-                        ),
+                        color: const Color(
+                          0xFF7B5EBF,
+                        ).withAlpha((30 + _idleController.value * 20).round()),
                         blurRadius: 40,
                         spreadRadius: 10,
                       ),
@@ -312,9 +318,9 @@ class _CardWithGlow extends StatelessWidget {
         boxShadow: glowIntensity > 0.05
             ? [
                 BoxShadow(
-                  color: const Color(0xFF7B5EBF).withAlpha(
-                    (glowIntensity * 120).round().clamp(0, 255),
-                  ),
+                  color: const Color(
+                    0xFF7B5EBF,
+                  ).withAlpha((glowIntensity * 120).round().clamp(0, 255)),
                   blurRadius: 16 + glowIntensity * 24,
                   spreadRadius: glowIntensity * 6,
                 ),

@@ -40,8 +40,7 @@ class _CardPickerPageState extends ConsumerState<CardPickerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isZh =
-        Localizations.localeOf(context).languageCode.startsWith('zh');
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
     final ritualState = ref.watch(tarotRitualProvider);
     final notifier = ref.read(tarotRitualProvider.notifier);
 
@@ -54,9 +53,23 @@ class _CardPickerPageState extends ConsumerState<CardPickerPage> {
     }
 
     if (!_showFan) {
-      return _buildSlotView(context, isZh, needed, selected, notifier, ritualState);
+      return _buildSlotView(
+        context,
+        isZh,
+        needed,
+        selected,
+        notifier,
+        ritualState,
+      );
     }
-    return _buildFanView(context, isZh, needed, selected, notifier, ritualState);
+    return _buildFanView(
+      context,
+      isZh,
+      needed,
+      selected,
+      notifier,
+      ritualState,
+    );
   }
 
   /// Confirm overlay: large card with flip animation + "确定" + "换一张"
@@ -134,8 +147,9 @@ class _CardPickerPageState extends ConsumerState<CardPickerPage> {
                           setState(() => _isDrawing = true);
 
                           // Call draw API to resolve the card
-                          final card =
-                              await notifier.drawCard(_pendingCardIndex!);
+                          final card = await notifier.drawCard(
+                            _pendingCardIndex!,
+                          );
                           if (card != null && mounted) {
                             setState(() {
                               _drawnCard = card;
@@ -239,8 +253,8 @@ class _CardPickerPageState extends ConsumerState<CardPickerPage> {
               allSelected
                   ? (isZh ? '牌已选好，点击继续' : 'Cards selected, tap to continue')
                   : (isZh
-                      ? '抽第 ${selected.length + 1} 张牌'
-                      : 'Pick card ${selected.length + 1}'),
+                        ? '抽第 ${selected.length + 1} 张牌'
+                        : 'Pick card ${selected.length + 1}'),
               style: const TextStyle(
                 color: CosmicColors.textSecondary,
                 fontSize: 14,
@@ -264,8 +278,8 @@ class _CardPickerPageState extends ConsumerState<CardPickerPage> {
                 label: isZh ? '继续' : 'Continue',
                 onPressed: allSelected
                     ? (ritualState.isLoading
-                        ? null
-                        : () => notifier.confirmSelection())
+                          ? null
+                          : () => notifier.confirmSelection())
                     : () => setState(() => _showFan = true),
                 isLoading: ritualState.isLoading,
               ),
@@ -369,8 +383,7 @@ class _PositionSlots extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final slotWidth =
-        needed <= 3 ? 72.0 : (needed <= 5 ? 52.0 : 40.0);
+    final slotWidth = needed <= 3 ? 72.0 : (needed <= 5 ? 52.0 : 40.0);
     final slotHeight = slotWidth / 0.6;
 
     return Row(
@@ -406,15 +419,12 @@ class _PositionSlots extends StatelessWidget {
                 borderRadius: BorderRadius.circular(7),
                 child: isFilled
                     ? (hasDrawnCard
-                        ? TarotCardFace(
-                            card: drawnCards[i],
-                            width: slotWidth,
-                            height: slotHeight,
-                          )
-                        : TarotCardBack(
-                            width: slotWidth,
-                            height: slotHeight,
-                          ))
+                          ? TarotCardFace(
+                              card: drawnCards[i],
+                              width: slotWidth,
+                              height: slotHeight,
+                            )
+                          : TarotCardBack(width: slotWidth, height: slotHeight))
                     : CustomPaint(
                         painter: _DashedBorderPainter(
                           color: CosmicColors.textTertiary.withAlpha(77),
@@ -473,6 +483,5 @@ class _DashedBorderPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _DashedBorderPainter old) =>
-      old.color != color;
+  bool shouldRepaint(covariant _DashedBorderPainter old) => old.color != color;
 }

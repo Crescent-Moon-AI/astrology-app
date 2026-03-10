@@ -24,9 +24,9 @@ class SpreadLayoutWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (spreadType) {
       SpreadType.single => _buildSingleLayout(context),
-      SpreadType.threeCard => _buildThreeCardLayout(context),
       SpreadType.loveSpread => _buildLoveSpreadLayout(context),
       SpreadType.celticCross => _buildCelticCrossLayout(context),
+      _ => _buildGenericLayout(context),
     };
   }
 
@@ -39,18 +39,81 @@ class SpreadLayoutWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildThreeCardLayout(BuildContext context) {
+  /// Generic layout for 3, 4, or 6 card spreads.
+  Widget _buildGenericLayout(BuildContext context) {
+    final count = spreadType.cardCount;
     final screenW = MediaQuery.of(context).size.width;
-    final cw = screenW * 0.27;
+
+    if (count <= 3) {
+      // Single horizontal row
+      final cw = screenW * 0.27;
+      final ch = cw / 0.6;
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          for (int i = 0; i < count; i++) ...[
+            if (i > 0) const SizedBox(width: 10),
+            _buildCardSlot(context, i, cardWidth: cw, cardHeight: ch),
+          ],
+        ],
+      );
+    }
+
+    if (count == 4) {
+      // 2x2 grid
+      final cw = screenW * 0.27;
+      final ch = cw / 0.6;
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildCardSlot(context, 0, cardWidth: cw, cardHeight: ch),
+              const SizedBox(width: 10),
+              _buildCardSlot(context, 1, cardWidth: cw, cardHeight: ch),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildCardSlot(context, 2, cardWidth: cw, cardHeight: ch),
+              const SizedBox(width: 10),
+              _buildCardSlot(context, 3, cardWidth: cw, cardHeight: ch),
+            ],
+          ),
+        ],
+      );
+    }
+
+    // 6 cards: 3x2 grid
+    final cw = screenW * 0.22;
     final ch = cw / 0.6;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        _buildCardSlot(context, 0, cardWidth: cw, cardHeight: ch),
-        const SizedBox(width: 10),
-        _buildCardSlot(context, 1, cardWidth: cw, cardHeight: ch),
-        const SizedBox(width: 10),
-        _buildCardSlot(context, 2, cardWidth: cw, cardHeight: ch),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildCardSlot(context, 0, cardWidth: cw, cardHeight: ch),
+            const SizedBox(width: 10),
+            _buildCardSlot(context, 1, cardWidth: cw, cardHeight: ch),
+            const SizedBox(width: 10),
+            _buildCardSlot(context, 2, cardWidth: cw, cardHeight: ch),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildCardSlot(context, 3, cardWidth: cw, cardHeight: ch),
+            const SizedBox(width: 10),
+            _buildCardSlot(context, 4, cardWidth: cw, cardHeight: ch),
+            const SizedBox(width: 10),
+            _buildCardSlot(context, 5, cardWidth: cw, cardHeight: ch),
+          ],
+        ),
       ],
     );
   }

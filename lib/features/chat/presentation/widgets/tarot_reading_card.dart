@@ -59,7 +59,10 @@ String? _deriveImageKey(String nameEn) {
   if (majorMap.containsKey(nameEn)) return majorMap[nameEn];
 
   // Minor Arcana: "X of Suit" pattern
-  final match = RegExp(r'^(\w+) of (\w+)$', caseSensitive: false).firstMatch(nameEn);
+  final match = RegExp(
+    r'^(\w+) of (\w+)$',
+    caseSensitive: false,
+  ).firstMatch(nameEn);
   if (match != null) {
     final rank = match.group(1)!.toLowerCase();
     final suit = match.group(2)!.toLowerCase();
@@ -132,8 +135,7 @@ class TarotReadingCard extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: cards.length,
             separatorBuilder: (_, __) => const SizedBox(width: 8),
-            itemBuilder: (context, index) =>
-                _TarotCardTile(card: cards[index]),
+            itemBuilder: (context, index) => _TarotCardTile(card: cards[index]),
           ),
         ),
       ],
@@ -150,9 +152,8 @@ class _TarotCardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final nameEn = card['name_en'] as String? ?? '';
     final name = card['name'] as String? ?? nameEn;
-    final position = card['position'] as String? ??
-        card['position_en'] as String? ??
-        '';
+    final position =
+        card['position'] as String? ?? card['position_en'] as String? ?? '';
     final isReversed = card['is_reversed'] as bool? ?? false;
 
     // Prefer backend-provided image_key, fall back to name-based derivation

@@ -59,11 +59,11 @@ class SpreadOverviewPage extends ConsumerWidget {
               ),
             ),
 
-            // Spread layout
+            // Spread layout — SingleChildScrollView bounded directly by Expanded
             Expanded(
-              child: Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Center(
                   child: SpreadLayoutWidget(
                     spreadType: spreadType,
                     cards: cards,

@@ -21,8 +21,7 @@ class ChartResultCard extends StatelessWidget {
 
       return switch (chartType) {
         'synastry' => _SynastryCard(json: json),
-        'secondary_progressions' || 'solar_arc' =>
-          _ProgressionCard(json: json),
+        'secondary_progressions' || 'solar_arc' => _ProgressionCard(json: json),
         'solar_return' || 'lunar_return' => _ReturnCard(json: json),
         'transit' => _TransitCard(json: json),
         _ => _NatalCard(json: json),
