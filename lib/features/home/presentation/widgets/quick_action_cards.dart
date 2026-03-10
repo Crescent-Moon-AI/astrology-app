@@ -26,7 +26,7 @@ class QuickActionCards extends StatelessWidget {
       _QuickAction(
         icon: Icons.camera_alt_rounded,
         label: l10n.homeQuickPhoto,
-        onTap: () {}, // placeholder
+        onTap: () => context.push('/photo-analysis'),
       ),
       _QuickAction(
         icon: Icons.auto_awesome_rounded,

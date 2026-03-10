@@ -46,16 +46,29 @@ class _ConsultPageState extends State<ConsultPage>
                   horizontal: 20,
                   vertical: 8,
                 ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    l10n.consultRoomTitle,
-                    style: const TextStyle(
-                      color: CosmicColors.textPrimary,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
+                child: Row(
+                  children: [
+                    if (Navigator.of(context).canPop())
+                      IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: CosmicColors.textSecondary,
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    if (Navigator.of(context).canPop())
+                      const SizedBox(width: 8),
+                    Text(
+                      l10n.consultRoomTitle,
+                      style: const TextStyle(
+                        color: CosmicColors.textPrimary,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
               // Sub tabs

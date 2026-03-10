@@ -167,19 +167,32 @@ class ScenarioDetailPage extends ConsumerWidget {
                           const SizedBox(height: 12),
                           ...scenario.presetQuestions.map((q) {
                             final translated = resolveScenarioKey(q, locale);
+                            final isTarot = scenario.toolBindings.any(
+                              (t) => t.contains('tarot'),
+                            );
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 8),
                               child: _PresetQuestionCard(
                                 question: translated,
                                 accentColor: visual.gradient[0],
+                                isTarot: isTarot,
                                 onTap: () {
-                                  context.pushNamed(
-                                    'chat',
-                                    queryParameters: {
-                                      'scenario_id': scenario.id,
-                                      'initial_message': translated,
-                                    },
-                                  );
+                                  if (isTarot) {
+                                    context.pushNamed(
+                                      'tarot',
+                                      queryParameters: {
+                                        'initial_question': translated,
+                                      },
+                                    );
+                                  } else {
+                                    context.pushNamed(
+                                      'chat',
+                                      queryParameters: {
+                                        'scenario_id': scenario.id,
+                                        'prefill_message': translated,
+                                      },
+                                    );
+                                  }
                                 },
                               ),
                             );
@@ -251,10 +264,17 @@ class ScenarioDetailPage extends ConsumerWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: () {
-                        context.pushNamed(
-                          'chat',
-                          queryParameters: {'scenario_id': scenario.id},
+                        final isTarotScenario = scenario.toolBindings.any(
+                          (t) => t.contains('tarot'),
                         );
+                        if (isTarotScenario) {
+                          context.pushNamed('tarot');
+                        } else {
+                          context.pushNamed(
+                            'chat',
+                            queryParameters: {'scenario_id': scenario.id},
+                          );
+                        }
                       },
                       borderRadius: BorderRadius.circular(24),
                       child: Padding(
@@ -335,11 +355,13 @@ class _PresetQuestionCard extends StatelessWidget {
   final String question;
   final Color accentColor;
   final VoidCallback onTap;
+  final bool isTarot;
 
   const _PresetQuestionCard({
     required this.question,
     required this.accentColor,
     required this.onTap,
+    this.isTarot = false,
   });
 
   @override
@@ -374,11 +396,25 @@ class _PresetQuestionCard extends StatelessWidget {
                 ),
               ),
             ),
-            Icon(
-              Icons.arrow_forward_ios,
-              size: 14,
-              color: CosmicColors.textTertiary,
-            ),
+            if (isTarot)
+              Container(
+                margin: const EdgeInsets.only(left: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: accentColor.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Text(
+                  '🃏',
+                  style: TextStyle(fontSize: 12),
+                ),
+              )
+            else
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 14,
+                color: CosmicColors.textTertiary,
+              ),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +6,7 @@ import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../../settings/presentation/providers/profile_providers.dart';
+import '../../domain/models/daily_fortune.dart';
 import '../providers/home_providers.dart';
 import '../widgets/date_scroller.dart';
 import '../widgets/fortune_header.dart';
@@ -144,6 +146,8 @@ class HomePage extends ConsumerWidget {
                             children: [
                               FortuneHeader(fortune: fortune),
                               FortuneScoreSection(fortune: fortune),
+                              const SizedBox(height: 16),
+                              _LuckyElementsRow(fortune: fortune),
                             ],
                           ),
                           loading: () => const Padding(
@@ -194,6 +198,187 @@ class HomePage extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// Compact horizontal row showing the 4 lucky elements: color swatch, number,
+/// flower, and stone — matching the Yuejian home page design.
+class _LuckyElementsRow extends StatelessWidget {
+  final DailyFortune fortune;
+
+  const _LuckyElementsRow({required this.fortune});
+
+  static const _colorMap = <String, Color>{
+    '红色': Color(0xFFE74C3C),
+    '橙色': Color(0xFFE67E22),
+    '黄色': Color(0xFFF1C40F),
+    '绿色': Color(0xFF2ECC71),
+    '蓝色': Color(0xFF3498DB),
+    '紫色': Color(0xFF9B59B6),
+    '粉色': Color(0xFFFF6B9D),
+    '白色': Color(0xFFECF0F1),
+    '黑色': Color(0xFF2C3E50),
+    '金色': Color(0xFFFFD700),
+    '银色': Color(0xFFC0C0C0),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final lucky = fortune.luckyElements;
+    final colorValue = _colorMap[lucky.color] ?? CosmicColors.primaryLight;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        children: [
+          _LuckyItem(
+            top: Container(
+              width: 28,
+              height: 28,
+              decoration: BoxDecoration(
+                color: colorValue,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: colorValue.withAlpha(100),
+                    blurRadius: 8,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+            ),
+            label: l10n.homeLuckyColor,
+            value: lucky.color,
+          ),
+          _LuckyItem(
+            top: _HexagonNumber(number: lucky.number),
+            label: l10n.homeLuckyNumber,
+            value: '${lucky.number}',
+          ),
+          _LuckyItem(
+            top: const Icon(Icons.local_florist, color: Color(0xFFFF9FF3), size: 26),
+            label: l10n.homeLuckyFlower,
+            value: lucky.flower,
+          ),
+          _LuckyItem(
+            top: const Icon(Icons.diamond_outlined, color: Color(0xFF74B9FF), size: 26),
+            label: l10n.homeLuckyStone,
+            value: lucky.stone,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LuckyItem extends StatelessWidget {
+  final Widget top;
+  final String label;
+  final String value;
+
+  const _LuckyItem({required this.top, required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 4),
+        decoration: BoxDecoration(
+          color: CosmicColors.surfaceElevated,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: CosmicColors.borderGlow),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            top,
+            const SizedBox(height: 8),
+            Text(
+              value,
+              style: const TextStyle(
+                color: CosmicColors.textPrimary,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 3),
+            Text(
+              label,
+              style: const TextStyle(
+                color: CosmicColors.textTertiary,
+                fontSize: 10,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _HexagonNumber extends StatelessWidget {
+  final int number;
+
+  const _HexagonNumber({required this.number});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _HexPainter(),
+      child: SizedBox(
+        width: 28,
+        height: 28,
+        child: Center(
+          child: Text(
+            '$number',
+            style: const TextStyle(
+              color: CosmicColors.textPrimary,
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HexPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = CosmicColors.primaryLight.withAlpha(40)
+      ..style = PaintingStyle.fill;
+    final border = Paint()
+      ..color = CosmicColors.primaryLight.withAlpha(120)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+
+    final cx = size.width / 2;
+    final cy = size.height / 2;
+    final r = size.width / 2 - 1;
+    final path = Path();
+    for (int i = 0; i < 6; i++) {
+      final angle = (i * 60 - 30) * math.pi / 180;
+      final x = cx + r * math.cos(angle);
+      final y = cy + r * math.sin(angle);
+      if (i == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
+    }
+    path.close();
+    canvas.drawPath(path, paint);
+    canvas.drawPath(path, border);
+  }
+
+  @override
+  bool shouldRepaint(_HexPainter _) => false;
 }
 
 /// Paints subtle crater-like texture on the moon surface.

@@ -347,6 +347,7 @@
   "homeDimensionCareer": "事业",
   "homeDimensionWealth": "财富",
   "homeDimensionStudy": "学业",
+  "homeDimensionSocial": "人际",
   "homeLuckyColor": "幸运色",
   "homeLuckyNumber": "幸运数",
   "homeLuckyFlower": "幸运花",
@@ -552,5 +553,15 @@
   "breathingExhale": "呼气...",
 
   "accessibilitySection": "辅助功能",
-  "errorGeneric": "发生错误"
+  "errorGeneric": "发生错误",
+
+  "photoAnalysisTitle": "拍照解盘",
+  "photoAnalysisPickImage": "选择图片",
+  "photoAnalysisTakePhoto": "拍照",
+  "photoAnalysisGallery": "从相册选择",
+  "photoAnalysisQuestionHint": "关于这张图片，你想问什么？（可选）",
+  "photoAnalysisDefaultQuestion": "请帮我解读这张星盘图片",
+  "photoAnalysisSend": "开始解读",
+  "photoAnalysisNoImage": "请先选择或拍摄图片",
+  "photoAnalysisImageSelected": "图片已选择"
 }

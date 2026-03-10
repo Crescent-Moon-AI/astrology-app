@@ -26,6 +26,10 @@ class BlockRenderer extends StatelessWidget {
         return MarkdownBody(data: text);
 
       case BlockKind.tool:
+        // Hide running tool blocks — the waiting indicator handles the loading state
+        if (block.status == BlockStatus.running) {
+          return const SizedBox.shrink();
+        }
         return ToolResultCard(block: block);
 
       case BlockKind.thinking:

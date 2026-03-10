@@ -37,6 +37,8 @@ class MockChatDatasource extends ChatRemoteDatasource {
     String? language,
     String? requestId,
     String? scenarioId,
+    String? imageData,
+    String? imageMediaType,
   }) {
     _msgCounter++;
     final convId = conversationId ?? 'mock-conv-new-$_msgCounter';

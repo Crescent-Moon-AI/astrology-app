@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +11,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/network/api_constants.dart';
 import '../../../../core/utils/error_format.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
-import '../../../../shared/widgets/breathing_loader.dart';
 import '../../../../shared/widgets/character_avatar.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../../../shared/models/expression.dart';
@@ -23,14 +24,20 @@ class ChatPage extends ConsumerStatefulWidget {
   final String? conversationId;
   final String? scenarioId;
   final String? initialMessage;
+  final String? prefillMessage;
   final String? tarotSessionId;
+  final String? imageData;
+  final String? imageMediaType;
 
   const ChatPage({
     super.key,
     this.conversationId,
     this.scenarioId,
     this.initialMessage,
+    this.prefillMessage,
     this.tarotSessionId,
+    this.imageData,
+    this.imageMediaType,
   });
 
   @override
@@ -135,9 +142,15 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   }
 
   void _sendInitialMessageIfNeeded() {
-    String? msg = widget.initialMessage;
+    final msg = widget.initialMessage;
+    final imgData = widget.imageData;
 
-    if (msg != null && msg.isNotEmpty) {
+    if (imgData != null && imgData.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _sendMessage(msg?.isNotEmpty == true ? msg! : '请帮我解读这张星盘图片',
+            imageData: imgData, imageMediaType: widget.imageMediaType);
+      });
+    } else if (msg != null && msg.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _sendMessage(msg);
       });
@@ -211,7 +224,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     }
   }
 
-  void _sendMessage(String content) {
+  void _sendMessage(String content, {String? imageData, String? imageMediaType}) {
     final datasource = ref.read(chatDatasourceProvider);
     if (!datasource.isConnected) return;
 
@@ -219,7 +232,12 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       chatMessagesProvider(_currentConversationId ?? '').notifier,
     );
 
-    notifier.addUserMessage(content);
+    Uint8List? imageBytes;
+    if (imageData != null && imageData.isNotEmpty) {
+      imageBytes = base64Decode(imageData);
+    }
+
+    notifier.addUserMessage(content, imageBytes: imageBytes);
     setState(() => _isProcessing = true);
 
     datasource.sendMessage(
@@ -227,6 +245,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       conversationId: _currentConversationId,
       language: Localizations.localeOf(context).languageCode,
       scenarioId: _currentConversationId == null ? widget.scenarioId : null,
+      imageData: imageData,
+      imageMediaType: imageMediaType,
     );
 
     _autoScroll.scrollToBottom();
@@ -283,21 +303,17 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       body: StarfieldBackground(
         child: Column(
           children: [
-            if (_isProcessing)
-              Container(
-                height: 2,
-                decoration: BoxDecoration(
-                  gradient: CosmicColors.primaryGradient,
-                ),
-              ),
             Expanded(
               child: messages.isEmpty && !_isProcessing
                   ? _buildEmptyState(context, l10n)
                   : ListView.builder(
                       controller: _autoScroll.scrollController,
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      itemCount: messages.length,
+                      itemCount: messages.length + (_isProcessing ? 1 : 0),
                       itemBuilder: (context, index) {
+                        if (index == messages.length) {
+                          return _buildWaitingIndicator(context);
+                        }
                         return MessageBubble(
                           message: messages[index],
                           scrollController: _autoScroll.scrollController,
@@ -368,6 +384,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             ChatInput(
               onSend: _sendMessage,
               enabled: _wsConnected && !_isProcessing,
+              initialText: widget.prefillMessage,
             ),
           ],
         ),
@@ -380,7 +397,12 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     final isZh = locale.startsWith('zh');
 
     if (!_wsConnected && _wsError == null) {
-      return const Center(child: BreathingLoader());
+      return const Center(
+        child: CharacterAvatar(
+          expression: ExpressionId.thinking,
+          size: CharacterAvatarSize.lg,
+        ),
+      );
     }
 
     // Preset topic tags
@@ -458,6 +480,44 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildWaitingIndicator(BuildContext context) {
+    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const CharacterAvatar(
+            expression: ExpressionId.thinking,
+            size: CharacterAvatarSize.lg,
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 14,
+                height: 14,
+                child: CircularProgressIndicator(
+                  strokeWidth: 1.5,
+                  color: CosmicColors.textTertiary,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                isZh ? '感受平静...' : 'Feeling calm...',
+                style: const TextStyle(
+                  color: CosmicColors.textTertiary,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

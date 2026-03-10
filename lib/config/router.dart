@@ -14,6 +14,7 @@ import '../features/home/presentation/pages/home_page.dart';
 import '../features/home/presentation/pages/fortune_detail_page.dart';
 import '../features/home/domain/models/daily_fortune.dart';
 import '../features/insight/presentation/pages/insight_page.dart';
+import '../features/insight/presentation/pages/relationship_report_page.dart';
 import '../features/scenario/presentation/pages/scenario_list_page.dart';
 import '../features/scenario/presentation/pages/scenario_detail_page.dart';
 import '../features/settings/presentation/pages/about_character_page.dart';
@@ -35,6 +36,7 @@ import '../features/iching_ritual/presentation/pages/iching_ritual_page.dart';
 import '../features/meihua_ritual/presentation/pages/meihua_method_page.dart';
 import '../features/chart/presentation/pages/chart_hub_page.dart';
 import '../features/chart/presentation/pages/synastry_page.dart';
+import '../features/chart/domain/models/birth_data.dart';
 import '../features/divination/presentation/pages/divination_hub_page.dart';
 import '../features/tarot_gallery/presentation/pages/tarot_gallery_page.dart';
 import '../features/tarot_gallery/presentation/pages/tarot_card_detail_page.dart';
@@ -48,6 +50,7 @@ import '../features/social/presentation/pages/friend_detail_page.dart';
 import '../features/social/presentation/pages/add_friend_page.dart';
 import '../features/social/presentation/pages/share_preview_page.dart';
 import '../features/social/domain/models/shared_card.dart';
+import '../features/photo_analysis/presentation/pages/photo_analysis_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   // Only watch auth STATUS to avoid router rebuilds on token refresh
@@ -142,14 +145,22 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/chat',
         name: 'chat',
-        pageBuilder: (context, state) => _cosmicFadePage(
-          state,
-          ChatPage(
-            scenarioId: state.uri.queryParameters['scenario_id'],
-            initialMessage: state.uri.queryParameters['initial_message'],
-            tarotSessionId: state.uri.queryParameters['tarot_session_id'],
-          ),
-        ),
+        pageBuilder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>?;
+          return _cosmicFadePage(
+            state,
+            ChatPage(
+              scenarioId: state.uri.queryParameters['scenario_id'],
+              initialMessage: state.uri.queryParameters['initial_message'] ??
+                  extras?['initial_message'] as String?,
+              prefillMessage: state.uri.queryParameters['prefill_message'] ??
+                  extras?['prefill_message'] as String?,
+              tarotSessionId: state.uri.queryParameters['tarot_session_id'],
+              imageData: extras?['image_data'] as String?,
+              imageMediaType: extras?['image_media_type'] as String?,
+            ),
+          );
+        },
       ),
       GoRoute(
         path: '/chat/:id',
@@ -202,8 +213,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/tarot',
         name: 'tarot',
-        pageBuilder: (context, state) =>
-            _cosmicFadePage(state, const SpreadSelectionPage()),
+        pageBuilder: (context, state) => _cosmicFadePage(
+          state,
+          SpreadSelectionPage(
+            initialQuestion: state.uri.queryParameters['initial_question'],
+          ),
+        ),
       ),
       GoRoute(
         path: '/tarot/spread-select',
@@ -221,7 +236,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'tarotRitual',
         pageBuilder: (context, state) => _cosmicFadePage(
           state,
-          TarotRitualPage(sessionId: state.pathParameters['sessionId']!),
+          TarotRitualPage(
+            sessionId: state.pathParameters['sessionId']!,
+            initialQuestion: state.uri.queryParameters['initial_question'],
+          ),
         ),
       ),
       GoRoute(
@@ -232,6 +250,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           TarotQuestionPage(
             conversationId: state.uri.queryParameters['conversation_id']!,
             tarotSessionId: state.uri.queryParameters['tarot_session_id']!,
+            initialQuestion: state.uri.queryParameters['initial_question'],
           ),
         ),
       ),
@@ -292,6 +311,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) {
           final fortune = state.extra as DailyFortune;
           return _cosmicFadePage(state, FortuneDetailPage(fortune: fortune));
+        },
+      ),
+
+      // Relationship Report
+      GoRoute(
+        path: '/insight/report',
+        name: 'insightReport',
+        pageBuilder: (context, state) {
+          final args = state.extra as RelationshipReportArgs;
+          return _cosmicFadePage(state, RelationshipReportPage(args: args));
         },
       ),
 
@@ -391,18 +420,33 @@ final routerProvider = Provider<GoRouter>((ref) {
             _cosmicFadePage(state, const MeihuaMethodPage()),
       ),
 
+      // Photo Analysis
+      GoRoute(
+        path: '/photo-analysis',
+        name: 'photoAnalysis',
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const PhotoAnalysisPage()),
+      ),
+
       // Chart Engine
       GoRoute(
         path: '/charts',
         name: 'charts',
-        pageBuilder: (context, state) =>
-            _cosmicFadePage(state, const ChartHubPage()),
+        pageBuilder: (context, state) {
+          final birth = state.extra as BirthData?;
+          return _cosmicFadePage(state, ChartHubPage(overrideBirthData: birth));
+        },
       ),
       GoRoute(
         path: '/charts/synastry',
         name: 'synastry',
-        pageBuilder: (context, state) =>
-            _cosmicFadePage(state, const SynastryPage()),
+        pageBuilder: (context, state) {
+          final birth = state.extra as BirthData?;
+          return _cosmicFadePage(
+            state,
+            SynastryPage(preloadedPerson2: birth),
+          );
+        },
       ),
     ],
   );

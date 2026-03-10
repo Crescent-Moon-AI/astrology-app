@@ -1,9 +1,11 @@
 package com.crescentmoon.astrology_app
 
 import android.annotation.SuppressLint
+import android.net.http.SslError
 import android.os.Handler
 import android.os.Looper
 import android.webkit.JavascriptInterface
+import android.webkit.SslErrorHandler
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -23,6 +25,9 @@ class NativeWebSocketPlugin(private val appContext: android.content.Context) : M
     private var webView: WebView? = null
     private var eventSink: EventChannel.EventSink? = null
     private val mainHandler = Handler(Looper.getMainLooper())
+    private var currentWsUrl: String = ""
+    // Guard against onPageFinished firing multiple times (redirects, etc.)
+    private var wsOpened = false
 
     val streamHandler = object : EventChannel.StreamHandler {
         override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
@@ -60,6 +65,8 @@ class NativeWebSocketPlugin(private val appContext: android.content.Context) : M
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun connect(url: String, result: MethodChannel.Result) {
+        currentWsUrl = url
+        wsOpened = false
         mainHandler.post {
             try {
                 // Clean up previous WebView
@@ -78,6 +85,11 @@ class NativeWebSocketPlugin(private val appContext: android.content.Context) : M
 
                 wv.webViewClient = object : WebViewClient() {
                     override fun onPageFinished(view: WebView?, pageUrl: String?) {
+                        // Guard: only open the WebSocket once per connect() call.
+                        // onPageFinished can fire multiple times (redirects, etc.)
+                        if (wsOpened) return
+                        wsOpened = true
+
                         // Page loaded, now open WebSocket via JS
                         val escapedUrl = url.replace("'", "\\'")
                         wv.evaluateJavascript("""
@@ -102,17 +114,33 @@ class NativeWebSocketPlugin(private val appContext: android.content.Context) : M
                             })();
                         """.trimIndent(), null)
                     }
+
+                    override fun onReceivedSslError(
+                        view: WebView?, handler: SslErrorHandler?, error: SslError?
+                    ) {
+                        // Accept self-signed certs for local dev (10.0.2.2 / localhost)
+                        if (currentWsUrl.contains("10.0.2.2") ||
+                            currentWsUrl.contains("localhost") ||
+                            currentWsUrl.contains("127.0.0.1")
+                        ) {
+                            handler?.proceed()
+                        } else {
+                            super.onReceivedSslError(view, handler, error)
+                        }
+                    }
                 }
 
-                // Load a blank page to initialize the WebView JS environment
-                wv.loadDataWithBaseURL(
-                    // Use the same origin as the WS URL for cookie/CORS purposes
-                    url.replace("wss://", "https://").replace("ws://", "http://").split("/ws")[0],
-                    "<html><body></body></html>",
-                    "text/html",
-                    "UTF-8",
-                    null
-                )
+                // Load the target origin via HTTPS so the WebView's network
+                // stack performs a real SSL handshake. For local dev (10.0.2.2)
+                // onReceivedSslError fires, we call handler.proceed(), the cert
+                // is trusted for this session, and the subsequent WSS connection
+                // from JS inherits that trust. loadDataWithBaseURL does NOT
+                // trigger onReceivedSslError because it doesn't make a real
+                // network request, which is why the previous approach failed.
+                val baseUrl = url.replace("wss://", "https://")
+                    .replace("ws://", "http://")
+                    .split("/ws")[0]
+                wv.loadUrl(baseUrl)
 
                 result.success(null)
             } catch (e: Exception) {

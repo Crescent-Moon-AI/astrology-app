@@ -895,6 +895,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeDimensionStudy => 'Study';
 
   @override
+  String get homeDimensionSocial => 'Social';
+
+  @override
   String get homeLuckyColor => 'Lucky Color';
 
   @override
@@ -1378,4 +1381,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorGeneric => 'An error occurred';
+
+  @override
+  String get photoAnalysisTitle => 'Photo Analysis';
+
+  @override
+  String get photoAnalysisPickImage => 'Choose Image';
+
+  @override
+  String get photoAnalysisTakePhoto => 'Take Photo';
+
+  @override
+  String get photoAnalysisGallery => 'From Gallery';
+
+  @override
+  String get photoAnalysisQuestionHint =>
+      'What would you like to ask about this image? (optional)';
+
+  @override
+  String get photoAnalysisDefaultQuestion => 'Please analyze this chart image';
+
+  @override
+  String get photoAnalysisSend => 'Start Analysis';
+
+  @override
+  String get photoAnalysisNoImage => 'Please select or take a photo first';
+
+  @override
+  String get photoAnalysisImageSelected => 'Image selected';
 }

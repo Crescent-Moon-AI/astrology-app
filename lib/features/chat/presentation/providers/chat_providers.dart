@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/providers/core_providers.dart';
@@ -49,12 +51,13 @@ class ChatMessagesNotifier extends Notifier<List<ChatMessage>> {
     return [];
   }
 
-  void addUserMessage(String content) {
+  void addUserMessage(String content, {Uint8List? imageBytes}) {
     final msg = ChatMessage(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       role: MessageRole.user,
       content: content,
       createdAt: DateTime.now(),
+      imageBytes: imageBytes,
     );
     state = [...state, msg];
   }

@@ -11,4 +11,10 @@ class FortuneRepositoryImpl {
     final data = json['data'] as Map<String, dynamic>;
     return DailyFortune.fromJson(data);
   }
+
+  Future<WeeklyFortune> getWeeklyFortune({String? date}) async {
+    final json = await _api.getWeeklyFortune(date: date);
+    final data = json['data'] as Map<String, dynamic>;
+    return WeeklyFortune.fromJson(data);
+  }
 }

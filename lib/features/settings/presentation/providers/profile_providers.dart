@@ -175,6 +175,10 @@ class BirthDataFormNotifier extends Notifier<BirthDataFormState> {
         final t = state.birthTime!;
         timeStr =
             '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
+      } else if (state.birthTimeAccuracy == BirthTimeAccuracy.unknown &&
+          state.birthDate != null) {
+        // Default to noon when birth time is unknown but date is set
+        timeStr = '12:00';
       }
 
       await repo.upsertCore(
