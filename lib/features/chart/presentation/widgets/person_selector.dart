@@ -324,7 +324,6 @@ class _FriendPickerSheet extends ConsumerWidget {
                 ),
               ),
             ),
-            ),
           ),
         ],
       ),
