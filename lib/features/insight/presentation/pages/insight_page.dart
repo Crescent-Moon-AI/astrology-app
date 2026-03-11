@@ -513,7 +513,7 @@ class _FriendPickerSheet extends ConsumerWidget {
             padding: EdgeInsets.all(32),
             child: CircularProgressIndicator(color: CosmicColors.primary),
           ),
-          error: (_, __) => Padding(
+          error: (_, _) => Padding(
             padding: const EdgeInsets.all(32),
             child: Text(
               isZh ? '加载失败' : 'Failed to load',

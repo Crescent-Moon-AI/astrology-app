@@ -16,7 +16,7 @@ class ReportApi {
   }) async {
     final body = <String, dynamic>{
       'report_product_id': reportProductId,
-      if (friendId != null) 'friend_id': friendId,
+      'friend_id': ?friendId,
     };
     // LLM generation can take 60-120s — override the default 30s receiveTimeout.
     final response = await _dio.post(
