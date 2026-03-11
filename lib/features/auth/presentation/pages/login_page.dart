@@ -34,8 +34,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     super.dispose();
   }
 
-  void _startCountdown() {
-    setState(() => _countdown = 60);
+  void _startCountdown(int seconds) {
+    setState(() => _countdown = seconds);
+    _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (t) {
       if (!mounted) {
         t.cancel();
@@ -51,7 +52,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> _sendCode() async {
     final phone = _phoneCtrl.text.trim();
     if (phone.isEmpty) {
-      setState(() => _sendError = '请输入手机号');
+      setState(() => _sendError = '\u8BF7\u8F93\u5165\u624B\u673A\u53F7');
       return;
     }
     setState(() {
@@ -59,13 +60,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       _sendError = null;
     });
 
-    final err = await ref.read(authProvider.notifier).sendSMSOTP(phone);
+    final (cooldown, err) = await ref
+        .read(authProvider.notifier)
+        .sendSMSOTP(phone);
     if (!mounted) return;
     setState(() => _sending = false);
     if (err != null) {
       setState(() => _sendError = err);
     } else {
-      _startCountdown();
+      _startCountdown(cooldown ?? 60);
     }
   }
 
@@ -76,14 +79,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     final ok = await ref
         .read(authProvider.notifier)
-        .smsLogin(_phoneCtrl.text.trim(), _codeCtrl.text.trim());
+        .smsVerify(_phoneCtrl.text.trim(), _codeCtrl.text.trim());
 
     if (mounted) setState(() => _loading = false);
     if (ok && mounted) {
       ref.invalidate(scenarioListProvider);
       ref.invalidate(scenarioCategoriesProvider);
       ref.invalidate(hotScenariosProvider);
-      context.go('/home');
+      final needsOnboarding = ref.read(authProvider).needsOnboarding;
+      context.go(needsOnboarding ? '/onboarding' : '/home');
     }
   }
 
@@ -130,24 +134,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
-                      '\uD83C\uDF19', // 🌙
+                      '\uD83C\uDF19', // moon emoji
                       style: TextStyle(fontSize: 56),
                     ),
                     const SizedBox(height: 12),
                     const Text(
-                      '星见',
+                      '\u661F\u89C1',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: CosmicColors.textPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      '手机号登录',
-                      style: TextStyle(
-                        color: CosmicColors.textSecondary,
-                        fontSize: 14,
                       ),
                     ),
                     const SizedBox(height: 48),
@@ -157,7 +153,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       controller: _phoneCtrl,
                       style: const TextStyle(color: CosmicColors.textPrimary),
                       decoration: _inputDecoration(
-                        label: '手机号',
+                        label: '\u624B\u673A\u53F7',
                         prefixIcon: Icons.phone_outlined,
                       ),
                       keyboardType: TextInputType.phone,
@@ -166,8 +162,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ],
                       textInputAction: TextInputAction.next,
                       validator: (v) {
-                        if (v == null || v.trim().isEmpty) return '请输入手机号';
-                        if (v.trim().length < 8) return '手机号格式不正确';
+                        if (v == null || v.trim().isEmpty) {
+                          return '\u8BF7\u8F93\u5165\u624B\u673A\u53F7';
+                        }
+                        if (v.trim().length < 8) {
+                          return '\u624B\u673A\u53F7\u683C\u5F0F\u4E0D\u6B63\u786E';
+                        }
                         return null;
                       },
                     ),
@@ -178,17 +178,26 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       controller: _codeCtrl,
                       style: const TextStyle(color: CosmicColors.textPrimary),
                       decoration: _inputDecoration(
-                        label: '验证码',
+                        label: '\u9A8C\u8BC1\u7801',
                         prefixIcon: Icons.password_outlined,
                         suffix: _countdown > 0
-                            ? Padding(
+                            ? Container(
+                                margin: const EdgeInsets.only(right: 8),
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: CosmicColors.primary.withValues(
+                                    alpha: 0.1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Text(
                                   '${_countdown}s',
                                   style: const TextStyle(
                                     color: CosmicColors.textTertiary,
+                                    fontSize: 13,
                                   ),
                                 ),
                               )
@@ -204,7 +213,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                         ),
                                       )
                                     : const Text(
-                                        '获取验证码',
+                                        '\u83B7\u53D6\u9A8C\u8BC1\u7801',
                                         style: TextStyle(
                                           color: CosmicColors.primary,
                                         ),
@@ -219,8 +228,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => _submit(),
                       validator: (v) {
-                        if (v == null || v.isEmpty) return '请输入验证码';
-                        if (v.length != 6) return '验证码为6位数字';
+                        if (v == null || v.isEmpty) {
+                          return '\u8BF7\u8F93\u5165\u9A8C\u8BC1\u7801';
+                        }
+                        if (v.length != 6) {
+                          return '\u9A8C\u8BC1\u7801\u4E3A6\u4F4D\u6570\u5B57';
+                        }
                         return null;
                       },
                     ),
@@ -289,7 +302,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                       ),
                                     )
                                   : const Text(
-                                      '登录',
+                                      '\u767B\u5F55',
                                       style: TextStyle(
                                         color: CosmicColors.textPrimary,
                                         fontWeight: FontWeight.w600,
@@ -301,15 +314,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
 
-                    // Register link
-                    TextButton(
-                      onPressed: () => context.go('/register'),
-                      style: TextButton.styleFrom(
-                        foregroundColor: CosmicColors.primaryLight,
+                    const SizedBox(height: 16),
+                    const Text(
+                      '\u672A\u6CE8\u518C\u624B\u673A\u53F7\u5C06\u81EA\u52A8\u521B\u5EFA\u8D26\u53F7',
+                      style: TextStyle(
+                        color: CosmicColors.textTertiary,
+                        fontSize: 12,
                       ),
-                      child: const Text('没有账号？去注册'),
                     ),
                   ],
                 ),

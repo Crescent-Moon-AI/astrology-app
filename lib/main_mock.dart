@@ -46,8 +46,8 @@ void main() async {
         chatDatasourceProvider.overrideWithValue(mockChatDatasource),
       ],
       child: const XingjianApp(
-        autoLoginEmail: 'demo@xingjian.app',
-        autoLoginPassword: 'mock',
+        autoLoginPhone: '13800138000',
+        autoLoginCode: '888888',
       ),
     ),
   );

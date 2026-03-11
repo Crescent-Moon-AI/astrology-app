@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../features/auth/presentation/pages/login_page.dart';
-import '../features/auth/presentation/pages/register_page.dart';
+import '../features/auth/presentation/pages/onboarding_page.dart';
 import '../features/auth/presentation/providers/auth_providers.dart';
 import '../features/chat/presentation/pages/chat_page.dart';
 import '../features/chat/presentation/pages/conversation_list_page.dart';
@@ -54,20 +54,23 @@ import '../features/social/domain/models/shared_card.dart';
 import '../features/photo_analysis/presentation/pages/photo_analysis_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  // Only watch auth STATUS to avoid router rebuilds on token refresh
-  // (which updates the user field but keeps status as authenticated).
   final authStatus = ref.watch(authProvider.select((s) => s.status));
+  final needsOnboarding = ref.watch(
+    authProvider.select((s) => s.needsOnboarding),
+  );
 
   return GoRouter(
     initialLocation: '/home',
     redirect: (context, state) {
       final isAuth = authStatus == AuthStatus.authenticated;
-      final isAuthRoute =
-          state.matchedLocation == '/login' ||
-          state.matchedLocation == '/register';
+      final loc = state.matchedLocation;
+      final isAuthRoute = loc == '/login';
+      final isOnboarding = loc == '/onboarding';
 
       if (!isAuth && !isAuthRoute) return '/login';
       if (isAuth && isAuthRoute) return '/home';
+      if (isAuth && needsOnboarding && !isOnboarding) return '/onboarding';
+      if (isAuth && !needsOnboarding && isOnboarding) return '/home';
       return null;
     },
     routes: [
@@ -78,9 +81,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
-        path: '/register',
-        name: 'register',
-        builder: (context, state) => const RegisterPage(),
+        path: '/onboarding',
+        name: 'onboarding',
+        builder: (context, state) => const OnboardingPage(),
       ),
 
       // Main shell with bottom navigation — 4 tabs (matching real app)
@@ -152,9 +155,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             state,
             ChatPage(
               scenarioId: state.uri.queryParameters['scenario_id'],
-              initialMessage: state.uri.queryParameters['initial_message'] ??
+              initialMessage:
+                  state.uri.queryParameters['initial_message'] ??
                   extras?['initial_message'] as String?,
-              prefillMessage: state.uri.queryParameters['prefill_message'] ??
+              prefillMessage:
+                  state.uri.queryParameters['prefill_message'] ??
                   extras?['prefill_message'] as String?,
               tarotSessionId: state.uri.queryParameters['tarot_session_id'],
               imageData: extras?['image_data'] as String?,
@@ -451,10 +456,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'synastry',
         pageBuilder: (context, state) {
           final birth = state.extra as BirthData?;
-          return _cosmicFadePage(
-            state,
-            SynastryPage(preloadedPerson2: birth),
-          );
+          return _cosmicFadePage(state, SynastryPage(preloadedPerson2: birth));
         },
       ),
     ],

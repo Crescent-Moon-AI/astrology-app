@@ -252,12 +252,21 @@ class MockInterceptor extends Interceptor {
 
   Map<String, dynamic>? _route(String method, String path, dynamic body) {
     // --- Auth ---
-    if (path == '/api/auth/login' && method == 'POST') return _authResponse();
-    if (path == '/api/auth/register' && method == 'POST') {
+    if (path == '/api/auth/sms/send' && method == 'POST') {
+      return {
+        'message': '\u9A8C\u8BC1\u7801\u5DF2\u53D1\u9001',
+        'cooldown': 60,
+      };
+    }
+    if (path == '/api/auth/sms/verify' && method == 'POST') {
       return _authResponse();
     }
     if (path == '/api/auth/refresh' && method == 'POST') return _authResponse();
     if (path == '/api/auth/logout' && method == 'POST') return {};
+    if (path == '/api/auth/me' && method == 'GET') {
+      return _authResponse()['user'] as Map<String, dynamic>;
+    }
+    if (path == '/api/auth/me' && method == 'PATCH') return {};
     if (path == '/api/auth/ws-ticket' && method == 'POST') {
       return {'ticket': 'mock-ticket-${DateTime.now().millisecondsSinceEpoch}'};
     }
@@ -437,11 +446,11 @@ class MockInterceptor extends Interceptor {
     'refresh_token': 'mock-refresh-token',
     'token_type': 'Bearer',
     'expires_in': 86400,
+    'is_new_user': false,
     'user': {
       'id': 'mock-user-001',
-      'email': 'demo@xingjian.app',
-      'username': '星辰旅人',
-      'email_verified': true,
+      'phone': '13800138000',
+      'username': '\u661F\u8FB0\u65C5\u4EBA',
       'role': 'user',
       'is_admin': false,
     },
