@@ -144,7 +144,7 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
       body: StarfieldBackground(
         child: profile.when(
           loading: () => const Center(child: BreathingLoader()),
-          error: (_, __) => Center(
+          error: (_, _) => Center(
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Column(

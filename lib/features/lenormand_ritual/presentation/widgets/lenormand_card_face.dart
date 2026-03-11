@@ -53,7 +53,7 @@ class LenormandCardFace extends StatelessWidget {
           assetPath,
           fit: BoxFit.cover,
           cacheWidth: 300,
-          errorBuilder: (_, __, ___) => _buildProceduralCard(isZh),
+          errorBuilder: (_, _, _) => _buildProceduralCard(isZh),
         ),
         // Bottom overlay with card name + number
         Positioned(

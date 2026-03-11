@@ -87,7 +87,7 @@ class FriendListPage extends ConsumerWidget {
                           child: BreathingLoader(),
                         ),
                       ),
-                      error: (_, __) => _MyChartCard(
+                      error: (_, _) => _MyChartCard(
                         username: user?.username ?? user?.phone ?? '',
                         subtitle: l10n.errorLoadFailed,
                         selfLabel: l10n.chartArchivesSelf,

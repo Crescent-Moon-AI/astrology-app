@@ -38,7 +38,7 @@ class _MeihuaMethodPageState extends ConsumerState<MeihuaMethodPage> {
               : (isZh ? '数字' : 'number-based');
           final prompt = result != null
               ? (isZh
-                    ? '我用梅花易数的${methodName}法起卦，得到本卦第${result.primaryHexagram.number}卦，变卦第${result.transformedHexagram.number}卦，动爻第${result.movingLine}爻。请为我解读。'
+                    ? '我用梅花易数的$methodName法起卦，得到本卦第${result.primaryHexagram.number}卦，变卦第${result.transformedHexagram.number}卦，动爻第${result.movingLine}爻。请为我解读。'
                     : 'I cast a Meihua Yishu hexagram using the $methodName method. Primary hexagram #${result.primaryHexagram.number}, transformed hexagram #${result.transformedHexagram.number}, moving line ${result.movingLine}. Please interpret this for me.')
               : l10n.meihuaGetReading;
           context.pushNamed(

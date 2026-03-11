@@ -35,7 +35,7 @@ class IChingSessionApi {
   }) async {
     final response = await _dio.patch(
       '/api/iching/sessions/$sessionId',
-      data: {'ritual_state': ritualState, if (tosses != null) 'tosses': tosses},
+      data: {'ritual_state': ritualState, 'tosses': ?tosses},
     );
     final data = response.data['data'] as Map<String, dynamic>;
     return IChingSession.fromJson(data);

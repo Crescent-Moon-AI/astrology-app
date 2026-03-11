@@ -75,7 +75,7 @@ class _SynastryPageState extends ConsumerState<SynastryPage> {
       ),
       body: birthAsync.when(
         loading: () => const Center(child: BreathingLoader()),
-        error: (_, __) => Center(
+        error: (_, _) => Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Column(

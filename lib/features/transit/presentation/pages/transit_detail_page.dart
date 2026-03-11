@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/breathing_loader.dart';
+import '../../domain/models/user_transit_alert.dart';
 import '../providers/transit_providers.dart';
 import '../widgets/severity_badge.dart';
 
@@ -282,12 +283,12 @@ class TransitDetailPage extends ConsumerWidget {
           ),
         ),
         loading: () => const SizedBox.shrink(),
-        error: (_, __) => const SizedBox.shrink(),
+        error: (_, _) => const SizedBox.shrink(),
       ),
     );
   }
 
-  String _buildTitle(alert) {
+  String _buildTitle(UserTransitAlert alert) {
     final event = alert.transitEvent;
     final aspect = event.aspectType ?? event.eventType;
     return '${event.planet} $aspect ${alert.natalPlanet}';

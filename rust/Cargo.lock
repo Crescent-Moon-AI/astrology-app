@@ -64,6 +64,7 @@ checksum = "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c"
 name = "astro-core"
 version = "0.1.0"
 dependencies = [
+ "parking_lot",
  "serde",
  "serde_json",
  "swiss-eph",
@@ -500,6 +501,16 @@ dependencies = [
  "cc",
  "dashmap",
  "log",
+]
+
+[[package]]
+name = "parking_lot"
+version = "0.12.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "93857453250e3077bd71ff98b6a65ea6621a19bb0f559a85248955ac12c45a1a"
+dependencies = [
+ "lock_api",
+ "parking_lot_core",
 ]
 
 [[package]]

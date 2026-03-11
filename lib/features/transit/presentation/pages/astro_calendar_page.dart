@@ -219,7 +219,7 @@ class _AstroCalendarPageState extends ConsumerState<AstroCalendarPage> {
                 const SizedBox(height: 16),
                 Text(
                   isZh
-                      ? '$_year年${_month}月$day日'
+                      ? '$_year年$_month月$day日'
                       : '${_monthName(_month)} $day, $_year',
                   style: const TextStyle(
                     color: CosmicColors.textPrimary,

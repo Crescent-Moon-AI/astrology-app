@@ -192,7 +192,7 @@ class AppearanceSettingsPage extends ConsumerWidget {
                 ),
               ),
               value: reducedMotion,
-              activeColor: CosmicColors.primary,
+              activeThumbColor: CosmicColors.primary,
               onChanged: (value) =>
                   ref.read(reducedMotionProvider.notifier).set(value),
               shape: RoundedRectangleBorder(

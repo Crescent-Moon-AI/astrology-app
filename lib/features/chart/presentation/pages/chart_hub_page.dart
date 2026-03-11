@@ -81,7 +81,7 @@ class _ChartHubPageState extends ConsumerState<ChartHubPage>
               Expanded(
                 child: birthAsync.when(
                   loading: () => const Center(child: BreathingLoader()),
-                  error: (_, __) => _buildErrorState(l10n, isZh, ref),
+                  error: (_, _) => _buildErrorState(l10n, isZh, ref),
                   data: (birthData) => birthData == null
                       ? const NoBirthDataPrompt()
                       : TabBarView(

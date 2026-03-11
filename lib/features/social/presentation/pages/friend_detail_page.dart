@@ -35,7 +35,7 @@ class FriendDetailPage extends ConsumerWidget {
             l10n.friendsTitle,
             style: const TextStyle(color: CosmicColors.textPrimary),
           ),
-          error: (_, __) => Text(
+          error: (_, _) => Text(
             l10n.friendsTitle,
             style: const TextStyle(color: CosmicColors.textPrimary),
           ),

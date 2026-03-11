@@ -134,7 +134,7 @@ class TarotReadingCard extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: cards.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 8),
+            separatorBuilder: (_, _) => const SizedBox(width: 8),
             itemBuilder: (context, index) => _TarotCardTile(card: cards[index]),
           ),
         ),
@@ -182,7 +182,7 @@ class _TarotCardTile extends StatelessWidget {
                     child: Image.asset(
                       CardAssetPaths.tarotAssetPath(imageKey),
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => _fallbackCard(name),
+                      errorBuilder: (_, _, _) => _fallbackCard(name),
                     ),
                   )
                 : _fallbackCard(name),

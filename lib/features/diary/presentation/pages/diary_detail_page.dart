@@ -438,15 +438,15 @@ class _DiaryDetailPageState extends ConsumerState<DiaryDetailPage> {
       ),
     );
 
-    if (confirmed == true && mounted) {
+    if (confirmed == true && context.mounted) {
       try {
         await ref.read(diaryApiProvider).delete(id);
         ref.invalidate(diaryListProvider);
-        if (mounted) {
+        if (context.mounted) {
           context.pop();
         }
       } catch (e) {
-        if (mounted) {
+        if (context.mounted) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(formatError(e))));
