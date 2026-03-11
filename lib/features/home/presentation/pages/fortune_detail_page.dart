@@ -29,6 +29,7 @@ class _FortuneDetailPageState extends ConsumerState<FortuneDetailPage>
     Color(0xFFFDCB6E), // wealth
     Color(0xFF00CEC9), // study
     Color(0xFF55EFC4), // social
+    Color(0xFFFF9F43), // health
   ];
 
   static const _colorMap = <String, Color>{
@@ -206,6 +207,13 @@ class _DailyTab extends StatelessWidget {
             dimensions: fortune.dimensions,
             dimensionColors: dimensionColors,
           ),
+          // Astro events (天象)
+          if (fortune.astroEvents.isNotEmpty) ...[
+            const SizedBox(height: 24),
+            _SectionTitle(text: isZh ? '今日天象' : 'Celestial Events'),
+            const SizedBox(height: 14),
+            _AstroEventsSection(events: fortune.astroEvents, isZh: isZh),
+          ],
           const SizedBox(height: 24),
           // Lucky elements
           _SectionTitle(text: isZh ? '幸运元素' : 'Lucky Elements'),
@@ -844,6 +852,94 @@ class _WeekToggleChip extends StatelessWidget {
             fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
           ),
         ),
+      ),
+    );
+  }
+}
+
+// ---------- Astro Events Section ----------
+
+class _AstroEventsSection extends StatelessWidget {
+  final List<AstroEvent> events;
+  final bool isZh;
+
+  const _AstroEventsSection({required this.events, required this.isZh});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: CosmicColors.surfaceElevated,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: CosmicColors.borderGlow),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (int i = 0; i < events.length; i++) ...[
+            if (i > 0)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Divider(
+                  height: 1,
+                  color: CosmicColors.borderGlow.withAlpha(60),
+                ),
+              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        CosmicColors.primary.withAlpha(60),
+                        CosmicColors.primaryLight.withAlpha(40),
+                      ],
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.auto_awesome,
+                      color: CosmicColors.primaryLight,
+                      size: 16,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        events[i].title,
+                        style: const TextStyle(
+                          color: CosmicColors.textPrimary,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      if (events[i].description.isNotEmpty) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          events[i].description,
+                          style: const TextStyle(
+                            color: CosmicColors.textSecondary,
+                            fontSize: 13,
+                            height: 1.5,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
       ),
     );
   }

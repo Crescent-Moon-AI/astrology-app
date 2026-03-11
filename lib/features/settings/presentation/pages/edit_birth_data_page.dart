@@ -28,6 +28,11 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
   String? _initialProvince;
   String? _initialCity;
   String? _initialDistrict;
+  // Current city (residence)
+  String? _selectedCityDisplay;
+  String? _initialCityProvince;
+  String? _initialCityCity;
+  String? _initialCityDistrict;
 
   @override
   void dispose() {
@@ -61,6 +66,17 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
           place.timezone != null;
       if (!hasValidCoords) {
         _resolveLocation(name);
+      }
+    }
+    // Init current city
+    if (p.currentCity?.normalizedName != null) {
+      final cityName = p.currentCity!.normalizedName!;
+      _selectedCityDisplay = cityName;
+      final cityParts = cityName.split(' - ');
+      if (cityParts.length >= 3) {
+        _initialCityProvince = cityParts[0].trim();
+        _initialCityCity = cityParts[1].trim();
+        _initialCityDistrict = cityParts[2].trim();
       }
     }
   }
@@ -371,6 +387,77 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
                   ),
                 ),
 
+                const SizedBox(height: 16),
+
+                // Current city (residence) — optional
+                _SectionCard(
+                  title: l10n.currentCity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.currentCityHint,
+                        style: const TextStyle(
+                          color: CosmicColors.textTertiary,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      InkWell(
+                        onTap: () => _pickCurrentCity(context),
+                        borderRadius: BorderRadius.circular(12),
+                        child: InputDecorator(
+                          decoration: _inputDecoration(l10n.currentCitySearch),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  _selectedCityDisplay ??
+                                      l10n.currentCitySearch,
+                                  style: TextStyle(
+                                    color: _selectedCityDisplay != null
+                                        ? CosmicColors.textPrimary
+                                        : CosmicColors.textTertiary,
+                                    fontSize: 15,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              if (_selectedCityDisplay != null)
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedCityDisplay = null;
+                                      _initialCityProvince = null;
+                                      _initialCityCity = null;
+                                      _initialCityDistrict = null;
+                                    });
+                                    ref.read(birthDataFormProvider.notifier).setCurrentCity(null);
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(left: 8),
+                                    child: Icon(
+                                      Icons.close,
+                                      color: CosmicColors.textTertiary,
+                                      size: 18,
+                                    ),
+                                  ),
+                                )
+                              else
+                                const Icon(
+                                  Icons.chevron_right,
+                                  color: CosmicColors.textTertiary,
+                                  size: 20,
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
                 const SizedBox(height: 32),
 
                 // Error
@@ -515,6 +602,56 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
     });
 
     await _resolveLocation(result.displayName);
+  }
+
+  Future<void> _pickCurrentCity(BuildContext context) async {
+    final result = await showChinaRegionPicker(
+      context,
+      initialProvince: _initialCityProvince,
+      initialCity: _initialCityCity,
+      initialDistrict: _initialCityDistrict,
+    );
+    if (result == null || !mounted) return;
+
+    setState(() {
+      _selectedCityDisplay = result.displayName;
+      _initialCityProvince = result.province;
+      _initialCityCity = result.city;
+      _initialCityDistrict = result.district;
+    });
+
+    // Resolve geocoding for current city
+    try {
+      final jsonStr = await astro_ffi.geocodeChina(query: result.displayName);
+      final List<dynamic> locations = json.decode(jsonStr) as List<dynamic>;
+      if (locations.isNotEmpty) {
+        final loc = locations[0] as Map<String, dynamic>;
+        ref.read(birthDataFormProvider.notifier).setCurrentCity(
+              LocationCandidate(
+                name: loc['formatted_address'] as String? ?? result.displayName,
+                latitude: (loc['latitude'] as num?)?.toDouble() ?? 0,
+                longitude: (loc['longitude'] as num?)?.toDouble() ?? 0,
+                timezone: loc['timezone'] as String?,
+                countryCode: loc['country_code'] as String?,
+                adminArea: loc['admin_area'] as String?,
+                confidence: (loc['confidence'] as num?)?.toDouble(),
+              ),
+            );
+        return;
+      }
+    } catch (_) {
+      // FFI failed, try backend
+    }
+
+    try {
+      final repo = ref.read(profileRepositoryProvider);
+      final geocode = await repo.resolveLocation(result.displayName);
+      if (geocode.candidates.isNotEmpty) {
+        ref.read(birthDataFormProvider.notifier).setCurrentCity(geocode.candidates.first);
+      }
+    } catch (_) {
+      // Both failed, keep display name only
+    }
   }
 
   Future<void> _save(BuildContext context) async {

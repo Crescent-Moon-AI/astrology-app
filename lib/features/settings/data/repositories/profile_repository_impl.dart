@@ -14,11 +14,13 @@ class ProfileRepositoryImpl {
     String? birthTime,
     String? birthTimeAccuracy,
     LocationCandidate? birthPlace,
+    LocationCandidate? currentCity,
   }) => _api.upsertCore(
     birthDate: birthDate,
     birthTime: birthTime,
     birthTimeAccuracy: birthTimeAccuracy,
     birthPlace: birthPlace,
+    currentCity: currentCity,
   );
 
   Future<GeocodeResponse> resolveLocation(String query, {String? language}) =>

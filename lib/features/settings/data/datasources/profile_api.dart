@@ -21,6 +21,7 @@ class ProfileApi {
     String? birthTime,
     String? birthTimeAccuracy,
     LocationCandidate? birthPlace,
+    LocationCandidate? currentCity,
   }) async {
     final body = <String, dynamic>{};
 
@@ -45,6 +46,23 @@ class ProfileApi {
         placeMap['id'] = birthPlace.id;
       }
       body['birth_place'] = placeMap;
+    }
+
+    if (currentCity != null) {
+      final cityMap = <String, dynamic>{
+        'normalized_name': currentCity.name,
+        'latitude': currentCity.latitude,
+        'longitude': currentCity.longitude,
+        'timezone': currentCity.timezone,
+        'country_code': currentCity.countryCode,
+        'admin_area': currentCity.adminArea,
+        'source': 'geocoded',
+        'confidence': currentCity.confidence,
+      };
+      if (currentCity.id != null) {
+        cityMap['id'] = currentCity.id;
+      }
+      body['current_city'] = cityMap;
     }
 
     await _dio.put(ApiConstants.profileCore, data: body);

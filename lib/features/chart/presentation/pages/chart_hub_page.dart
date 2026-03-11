@@ -18,6 +18,7 @@ import '../widgets/chart_info_header.dart';
 import '../widgets/no_birth_data_prompt.dart';
 import '../widgets/planet_keyword_grid.dart';
 import '../widgets/personality_tags.dart';
+import '../widgets/element_house_summary.dart';
 import 'package:astrology_app/shared/widgets/breathing_loader.dart';
 import 'package:astrology_app/features/settings/presentation/providers/profile_providers.dart';
 
@@ -299,6 +300,13 @@ class _ChartOverviewTab extends ConsumerWidget {
       children: [
         // Personality tags
         PersonalityTags(planets: chart.planets, angles: chart.houses.angles),
+        const SizedBox(height: 16),
+
+        // Element & House identity (火象人, X宫人)
+        ElementHouseSummary(
+          planets: chart.planets,
+          angles: chart.houses.angles,
+        ),
         const SizedBox(height: 20),
 
         // Personality description

@@ -584,6 +584,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get birthPlaceSearch => '搜索城市...';
 
   @override
+  String get currentCity => '现居城市';
+
+  @override
+  String get currentCityHint => '选填，用于计算天象数据。未填写时使用出生城市。';
+
+  @override
+  String get currentCitySearch => '选择现居城市...';
+
+  @override
   String birthPlaceTimezone(String timezone) {
     return '时区: $timezone';
   }

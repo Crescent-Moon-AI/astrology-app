@@ -51,6 +51,7 @@ class BirthDataFormState {
   final TimeOfDay? birthTime;
   final BirthTimeAccuracy birthTimeAccuracy;
   final LocationCandidate? selectedLocation;
+  final LocationCandidate? currentCityLocation;
   final bool isSaving;
   final String? error;
 
@@ -59,6 +60,7 @@ class BirthDataFormState {
     this.birthTime,
     this.birthTimeAccuracy = BirthTimeAccuracy.unknown,
     this.selectedLocation,
+    this.currentCityLocation,
     this.isSaving = false,
     this.error,
   });
@@ -68,6 +70,7 @@ class BirthDataFormState {
     TimeOfDay? Function()? birthTime,
     BirthTimeAccuracy? birthTimeAccuracy,
     LocationCandidate? Function()? selectedLocation,
+    LocationCandidate? Function()? currentCityLocation,
     bool? isSaving,
     String? Function()? error,
   }) {
@@ -78,6 +81,9 @@ class BirthDataFormState {
       selectedLocation: selectedLocation != null
           ? selectedLocation()
           : this.selectedLocation,
+      currentCityLocation: currentCityLocation != null
+          ? currentCityLocation()
+          : this.currentCityLocation,
       isSaving: isSaving ?? this.isSaving,
       error: error != null ? error() : this.error,
     );
@@ -125,11 +131,26 @@ class BirthDataFormNotifier extends Notifier<BirthDataFormState> {
       );
     }
 
+    LocationCandidate? cityLocation;
+    final city = profile.currentCity;
+    if (city != null && city.normalizedName != null) {
+      cityLocation = LocationCandidate(
+        name: city.normalizedName!,
+        latitude: city.latitude ?? 0,
+        longitude: city.longitude ?? 0,
+        timezone: city.timezone,
+        countryCode: city.countryCode,
+        adminArea: city.adminArea,
+        id: city.id,
+      );
+    }
+
     state = BirthDataFormState(
       birthDate: date,
       birthTime: time,
       birthTimeAccuracy: core.birthTimeAccuracy,
       selectedLocation: location,
+      currentCityLocation: cityLocation,
     );
   }
 
@@ -155,6 +176,10 @@ class BirthDataFormNotifier extends Notifier<BirthDataFormState> {
 
   void setLocation(LocationCandidate? location) {
     state = state.copyWith(selectedLocation: () => location);
+  }
+
+  void setCurrentCity(LocationCandidate? location) {
+    state = state.copyWith(currentCityLocation: () => location);
   }
 
   Future<bool> save() async {
@@ -186,6 +211,7 @@ class BirthDataFormNotifier extends Notifier<BirthDataFormState> {
         birthTime: timeStr,
         birthTimeAccuracy: state.birthTimeAccuracy.name,
         birthPlace: state.selectedLocation,
+        currentCity: state.currentCityLocation,
       );
 
       // Invalidate profile cache

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/network/dio_client.dart';
 import '../../../../core/providers/core_providers.dart';
 import '../../../../core/storage/secure_storage.dart';
+import '../../../home/presentation/providers/home_providers.dart';
+import '../../../settings/presentation/providers/profile_providers.dart';
 import '../../data/datasources/auth_remote_datasource.dart';
 import '../../data/models/auth_response.dart';
 import '../../domain/models/user.dart';
@@ -145,6 +147,10 @@ class AuthNotifier extends Notifier<AuthState> {
     }
     _dioClient.clearAuthToken();
     await _storage.clearTokens();
+    // Invalidate all user-scoped cached data
+    ref.invalidate(userProfileProvider);
+    ref.invalidate(dailyFortuneProvider);
+    ref.invalidate(selectedDateProvider);
     state = const AuthState(status: AuthStatus.unauthenticated);
   }
 
@@ -165,6 +171,10 @@ class AuthNotifier extends Notifier<AuthState> {
     await _storage.setAccessToken(response.accessToken);
     await _storage.setRefreshToken(response.refreshToken);
     _dioClient.setAuthToken(response.accessToken);
+    // Invalidate stale data from previous user
+    ref.invalidate(userProfileProvider);
+    ref.invalidate(dailyFortuneProvider);
+    ref.invalidate(selectedDateProvider);
     state = AuthState(status: AuthStatus.authenticated, user: response.user);
   }
 

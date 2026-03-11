@@ -588,6 +588,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get birthPlaceSearch => 'Search city...';
 
   @override
+  String get currentCity => 'Current City';
+
+  @override
+  String get currentCityHint =>
+      'Optional. Used for celestial calculations. Birth city is used if not set.';
+
+  @override
+  String get currentCitySearch => 'Select current city...';
+
+  @override
   String birthPlaceTimezone(String timezone) {
     return 'Timezone: $timezone';
   }

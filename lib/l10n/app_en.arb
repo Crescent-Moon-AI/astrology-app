@@ -224,6 +224,9 @@
   "birthTimeApproximate": "Approximate",
   "birthPlace": "Birth Place",
   "birthPlaceSearch": "Search city...",
+  "currentCity": "Current City",
+  "currentCityHint": "Optional. Used for celestial calculations. Birth city is used if not set.",
+  "currentCitySearch": "Select current city...",
   "birthPlaceTimezone": "Timezone: {timezone}",
   "@birthPlaceTimezone": {
     "placeholders": {

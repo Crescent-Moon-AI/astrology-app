@@ -1226,6 +1226,24 @@ abstract class AppLocalizations {
   /// **'Search city...'**
   String get birthPlaceSearch;
 
+  /// No description provided for @currentCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Current City'**
+  String get currentCity;
+
+  /// No description provided for @currentCityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Used for celestial calculations. Birth city is used if not set.'**
+  String get currentCityHint;
+
+  /// No description provided for @currentCitySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Select current city...'**
+  String get currentCitySearch;
+
   /// No description provided for @birthPlaceTimezone.
   ///
   /// In en, this message translates to:

@@ -224,6 +224,9 @@
   "birthTimeApproximate": "大概",
   "birthPlace": "出生地点",
   "birthPlaceSearch": "搜索城市...",
+  "currentCity": "现居城市",
+  "currentCityHint": "选填，用于计算天象数据。未填写时使用出生城市。",
+  "currentCitySearch": "选择现居城市...",
   "birthPlaceTimezone": "时区: {timezone}",
   "@birthPlaceTimezone": {
     "placeholders": {

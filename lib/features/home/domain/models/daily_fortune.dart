@@ -8,6 +8,7 @@ class DailyFortune {
   final int overallScore;
   final List<FortuneDimension> dimensions;
   final LuckyElements luckyElements;
+  final List<AstroEvent> astroEvents;
 
   const DailyFortune({
     required this.date,
@@ -19,6 +20,7 @@ class DailyFortune {
     required this.overallScore,
     required this.dimensions,
     required this.luckyElements,
+    this.astroEvents = const [],
   });
 
   factory DailyFortune.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,28 @@ class DailyFortune {
       luckyElements: LuckyElements.fromJson(
         json['lucky_elements'] as Map<String, dynamic>? ?? {},
       ),
+      astroEvents:
+          (json['astro_events'] as List<dynamic>?)
+              ?.map((e) => AstroEvent.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+  }
+}
+
+class AstroEvent {
+  final String title;
+  final String description;
+
+  const AstroEvent({
+    required this.title,
+    this.description = '',
+  });
+
+  factory AstroEvent.fromJson(Map<String, dynamic> json) {
+    return AstroEvent(
+      title: json['title'] as String? ?? '',
+      description: json['description'] as String? ?? '',
     );
   }
 }

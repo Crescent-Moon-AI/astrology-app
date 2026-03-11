@@ -6,11 +6,13 @@ enum BirthTimeAccuracy { exact, approximate, unknown }
 class UserProfile {
   final UserAstrologyCore core;
   final UserBirthPlace? currentBirthPlace;
+  final UserBirthPlace? currentCity;
   final List<UserBirthPlace> birthPlaces;
 
   const UserProfile({
     required this.core,
     this.currentBirthPlace,
+    this.currentCity,
     this.birthPlaces = const [],
   });
 
@@ -19,11 +21,16 @@ class UserProfile {
     final placesJson = json['birth_places'] as List<dynamic>? ?? [];
     final currentPlaceJson =
         json['current_birth_place'] as Map<String, dynamic>?;
+    final currentCityJson =
+        json['current_city'] as Map<String, dynamic>?;
 
     return UserProfile(
       core: UserAstrologyCore.fromJson(coreJson),
       currentBirthPlace: currentPlaceJson != null
           ? UserBirthPlace.fromJson(currentPlaceJson)
+          : null,
+      currentCity: currentCityJson != null
+          ? UserBirthPlace.fromJson(currentCityJson)
           : null,
       birthPlaces: placesJson
           .map((e) => UserBirthPlace.fromJson(e as Map<String, dynamic>))
@@ -38,6 +45,7 @@ class UserAstrologyCore {
   final String? birthTime; // HH:MM
   final BirthTimeAccuracy birthTimeAccuracy;
   final String? currentBirthPlaceId;
+  final String? currentCityPlaceId;
   final double completenessScore;
 
   const UserAstrologyCore({
@@ -46,6 +54,7 @@ class UserAstrologyCore {
     this.birthTime,
     this.birthTimeAccuracy = BirthTimeAccuracy.unknown,
     this.currentBirthPlaceId,
+    this.currentCityPlaceId,
     this.completenessScore = 0,
   });
 
@@ -56,6 +65,7 @@ class UserAstrologyCore {
       birthTime: json['birth_time'] as String?,
       birthTimeAccuracy: _parseAccuracy(json['birth_time_accuracy'] as String?),
       currentBirthPlaceId: json['current_birth_place_id'] as String?,
+      currentCityPlaceId: json['current_city_place_id'] as String?,
       completenessScore: (json['completeness_score'] as num?)?.toDouble() ?? 0,
     );
   }
