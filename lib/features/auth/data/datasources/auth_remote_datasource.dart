@@ -39,36 +39,30 @@ class AuthRemoteDatasource {
     return data;
   }
 
-  /// Send SMS OTP to the given phone number.
-  Future<void> sendSMSOTP(String phone) async {
-    await _dio.post('/api/auth/sms/send', data: {'phone': phone});
+  /// Send SMS OTP to the given phone number. Returns cooldown seconds from server.
+  Future<int> sendSMSOTP(String phone) async {
+    final response = await _dio.post(
+      '/api/auth/sms/send',
+      data: {'phone': phone},
+    );
+    final data = response.data as Map<String, dynamic>;
+    return (data['cooldown'] as num?)?.toInt() ?? 60;
   }
 
-  /// Register with phone number + OTP.
-  Future<AuthResponse> smsRegister({
-    required String phone,
-    required String code,
-    String? username,
-    String? inviteCode,
-  }) async {
-    final body = <String, dynamic>{'phone': phone, 'code': code};
-    if (username != null && username.isNotEmpty) body['username'] = username;
-    if (inviteCode != null && inviteCode.isNotEmpty) {
-      body['invite_code'] = inviteCode;
-    }
-    final response = await _dio.post('/api/auth/sms/register', data: body);
-    return _parseAuth(response.data as Map<String, dynamic>);
-  }
-
-  /// Login with phone number + OTP.
-  Future<AuthResponse> smsLogin({
+  /// Verify phone + OTP. Auto-registers if new user.
+  Future<AuthResponse> smsVerify({
     required String phone,
     required String code,
   }) async {
     final response = await _dio.post(
-      '/api/auth/sms/login',
+      '/api/auth/sms/verify',
       data: {'phone': phone, 'code': code},
     );
     return _parseAuth(response.data as Map<String, dynamic>);
+  }
+
+  /// Update user profile.
+  Future<void> updateProfile(Map<String, dynamic> body) async {
+    await _dio.patch('/api/auth/me', data: body);
   }
 }

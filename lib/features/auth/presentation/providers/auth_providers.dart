@@ -27,6 +27,8 @@ class AuthState {
 
   const AuthState({this.status = AuthStatus.unknown, this.user, this.error});
 
+  bool get needsOnboarding => user?.needsOnboarding ?? false;
+
   AuthState copyWith({AuthStatus? status, User? user, String? error}) {
     return AuthState(
       status: status ?? this.status,
@@ -58,7 +60,6 @@ class AuthNotifier extends Notifier<AuthState> {
         final user = User.fromJson(json);
         state = AuthState(status: AuthStatus.authenticated, user: user);
       } catch (_) {
-        // Token might be expired — try refresh
         final refreshed = await tryRefresh();
         if (!refreshed) {
           state = const AuthState(status: AuthStatus.unauthenticated);
@@ -69,51 +70,20 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
-  Future<bool> login(String identifier, String password) async {
-    state = state.copyWith(
-      status: AuthStatus.unauthenticated,
-      error: 'Email login is no longer supported',
-    );
-    return false;
-  }
-
-  Future<bool> register(
-    String email,
-    String password, {
-    String? username,
-    String? inviteCode,
-  }) async {
-    state = state.copyWith(
-      status: AuthStatus.unauthenticated,
-      error: 'Email registration is no longer supported',
-    );
-    return false;
-  }
-
-  /// Send SMS OTP. Returns error message or null on success.
-  Future<String?> sendSMSOTP(String phone) async {
+  /// Send SMS OTP. Returns (cooldown seconds, error message).
+  Future<(int?, String?)> sendSMSOTP(String phone) async {
     try {
-      await _datasource.sendSMSOTP(phone);
-      return null;
+      final cooldown = await _datasource.sendSMSOTP(phone);
+      return (cooldown, null);
     } on DioException catch (e) {
-      return _extractError(e);
+      return (null, _extractError(e));
     }
   }
 
-  /// Register with phone + OTP.
-  Future<bool> smsRegister(
-    String phone,
-    String code, {
-    String? username,
-    String? inviteCode,
-  }) async {
+  /// Verify phone + OTP. Auto-registers if new user.
+  Future<bool> smsVerify(String phone, String code) async {
     try {
-      final response = await _datasource.smsRegister(
-        phone: phone,
-        code: code,
-        username: username,
-        inviteCode: inviteCode,
-      );
+      final response = await _datasource.smsVerify(phone: phone, code: code);
       await _saveAuth(response);
       return true;
     } on DioException catch (e) {
@@ -123,16 +93,14 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
-  /// Login with phone + OTP.
-  Future<bool> smsLogin(String phone, String code) async {
+  /// Re-fetch user profile from server and update state.
+  Future<void> refreshUser() async {
     try {
-      final response = await _datasource.smsLogin(phone: phone, code: code);
-      await _saveAuth(response);
-      return true;
-    } on DioException catch (e) {
-      final msg = _extractError(e);
-      state = state.copyWith(status: AuthStatus.unauthenticated, error: msg);
-      return false;
+      final json = await _datasource.getMe();
+      final user = User.fromJson(json);
+      state = AuthState(status: AuthStatus.authenticated, user: user);
+    } catch (_) {
+      // Ignore — keep current state
     }
   }
 
@@ -141,13 +109,10 @@ class AuthNotifier extends Notifier<AuthState> {
     if (token != null) {
       try {
         await _datasource.logout(token);
-      } catch (_) {
-        // Best-effort logout
-      }
+      } catch (_) {}
     }
     _dioClient.clearAuthToken();
     await _storage.clearTokens();
-    // Invalidate all user-scoped cached data
     ref.invalidate(userProfileProvider);
     ref.invalidate(dailyFortuneProvider);
     ref.invalidate(selectedDateProvider);
@@ -171,7 +136,6 @@ class AuthNotifier extends Notifier<AuthState> {
     await _storage.setAccessToken(response.accessToken);
     await _storage.setRefreshToken(response.refreshToken);
     _dioClient.setAuthToken(response.accessToken);
-    // Invalidate stale data from previous user
     ref.invalidate(userProfileProvider);
     ref.invalidate(dailyFortuneProvider);
     ref.invalidate(selectedDateProvider);

@@ -49,10 +49,10 @@ void main() async {
 }
 
 class XingjianApp extends ConsumerStatefulWidget {
-  final String? autoLoginEmail;
-  final String? autoLoginPassword;
+  final String? autoLoginPhone;
+  final String? autoLoginCode;
 
-  const XingjianApp({super.key, this.autoLoginEmail, this.autoLoginPassword});
+  const XingjianApp({super.key, this.autoLoginPhone, this.autoLoginCode});
 
   @override
   ConsumerState<XingjianApp> createState() => _XingjianAppState();
@@ -71,13 +71,13 @@ class _XingjianAppState extends ConsumerState<XingjianApp> {
           .read(dioClientProvider)
           .addAuthInterceptor(onUnauthorized: () => notifier.tryRefresh());
       // Auto-login (mock mode only)
-      final email = widget.autoLoginEmail;
-      final password = widget.autoLoginPassword;
+      final phone = widget.autoLoginPhone;
+      final code = widget.autoLoginCode;
       final auth = ref.read(authProvider);
-      if (email != null &&
-          password != null &&
+      if (phone != null &&
+          code != null &&
           (auth.status != AuthStatus.authenticated || auth.user == null)) {
-        await notifier.login(email, password);
+        await notifier.smsVerify(phone, code);
       }
     });
   }
