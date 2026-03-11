@@ -41,7 +41,7 @@ class ProfilePage extends ConsumerWidget {
                       ),
                       const Spacer(),
                       Text(
-                        user?.username ?? user?.email ?? '',
+                        user?.username ?? user?.phone ?? '',
                         style: const TextStyle(
                           color: CosmicColors.textPrimary,
                           fontSize: 16,
@@ -66,7 +66,7 @@ class ProfilePage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  user?.username ?? user?.email ?? l10n.profileNotLoggedIn,
+                  user?.username ?? user?.phone ?? l10n.profileNotLoggedIn,
                   style: const TextStyle(
                     color: CosmicColors.textPrimary,
                     fontSize: 20,

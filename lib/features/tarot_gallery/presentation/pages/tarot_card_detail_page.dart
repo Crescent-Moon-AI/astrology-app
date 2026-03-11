@@ -162,35 +162,66 @@ class _CardDetailContent extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Card image
-          SizedBox(
-            height: 360,
-            child: Transform.rotate(
-              angle: showReversed ? 3.14159 : 0,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  assetPath,
-                  fit: BoxFit.contain,
-                  cacheWidth: 600,
-                  errorBuilder: (_, e, st) => Container(
-                    width: 240,
-                    height: 360,
-                    decoration: BoxDecoration(
-                      color: CosmicColors.surfaceHighlight,
+          // Card image (tap to toggle orientation)
+          GestureDetector(
+            onTap: onToggleOrientation != null
+                ? () => onToggleOrientation!(!showReversed)
+                : null,
+            child: SizedBox(
+              height: 360,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Transform.rotate(
+                    angle: showReversed ? 3.14159 : 0,
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Center(
-                      child: Text(
-                        card.nameZH,
-                        style: const TextStyle(
-                          color: CosmicColors.textPrimary,
-                          fontSize: 24,
+                      child: Image.asset(
+                        assetPath,
+                        fit: BoxFit.contain,
+                        cacheWidth: 600,
+                        errorBuilder: (_, e, st) => Container(
+                          width: 240,
+                          height: 360,
+                          decoration: BoxDecoration(
+                            color: CosmicColors.surfaceHighlight,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Center(
+                            child: Text(
+                              card.nameZH,
+                              style: const TextStyle(
+                                color: CosmicColors.textPrimary,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
+                  if (onToggleOrientation != null)
+                    Positioned(
+                      bottom: 8,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          '点击切换正/逆位',
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
           ),
@@ -285,13 +316,6 @@ class _CardDetailContent extends StatelessWidget {
                 onTap: canGoPrevious ? onPrevious : null,
                 icon: Icons.chevron_left,
               ),
-              Text(
-                isZh ? '牌意解读' : 'Card Meaning',
-                style: const TextStyle(
-                  color: CosmicColors.tarotGold,
-                  fontSize: 13,
-                ),
-              ),
               _NavButton(
                 onTap: canGoNext ? onNext : null,
                 icon: Icons.chevron_right,
@@ -312,6 +336,10 @@ class _CardDetailContent extends StatelessWidget {
       elementDisplay = zhMap[element.toLowerCase()] ?? element;
     }
 
+    final meaning = showReversed
+        ? card.reversedMeaningZH
+        : card.uprightMeaningZH;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -322,6 +350,26 @@ class _CardDetailContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            isZh ? '牌意解读' : 'Card Meaning',
+            style: const TextStyle(
+              color: CosmicColors.tarotGold,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          if (meaning.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Text(
+              meaning,
+              style: const TextStyle(
+                color: CosmicColors.textSecondary,
+                fontSize: 14,
+                height: 1.7,
+              ),
+            ),
+          ],
+          const Divider(color: CosmicColors.borderGlow, height: 24),
           _infoRow(isZh ? '元素' : 'Element', elementDisplay),
           if (card.arcana == 'major')
             _infoRow(isZh ? '编号' : 'Number', '${card.number}'),

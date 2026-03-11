@@ -14,32 +14,6 @@ class AuthRemoteDatasource {
     return AuthResponse.fromJson(json);
   }
 
-  Future<AuthResponse> register({
-    required String email,
-    required String password,
-    String? username,
-    String? inviteCode,
-  }) async {
-    final body = <String, dynamic>{'email': email, 'password': password};
-    if (username != null && username.isNotEmpty) body['username'] = username;
-    if (inviteCode != null && inviteCode.isNotEmpty) {
-      body['invite_code'] = inviteCode;
-    }
-    final response = await _dio.post('/api/auth/register', data: body);
-    return _parseAuth(response.data as Map<String, dynamic>);
-  }
-
-  Future<AuthResponse> login({
-    required String identifier,
-    required String password,
-  }) async {
-    final response = await _dio.post(
-      '/api/auth/login',
-      data: {'identifier': identifier, 'password': password},
-    );
-    return _parseAuth(response.data as Map<String, dynamic>);
-  }
-
   Future<AuthResponse> refresh(String refreshToken) async {
     final response = await _dio.post(
       '/api/auth/refresh',
@@ -63,5 +37,38 @@ class AuthRemoteDatasource {
       return data['data'] as Map<String, dynamic>;
     }
     return data;
+  }
+
+  /// Send SMS OTP to the given phone number.
+  Future<void> sendSMSOTP(String phone) async {
+    await _dio.post('/api/auth/sms/send', data: {'phone': phone});
+  }
+
+  /// Register with phone number + OTP.
+  Future<AuthResponse> smsRegister({
+    required String phone,
+    required String code,
+    String? username,
+    String? inviteCode,
+  }) async {
+    final body = <String, dynamic>{'phone': phone, 'code': code};
+    if (username != null && username.isNotEmpty) body['username'] = username;
+    if (inviteCode != null && inviteCode.isNotEmpty) {
+      body['invite_code'] = inviteCode;
+    }
+    final response = await _dio.post('/api/auth/sms/register', data: body);
+    return _parseAuth(response.data as Map<String, dynamic>);
+  }
+
+  /// Login with phone number + OTP.
+  Future<AuthResponse> smsLogin({
+    required String phone,
+    required String code,
+  }) async {
+    final response = await _dio.post(
+      '/api/auth/sms/login',
+      data: {'phone': phone, 'code': code},
+    );
+    return _parseAuth(response.data as Map<String, dynamic>);
   }
 }

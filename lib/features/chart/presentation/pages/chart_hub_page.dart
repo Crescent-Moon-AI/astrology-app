@@ -22,7 +22,9 @@ import 'package:astrology_app/shared/widgets/breathing_loader.dart';
 import 'package:astrology_app/features/settings/presentation/providers/profile_providers.dart';
 
 class ChartHubPage extends ConsumerStatefulWidget {
-  const ChartHubPage({super.key});
+  final BirthData? overrideBirthData;
+
+  const ChartHubPage({super.key, this.overrideBirthData});
 
   @override
   ConsumerState<ChartHubPage> createState() => _ChartHubPageState();
@@ -49,7 +51,9 @@ class _ChartHubPageState extends ConsumerState<ChartHubPage>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isZh = Localizations.localeOf(context).languageCode == 'zh';
-    final birthAsync = ref.watch(currentBirthDataProvider);
+    final birthAsync = widget.overrideBirthData != null
+        ? AsyncValue.data(widget.overrideBirthData)
+        : ref.watch(currentBirthDataProvider);
 
     // Auto-calculate natal chart once birth data becomes available
     final birth = birthAsync.value;

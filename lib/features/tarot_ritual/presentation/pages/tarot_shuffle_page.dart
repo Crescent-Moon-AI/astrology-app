@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/cosmic_ritual_button.dart';
 import '../../../../shared/widgets/starfield_background.dart';
+import '../../domain/models/spread_type.dart';
 import '../providers/tarot_ritual_providers.dart';
 import '../widgets/shuffle_animation.dart';
 
@@ -23,25 +24,8 @@ class _TarotShufflePageState extends ConsumerState<TarotShufflePage> {
   }
 
   static String _spreadDisplayName(String? spreadType, bool isZh) {
-    if (spreadType == null) {
-      return isZh ? '万能三牌阵' : 'Three Card';
-    }
-    if (isZh) {
-      return switch (spreadType) {
-        'three_card' => '万能三牌阵',
-        'celtic_cross' => '凯尔特十字',
-        'single_card' => '单牌',
-        'love_spread' => '爱情牌阵',
-        _ => spreadType,
-      };
-    }
-    return switch (spreadType) {
-      'three_card' => 'Three Card',
-      'celtic_cross' => 'Celtic Cross',
-      'single_card' => 'Single Card',
-      'love_spread' => 'Love Spread',
-      _ => spreadType,
-    };
+    final type = SpreadType.fromValue(spreadType ?? 'universal_three');
+    return isZh ? type.nameZH : type.nameEN;
   }
 
   @override

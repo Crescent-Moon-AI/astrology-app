@@ -26,6 +26,7 @@ void main() async {
   const apiHost = String.fromEnvironment('API_HOST');
   final env = switch (apiHost) {
     'local' => EnvConfig.local,
+    'local-https' => EnvConfig.localHttps,
     'lan' => EnvConfig.lan,
     _ => EnvConfig.dev,
   };

@@ -53,6 +53,8 @@ class ChatRemoteDatasource {
     String? language,
     String? requestId,
     String? scenarioId,
+    String? imageData,
+    String? imageMediaType,
   }) {
     final msg = WsClientMessage(
       type: 'user_message',
@@ -62,6 +64,8 @@ class ChatRemoteDatasource {
       language: language,
       id: requestId,
       scenarioId: scenarioId,
+      imageData: imageData,
+      imageMediaType: imageMediaType,
     );
     final payload = jsonEncode(msg.toJson());
     _log('WS → $payload');

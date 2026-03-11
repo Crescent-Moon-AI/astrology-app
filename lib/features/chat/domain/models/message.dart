@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 enum MessageRole { user, assistant }
 
 enum BlockKind { text, thinking, tool }
@@ -100,6 +102,7 @@ class ChatMessage {
   final String? content;
   final List<MessageBlock> blocks;
   final DateTime createdAt;
+  final Uint8List? imageBytes;
 
   ChatMessage({
     required this.id,
@@ -107,5 +110,6 @@ class ChatMessage {
     this.content,
     List<MessageBlock>? blocks,
     required this.createdAt,
+    this.imageBytes,
   }) : blocks = blocks ?? [];
 }

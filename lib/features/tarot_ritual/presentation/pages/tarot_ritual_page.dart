@@ -15,8 +15,9 @@ import 'spread_overview_page.dart';
 
 class TarotRitualPage extends ConsumerStatefulWidget {
   final String sessionId;
+  final String? initialQuestion;
 
-  const TarotRitualPage({super.key, required this.sessionId});
+  const TarotRitualPage({super.key, required this.sessionId, this.initialQuestion});
 
   @override
   ConsumerState<TarotRitualPage> createState() => _TarotRitualPageState();
@@ -40,13 +41,14 @@ class _TarotRitualPageState extends ConsumerState<TarotRitualPage> {
           prev?.step != RitualState.reading) {
         final conversationId = next.session?.conversationId;
         if (conversationId != null && context.mounted) {
-          context.pushNamed(
-            'tarotQuestion',
-            queryParameters: {
-              'conversation_id': conversationId,
-              'tarot_session_id': widget.sessionId,
-            },
-          );
+          final qp = <String, String>{
+            'conversation_id': conversationId,
+            'tarot_session_id': widget.sessionId,
+          };
+          if (widget.initialQuestion?.isNotEmpty == true) {
+            qp['initial_question'] = widget.initialQuestion!;
+          }
+          context.pushNamed('tarotQuestion', queryParameters: qp);
         }
       }
       if (next.step == RitualState.cancelled) {

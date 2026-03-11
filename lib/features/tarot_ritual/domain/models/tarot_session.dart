@@ -52,7 +52,7 @@ class TarotSession {
     return TarotSession(
       id: json['id'] as String,
       conversationId: json['conversation_id'] as String,
-      spreadType: json['spread_type'] as String? ?? 'three_card',
+      spreadType: json['spread_type'] as String? ?? 'universal_three',
       cardCount: cardCount,
       question: json['question'] as String? ?? '',
       ritualState: RitualState.fromValue(json['ritual_state'] as String? ?? ''),

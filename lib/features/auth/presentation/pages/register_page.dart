@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../../scenario/presentation/providers/scenario_providers.dart';
@@ -16,20 +18,56 @@ class RegisterPage extends ConsumerStatefulWidget {
 
 class _RegisterPageState extends ConsumerState<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-  final _emailCtrl = TextEditingController();
+  final _phoneCtrl = TextEditingController();
+  final _codeCtrl = TextEditingController();
   final _usernameCtrl = TextEditingController();
-  final _passwordCtrl = TextEditingController();
-  final _confirmCtrl = TextEditingController();
-  bool _obscure = true;
   bool _loading = false;
+  bool _sending = false;
+  int _countdown = 0;
+  Timer? _timer;
+  String? _sendError;
 
   @override
   void dispose() {
-    _emailCtrl.dispose();
+    _phoneCtrl.dispose();
+    _codeCtrl.dispose();
     _usernameCtrl.dispose();
-    _passwordCtrl.dispose();
-    _confirmCtrl.dispose();
+    _timer?.cancel();
     super.dispose();
+  }
+
+  void _startCountdown() {
+    setState(() => _countdown = 60);
+    _timer = Timer.periodic(const Duration(seconds: 1), (t) {
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
+      setState(() {
+        _countdown--;
+        if (_countdown <= 0) t.cancel();
+      });
+    });
+  }
+
+  Future<void> _sendCode() async {
+    final phone = _phoneCtrl.text.trim();
+    if (phone.isEmpty) {
+      setState(() => _sendError = '请输入手机号');
+      return;
+    }
+    setState(() {
+      _sending = true;
+      _sendError = null;
+    });
+    final err = await ref.read(authProvider.notifier).sendSMSOTP(phone);
+    if (!mounted) return;
+    setState(() => _sending = false);
+    if (err != null) {
+      setState(() => _sendError = err);
+    } else {
+      _startCountdown();
+    }
   }
 
   Future<void> _submit() async {
@@ -39,9 +77,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
     final ok = await ref
         .read(authProvider.notifier)
-        .register(
-          _emailCtrl.text.trim(),
-          _passwordCtrl.text,
+        .smsRegister(
+          _phoneCtrl.text.trim(),
+          _codeCtrl.text.trim(),
           username: _usernameCtrl.text.trim().isNotEmpty
               ? _usernameCtrl.text.trim()
               : null,
@@ -86,7 +124,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
-    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: StarfieldBackground(
@@ -104,9 +141,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       style: TextStyle(fontSize: 48),
                     ),
                     const SizedBox(height: 12),
-                    Text(
-                      l10n.authCreateAccount,
-                      style: const TextStyle(
+                    const Text(
+                      '注册新账号',
+                      style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: CosmicColors.textPrimary,
@@ -114,80 +151,101 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     ),
                     const SizedBox(height: 40),
 
-                    // Email
+                    // Phone
                     TextFormField(
-                      controller: _emailCtrl,
+                      controller: _phoneCtrl,
                       style: const TextStyle(color: CosmicColors.textPrimary),
                       decoration: _inputDecoration(
-                        label: l10n.authEmail,
-                        prefixIcon: Icons.email_outlined,
+                        label: '手机号',
+                        prefixIcon: Icons.phone_outlined,
                       ),
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9+]')),
+                      ],
                       textInputAction: TextInputAction.next,
                       validator: (v) {
-                        if (v == null || v.trim().isEmpty) {
-                          return l10n.authRequired;
-                        }
-                        if (!v.contains('@')) return l10n.authInvalidEmail;
+                        if (v == null || v.trim().isEmpty) return '请输入手机号';
+                        if (v.trim().length < 8) return '手机号格式不正确';
                         return null;
                       },
                     ),
                     const SizedBox(height: 16),
 
-                    // Username
+                    // OTP
+                    TextFormField(
+                      controller: _codeCtrl,
+                      style: const TextStyle(color: CosmicColors.textPrimary),
+                      decoration: _inputDecoration(
+                        label: '验证码',
+                        prefixIcon: Icons.password_outlined,
+                        suffix: _countdown > 0
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                ),
+                                child: Text(
+                                  '${_countdown}s',
+                                  style: const TextStyle(
+                                    color: CosmicColors.textTertiary,
+                                  ),
+                                ),
+                              )
+                            : TextButton(
+                                onPressed: _sending ? null : _sendCode,
+                                child: _sending
+                                    ? const SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: CosmicColors.primary,
+                                        ),
+                                      )
+                                    : const Text(
+                                        '获取验证码',
+                                        style: TextStyle(
+                                          color: CosmicColors.primary,
+                                        ),
+                                      ),
+                              ),
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(6),
+                      ],
+                      textInputAction: TextInputAction.next,
+                      validator: (v) {
+                        if (v == null || v.isEmpty) return '请输入验证码';
+                        if (v.length != 6) return '验证码为6位数字';
+                        return null;
+                      },
+                    ),
+
+                    if (_sendError != null) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        _sendError!,
+                        style: const TextStyle(
+                          color: CosmicColors.error,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+
+                    const SizedBox(height: 16),
+
+                    // Username (optional)
                     TextFormField(
                       controller: _usernameCtrl,
                       style: const TextStyle(color: CosmicColors.textPrimary),
                       decoration: _inputDecoration(
-                        label: l10n.authUsername,
+                        label: '昵称（可选）',
                         prefixIcon: Icons.person_outline,
                       ),
-                      textInputAction: TextInputAction.next,
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Password
-                    TextFormField(
-                      controller: _passwordCtrl,
-                      style: const TextStyle(color: CosmicColors.textPrimary),
-                      decoration: _inputDecoration(
-                        label: l10n.authPassword,
-                        prefixIcon: Icons.lock_outline,
-                        suffix: IconButton(
-                          icon: Icon(
-                            _obscure ? Icons.visibility_off : Icons.visibility,
-                            color: CosmicColors.textTertiary,
-                          ),
-                          onPressed: () => setState(() => _obscure = !_obscure),
-                        ),
-                      ),
-                      obscureText: _obscure,
-                      textInputAction: TextInputAction.next,
-                      validator: (v) {
-                        if (v == null || v.isEmpty) return l10n.authRequired;
-                        if (v.length < 8) return l10n.authPasswordMin;
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Confirm Password
-                    TextFormField(
-                      controller: _confirmCtrl,
-                      style: const TextStyle(color: CosmicColors.textPrimary),
-                      decoration: _inputDecoration(
-                        label: l10n.authConfirmPassword,
-                        prefixIcon: Icons.lock_outline,
-                      ),
-                      obscureText: _obscure,
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => _submit(),
-                      validator: (v) {
-                        if (v != _passwordCtrl.text) {
-                          return l10n.authPasswordMismatch;
-                        }
-                        return null;
-                      },
                     ),
 
                     // Error
@@ -242,9 +300,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                         color: CosmicColors.textPrimary,
                                       ),
                                     )
-                                  : Text(
-                                      l10n.authRegister,
-                                      style: const TextStyle(
+                                  : const Text(
+                                      '注册',
+                                      style: TextStyle(
                                         color: CosmicColors.textPrimary,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 16,
@@ -263,7 +321,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       style: TextButton.styleFrom(
                         foregroundColor: CosmicColors.primaryLight,
                       ),
-                      child: Text(l10n.authHaveAccount),
+                      child: const Text('已有账号？去登录'),
                     ),
                   ],
                 ),
