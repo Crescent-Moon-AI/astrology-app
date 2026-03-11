@@ -923,6 +923,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeExploreMore => '探索更多';
 
   @override
+  String get homeExploreSeeAll => '查看全部 >';
+
+  @override
+  String get homeExploreKnowYourself => '全面了解自己';
+
+  @override
+  String get homeExploreKnowYourselfSub => '探索你未被发现的天赋';
+
+  @override
+  String get homeExploreRelationship => '了解你们的关系';
+
+  @override
+  String get homeExploreRelationshipSub => '星见 · 关系深度解读报告';
+
+  @override
   String get homeFortuneAdvice => '宜';
 
   @override
@@ -938,6 +953,120 @@ class AppLocalizationsZh extends AppLocalizations {
   String get insightTitle => '洞见';
 
   @override
+  String get insightDeepExplore => '深度探索';
+
+  @override
+  String get insightSeeAll => '查看全部';
+
+  @override
+  String get insightKnowYourself => '全面了解你自己';
+
+  @override
+  String get insightKnowYourselfSub => '探索你未被发现的天赋';
+
+  @override
+  String get insightExploreTarget => '探索TA的世界';
+
+  @override
+  String get insightReadMindSub => '读懂 TA 内心的\"读心术\"';
+
+  @override
+  String get insightUnderstandRelationship => '了解你们的关系';
+
+  @override
+  String get insightDeepAnalysisSub => '星见 · 关系深度解读报告';
+
+  @override
+  String get insightExploreMore => '探索更多';
+
+  @override
+  String get insightAnnualTrends => '2026年度趋势报告';
+
+  @override
+  String get insightAnnualTrendsSub => '掌握先机，让 2026年\"开挂\"';
+
+  @override
+  String get insightAnnualTrendsPrefill =>
+      '请帮我生成2026年度趋势报告，基于我的星盘分析今年的运势走向、重要时机和需要注意的方向';
+
+  @override
+  String get insightBirthDataRequiredTitle => '需要设置星盘';
+
+  @override
+  String get insightBirthDataRequiredMsg =>
+      '该功能依赖于您的个人星盘。请先前往\"我的\"页面设置您的出生日期和地点。';
+
+  @override
+  String get insightCancel => '取消';
+
+  @override
+  String get insightGoToSettings => '前往设置';
+
+  @override
+  String get insightSoulMate => '灵魂伴侣';
+
+  @override
+  String get insightFindSoulMate => '查看你的灵魂伴侣';
+
+  @override
+  String get insightSelectFriendChart => '选择要查看星盘的好友';
+
+  @override
+  String get insightSelectFriendProfile => '选择好友档案';
+
+  @override
+  String get insightSelectFriendReport => '选择要生成关系报告的好友';
+
+  @override
+  String get insightSelectFriendRelationship => '选择要了解关系的好友';
+
+  @override
+  String get insightNoFriends => '暂无好友档案，请先添加';
+
+  @override
+  String get insightAddFriend => '去添加好友档案';
+
+  @override
+  String get insightLoadFailed => '加载失败';
+
+  @override
+  String get reportRelationshipTitle => '关系报告';
+
+  @override
+  String get reportInsightTitle => '洞见报告';
+
+  @override
+  String get reportIncludes => '报告包含内容';
+
+  @override
+  String get reportMeLabel => '我';
+
+  @override
+  String get reportMyProfile => '已选中自己的档案';
+
+  @override
+  String get reportGenerate => '生成报告';
+
+  @override
+  String reportFriendProfileSelected(String name) {
+    return '已选中 $name 档案';
+  }
+
+  @override
+  String reportFriendRelationship(String name) {
+    return '与 $name 的关系';
+  }
+
+  @override
+  String get reportGenerating => 'AI 正在解读星象，请稍候…';
+
+  @override
+  String get reportFailed => '生成报告失败，请稍后再试';
+
+  @override
+  String get reportRetry => '重试';
+
+  @override
   String get insightQuote => '凡是你所抗拒的，都会坚持。';
 
   @override
@@ -948,9 +1077,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get insightSynastry => '查看合盘';
-
-  @override
-  String get insightDeepExplore => '深度探索';
 
   @override
   String get insightComingSoon => '即将开放';
@@ -1154,6 +1280,11 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get profileMyBenefits => '我的权益';
+
+  @override
+  String profileConversationsToday(int count) {
+    return '今日已咨询 $count 次  每日6:00刷新';
+  }
 
   @override
   String get profileFreeToday => '今日免费次数 1/1  每日6:00刷新';

@@ -1892,6 +1892,36 @@ abstract class AppLocalizations {
   /// **'Explore More'**
   String get homeExploreMore;
 
+  /// No description provided for @homeExploreSeeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See All >'**
+  String get homeExploreSeeAll;
+
+  /// No description provided for @homeExploreKnowYourself.
+  ///
+  /// In en, this message translates to:
+  /// **'Know Yourself'**
+  String get homeExploreKnowYourself;
+
+  /// No description provided for @homeExploreKnowYourselfSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore your hidden talents'**
+  String get homeExploreKnowYourselfSub;
+
+  /// No description provided for @homeExploreRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Relationship'**
+  String get homeExploreRelationship;
+
+  /// No description provided for @homeExploreRelationshipSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep relationship analysis'**
+  String get homeExploreRelationshipSub;
+
   /// No description provided for @homeFortuneAdvice.
   ///
   /// In en, this message translates to:
@@ -1922,6 +1952,222 @@ abstract class AppLocalizations {
   /// **'Insight'**
   String get insightTitle;
 
+  /// No description provided for @insightDeepExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep Explore'**
+  String get insightDeepExplore;
+
+  /// No description provided for @insightSeeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See All'**
+  String get insightSeeAll;
+
+  /// No description provided for @insightKnowYourself.
+  ///
+  /// In en, this message translates to:
+  /// **'Know Yourself'**
+  String get insightKnowYourself;
+
+  /// No description provided for @insightKnowYourselfSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore your hidden talents'**
+  String get insightKnowYourselfSub;
+
+  /// No description provided for @insightExploreTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Their World'**
+  String get insightExploreTarget;
+
+  /// No description provided for @insightReadMindSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Read their inner world'**
+  String get insightReadMindSub;
+
+  /// No description provided for @insightUnderstandRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Understand Your Relationship'**
+  String get insightUnderstandRelationship;
+
+  /// No description provided for @insightDeepAnalysisSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep relationship analysis'**
+  String get insightDeepAnalysisSub;
+
+  /// No description provided for @insightExploreMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore More'**
+  String get insightExploreMore;
+
+  /// No description provided for @insightAnnualTrends.
+  ///
+  /// In en, this message translates to:
+  /// **'2026 Annual Trends'**
+  String get insightAnnualTrends;
+
+  /// No description provided for @insightAnnualTrendsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Get ahead in 2026'**
+  String get insightAnnualTrendsSub;
+
+  /// No description provided for @insightAnnualTrendsPrefill.
+  ///
+  /// In en, this message translates to:
+  /// **'Please generate my 2026 annual trends report based on my birth chart'**
+  String get insightAnnualTrendsPrefill;
+
+  /// No description provided for @insightBirthDataRequiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Chart Required'**
+  String get insightBirthDataRequiredTitle;
+
+  /// No description provided for @insightBirthDataRequiredMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature requires your birth chart. Please set your birth date and location in your profile first.'**
+  String get insightBirthDataRequiredMsg;
+
+  /// No description provided for @insightCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get insightCancel;
+
+  /// No description provided for @insightGoToSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Settings'**
+  String get insightGoToSettings;
+
+  /// No description provided for @insightSoulMate.
+  ///
+  /// In en, this message translates to:
+  /// **'Soul Mate'**
+  String get insightSoulMate;
+
+  /// No description provided for @insightFindSoulMate.
+  ///
+  /// In en, this message translates to:
+  /// **'Find your soul mate'**
+  String get insightFindSoulMate;
+
+  /// No description provided for @insightSelectFriendChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a friend to view chart'**
+  String get insightSelectFriendChart;
+
+  /// No description provided for @insightSelectFriendProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a friend profile'**
+  String get insightSelectFriendProfile;
+
+  /// No description provided for @insightSelectFriendReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a friend for relationship report'**
+  String get insightSelectFriendReport;
+
+  /// No description provided for @insightSelectFriendRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a friend for relationship analysis'**
+  String get insightSelectFriendRelationship;
+
+  /// No description provided for @insightNoFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'No friend profiles yet'**
+  String get insightNoFriends;
+
+  /// No description provided for @insightAddFriend.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a Friend Profile'**
+  String get insightAddFriend;
+
+  /// No description provided for @insightLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load'**
+  String get insightLoadFailed;
+
+  /// No description provided for @reportRelationshipTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship Report'**
+  String get reportRelationshipTitle;
+
+  /// No description provided for @reportInsightTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Insight Report'**
+  String get reportInsightTitle;
+
+  /// No description provided for @reportIncludes.
+  ///
+  /// In en, this message translates to:
+  /// **'Report includes'**
+  String get reportIncludes;
+
+  /// No description provided for @reportMeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get reportMeLabel;
+
+  /// No description provided for @reportMyProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Using my profile'**
+  String get reportMyProfile;
+
+  /// No description provided for @reportGenerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Report'**
+  String get reportGenerate;
+
+  /// No description provided for @reportFriendProfileSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s profile selected'**
+  String reportFriendProfileSelected(String name);
+
+  /// No description provided for @reportFriendRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship with {name}'**
+  String reportFriendRelationship(String name);
+
+  /// No description provided for @reportGenerating.
+  ///
+  /// In en, this message translates to:
+  /// **'AI is reading the stars…'**
+  String get reportGenerating;
+
+  /// No description provided for @reportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to generate report, please try again'**
+  String get reportFailed;
+
+  /// No description provided for @reportRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get reportRetry;
+
   /// No description provided for @insightQuote.
   ///
   /// In en, this message translates to:
@@ -1945,12 +2191,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Synastry'**
   String get insightSynastry;
-
-  /// No description provided for @insightDeepExplore.
-  ///
-  /// In en, this message translates to:
-  /// **'Deep Explore'**
-  String get insightDeepExplore;
 
   /// No description provided for @insightComingSoon.
   ///
@@ -2353,6 +2593,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'My Benefits'**
   String get profileMyBenefits;
+
+  /// No description provided for @profileConversationsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Consulted {count} times today  Resets at 6:00'**
+  String profileConversationsToday(int count);
 
   /// No description provided for @profileFreeToday.
   ///

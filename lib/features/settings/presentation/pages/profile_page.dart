@@ -7,6 +7,7 @@ import '../../../../shared/widgets/character_avatar.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../../../shared/models/expression.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../chat/presentation/providers/chat_providers.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -16,6 +17,16 @@ class ProfilePage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final authState = ref.watch(authProvider);
     final user = authState.user;
+    final conversationsAsync = ref.watch(conversationListProvider);
+
+    final now = DateTime.now();
+    final todayCount = conversationsAsync.asData?.value
+            .where((c) =>
+                c.createdAt.year == now.year &&
+                c.createdAt.month == now.month &&
+                c.createdAt.day == now.day)
+            .length ??
+        0;
 
     return Scaffold(
       body: StarfieldBackground(
@@ -84,7 +95,13 @@ class ProfilePage extends ConsumerWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      l10n.profileCompanionDays(23),
+                      l10n.profileCompanionDays(
+                        user?.createdAt != null
+                            ? DateTime.now()
+                                .difference(user!.createdAt!)
+                                .inDays
+                            : 0,
+                      ),
                       style: const TextStyle(
                         color: CosmicColors.textTertiary,
                         fontSize: 13,
@@ -118,7 +135,7 @@ class ProfilePage extends ConsumerWidget {
                 const SizedBox(height: 20),
 
                 // Benefits section
-                _buildBenefitsCard(l10n),
+                _buildBenefitsCard(l10n, todayCount),
                 const SizedBox(height: 16),
 
                 // Grid: Archives, History, Reports
@@ -271,7 +288,7 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildBenefitsCard(AppLocalizations l10n) {
+  Widget _buildBenefitsCard(AppLocalizations l10n, int todayCount) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
@@ -308,7 +325,7 @@ class ProfilePage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    l10n.profileFreeToday,
+                    l10n.profileConversationsToday(todayCount),
                     style: const TextStyle(
                       color: CosmicColors.textTertiary,
                       fontSize: 12,

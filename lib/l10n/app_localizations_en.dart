@@ -931,6 +931,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeExploreMore => 'Explore More';
 
   @override
+  String get homeExploreSeeAll => 'See All >';
+
+  @override
+  String get homeExploreKnowYourself => 'Know Yourself';
+
+  @override
+  String get homeExploreKnowYourselfSub => 'Explore your hidden talents';
+
+  @override
+  String get homeExploreRelationship => 'Your Relationship';
+
+  @override
+  String get homeExploreRelationshipSub => 'Deep relationship analysis';
+
+  @override
   String get homeFortuneAdvice => 'Do';
 
   @override
@@ -946,6 +961,122 @@ class AppLocalizationsEn extends AppLocalizations {
   String get insightTitle => 'Insight';
 
   @override
+  String get insightDeepExplore => 'Deep Explore';
+
+  @override
+  String get insightSeeAll => 'See All';
+
+  @override
+  String get insightKnowYourself => 'Know Yourself';
+
+  @override
+  String get insightKnowYourselfSub => 'Explore your hidden talents';
+
+  @override
+  String get insightExploreTarget => 'Explore Their World';
+
+  @override
+  String get insightReadMindSub => 'Read their inner world';
+
+  @override
+  String get insightUnderstandRelationship => 'Understand Your Relationship';
+
+  @override
+  String get insightDeepAnalysisSub => 'Deep relationship analysis';
+
+  @override
+  String get insightExploreMore => 'Explore More';
+
+  @override
+  String get insightAnnualTrends => '2026 Annual Trends';
+
+  @override
+  String get insightAnnualTrendsSub => 'Get ahead in 2026';
+
+  @override
+  String get insightAnnualTrendsPrefill =>
+      'Please generate my 2026 annual trends report based on my birth chart';
+
+  @override
+  String get insightBirthDataRequiredTitle => 'Birth Chart Required';
+
+  @override
+  String get insightBirthDataRequiredMsg =>
+      'This feature requires your birth chart. Please set your birth date and location in your profile first.';
+
+  @override
+  String get insightCancel => 'Cancel';
+
+  @override
+  String get insightGoToSettings => 'Go to Settings';
+
+  @override
+  String get insightSoulMate => 'Soul Mate';
+
+  @override
+  String get insightFindSoulMate => 'Find your soul mate';
+
+  @override
+  String get insightSelectFriendChart => 'Select a friend to view chart';
+
+  @override
+  String get insightSelectFriendProfile => 'Select a friend profile';
+
+  @override
+  String get insightSelectFriendReport =>
+      'Select a friend for relationship report';
+
+  @override
+  String get insightSelectFriendRelationship =>
+      'Select a friend for relationship analysis';
+
+  @override
+  String get insightNoFriends => 'No friend profiles yet';
+
+  @override
+  String get insightAddFriend => 'Add a Friend Profile';
+
+  @override
+  String get insightLoadFailed => 'Failed to load';
+
+  @override
+  String get reportRelationshipTitle => 'Relationship Report';
+
+  @override
+  String get reportInsightTitle => 'Insight Report';
+
+  @override
+  String get reportIncludes => 'Report includes';
+
+  @override
+  String get reportMeLabel => 'Me';
+
+  @override
+  String get reportMyProfile => 'Using my profile';
+
+  @override
+  String get reportGenerate => 'Generate Report';
+
+  @override
+  String reportFriendProfileSelected(String name) {
+    return '$name\'s profile selected';
+  }
+
+  @override
+  String reportFriendRelationship(String name) {
+    return 'Relationship with $name';
+  }
+
+  @override
+  String get reportGenerating => 'AI is reading the stars…';
+
+  @override
+  String get reportFailed => 'Failed to generate report, please try again';
+
+  @override
+  String get reportRetry => 'Retry';
+
+  @override
   String get insightQuote => 'What you resist, persists.';
 
   @override
@@ -956,9 +1087,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get insightSynastry => 'Synastry';
-
-  @override
-  String get insightDeepExplore => 'Deep Explore';
 
   @override
   String get insightComingSoon => 'Coming Soon';
@@ -1166,6 +1294,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileMyBenefits => 'My Benefits';
+
+  @override
+  String profileConversationsToday(int count) {
+    return 'Consulted $count times today  Resets at 6:00';
+  }
 
   @override
   String get profileFreeToday => 'Free today 1/1  Resets at 6:00';

@@ -9,7 +9,6 @@ class ExploreMoreSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -31,7 +30,7 @@ class ExploreMoreSection extends StatelessWidget {
               GestureDetector(
                 onTap: () => context.go('/insight'),
                 child: Text(
-                  isZh ? '查看全部 >' : 'See All >',
+                  l10n.homeExploreSeeAll,
                   style: const TextStyle(
                     color: CosmicColors.textTertiary,
                     fontSize: 13,
@@ -42,14 +41,14 @@ class ExploreMoreSection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _buildExploreCard(
-            isZh ? '全面了解自己' : 'Know Yourself',
-            isZh ? '探索你未被发现的天赋' : 'Explore your hidden talents',
+            l10n.homeExploreKnowYourself,
+            l10n.homeExploreKnowYourselfSub,
             () => context.push('/charts'),
           ),
           const SizedBox(height: 8),
           _buildExploreCard(
-            isZh ? '了解你们的关系' : 'Your Relationship',
-            isZh ? '星见 · 关系深度解读报告' : 'Deep relationship analysis',
+            l10n.homeExploreRelationship,
+            l10n.homeExploreRelationshipSub,
             () => context.push('/charts/synastry'),
           ),
         ],

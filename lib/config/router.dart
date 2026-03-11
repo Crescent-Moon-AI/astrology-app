@@ -15,6 +15,7 @@ import '../features/home/presentation/pages/fortune_detail_page.dart';
 import '../features/home/domain/models/daily_fortune.dart';
 import '../features/insight/presentation/pages/insight_page.dart';
 import '../features/insight/presentation/pages/relationship_report_page.dart';
+import '../features/insight/presentation/pages/soul_mate_page.dart';
 import '../features/scenario/presentation/pages/scenario_list_page.dart';
 import '../features/scenario/presentation/pages/scenario_detail_page.dart';
 import '../features/settings/presentation/pages/about_character_page.dart';
@@ -322,6 +323,14 @@ final routerProvider = Provider<GoRouter>((ref) {
           final args = state.extra as RelationshipReportArgs;
           return _cosmicFadePage(state, RelationshipReportPage(args: args));
         },
+      ),
+
+      // Soul Mate
+      GoRoute(
+        path: '/insight/soul-mate',
+        name: 'soulMate',
+        pageBuilder: (context, state) =>
+            _cosmicFadePage(state, const SoulMatePage()),
       ),
 
       // Divination Hub

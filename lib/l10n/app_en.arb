@@ -359,12 +359,63 @@
   "homeQuickMyChart": "My Chart",
   "homeSceneExplore": "Explore Scenarios",
   "homeExploreMore": "Explore More",
+  "homeExploreSeeAll": "See All >",
+  "homeExploreKnowYourself": "Know Yourself",
+  "homeExploreKnowYourselfSub": "Explore your hidden talents",
+  "homeExploreRelationship": "Your Relationship",
+  "homeExploreRelationshipSub": "Deep relationship analysis",
   "homeFortuneAdvice": "Do",
   "homeFortuneAvoid": "Avoid",
   "homeFortuneNoBirthData": "Add info to view daily fortune",
   "homeFortuneAddInfo": "Add Info",
 
   "insightTitle": "Insight",
+  "insightDeepExplore": "Deep Explore",
+  "insightSeeAll": "See All",
+  "insightKnowYourself": "Know Yourself",
+  "insightKnowYourselfSub": "Explore your hidden talents",
+  "insightExploreTarget": "Explore Their World",
+  "insightReadMindSub": "Read their inner world",
+  "insightUnderstandRelationship": "Understand Your Relationship",
+  "insightDeepAnalysisSub": "Deep relationship analysis",
+  "insightExploreMore": "Explore More",
+  "insightAnnualTrends": "2026 Annual Trends",
+  "insightAnnualTrendsSub": "Get ahead in 2026",
+  "insightAnnualTrendsPrefill": "Please generate my 2026 annual trends report based on my birth chart",
+  "insightBirthDataRequiredTitle": "Birth Chart Required",
+  "insightBirthDataRequiredMsg": "This feature requires your birth chart. Please set your birth date and location in your profile first.",
+  "insightCancel": "Cancel",
+  "insightGoToSettings": "Go to Settings",
+  "insightSoulMate": "Soul Mate",
+  "insightFindSoulMate": "Find your soul mate",
+  "insightSelectFriendChart": "Select a friend to view chart",
+  "insightSelectFriendProfile": "Select a friend profile",
+  "insightSelectFriendReport": "Select a friend for relationship report",
+  "insightSelectFriendRelationship": "Select a friend for relationship analysis",
+  "insightNoFriends": "No friend profiles yet",
+  "insightAddFriend": "Add a Friend Profile",
+  "insightLoadFailed": "Failed to load",
+  "reportRelationshipTitle": "Relationship Report",
+  "reportInsightTitle": "Insight Report",
+  "reportIncludes": "Report includes",
+  "reportMeLabel": "Me",
+  "reportMyProfile": "Using my profile",
+  "reportGenerate": "Generate Report",
+  "reportFriendProfileSelected": "{name}'s profile selected",
+  "@reportFriendProfileSelected": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "reportFriendRelationship": "Relationship with {name}",
+  "@reportFriendRelationship": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "reportGenerating": "AI is reading the stars…",
+  "reportFailed": "Failed to generate report, please try again",
+  "reportRetry": "Retry",
   "insightQuote": "What you resist, persists.",
   "insightQuoteAuthor": "— Carl Jung",
   "insightMyChart": "My Chart",
@@ -448,6 +499,12 @@
   },
   "profileMyWallet": "My Wallet",
   "profileMyBenefits": "My Benefits",
+  "profileConversationsToday": "Consulted {count} times today  Resets at 6:00",
+  "@profileConversationsToday": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "profileFreeToday": "Free today 1/1  Resets at 6:00",
   "profileUnlockMore": "Unlock more privileges",
   "profileUpgrade": "Upgrade",

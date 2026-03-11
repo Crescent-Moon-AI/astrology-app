@@ -359,12 +359,63 @@
   "homeQuickMyChart": "我的星盘",
   "homeSceneExplore": "场景探索",
   "homeExploreMore": "探索更多",
+  "homeExploreSeeAll": "查看全部 >",
+  "homeExploreKnowYourself": "全面了解自己",
+  "homeExploreKnowYourselfSub": "探索你未被发现的天赋",
+  "homeExploreRelationship": "了解你们的关系",
+  "homeExploreRelationshipSub": "星见 · 关系深度解读报告",
   "homeFortuneAdvice": "宜",
   "homeFortuneAvoid": "忌",
   "homeFortuneNoBirthData": "添加信息查看每日运势",
   "homeFortuneAddInfo": "去添加",
 
   "insightTitle": "洞见",
+  "insightDeepExplore": "深度探索",
+  "insightSeeAll": "查看全部",
+  "insightKnowYourself": "全面了解你自己",
+  "insightKnowYourselfSub": "探索你未被发现的天赋",
+  "insightExploreTarget": "探索TA的世界",
+  "insightReadMindSub": "读懂 TA 内心的\"读心术\"",
+  "insightUnderstandRelationship": "了解你们的关系",
+  "insightDeepAnalysisSub": "星见 · 关系深度解读报告",
+  "insightExploreMore": "探索更多",
+  "insightAnnualTrends": "2026年度趋势报告",
+  "insightAnnualTrendsSub": "掌握先机，让 2026年\"开挂\"",
+  "insightAnnualTrendsPrefill": "请帮我生成2026年度趋势报告，基于我的星盘分析今年的运势走向、重要时机和需要注意的方向",
+  "insightBirthDataRequiredTitle": "需要设置星盘",
+  "insightBirthDataRequiredMsg": "该功能依赖于您的个人星盘。请先前往\"我的\"页面设置您的出生日期和地点。",
+  "insightCancel": "取消",
+  "insightGoToSettings": "前往设置",
+  "insightSoulMate": "灵魂伴侣",
+  "insightFindSoulMate": "查看你的灵魂伴侣",
+  "insightSelectFriendChart": "选择要查看星盘的好友",
+  "insightSelectFriendProfile": "选择好友档案",
+  "insightSelectFriendReport": "选择要生成关系报告的好友",
+  "insightSelectFriendRelationship": "选择要了解关系的好友",
+  "insightNoFriends": "暂无好友档案，请先添加",
+  "insightAddFriend": "去添加好友档案",
+  "insightLoadFailed": "加载失败",
+  "reportRelationshipTitle": "关系报告",
+  "reportInsightTitle": "洞见报告",
+  "reportIncludes": "报告包含内容",
+  "reportMeLabel": "我",
+  "reportMyProfile": "已选中自己的档案",
+  "reportGenerate": "生成报告",
+  "reportFriendProfileSelected": "已选中 {name} 档案",
+  "@reportFriendProfileSelected": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "reportFriendRelationship": "与 {name} 的关系",
+  "@reportFriendRelationship": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "reportGenerating": "AI 正在解读星象，请稍候…",
+  "reportFailed": "生成报告失败，请稍后再试",
+  "reportRetry": "重试",
   "insightQuote": "凡是你所抗拒的，都会坚持。",
   "insightQuoteAuthor": "——卡尔·荣格",
   "insightMyChart": "我的星盘",
@@ -448,6 +499,12 @@
   },
   "profileMyWallet": "我的钱包",
   "profileMyBenefits": "我的权益",
+  "profileConversationsToday": "今日已咨询 {count} 次  每日6:00刷新",
+  "@profileConversationsToday": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "profileFreeToday": "今日免费次数 1/1  每日6:00刷新",
   "profileUnlockMore": "解锁更多特权，拥抱命中注定的美好",
   "profileUpgrade": "升级权益",

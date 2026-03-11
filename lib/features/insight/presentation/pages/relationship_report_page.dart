@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:astrology_app/l10n/app_localizations.dart';
 
 import '../../../../../shared/theme/cosmic_colors.dart';
 import '../../../../../shared/widgets/starfield_background.dart';
@@ -34,8 +35,7 @@ class _RelationshipReportPageState
   RelationshipReport? _report;
   Object? _error;
 
-  bool get isZh =>
-      Localizations.localeOf(context).languageCode.startsWith('zh');
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
 
   Future<void> _generate() async {
     setState(() {
@@ -70,27 +70,23 @@ class _RelationshipReportPageState
                 title: _report != null
                     ? (_report!.title.isNotEmpty
                         ? _report!.title
-                        : (isZh ? '关系报告' : 'Relationship Report'))
+                        : l10n.reportRelationshipTitle)
                     : (widget.args.friendName != null
-                        ? (isZh
-                            ? '与 ${widget.args.friendName} 的关系报告'
-                            : 'Relationship Report')
-                        : (isZh ? '洞见报告' : 'Insight Report')),
+                        ? l10n.reportRelationshipTitle
+                        : l10n.reportInsightTitle),
               ),
               Expanded(
                 child: _generating
-                    ? _LoadingView(isZh: isZh)
+                    ? const _LoadingView()
                     : _error != null
                         ? _ErrorView(
                             error: _error!,
-                            isZh: isZh,
                             onRetry: _generate,
                           )
                         : _report != null
-                            ? _ReportContent(report: _report!, isZh: isZh)
+                            ? _ReportContent(report: _report!)
                             : _ProductPreview(
                                 args: widget.args,
-                                isZh: isZh,
                                 onGenerate: _generate,
                               ),
               ),
@@ -142,17 +138,16 @@ class _AppBar extends StatelessWidget {
 
 class _ProductPreview extends ConsumerWidget {
   final RelationshipReportArgs args;
-  final bool isZh;
   final VoidCallback onGenerate;
 
   const _ProductPreview({
     required this.args,
-    required this.isZh,
     required this.onGenerate,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final productAsync = ref.watch(reportProductProvider(args.reportProductId));
 
     return Column(
@@ -167,24 +162,24 @@ class _ProductPreview extends ConsumerWidget {
                     data: (p) => p.title,
                     orElse: () {
                       if (args.reportProductId == 'report_self_exploration') {
-                        return isZh ? '全面了解你自己' : 'Know Yourself';
+                        return l10n.insightKnowYourself;
                       }
                       if (args.reportProductId == 'report_other_exploration') {
-                        return isZh ? '探索TA的世界' : 'Explore Their World';
+                        return l10n.insightExploreTarget;
                       }
-                      return isZh ? '了解你们的关系' : 'Understand Your Relationship';
+                      return l10n.insightUnderstandRelationship;
                     },
                   ),
                   subtitle: productAsync.maybeWhen(
                     data: (p) => p.subtitle,
                     orElse: () {
                       if (args.reportProductId == 'report_self_exploration') {
-                        return isZh ? '探索你未被发现的天赋' : 'Explore your hidden talents';
+                        return l10n.insightKnowYourselfSub;
                       }
                       if (args.reportProductId == 'report_other_exploration') {
-                        return isZh ? '读懂 TA 内心的「读心术」' : 'Read their inner world';
+                        return l10n.insightReadMindSub;
                       }
-                      return isZh ? '月见 · 关系深度解读报告' : 'Deep relationship analysis';
+                      return l10n.insightDeepAnalysisSub;
                     },
                   ),
                 ),
@@ -197,7 +192,7 @@ class _ProductPreview extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        isZh ? '报告包含内容' : 'Report includes',
+                        l10n.reportIncludes,
                         style: const TextStyle(
                           color: CosmicColors.textTertiary,
                           fontSize: 13,
@@ -205,7 +200,7 @@ class _ProductPreview extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      ..._previewSections(isZh, args.reportProductId).map(_PreviewSectionTile.new),
+                      ..._previewSections(l10n, args.reportProductId).map(_PreviewSectionTile.new),
                     ],
                   ),
                 ),
@@ -216,12 +211,13 @@ class _ProductPreview extends ConsumerWidget {
         ),
 
         // ── Bottom bar with friend card + button ──────────────────────────
-        _BottomBar(args: args, isZh: isZh, onGenerate: onGenerate),
+        _BottomBar(args: args, onGenerate: onGenerate),
       ],
     );
   }
 
-  static List<String> _previewSections(bool isZh, String productId) {
+  static List<String> _previewSections(AppLocalizations l10n, String productId) {
+    final isZh = l10n.localeName.startsWith('zh');
     if (productId == 'report_self_exploration') {
       return isZh
           ? ['个性深度分析', '天赋与优势', '情感模式', '事业方向', '成长路径']
@@ -389,17 +385,16 @@ class _PreviewSectionTile extends StatelessWidget {
 
 class _BottomBar extends StatelessWidget {
   final RelationshipReportArgs args;
-  final bool isZh;
   final VoidCallback onGenerate;
 
   const _BottomBar({
     required this.args,
-    required this.isZh,
     required this.onGenerate,
   });
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: EdgeInsets.fromLTRB(
         16,
@@ -428,7 +423,7 @@ class _BottomBar extends StatelessWidget {
               child: Row(
                 children: [
                   if (args.reportProductId != 'report_other_exploration')
-                    _AvatarCircle(label: isZh ? '我' : 'Me'),
+                    _AvatarCircle(label: l10n.reportMeLabel),
                   if (args.reportProductId != 'report_other_exploration')
                     const SizedBox(width: 4),
                   _AvatarCircle(
@@ -439,12 +434,8 @@ class _BottomBar extends StatelessWidget {
                   Expanded(
                     child: Text(
                       args.reportProductId == 'report_other_exploration'
-                          ? (isZh
-                              ? '已选中 ${args.friendName} 档案'
-                              : "${args.friendName}'s profile selected")
-                          : (isZh
-                              ? '与 ${args.friendName} 的关系'
-                              : args.friendName!),
+                          ? l10n.reportFriendProfileSelected(args.friendName!)
+                          : l10n.reportFriendRelationship(args.friendName!),
                       style: const TextStyle(
                         color: CosmicColors.textPrimary,
                         fontSize: 15,
@@ -466,11 +457,11 @@ class _BottomBar extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  _AvatarCircle(label: isZh ? '我' : 'Me'),
+                  _AvatarCircle(label: l10n.reportMeLabel),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      isZh ? '已选中自己的档案' : 'Using my profile',
+                      l10n.reportMyProfile,
                       style: const TextStyle(
                         color: CosmicColors.textPrimary,
                         fontSize: 15,
@@ -496,7 +487,7 @@ class _BottomBar extends StatelessWidget {
                 elevation: 0,
               ),
               child: Text(
-                isZh ? '生成报告' : 'Generate Report',
+                l10n.reportGenerate,
                 style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
@@ -541,11 +532,11 @@ class _AvatarCircle extends StatelessWidget {
 // ── Loading ──────────────────────────────────────────────────────────────────
 
 class _LoadingView extends StatelessWidget {
-  final bool isZh;
-  const _LoadingView({required this.isZh});
+  const _LoadingView();
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -553,7 +544,7 @@ class _LoadingView extends StatelessWidget {
           const CircularProgressIndicator(color: CosmicColors.primary),
           const SizedBox(height: 20),
           Text(
-            isZh ? 'AI 正在解读星象，请稍候…' : 'AI is reading the stars…',
+            l10n.reportGenerating,
             style: const TextStyle(
               color: CosmicColors.textSecondary,
               fontSize: 15,
@@ -569,17 +560,16 @@ class _LoadingView extends StatelessWidget {
 
 class _ErrorView extends StatelessWidget {
   final Object error;
-  final bool isZh;
   final VoidCallback onRetry;
 
   const _ErrorView({
     required this.error,
-    required this.isZh,
     required this.onRetry,
   });
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -589,7 +579,7 @@ class _ErrorView extends StatelessWidget {
             const Icon(Icons.error_outline, color: CosmicColors.error, size: 48),
             const SizedBox(height: 16),
             Text(
-              isZh ? '生成报告失败，请稍后再试' : 'Failed to generate report',
+              l10n.reportFailed,
               style: const TextStyle(
                 color: CosmicColors.textSecondary,
                 fontSize: 15,
@@ -600,7 +590,7 @@ class _ErrorView extends StatelessWidget {
             TextButton(
               onPressed: onRetry,
               child: Text(
-                isZh ? '重试' : 'Retry',
+                l10n.reportRetry,
                 style: const TextStyle(color: CosmicColors.primaryLight),
               ),
             ),
@@ -613,9 +603,8 @@ class _ErrorView extends StatelessWidget {
 
 class _ReportContent extends StatelessWidget {
   final RelationshipReport report;
-  final bool isZh;
 
-  const _ReportContent({required this.report, required this.isZh});
+  const _ReportContent({required this.report});
 
   @override
   Widget build(BuildContext context) {
