@@ -3253,6 +3253,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Image selected'**
   String get photoAnalysisImageSelected;
+
+  /// No description provided for @devServerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer Options'**
+  String get devServerTitle;
+
+  /// No description provided for @devServerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Server URL'**
+  String get devServerLabel;
+
+  /// No description provided for @devServerApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get devServerApply;
+
+  /// No description provided for @devServerSwitched.
+  ///
+  /// In en, this message translates to:
+  /// **'Server switched, please re-login'**
+  String get devServerSwitched;
+
+  /// No description provided for @devServerDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default: {url}'**
+  String devServerDefault(String url);
 }
 
 class _AppLocalizationsDelegate

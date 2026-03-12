@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:astrology_app/l10n/app_localizations.dart';
 import 'config/env.dart';
 import 'core/astro/astro_engine.dart';
 import 'core/utils/debug_observer.dart';
 import 'shared/theme/cosmic_theme.dart';
+import 'shared/widgets/dev_server_badge.dart';
 import 'config/router.dart';
 import 'core/providers/core_providers.dart';
+import 'shared/providers/dev_server_provider.dart';
 import 'shared/providers/locale_provider.dart';
 import 'shared/theme/theme_provider.dart';
 import 'features/auth/presentation/providers/auth_providers.dart';
@@ -32,10 +33,12 @@ void main() async {
   };
   AppConfig.init(env, mode: AppMode.dev);
 
+  // Restore saved dev server URL override (if any) before building providers
+  final prefs = await restoreDevServerOverride();
+
   final astroEngine = AstroEngine();
   await astroEngine.init();
 
-  final prefs = await SharedPreferences.getInstance();
   runApp(
     ProviderScope(
       observers: [if (AppConfig.mode.showStackTrace) DebugProviderObserver()],
@@ -111,6 +114,12 @@ class _XingjianAppState extends ConsumerState<XingjianApp> {
       locale: locale,
       supportedLocales: const [Locale('en'), Locale('zh')],
       routerConfig: router,
+      builder: (context, child) {
+        if (AppConfig.mode == AppMode.dev || AppConfig.mode == AppMode.mock) {
+          return Stack(children: [child!, const DevToolsFab()]);
+        }
+        return child!;
+      },
     );
   }
 }

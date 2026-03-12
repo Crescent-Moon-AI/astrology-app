@@ -665,5 +665,16 @@
   "photoAnalysisDefaultQuestion": "Please analyze this chart image",
   "photoAnalysisSend": "Start Analysis",
   "photoAnalysisNoImage": "Please select or take a photo first",
-  "photoAnalysisImageSelected": "Image selected"
+  "photoAnalysisImageSelected": "Image selected",
+
+  "devServerTitle": "Developer Options",
+  "devServerLabel": "Server URL",
+  "devServerApply": "Apply",
+  "devServerSwitched": "Server switched, please re-login",
+  "devServerDefault": "Default: {url}",
+  "@devServerDefault": {
+    "placeholders": {
+      "url": { "type": "String" }
+    }
+  }
 }

@@ -65,20 +65,42 @@ class EnvConfig {
     apiBaseUrl: 'https://api.xingjian.app',
     wsBaseUrl: 'wss://api.xingjian.app',
   );
+
+  /// Create EnvConfig from an arbitrary API URL.
+  /// Derives wsBaseUrl by replacing http→ws / https→wss.
+  factory EnvConfig.custom(String apiUrl) {
+    final wsUrl = apiUrl
+        .replaceFirst('https://', 'wss://')
+        .replaceFirst('http://', 'ws://');
+    return EnvConfig(
+      env: Environment.dev,
+      apiBaseUrl: apiUrl,
+      wsBaseUrl: wsUrl,
+    );
+  }
 }
 
 /// Global app configuration. Must be initialized before runApp().
 class AppConfig {
   static late EnvConfig _current;
+  static late EnvConfig _initial;
   static AppMode _mode = AppMode.release;
 
   /// Initialize the config. Call once from main() before runApp().
   static void init(EnvConfig config, {AppMode mode = AppMode.release}) {
     _current = config;
+    _initial = config;
     _mode = mode;
   }
 
+  /// Update the environment config at runtime without changing mode.
+  /// Used by the dev server switcher.
+  static void updateEnv(EnvConfig config) {
+    _current = config;
+  }
+
   static EnvConfig get current => _current;
+  static EnvConfig get initial => _initial;
   static AppMode get mode => _mode;
   static String get apiBaseUrl => _current.apiBaseUrl;
   static String get wsBaseUrl => _current.wsBaseUrl;
