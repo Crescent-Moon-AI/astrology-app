@@ -69,10 +69,6 @@ class _XingjianAppState extends ConsumerState<XingjianApp> {
     Future.microtask(() async {
       final notifier = ref.read(authProvider.notifier);
       await notifier.checkAuth();
-      // Install 401 interceptor for automatic token refresh
-      ref
-          .read(dioClientProvider)
-          .addAuthInterceptor(onUnauthorized: () => notifier.tryRefresh());
       // Auto-login (mock mode only)
       final phone = widget.autoLoginPhone;
       final code = widget.autoLoginCode;

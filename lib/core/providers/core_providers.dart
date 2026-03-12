@@ -6,9 +6,15 @@ import '../astro/astro_engine.dart';
 import '../network/dio_client.dart';
 
 final dioClientProvider = Provider<DioClient>((ref) {
-  // Watch devServerProvider so DioClient is rebuilt on server switch (dev/mock only)
+  // Watch devServerProvider so DioClient is rebuilt on server switch (dev/mock only).
+  // Also sync AppConfig in case of unexpected rebuild order.
   if (AppConfig.mode == AppMode.dev || AppConfig.mode == AppMode.mock) {
-    ref.watch(devServerProvider);
+    final serverUrl = ref.watch(devServerProvider);
+    if (serverUrl.isNotEmpty) {
+      AppConfig.updateEnv(EnvConfig.custom(serverUrl));
+    } else {
+      AppConfig.updateEnv(AppConfig.initial);
+    }
   }
   return DioClient();
 });
