@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/providers/core_providers.dart';
 import '../../data/datasources/transit_api.dart';
 import '../../data/repositories/transit_repository_impl.dart';
+import '../../domain/models/daily_transit.dart';
 import '../../domain/models/user_transit_alert.dart';
 import '../../domain/repositories/transit_repository.dart';
 
@@ -39,6 +40,15 @@ final transitDetailProvider = FutureProvider.family<UserTransitAlert, String>((
 ) async {
   final repo = ref.watch(transitRepositoryProvider);
   return repo.getTransitDetail(id);
+});
+
+// Daily transit scan (parameterized by date string, null = today)
+final dailyTransitsProvider = FutureProvider.family<DailyTransitScan, String?>((
+  ref,
+  date,
+) async {
+  final repo = ref.watch(transitRepositoryProvider);
+  return repo.getDailyTransits(date: date);
 });
 
 // Calendar events (parameterized by year+month)

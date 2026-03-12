@@ -53,10 +53,7 @@ class AstroEvent {
   final String title;
   final String description;
 
-  const AstroEvent({
-    required this.title,
-    this.description = '',
-  });
+  const AstroEvent({required this.title, this.description = ''});
 
   factory AstroEvent.fromJson(Map<String, dynamic> json) {
     return AstroEvent(
@@ -163,11 +160,13 @@ class WeeklyFortune {
       advice: json['advice'] as String? ?? '',
       avoid: json['avoid'] as String? ?? '',
       overallScore: json['overall_score'] as int? ?? 60,
-      dimensions: (json['dimensions'] as List<dynamic>?)
+      dimensions:
+          (json['dimensions'] as List<dynamic>?)
               ?.map((e) => FortuneDimension.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      periods: (json['periods'] as List<dynamic>?)
+      periods:
+          (json['periods'] as List<dynamic>?)
               ?.map((e) => WeekPeriod.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],

@@ -433,7 +433,9 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
                                       _initialCityCity = null;
                                       _initialCityDistrict = null;
                                     });
-                                    ref.read(birthDataFormProvider.notifier).setCurrentCity(null);
+                                    ref
+                                        .read(birthDataFormProvider.notifier)
+                                        .setCurrentCity(null);
                                   },
                                   child: const Padding(
                                     padding: EdgeInsets.only(left: 8),
@@ -626,7 +628,9 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
       final List<dynamic> locations = json.decode(jsonStr) as List<dynamic>;
       if (locations.isNotEmpty) {
         final loc = locations[0] as Map<String, dynamic>;
-        ref.read(birthDataFormProvider.notifier).setCurrentCity(
+        ref
+            .read(birthDataFormProvider.notifier)
+            .setCurrentCity(
               LocationCandidate(
                 name: loc['formatted_address'] as String? ?? result.displayName,
                 latitude: (loc['latitude'] as num?)?.toDouble() ?? 0,
@@ -647,7 +651,9 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
       final repo = ref.read(profileRepositoryProvider);
       final geocode = await repo.resolveLocation(result.displayName);
       if (geocode.candidates.isNotEmpty) {
-        ref.read(birthDataFormProvider.notifier).setCurrentCity(geocode.candidates.first);
+        ref
+            .read(birthDataFormProvider.notifier)
+            .setCurrentCity(geocode.candidates.first);
       }
     } catch (_) {
       // Both failed, keep display name only

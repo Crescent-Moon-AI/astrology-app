@@ -17,7 +17,11 @@ class TarotRitualPage extends ConsumerStatefulWidget {
   final String sessionId;
   final String? initialQuestion;
 
-  const TarotRitualPage({super.key, required this.sessionId, this.initialQuestion});
+  const TarotRitualPage({
+    super.key,
+    required this.sessionId,
+    this.initialQuestion,
+  });
 
   @override
   ConsumerState<TarotRitualPage> createState() => _TarotRitualPageState();

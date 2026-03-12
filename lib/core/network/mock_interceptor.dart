@@ -320,6 +320,9 @@ class MockInterceptor extends Interceptor {
       return _transitDetail();
     }
     if (path == '/api/calendar' && method == 'GET') return _calendarEvents();
+    if (path == '/api/transit/daily' && method == 'GET') {
+      return _dailyTransits();
+    }
 
     // --- Tarot ---
     if (path == '/api/tarot/sessions' && method == 'POST') {
@@ -453,6 +456,7 @@ class MockInterceptor extends Interceptor {
       'username': '\u661F\u8FB0\u65C5\u4EBA',
       'role': 'user',
       'is_admin': false,
+      'needs_onboarding': false,
     },
   };
 
@@ -807,127 +811,265 @@ class MockInterceptor extends Interceptor {
   // Transits
   // ============================================================
 
-  Map<String, dynamic> _transitsActive() => {
-    'data': {
-      'transits': [
-        {
-          'id': 'mock-transit-001',
+  Map<String, dynamic> _mockTransitAlert(
+    String id, {
+    required String natalPlanet,
+    required String natalSign,
+    required double natalDegree,
+    int? natalHouse,
+    required String transitSign,
+    required double transitDegree,
+    required double orb,
+    bool applying = true,
+    required Map<String, dynamic> transitEvent,
+  }) => {
+    'id': id,
+    'transit_event_id': transitEvent['id'],
+    'natal_planet': natalPlanet,
+    'natal_degree': natalDegree,
+    'natal_sign': natalSign,
+    'natal_house': natalHouse,
+    'transit_degree': transitDegree,
+    'transit_sign': transitSign,
+    'orb': orb,
+    'applying': applying,
+    'created_at': DateTime.now().toIso8601String(),
+    'transit_event': transitEvent,
+  };
+
+  Map<String, dynamic> _transitsActive() {
+    final now = DateTime.now();
+    return {
+      'data': {
+        'items': [
+          _mockTransitAlert(
+            'mock-ta-001',
+            natalPlanet: 'Venus',
+            natalSign: 'Capricorn',
+            natalDegree: 280.5,
+            natalHouse: 7,
+            transitSign: 'Pisces',
+            transitDegree: 340.5,
+            orb: 0.8,
+            transitEvent: {
+              'id': 'mock-te-001',
+              'event_type': 'aspect',
+              'planet': 'Venus',
+              'target_planet': 'Venus',
+              'aspect_type': 'sextile',
+              'sign': 'Pisces',
+              'exact_date': now.toIso8601String().split('T').first,
+              'start_date': now
+                  .subtract(const Duration(days: 2))
+                  .toIso8601String()
+                  .split('T')
+                  .first,
+              'end_date': now
+                  .add(const Duration(days: 5))
+                  .toIso8601String()
+                  .split('T')
+                  .first,
+              'description_key': 'transit.venus_sextile_venus',
+              'severity': 'medium',
+            },
+          ),
+          _mockTransitAlert(
+            'mock-ta-002',
+            natalPlanet: 'Moon',
+            natalSign: 'Gemini',
+            natalDegree: 78.2,
+            natalHouse: 3,
+            transitSign: 'Aquarius',
+            transitDegree: 318.2,
+            orb: 1.2,
+            applying: false,
+            transitEvent: {
+              'id': 'mock-te-002',
+              'event_type': 'aspect',
+              'planet': 'Mercury',
+              'target_planet': 'Moon',
+              'aspect_type': 'trine',
+              'sign': 'Aquarius',
+              'exact_date': now
+                  .subtract(const Duration(days: 1))
+                  .toIso8601String()
+                  .split('T')
+                  .first,
+              'start_date': now
+                  .subtract(const Duration(days: 3))
+                  .toIso8601String()
+                  .split('T')
+                  .first,
+              'end_date': now
+                  .add(const Duration(days: 2))
+                  .toIso8601String()
+                  .split('T')
+                  .first,
+              'description_key': 'transit.mercury_trine_moon',
+              'severity': 'low',
+            },
+          ),
+        ],
+      },
+    };
+  }
+
+  Map<String, dynamic> _transitsUpcoming() {
+    final now = DateTime.now();
+    return {
+      'data': {
+        'items': [
+          _mockTransitAlert(
+            'mock-ta-003',
+            natalPlanet: 'Sun',
+            natalSign: 'Capricorn',
+            natalDegree: 280.0,
+            natalHouse: 1,
+            transitSign: 'Aries',
+            transitDegree: 10.0,
+            orb: 2.5,
+            transitEvent: {
+              'id': 'mock-te-003',
+              'event_type': 'aspect',
+              'planet': 'Mars',
+              'target_planet': 'Sun',
+              'aspect_type': 'square',
+              'sign': 'Aries',
+              'exact_date': now
+                  .add(const Duration(days: 7))
+                  .toIso8601String()
+                  .split('T')
+                  .first,
+              'start_date': now
+                  .add(const Duration(days: 5))
+                  .toIso8601String()
+                  .split('T')
+                  .first,
+              'end_date': now
+                  .add(const Duration(days: 14))
+                  .toIso8601String()
+                  .split('T')
+                  .first,
+              'description_key': 'transit.mars_square_sun',
+              'severity': 'high',
+            },
+          ),
+        ],
+      },
+    };
+  }
+
+  Map<String, dynamic> _transitDetail() {
+    final now = DateTime.now();
+    return {
+      'data': _mockTransitAlert(
+        'mock-ta-001',
+        natalPlanet: 'Venus',
+        natalSign: 'Capricorn',
+        natalDegree: 280.5,
+        natalHouse: 7,
+        transitSign: 'Pisces',
+        transitDegree: 340.5,
+        orb: 0.8,
+        transitEvent: {
+          'id': 'mock-te-001',
+          'event_type': 'aspect',
           'planet': 'Venus',
+          'target_planet': 'Venus',
+          'aspect_type': 'sextile',
           'sign': 'Pisces',
-          'house': 7,
-          'aspect': 'trine',
-          'aspect_planet': 'Jupiter',
-          'title': '金星三分木星',
-          'summary': '感情运势极佳的时期，有利于表白和深化关系。',
-          'start_date': DateTime.now()
+          'exact_date': now.toIso8601String().split('T').first,
+          'start_date': now
               .subtract(const Duration(days: 2))
-              .toIso8601String(),
-          'end_date': DateTime.now()
+              .toIso8601String()
+              .split('T')
+              .first,
+          'end_date': now
               .add(const Duration(days: 5))
-              .toIso8601String(),
-          'intensity': 0.85,
+              .toIso8601String()
+              .split('T')
+              .first,
+          'description_key': 'transit.venus_sextile_venus',
+          'severity': 'medium',
         },
-        {
-          'id': 'mock-transit-002',
-          'planet': 'Mercury',
-          'sign': 'Aquarius',
-          'house': 3,
-          'aspect': 'square',
-          'aspect_planet': 'Pluto',
-          'title': '水星四分冥王星',
-          'summary': '沟通容易产生误解，避免重要谈判。',
-          'start_date': DateTime.now()
-              .subtract(const Duration(days: 1))
-              .toIso8601String(),
-          'end_date': DateTime.now()
-              .add(const Duration(days: 3))
-              .toIso8601String(),
-          'intensity': 0.65,
-        },
-      ],
-    },
-  };
-
-  Map<String, dynamic> _transitsUpcoming() => {
-    'data': {
-      'transits': [
-        {
-          'id': 'mock-transit-003',
-          'planet': 'Mars',
-          'sign': 'Aries',
-          'house': 1,
-          'aspect': 'conjunction',
-          'aspect_planet': 'Sun',
-          'title': '火星合日',
-          'summary': '充满行动力和决断力，适合启动新项目。',
-          'start_date': DateTime.now()
-              .add(const Duration(days: 7))
-              .toIso8601String(),
-          'end_date': DateTime.now()
-              .add(const Duration(days: 14))
-              .toIso8601String(),
-          'intensity': 0.90,
-        },
-      ],
-    },
-  };
-
-  Map<String, dynamic> _transitDetail() => {
-    'data': {
-      'id': 'mock-transit-001',
-      'planet': 'Venus',
-      'sign': 'Pisces',
-      'house': 7,
-      'aspect': 'trine',
-      'aspect_planet': 'Jupiter',
-      'title': '金星三分木星',
-      'summary': '感情运势极佳的时期，有利于表白和深化关系。',
-      'description':
-          '当金星在双鱼座与木星形成三分相时，这是最浪漫的星象之一。'
-          '你的魅力指数飙升，人际关系中充满温暖和善意。\n\n'
-          '对单身者：可能通过艺术、音乐或灵性活动遇到心仪对象。\n'
-          '对恋爱中的人：感情进一步升温，适合表达爱意和规划未来。',
-      'start_date': DateTime.now()
-          .subtract(const Duration(days: 2))
-          .toIso8601String(),
-      'end_date': DateTime.now().add(const Duration(days: 5)).toIso8601String(),
-      'intensity': 0.85,
-    },
-  };
+      ),
+    };
+  }
 
   Map<String, dynamic> _calendarEvents() => {
     'data': {
-      'events': [
+      'items': [
         {
-          'date': DateTime.now().toIso8601String().split('T').first,
-          'events': [
-            {'type': 'transit', 'title': '金星三分木星', 'importance': 'high'},
-            {'type': 'moon', 'title': '上弦月', 'importance': 'medium'},
-          ],
-        },
-        {
-          'date': DateTime.now()
-              .add(const Duration(days: 7))
-              .toIso8601String()
-              .split('T')
-              .first,
-          'events': [
-            {'type': 'transit', 'title': '火星合日', 'importance': 'high'},
-          ],
-        },
-        {
-          'date': DateTime.now()
+          'id': 'mock-cal-001',
+          'event_type': 'full_moon',
+          'planet': 'Moon',
+          'sign': 'Virgo',
+          'exact_datetime': DateTime.now()
               .add(const Duration(days: 14))
-              .toIso8601String()
-              .split('T')
-              .first,
-          'events': [
-            {'type': 'moon', 'title': '满月 — 双鱼座', 'importance': 'high'},
-          ],
+              .toIso8601String(),
+          'description_key': 'calendar.full_moon_virgo',
+        },
+        {
+          'id': 'mock-cal-002',
+          'event_type': 'new_moon',
+          'planet': 'Moon',
+          'sign': 'Pisces',
+          'exact_datetime': DateTime.now().toIso8601String(),
+          'description_key': 'calendar.new_moon_pisces',
         },
       ],
+      'year': DateTime.now().year,
+      'month': DateTime.now().month,
     },
   };
+
+  Map<String, dynamic> _dailyTransits() {
+    final today = DateTime.now().toIso8601String().split('T').first;
+    return {
+      'data': {
+        'scan_date': today,
+        'events': [
+          {
+            'event_type': 'transit_aspect',
+            'time': '06:23',
+            'title': '行运月亮合本命金星',
+            'transit_planet': 'Moon',
+            'transit_planet_cn': '月亮',
+            'natal_planet': 'Venus',
+            'natal_planet_cn': '金星',
+            'aspect_cn': '合',
+          },
+          {
+            'event_type': 'house_ingress',
+            'time': '10:48',
+            'title': '月亮进入第7宫',
+            'transit_planet': 'Moon',
+            'transit_planet_cn': '月亮',
+            'house_number': 7,
+          },
+          {
+            'event_type': 'sign_ingress',
+            'time': '14:15',
+            'title': '月亮进入天秤座,激活第7宫',
+            'transit_planet': 'Moon',
+            'transit_planet_cn': '月亮',
+            'sign_cn': '天秤座',
+            'activated_house': 7,
+          },
+          {
+            'event_type': 'transit_aspect',
+            'time': '18:02',
+            'title': '行运月亮六合本命太阳',
+            'transit_planet': 'Moon',
+            'transit_planet_cn': '月亮',
+            'natal_planet': 'Sun',
+            'natal_planet_cn': '太阳',
+            'aspect_cn': '六合',
+          },
+        ],
+      },
+    };
+  }
 
   // ============================================================
   // Tarot — stateful session tracking

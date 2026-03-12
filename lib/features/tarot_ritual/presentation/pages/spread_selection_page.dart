@@ -19,7 +19,11 @@ class SpreadSelectionPage extends ConsumerStatefulWidget {
   final String? conversationId;
   final String? initialQuestion;
 
-  const SpreadSelectionPage({super.key, this.conversationId, this.initialQuestion});
+  const SpreadSelectionPage({
+    super.key,
+    this.conversationId,
+    this.initialQuestion,
+  });
 
   @override
   ConsumerState<SpreadSelectionPage> createState() =>

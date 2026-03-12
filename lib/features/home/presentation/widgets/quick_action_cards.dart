@@ -14,6 +14,11 @@ class QuickActionCards extends StatelessWidget {
 
     final actions = [
       _QuickAction(
+        icon: Icons.timeline_rounded,
+        label: '今日行运',
+        onTap: () => context.pushNamed('transits'),
+      ),
+      _QuickAction(
         icon: Icons.question_answer_rounded,
         label: l10n.homeQuickConsult,
         onTap: () => context.push('/chat'),

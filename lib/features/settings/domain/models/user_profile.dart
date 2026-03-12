@@ -21,8 +21,7 @@ class UserProfile {
     final placesJson = json['birth_places'] as List<dynamic>? ?? [];
     final currentPlaceJson =
         json['current_birth_place'] as Map<String, dynamic>?;
-    final currentCityJson =
-        json['current_city'] as Map<String, dynamic>?;
+    final currentCityJson = json['current_city'] as Map<String, dynamic>?;
 
     return UserProfile(
       core: UserAstrologyCore.fromJson(coreJson),

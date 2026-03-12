@@ -8,50 +8,80 @@ import '../../../settings/presentation/providers/profile_providers.dart';
 
 /// Zodiac sign compatibility data for soul mate analysis.
 const _zodiacSigns = [
-  '白羊座', '金牛座', '双子座', '巨蟹座', '狮子座', '处女座',
-  '天秤座', '天蝎座', '射手座', '摩羯座', '水瓶座', '双鱼座',
+  '白羊座',
+  '金牛座',
+  '双子座',
+  '巨蟹座',
+  '狮子座',
+  '处女座',
+  '天秤座',
+  '天蝎座',
+  '射手座',
+  '摩羯座',
+  '水瓶座',
+  '双鱼座',
 ];
 
 const _zodiacSignsEn = [
-  'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-  'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces',
+  'Aries',
+  'Taurus',
+  'Gemini',
+  'Cancer',
+  'Leo',
+  'Virgo',
+  'Libra',
+  'Scorpio',
+  'Sagittarius',
+  'Capricorn',
+  'Aquarius',
+  'Pisces',
 ];
 
 const _zodiacEmojis = [
-  '♈', '♉', '♊', '♋', '♌', '♍',
-  '♎', '♏', '♐', '♑', '♒', '♓',
+  '♈',
+  '♉',
+  '♊',
+  '♋',
+  '♌',
+  '♍',
+  '♎',
+  '♏',
+  '♐',
+  '♑',
+  '♒',
+  '♓',
 ];
 
 // Each sign's top compatible signs (index-based, 0=Aries)
 const _compatibility = [
-  [7, 8, 4],   // Aries → Scorpio, Sagittarius, Leo
-  [5, 9, 2],   // Taurus → Virgo, Capricorn, Gemini
-  [6, 10, 4],  // Gemini → Libra, Aquarius, Leo
-  [7, 11, 5],  // Cancer → Scorpio, Pisces, Virgo
-  [0, 8, 2],   // Leo → Aries, Sagittarius, Gemini
-  [1, 9, 3],   // Virgo → Taurus, Capricorn, Cancer
-  [2, 10, 0],  // Libra → Gemini, Aquarius, Aries
-  [3, 0, 9],   // Scorpio → Cancer, Aries, Capricorn
-  [0, 4, 10],  // Sagittarius → Aries, Leo, Aquarius
-  [1, 5, 7],   // Capricorn → Taurus, Virgo, Scorpio
-  [2, 6, 8],   // Aquarius → Gemini, Libra, Sagittarius
-  [3, 7, 1],   // Pisces → Cancer, Scorpio, Taurus
+  [7, 8, 4], // Aries → Scorpio, Sagittarius, Leo
+  [5, 9, 2], // Taurus → Virgo, Capricorn, Gemini
+  [6, 10, 4], // Gemini → Libra, Aquarius, Leo
+  [7, 11, 5], // Cancer → Scorpio, Pisces, Virgo
+  [0, 8, 2], // Leo → Aries, Sagittarius, Gemini
+  [1, 9, 3], // Virgo → Taurus, Capricorn, Cancer
+  [2, 10, 0], // Libra → Gemini, Aquarius, Aries
+  [3, 0, 9], // Scorpio → Cancer, Aries, Capricorn
+  [0, 4, 10], // Sagittarius → Aries, Leo, Aquarius
+  [1, 5, 7], // Capricorn → Taurus, Virgo, Scorpio
+  [2, 6, 8], // Aquarius → Gemini, Libra, Sagittarius
+  [3, 7, 1], // Pisces → Cancer, Scorpio, Taurus
 ];
 
 // Soul mate personality traits per sign
 const _soulMateTraits = [
-  ['热情奔放', '勇于冒险', '充满活力'],          // Aries
-  ['稳重可靠', '艺术品味', '深情专一'],          // Taurus
-  ['机智聪慧', '风趣幽默', '善于沟通'],          // Gemini
-  ['温柔体贴', '情感丰富', '忠诚顾家'],          // Cancer
-  ['自信魅力', '慷慨大方', '充满创造力'],        // Leo
-  ['细腻体贴', '踏实上进', '善解人意'],          // Virgo
-  ['优雅迷人', '公平公正', '浪漫感性'],          // Libra
-  ['深邃神秘', '忠诚专一', '极具洞察力'],        // Scorpio
-  ['乐观开朗', '追求自由', '智慧博学'],          // Sagittarius
-  ['踏实勤奋', '责任感强', '成熟稳重'],          // Capricorn
-  ['独立创新', '博爱人道', '思维前卫'],          // Aquarius
-  ['浪漫感性', '善解人意', '极富同情心'],        // Pisces
+  ['热情奔放', '勇于冒险', '充满活力'], // Aries
+  ['稳重可靠', '艺术品味', '深情专一'], // Taurus
+  ['机智聪慧', '风趣幽默', '善于沟通'], // Gemini
+  ['温柔体贴', '情感丰富', '忠诚顾家'], // Cancer
+  ['自信魅力', '慷慨大方', '充满创造力'], // Leo
+  ['细腻体贴', '踏实上进', '善解人意'], // Virgo
+  ['优雅迷人', '公平公正', '浪漫感性'], // Libra
+  ['深邃神秘', '忠诚专一', '极具洞察力'], // Scorpio
+  ['乐观开朗', '追求自由', '智慧博学'], // Sagittarius
+  ['踏实勤奋', '责任感强', '成熟稳重'], // Capricorn
+  ['独立创新', '博爱人道', '思维前卫'], // Aquarius
+  ['浪漫感性', '善解人意', '极富同情心'], // Pisces
 ];
 
 const _soulMateTraitsEn = [
@@ -93,17 +123,17 @@ int _sunSignIndexFromBirthDate(String? birthDate) {
   if (dt == null) return -1;
   final m = dt.month;
   final d = dt.day;
-  if ((m == 3 && d >= 21) || (m == 4 && d <= 19)) return 0;  // Aries
-  if ((m == 4 && d >= 20) || (m == 5 && d <= 20)) return 1;  // Taurus
-  if ((m == 5 && d >= 21) || (m == 6 && d <= 20)) return 2;  // Gemini
-  if ((m == 6 && d >= 21) || (m == 7 && d <= 22)) return 3;  // Cancer
-  if ((m == 7 && d >= 23) || (m == 8 && d <= 22)) return 4;  // Leo
-  if ((m == 8 && d >= 23) || (m == 9 && d <= 22)) return 5;  // Virgo
+  if ((m == 3 && d >= 21) || (m == 4 && d <= 19)) return 0; // Aries
+  if ((m == 4 && d >= 20) || (m == 5 && d <= 20)) return 1; // Taurus
+  if ((m == 5 && d >= 21) || (m == 6 && d <= 20)) return 2; // Gemini
+  if ((m == 6 && d >= 21) || (m == 7 && d <= 22)) return 3; // Cancer
+  if ((m == 7 && d >= 23) || (m == 8 && d <= 22)) return 4; // Leo
+  if ((m == 8 && d >= 23) || (m == 9 && d <= 22)) return 5; // Virgo
   if ((m == 9 && d >= 23) || (m == 10 && d <= 22)) return 6; // Libra
   if ((m == 10 && d >= 23) || (m == 11 && d <= 21)) return 7; // Scorpio
   if ((m == 11 && d >= 22) || (m == 12 && d <= 21)) return 8; // Sagittarius
-  if ((m == 12 && d >= 22) || (m == 1 && d <= 19)) return 9;  // Capricorn
-  if ((m == 1 && d >= 20) || (m == 2 && d <= 18)) return 10;  // Aquarius
+  if ((m == 12 && d >= 22) || (m == 1 && d <= 19)) return 9; // Capricorn
+  if ((m == 1 && d >= 20) || (m == 2 && d <= 18)) return 10; // Aquarius
   return 11; // Pisces
 }
 
@@ -119,7 +149,9 @@ class SoulMatePage extends ConsumerWidget {
     // Default to Scorpio (7) when birth date unknown
     final effectiveIdx = signIdx >= 0 ? signIdx : 7;
     final compatibleIndices = _compatibility[effectiveIdx];
-    final traits = isZh ? _soulMateTraits[effectiveIdx] : _soulMateTraitsEn[effectiveIdx];
+    final traits = isZh
+        ? _soulMateTraits[effectiveIdx]
+        : _soulMateTraitsEn[effectiveIdx];
     final viz = _visualization[effectiveIdx];
     final userSignName = signIdx >= 0
         ? (isZh ? _zodiacSigns[signIdx] : _zodiacSignsEn[signIdx])
@@ -216,9 +248,7 @@ class SoulMatePage extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      ...traits.map(
-                        (t) => _TraitRow(trait: t),
-                      ),
+                      ...traits.map((t) => _TraitRow(trait: t)),
                       const SizedBox(height: 20),
 
                       // What next section
@@ -302,10 +332,7 @@ class _HeroCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        border: Border.all(
-          color: Colors.white.withAlpha(33),
-          width: 1,
-        ),
+        border: Border.all(color: Colors.white.withAlpha(33), width: 1),
       ),
       child: Stack(
         children: [
@@ -342,10 +369,7 @@ class _HeroCard extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.white.withAlpha(33),
-                  width: 1,
-                ),
+                border: Border.all(color: Colors.white.withAlpha(33), width: 1),
               ),
             ),
           ),
@@ -389,8 +413,8 @@ class _HeroCard extends StatelessWidget {
                 Text(
                   userSignName != null
                       ? (isZh
-                          ? '$userSignName · 灵魂伴侣解析'
-                          : '$userSignName · Soul Mate Analysis')
+                            ? '$userSignName · 灵魂伴侣解析'
+                            : '$userSignName · Soul Mate Analysis')
                       : (isZh ? '查看你的灵魂伴侣' : 'Find your soul mate'),
                   style: const TextStyle(
                     color: Color(0xFFA0A0A0),
@@ -503,8 +527,8 @@ class _SignCard extends StatelessWidget {
     final Color rankColor = rank == 1
         ? CosmicColors.secondary
         : rank == 2
-            ? CosmicColors.primaryLight
-            : CosmicColors.textSecondary;
+        ? CosmicColors.primaryLight
+        : CosmicColors.textSecondary;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
@@ -587,12 +611,7 @@ class _AnalysisCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = isZh
-        ? [
-            '你与哪些星座最有灵魂共鸣',
-            '你在感情中的核心需求',
-            '你的爱情风格与吸引力法则',
-            '如何识别并吸引灵魂伴侣',
-          ]
+        ? ['你与哪些星座最有灵魂共鸣', '你在感情中的核心需求', '你的爱情风格与吸引力法则', '如何识别并吸引灵魂伴侣']
         : [
             'Which signs resonate most with your soul',
             'Your core needs in relationships',

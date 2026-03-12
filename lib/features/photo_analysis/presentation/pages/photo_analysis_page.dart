@@ -41,9 +41,9 @@ class _PhotoAnalysisPageState extends State<PhotoAnalysisPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('图片选择失败: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('图片选择失败: $e')));
       }
     }
   }
@@ -63,22 +63,28 @@ class _PhotoAnalysisPageState extends State<PhotoAnalysisPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: const Icon(Icons.camera_alt_rounded,
-                    color: CosmicColors.primary),
-                title: Text(l10n.photoAnalysisTakePhoto,
-                    style:
-                        const TextStyle(color: CosmicColors.textPrimary)),
+                leading: const Icon(
+                  Icons.camera_alt_rounded,
+                  color: CosmicColors.primary,
+                ),
+                title: Text(
+                  l10n.photoAnalysisTakePhoto,
+                  style: const TextStyle(color: CosmicColors.textPrimary),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.photo_library_rounded,
-                    color: CosmicColors.primary),
-                title: Text(l10n.photoAnalysisGallery,
-                    style:
-                        const TextStyle(color: CosmicColors.textPrimary)),
+                leading: const Icon(
+                  Icons.photo_library_rounded,
+                  color: CosmicColors.primary,
+                ),
+                title: Text(
+                  l10n.photoAnalysisGallery,
+                  style: const TextStyle(color: CosmicColors.textPrimary),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImage(ImageSource.gallery);
@@ -94,9 +100,9 @@ class _PhotoAnalysisPageState extends State<PhotoAnalysisPage> {
   Future<void> _startAnalysis() async {
     final l10n = AppLocalizations.of(context)!;
     if (_pickedImage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.photoAnalysisNoImage)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.photoAnalysisNoImage)));
       return;
     }
 
@@ -126,9 +132,9 @@ class _PhotoAnalysisPageState extends State<PhotoAnalysisPage> {
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('图片处理失败: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('图片处理失败: $e')));
       }
     }
   }
@@ -191,14 +197,16 @@ class _PhotoAnalysisPageState extends State<PhotoAnalysisPage> {
                                     onTap: _showImageSourceSheet,
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 6),
+                                        horizontal: 12,
+                                        vertical: 6,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: CosmicColors.background
                                             .withValues(alpha: 0.8),
-                                        borderRadius:
-                                            BorderRadius.circular(20),
+                                        borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
-                                            color: CosmicColors.borderGlow),
+                                          color: CosmicColors.borderGlow,
+                                        ),
                                       ),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
@@ -212,8 +220,7 @@ class _PhotoAnalysisPageState extends State<PhotoAnalysisPage> {
                                           Text(
                                             l10n.photoAnalysisPickImage,
                                             style: const TextStyle(
-                                              color:
-                                                  CosmicColors.textSecondary,
+                                              color: CosmicColors.textSecondary,
                                               fontSize: 12,
                                             ),
                                           ),
@@ -228,9 +235,9 @@ class _PhotoAnalysisPageState extends State<PhotoAnalysisPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 ShaderMask(
-                                  shaderCallback: (bounds) =>
-                                      CosmicColors.primaryGradient
-                                          .createShader(bounds),
+                                  shaderCallback: (bounds) => CosmicColors
+                                      .primaryGradient
+                                      .createShader(bounds),
                                   child: const Icon(
                                     Icons.camera_alt_rounded,
                                     size: 56,
@@ -273,7 +280,9 @@ class _PhotoAnalysisPageState extends State<PhotoAnalysisPage> {
                       ),
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                     ),
                   ),
                 ),

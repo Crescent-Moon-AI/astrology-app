@@ -25,7 +25,8 @@ class _InsightPageState extends ConsumerState<InsightPage> {
 
   /// Check if birth data is set; if not, show a dialog and return false.
   bool _requireBirthData(UserProfile? profile) {
-    final hasBirthDate = profile?.core.birthDate != null &&
+    final hasBirthDate =
+        profile?.core.birthDate != null &&
         (profile!.core.birthDate?.isNotEmpty ?? false);
     if (!hasBirthDate) {
       _showBirthDataDialog();
@@ -475,10 +476,7 @@ class _InsightPageState extends ConsumerState<InsightPage> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            border: Border.all(
-              color: Colors.white.withAlpha(33),
-              width: 1,
-            ),
+            border: Border.all(color: Colors.white.withAlpha(33), width: 1),
           ),
           child: Stack(
             children: [
@@ -632,7 +630,11 @@ class _InsightPageState extends ConsumerState<InsightPage> {
   }
 }
 
-enum _FriendPickerMode { natalChart, reportRelationship, reportOtherExploration }
+enum _FriendPickerMode {
+  natalChart,
+  reportRelationship,
+  reportOtherExploration,
+}
 
 class _FriendPickerSheet extends ConsumerWidget {
   final _FriendPickerMode mode;
@@ -650,10 +652,10 @@ class _FriendPickerSheet extends ConsumerWidget {
     final title = mode == _FriendPickerMode.natalChart
         ? l10n.insightSelectFriendChart
         : mode == _FriendPickerMode.reportOtherExploration
-            ? l10n.insightSelectFriendProfile
-            : mode == _FriendPickerMode.reportRelationship
-                ? l10n.insightSelectFriendReport
-                : l10n.insightSelectFriendRelationship;
+        ? l10n.insightSelectFriendProfile
+        : mode == _FriendPickerMode.reportRelationship
+        ? l10n.insightSelectFriendReport
+        : l10n.insightSelectFriendRelationship;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
