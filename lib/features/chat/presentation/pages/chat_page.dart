@@ -147,8 +147,11 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
     if (imgData != null && imgData.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _sendMessage(msg?.isNotEmpty == true ? msg! : '请帮我解读这张星盘图片',
-            imageData: imgData, imageMediaType: widget.imageMediaType);
+        _sendMessage(
+          msg?.isNotEmpty == true ? msg! : '请帮我解读这张星盘图片',
+          imageData: imgData,
+          imageMediaType: widget.imageMediaType,
+        );
       });
     } else if (msg != null && msg.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -224,7 +227,11 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     }
   }
 
-  void _sendMessage(String content, {String? imageData, String? imageMediaType}) {
+  void _sendMessage(
+    String content, {
+    String? imageData,
+    String? imageMediaType,
+  }) {
     final datasource = ref.read(chatDatasourceProvider);
     if (!datasource.isConnected) return;
 

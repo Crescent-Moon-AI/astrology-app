@@ -118,7 +118,8 @@ class _FortuneDetailPageState extends ConsumerState<FortuneDetailPage>
                     ),
                     _WeeklyTab(
                       weekOffset: _weekOffset,
-                      onWeekChanged: (offset) => setState(() => _weekOffset = offset),
+                      onWeekChanged: (offset) =>
+                          setState(() => _weekOffset = offset),
                       dimensionColors: _dimensionColors,
                       colorMap: _colorMap,
                       isZh: isZh,
@@ -158,7 +159,9 @@ class _DailyTab extends StatelessWidget {
         children: [
           const SizedBox(height: 20),
           // Overall score arc
-          Center(child: _BigScoreArc(score: fortune.overallScore, isZh: isZh)),
+          Center(
+            child: _BigScoreArc(score: fortune.overallScore, isZh: isZh),
+          ),
           const SizedBox(height: 24),
           // Title
           Text(
@@ -218,7 +221,11 @@ class _DailyTab extends StatelessWidget {
           // Lucky elements
           _SectionTitle(text: isZh ? '幸运元素' : 'Lucky Elements'),
           const SizedBox(height: 14),
-          _LuckyElementsVisual(lucky: fortune.luckyElements, colorMap: colorMap, isZh: isZh),
+          _LuckyElementsVisual(
+            lucky: fortune.luckyElements,
+            colorMap: colorMap,
+            isZh: isZh,
+          ),
           const SizedBox(height: 32),
           // AI consult entry
           _AiConsultEntry(isZh: isZh, fortuneType: 'daily'),
@@ -249,7 +256,11 @@ class _WeeklyTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day); // date-only, stable across rebuilds
+    final today = DateTime(
+      now.year,
+      now.month,
+      now.day,
+    ); // date-only, stable across rebuilds
     final targetDate = today.add(Duration(days: weekOffset * 7));
     final weekFortuneAsync = ref.watch(weeklyFortuneProvider(targetDate));
 
@@ -470,7 +481,8 @@ class _LargeArcPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _LargeArcPainter old) => old.progress != progress;
+  bool shouldRepaint(covariant _LargeArcPainter old) =>
+      old.progress != progress;
 }
 
 class _SectionTitle extends StatelessWidget {
@@ -594,7 +606,13 @@ class _LuckyElementsVisual extends StatelessWidget {
           decoration: BoxDecoration(
             color: colorValue,
             shape: BoxShape.circle,
-            boxShadow: [BoxShadow(color: colorValue.withAlpha(100), blurRadius: 8, spreadRadius: 2)],
+            boxShadow: [
+              BoxShadow(
+                color: colorValue.withAlpha(100),
+                blurRadius: 8,
+                spreadRadius: 2,
+              ),
+            ],
           ),
         ),
         label: isZh ? '幸运色' : 'Color',
@@ -606,12 +624,20 @@ class _LuckyElementsVisual extends StatelessWidget {
         value: '${lucky.number}',
       ),
       (
-        icon: const Icon(Icons.local_florist, color: Color(0xFFFF9FF3), size: 26),
+        icon: const Icon(
+          Icons.local_florist,
+          color: Color(0xFFFF9FF3),
+          size: 26,
+        ),
         label: isZh ? '幸运花' : 'Flower',
         value: lucky.flower,
       ),
       (
-        icon: const Icon(Icons.diamond_outlined, color: Color(0xFF74B9FF), size: 26),
+        icon: const Icon(
+          Icons.diamond_outlined,
+          color: Color(0xFF74B9FF),
+          size: 26,
+        ),
         label: isZh ? '幸运石' : 'Stone',
         value: lucky.stone,
       ),
@@ -847,7 +873,9 @@ class _WeekToggleChip extends StatelessWidget {
         child: Text(
           label,
           style: TextStyle(
-            color: selected ? CosmicColors.textPrimary : CosmicColors.textSecondary,
+            color: selected
+                ? CosmicColors.textPrimary
+                : CosmicColors.textSecondary,
             fontSize: 14,
             fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
           ),
@@ -954,7 +982,14 @@ class _AiConsultEntry extends StatelessWidget {
   const _AiConsultEntry({required this.isZh, required this.fortuneType});
 
   static const _topicsZh = ['感情', '学业', '成长', '事业', '财运', '人际'];
-  static const _topicsEn = ['Love', 'Study', 'Growth', 'Career', 'Wealth', 'Social'];
+  static const _topicsEn = [
+    'Love',
+    'Study',
+    'Growth',
+    'Career',
+    'Wealth',
+    'Social',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -991,7 +1026,10 @@ class _AiConsultEntry extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: const Center(
-                  child: Text('✦', style: TextStyle(fontSize: 18, color: Colors.white)),
+                  child: Text(
+                    '✦',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -1012,15 +1050,21 @@ class _AiConsultEntry extends StatelessWidget {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: topics.map((topic) => _TopicChip(
-              label: topic,
-              onTap: () {
-                final message = isZh
-                    ? '帮我分析一下我的$topic运势'
-                    : 'Analyze my $topic fortune for me';
-                context.push('/chat?initial_message=${Uri.encodeComponent(message)}');
-              },
-            )).toList(),
+            children: topics
+                .map(
+                  (topic) => _TopicChip(
+                    label: topic,
+                    onTap: () {
+                      final message = isZh
+                          ? '帮我分析一下我的$topic运势'
+                          : 'Analyze my $topic fortune for me';
+                      context.push(
+                        '/chat?initial_message=${Uri.encodeComponent(message)}',
+                      );
+                    },
+                  ),
+                )
+                .toList(),
           ),
         ],
       ),

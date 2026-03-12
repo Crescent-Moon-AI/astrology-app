@@ -20,11 +20,14 @@ class ProfilePage extends ConsumerWidget {
     final conversationsAsync = ref.watch(conversationListProvider);
 
     final now = DateTime.now();
-    final todayCount = conversationsAsync.asData?.value
-            .where((c) =>
-                c.createdAt.year == now.year &&
-                c.createdAt.month == now.month &&
-                c.createdAt.day == now.day)
+    final todayCount =
+        conversationsAsync.asData?.value
+            .where(
+              (c) =>
+                  c.createdAt.year == now.year &&
+                  c.createdAt.month == now.month &&
+                  c.createdAt.day == now.day,
+            )
             .length ??
         0;
 
@@ -97,9 +100,7 @@ class ProfilePage extends ConsumerWidget {
                     Text(
                       l10n.profileCompanionDays(
                         user?.createdAt != null
-                            ? DateTime.now()
-                                .difference(user!.createdAt!)
-                                .inDays
+                            ? DateTime.now().difference(user!.createdAt!).inDays
                             : 0,
                       ),
                       style: const TextStyle(

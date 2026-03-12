@@ -5,8 +5,10 @@ import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/breathing_loader.dart';
 import '../../../../shared/widgets/starfield_background.dart';
+import '../../domain/models/daily_transit.dart';
 import '../../domain/models/user_transit_alert.dart';
 import '../providers/transit_providers.dart';
+import '../widgets/daily_transit_card.dart';
 import '../widgets/transit_card.dart';
 
 class TransitListPage extends ConsumerWidget {
@@ -15,6 +17,7 @@ class TransitListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final dailyAsync = ref.watch(dailyTransitsProvider(null));
     final activeAsync = ref.watch(activeTransitsProvider);
     final upcomingAsync = ref.watch(upcomingTransitsProvider(30));
 
@@ -45,12 +48,31 @@ class TransitListPage extends ConsumerWidget {
           color: CosmicColors.primary,
           backgroundColor: CosmicColors.surfaceElevated,
           onRefresh: () async {
+            ref.invalidate(dailyTransitsProvider(null));
             ref.invalidate(activeTransitsProvider);
             ref.invalidate(upcomingTransitsProvider(30));
           },
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
+              // Daily transit events (computed on-the-fly)
+              _SectionHeader(
+                title: '今日行运',
+                icon: Icons.today,
+                color: CosmicColors.warning,
+              ),
+              const SizedBox(height: 10),
+              dailyAsync.when(
+                data: (scan) => _buildDailyEvents(scan),
+                loading: () => const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 32),
+                  child: Center(child: BreathingLoader()),
+                ),
+                error: (error, _) => _buildError(context, error),
+              ),
+
+              const SizedBox(height: 28),
+
               _SectionHeader(
                 title: l10n.transitActiveTransits,
                 icon: Icons.radio_button_checked,
@@ -86,6 +108,26 @@ class TransitListPage extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDailyEvents(DailyTransitScan scan) {
+    if (scan.events.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        child: const Center(
+          child: Text(
+            '今日暂无显著行运事件',
+            style: TextStyle(color: CosmicColors.textSecondary, fontSize: 14),
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      children: scan.events
+          .map((event) => DailyTransitCard(event: event))
+          .toList(),
     );
   }
 

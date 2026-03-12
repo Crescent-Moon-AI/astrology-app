@@ -27,6 +27,14 @@ class TransitApi {
     await _dio.post('/api/transits/$id/dismiss');
   }
 
+  Future<Map<String, dynamic>> getDailyTransits({String? date}) async {
+    final response = await _dio.get(
+      '/api/transit/daily',
+      queryParameters: date != null ? {'date': date} : null,
+    );
+    return response.data['data'] as Map<String, dynamic>;
+  }
+
   Future<Map<String, dynamic>> getCalendarEvents(int year, int month) async {
     final response = await _dio.get(
       '/api/calendar',

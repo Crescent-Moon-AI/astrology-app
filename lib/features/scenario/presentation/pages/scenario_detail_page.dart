@@ -404,10 +404,7 @@ class _PresetQuestionCard extends StatelessWidget {
                   color: accentColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text(
-                  '🃏',
-                  style: TextStyle(fontSize: 12),
-                ),
+                child: const Text('🃏', style: TextStyle(fontSize: 12)),
               )
             else
               Icon(

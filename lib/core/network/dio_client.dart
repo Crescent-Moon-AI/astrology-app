@@ -25,7 +25,8 @@ class DioClient {
     // In dev mode connecting to a local HTTPS backend (self-signed cert),
     // use the standard IOHttpClientAdapter with SSL verification disabled.
     // For all other cases, use the platform-native adapter (TLS 1.3, DPI bypass).
-    final isLocalHttps = AppConfig.isDev &&
+    final isLocalHttps =
+        AppConfig.isDev &&
         (resolvedBase.startsWith('https://10.0.2.2') ||
             resolvedBase.startsWith('https://localhost'));
     if (isLocalHttps) {

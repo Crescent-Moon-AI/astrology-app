@@ -70,10 +70,12 @@ class RelationshipReport {
       sections: rawSections
           .map((e) => ReportSection.fromJson(e as Map<String, dynamic>))
           .toList(),
-      generatedAt: DateTime.tryParse(json['generated_at'] as String? ?? '') ??
+      generatedAt:
+          DateTime.tryParse(json['generated_at'] as String? ?? '') ??
           DateTime.now(),
       createdAt:
-          DateTime.tryParse(json['created_at'] as String? ?? '') ?? DateTime.now(),
+          DateTime.tryParse(json['created_at'] as String? ?? '') ??
+          DateTime.now(),
     );
   }
 }

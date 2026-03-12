@@ -69,26 +69,20 @@ class _RelationshipReportPageState
               _AppBar(
                 title: _report != null
                     ? (_report!.title.isNotEmpty
-                        ? _report!.title
-                        : l10n.reportRelationshipTitle)
+                          ? _report!.title
+                          : l10n.reportRelationshipTitle)
                     : (widget.args.friendName != null
-                        ? l10n.reportRelationshipTitle
-                        : l10n.reportInsightTitle),
+                          ? l10n.reportRelationshipTitle
+                          : l10n.reportInsightTitle),
               ),
               Expanded(
                 child: _generating
                     ? const _LoadingView()
                     : _error != null
-                        ? _ErrorView(
-                            error: _error!,
-                            onRetry: _generate,
-                          )
-                        : _report != null
-                            ? _ReportContent(report: _report!)
-                            : _ProductPreview(
-                                args: widget.args,
-                                onGenerate: _generate,
-                              ),
+                    ? _ErrorView(error: _error!, onRetry: _generate)
+                    : _report != null
+                    ? _ReportContent(report: _report!)
+                    : _ProductPreview(args: widget.args, onGenerate: _generate),
               ),
             ],
           ),
@@ -140,10 +134,7 @@ class _ProductPreview extends ConsumerWidget {
   final RelationshipReportArgs args;
   final VoidCallback onGenerate;
 
-  const _ProductPreview({
-    required this.args,
-    required this.onGenerate,
-  });
+  const _ProductPreview({required this.args, required this.onGenerate});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -200,7 +191,10 @@ class _ProductPreview extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      ..._previewSections(l10n, args.reportProductId).map(_PreviewSectionTile.new),
+                      ..._previewSections(
+                        l10n,
+                        args.reportProductId,
+                      ).map(_PreviewSectionTile.new),
                     ],
                   ),
                 ),
@@ -216,7 +210,10 @@ class _ProductPreview extends ConsumerWidget {
     );
   }
 
-  static List<String> _previewSections(AppLocalizations l10n, String productId) {
+  static List<String> _previewSections(
+    AppLocalizations l10n,
+    String productId,
+  ) {
     final isZh = l10n.localeName.startsWith('zh');
     if (productId == 'report_self_exploration') {
       return isZh
@@ -387,10 +384,7 @@ class _BottomBar extends StatelessWidget {
   final RelationshipReportArgs args;
   final VoidCallback onGenerate;
 
-  const _BottomBar({
-    required this.args,
-    required this.onGenerate,
-  });
+  const _BottomBar({required this.args, required this.onGenerate});
 
   @override
   Widget build(BuildContext context) {
@@ -562,10 +556,7 @@ class _ErrorView extends StatelessWidget {
   final Object error;
   final VoidCallback onRetry;
 
-  const _ErrorView({
-    required this.error,
-    required this.onRetry,
-  });
+  const _ErrorView({required this.error, required this.onRetry});
 
   @override
   Widget build(BuildContext context) {
@@ -576,7 +567,11 @@ class _ErrorView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline, color: CosmicColors.error, size: 48),
+            const Icon(
+              Icons.error_outline,
+              color: CosmicColors.error,
+              size: 48,
+            ),
             const SizedBox(height: 16),
             Text(
               l10n.reportFailed,
@@ -640,10 +635,7 @@ class _ReportContent extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     report.subtitle,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                 ],
               ],
@@ -653,10 +645,7 @@ class _ReportContent extends StatelessWidget {
 
           // Sections
           ...report.sections.asMap().entries.map((entry) {
-            return _SectionCard(
-              section: entry.value,
-              index: entry.key,
-            );
+            return _SectionCard(section: entry.value, index: entry.key);
           }),
 
           const SizedBox(height: 40),

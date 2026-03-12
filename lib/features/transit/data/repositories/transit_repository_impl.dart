@@ -1,4 +1,5 @@
 import '../../domain/models/astro_calendar_event.dart';
+import '../../domain/models/daily_transit.dart';
 import '../../domain/models/user_transit_alert.dart';
 import '../../domain/repositories/transit_repository.dart';
 import '../datasources/transit_api.dart';
@@ -46,5 +47,11 @@ class TransitRepositoryImpl implements TransitRepository {
           .toList(),
       personalEvents: const [],
     );
+  }
+
+  @override
+  Future<DailyTransitScan> getDailyTransits({String? date}) async {
+    final data = await _api.getDailyTransits(date: date);
+    return DailyTransitScan.fromJson(data);
   }
 }

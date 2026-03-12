@@ -1,4 +1,5 @@
 import '../models/astro_calendar_event.dart';
+import '../models/daily_transit.dart';
 import '../models/user_transit_alert.dart';
 
 class CalendarData {
@@ -17,4 +18,5 @@ abstract class TransitRepository {
   Future<UserTransitAlert> getTransitDetail(String id);
   Future<void> dismissTransit(String id);
   Future<CalendarData> getCalendarEvents(int year, int month);
+  Future<DailyTransitScan> getDailyTransits({String? date});
 }

@@ -269,7 +269,9 @@ class _FriendPickerSheet extends ConsumerWidget {
                   itemCount: friends.length,
                   itemBuilder: (context, index) {
                     final f = friends[index];
-                    final rel = RelationshipLabel.fromValue(f.relationshipLabel);
+                    final rel = RelationshipLabel.fromValue(
+                      f.relationshipLabel,
+                    );
                     return ListTile(
                       leading: Container(
                         width: 40,
@@ -295,8 +297,7 @@ class _FriendPickerSheet extends ConsumerWidget {
                         [
                           f.birthDate,
                           if (f.birthTime != null) f.birthTime!,
-                          if (rel != null)
-                            (isZh ? rel.labelZH : rel.labelEN),
+                          if (rel != null) (isZh ? rel.labelZH : rel.labelEN),
                         ].join('  ·  '),
                         style: const TextStyle(
                           color: CosmicColors.textTertiary,
@@ -311,9 +312,7 @@ class _FriendPickerSheet extends ConsumerWidget {
               loading: () => const Padding(
                 padding: EdgeInsets.all(32),
                 child: Center(
-                  child: CircularProgressIndicator(
-                    color: CosmicColors.primary,
-                  ),
+                  child: CircularProgressIndicator(color: CosmicColors.primary),
                 ),
               ),
               error: (e, _) => Padding(
@@ -330,4 +329,3 @@ class _FriendPickerSheet extends ConsumerWidget {
     );
   }
 }
-

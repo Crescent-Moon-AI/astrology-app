@@ -7,9 +7,7 @@ class SecureStorage {
   final FlutterSecureStorage _storage;
 
   SecureStorage()
-    : _storage = const FlutterSecureStorage(
-        aOptions: AndroidOptions(),
-      );
+    : _storage = const FlutterSecureStorage(aOptions: AndroidOptions());
 
   Future<String?> getAccessToken() => _storage.read(key: _accessTokenKey);
 

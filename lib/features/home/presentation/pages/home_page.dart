@@ -14,6 +14,7 @@ import '../widgets/fortune_score_section.dart';
 import '../widgets/quick_action_cards.dart';
 import '../widgets/home_scenario_section.dart';
 import '../widgets/explore_more_section.dart';
+import '../../../transit/presentation/widgets/active_transits_section.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -184,6 +185,8 @@ class HomePage extends ConsumerWidget {
                         ),
                       const QuickActionCards(),
                       const SizedBox(height: 8),
+                      const ActiveTransitsSection(),
+                      const SizedBox(height: 8),
                       const HomeScenarioSection(),
                       const SizedBox(height: 8),
                       const ExploreMoreSection(),
@@ -256,12 +259,20 @@ class _LuckyElementsRow extends StatelessWidget {
             value: '${lucky.number}',
           ),
           _LuckyItem(
-            top: const Icon(Icons.local_florist, color: Color(0xFFFF9FF3), size: 26),
+            top: const Icon(
+              Icons.local_florist,
+              color: Color(0xFFFF9FF3),
+              size: 26,
+            ),
             label: l10n.homeLuckyFlower,
             value: lucky.flower,
           ),
           _LuckyItem(
-            top: const Icon(Icons.diamond_outlined, color: Color(0xFF74B9FF), size: 26),
+            top: const Icon(
+              Icons.diamond_outlined,
+              color: Color(0xFF74B9FF),
+              size: 26,
+            ),
             label: l10n.homeLuckyStone,
             value: lucky.stone,
           ),
@@ -276,7 +287,11 @@ class _LuckyItem extends StatelessWidget {
   final String label;
   final String value;
 
-  const _LuckyItem({required this.top, required this.label, required this.value});
+  const _LuckyItem({
+    required this.top,
+    required this.label,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {

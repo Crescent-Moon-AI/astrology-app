@@ -61,7 +61,8 @@ class ElementHouseSummary extends StatelessWidget {
     if (ascEl != null) counts[ascEl] = counts[ascEl]! + 1;
 
     final total = counts.values.fold(0, (a, b) => a + b);
-    if (total == 0) return {'fire': 0.25, 'earth': 0.25, 'air': 0.25, 'water': 0.25};
+    if (total == 0)
+      return {'fire': 0.25, 'earth': 0.25, 'air': 0.25, 'water': 0.25};
     return counts.map((k, v) => MapEntry(k, v / total));
   }
 
@@ -82,19 +83,18 @@ class ElementHouseSummary extends StatelessWidget {
   String _dominantKey(Map<String, double> m) =>
       m.entries.reduce((a, b) => a.value >= b.value ? a : b).key;
 
-  int _dominantHouseKey(Map<int, double> m) =>
-      m.entries.where((e) => e.value > 0).fold(
-        m.entries.first,
-        (a, b) => b.value > a.value ? b : a,
-      ).key;
+  int _dominantHouseKey(Map<int, double> m) => m.entries
+      .where((e) => e.value > 0)
+      .fold(m.entries.first, (a, b) => b.value > a.value ? b : a)
+      .key;
 
   static String? _signToElement(String sign) => switch (sign) {
-        'Aries' || 'Leo' || 'Sagittarius' => 'fire',
-        'Taurus' || 'Virgo' || 'Capricorn' => 'earth',
-        'Gemini' || 'Libra' || 'Aquarius' => 'air',
-        'Cancer' || 'Scorpio' || 'Pisces' => 'water',
-        _ => null,
-      };
+    'Aries' || 'Leo' || 'Sagittarius' => 'fire',
+    'Taurus' || 'Virgo' || 'Capricorn' => 'earth',
+    'Gemini' || 'Libra' || 'Aquarius' => 'air',
+    'Cancer' || 'Scorpio' || 'Pisces' => 'water',
+    _ => null,
+  };
 }
 
 // ── Element colors matching reference app's color scheme ──
@@ -102,44 +102,44 @@ class ElementHouseSummary extends StatelessWidget {
 // Air:  #A3FFF4 / #54C8BA,  Earth: #FDD5A7 / #CA8743
 
 Color _elColorLight(String el) => switch (el) {
-      'fire' => const Color(0xFFFED8D8),
-      'water' => const Color(0xFFB6DAFF),
-      'air' => const Color(0xFFA3FFF4),
-      'earth' => const Color(0xFFFDD5A7),
-      _ => const Color(0xFFCCCCCC),
-    };
+  'fire' => const Color(0xFFFED8D8),
+  'water' => const Color(0xFFB6DAFF),
+  'air' => const Color(0xFFA3FFF4),
+  'earth' => const Color(0xFFFDD5A7),
+  _ => const Color(0xFFCCCCCC),
+};
 
 Color _elColorDark(String el) => switch (el) {
-      'fire' => const Color(0xFFAD2929),
-      'water' => const Color(0xFF2964AD),
-      'air' => const Color(0xFF54C8BA),
-      'earth' => const Color(0xFFCA8743),
-      _ => const Color(0xFF666666),
-    };
+  'fire' => const Color(0xFFAD2929),
+  'water' => const Color(0xFF2964AD),
+  'air' => const Color(0xFF54C8BA),
+  'earth' => const Color(0xFFCA8743),
+  _ => const Color(0xFF666666),
+};
 
 String _elNameZh(String el) => switch (el) {
-      'fire' => '火',
-      'water' => '水',
-      'air' => '风',
-      'earth' => '土',
-      _ => '',
-    };
+  'fire' => '火',
+  'water' => '水',
+  'air' => '风',
+  'earth' => '土',
+  _ => '',
+};
 
 String _elNameEn(String el) => switch (el) {
-      'fire' => 'Fire',
-      'water' => 'Water',
-      'air' => 'Air',
-      'earth' => 'Earth',
-      _ => '',
-    };
+  'fire' => 'Fire',
+  'water' => 'Water',
+  'air' => 'Air',
+  'earth' => 'Earth',
+  _ => '',
+};
 
 String _elNameFullZh(String el) => switch (el) {
-      'fire' => '火象',
-      'water' => '水象',
-      'air' => '风象',
-      'earth' => '土象',
-      _ => '',
-    };
+  'fire' => '火象',
+  'water' => '水象',
+  'air' => '风象',
+  'earth' => '土象',
+  _ => '',
+};
 
 // ─────────────────────────────────────────────────
 //  Element Section  (火象人)
@@ -259,17 +259,15 @@ class _ElementSection extends StatelessWidget {
           Wrap(
             spacing: 12,
             runSpacing: 12,
-            children: _elTags(dominantElement, isZh)
-                .map((t) => _TagChip(label: t))
-                .toList(),
+            children: _elTags(
+              dominantElement,
+              isZh,
+            ).map((t) => _TagChip(label: t)).toList(),
           ),
           const SizedBox(height: 16),
 
           // ── Compatible & complementary signs (partners field) ──
-          _PartnersSection(
-            dominantElement: dominantElement,
-            isZh: isZh,
-          ),
+          _PartnersSection(dominantElement: dominantElement, isZh: isZh),
 
           const SizedBox(height: 16),
           // ── Footer link (externalLink field) ──
@@ -318,9 +316,7 @@ class _HouseSection extends StatelessWidget {
   Widget build(BuildContext context) {
     // Group houses by thematic area for display list
     // Reference app shows ItemHouseInfo list with house.subject + score
-    final houseItems = houseScores.entries
-        .where((e) => e.value > 0)
-        .toList()
+    final houseItems = houseScores.entries.where((e) => e.value > 0).toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
     final titleColor = _elColorLight(dominantElement);
@@ -575,10 +571,7 @@ class _HouseRingPainter extends CustomPainter {
   final Map<int, double> houseScores;
   final String dominantElement;
 
-  _HouseRingPainter({
-    required this.houseScores,
-    required this.dominantElement,
-  });
+  _HouseRingPainter({required this.houseScores, required this.dominantElement});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -661,10 +654,7 @@ class _HouseRingPainter extends CustomPainter {
     // Center: dominant house number
     final dominantHouse = houseScores.entries
         .where((e) => e.value > 0)
-        .fold(
-          houseScores.entries.first,
-          (a, b) => b.value > a.value ? b : a,
-        )
+        .fold(houseScores.entries.first, (a, b) => b.value > a.value ? b : a)
         .key;
 
     final centerTp = TextPainter(
@@ -843,10 +833,7 @@ class _PartnersSection extends StatelessWidget {
   final String dominantElement;
   final bool isZh;
 
-  const _PartnersSection({
-    required this.dominantElement,
-    required this.isZh,
-  });
+  const _PartnersSection({required this.dominantElement, required this.isZh});
 
   @override
   Widget build(BuildContext context) {
@@ -994,68 +981,68 @@ List<String> _elTags(String el, bool isZh) {
 }
 
 List<String> _compatSigns(String el) => switch (el) {
-      'fire' => ['Leo', 'Sagittarius', 'Aries'],
-      'earth' => ['Virgo', 'Capricorn', 'Taurus'],
-      'air' => ['Libra', 'Aquarius', 'Gemini'],
-      'water' => ['Scorpio', 'Pisces', 'Cancer'],
-      _ => [],
-    };
+  'fire' => ['Leo', 'Sagittarius', 'Aries'],
+  'earth' => ['Virgo', 'Capricorn', 'Taurus'],
+  'air' => ['Libra', 'Aquarius', 'Gemini'],
+  'water' => ['Scorpio', 'Pisces', 'Cancer'],
+  _ => [],
+};
 
 List<String> _complSigns(String el) => switch (el) {
-      'fire' => ['Libra', 'Aquarius', 'Gemini'],
-      'earth' => ['Cancer', 'Scorpio', 'Pisces'],
-      'air' => ['Aries', 'Leo', 'Sagittarius'],
-      'water' => ['Taurus', 'Virgo', 'Capricorn'],
-      _ => [],
-    };
+  'fire' => ['Libra', 'Aquarius', 'Gemini'],
+  'earth' => ['Cancer', 'Scorpio', 'Pisces'],
+  'air' => ['Aries', 'Leo', 'Sagittarius'],
+  'water' => ['Taurus', 'Virgo', 'Capricorn'],
+  _ => [],
+};
 
 String _signNameZh(String sign) => switch (sign) {
-      'Aries' => '白羊座',
-      'Taurus' => '金牛座',
-      'Gemini' => '双子座',
-      'Cancer' => '巨蟹座',
-      'Leo' => '狮子座',
-      'Virgo' => '处女座',
-      'Libra' => '天秤座',
-      'Scorpio' => '天蝎座',
-      'Sagittarius' => '射手座',
-      'Capricorn' => '摩羯座',
-      'Aquarius' => '水瓶座',
-      'Pisces' => '双鱼座',
-      _ => sign,
-    };
+  'Aries' => '白羊座',
+  'Taurus' => '金牛座',
+  'Gemini' => '双子座',
+  'Cancer' => '巨蟹座',
+  'Leo' => '狮子座',
+  'Virgo' => '处女座',
+  'Libra' => '天秤座',
+  'Scorpio' => '天蝎座',
+  'Sagittarius' => '射手座',
+  'Capricorn' => '摩羯座',
+  'Aquarius' => '水瓶座',
+  'Pisces' => '双鱼座',
+  _ => sign,
+};
 
 String _houseSubjectZh(int h) => switch (h) {
-      1 => '自我·形象',
-      2 => '财富·价值',
-      3 => '沟通·学习',
-      4 => '家庭·根基',
-      5 => '创造·恋爱',
-      6 => '工作·健康',
-      7 => '合作·伙伴',
-      8 => '深度·转化',
-      9 => '哲学·远行',
-      10 => '事业·成就',
-      11 => '社群·理想',
-      12 => '灵性·隐秘',
-      _ => '',
-    };
+  1 => '自我·形象',
+  2 => '财富·价值',
+  3 => '沟通·学习',
+  4 => '家庭·根基',
+  5 => '创造·恋爱',
+  6 => '工作·健康',
+  7 => '合作·伙伴',
+  8 => '深度·转化',
+  9 => '哲学·远行',
+  10 => '事业·成就',
+  11 => '社群·理想',
+  12 => '灵性·隐秘',
+  _ => '',
+};
 
 String _houseSubjectEn(int h) => switch (h) {
-      1 => 'Self & Image',
-      2 => 'Wealth & Values',
-      3 => 'Communication',
-      4 => 'Home & Roots',
-      5 => 'Creativity & Love',
-      6 => 'Work & Health',
-      7 => 'Partnership',
-      8 => 'Transformation',
-      9 => 'Philosophy & Travel',
-      10 => 'Career & Status',
-      11 => 'Community & Ideals',
-      12 => 'Spirituality',
-      _ => '',
-    };
+  1 => 'Self & Image',
+  2 => 'Wealth & Values',
+  3 => 'Communication',
+  4 => 'Home & Roots',
+  5 => 'Creativity & Love',
+  6 => 'Work & Health',
+  7 => 'Partnership',
+  8 => 'Transformation',
+  9 => 'Philosophy & Travel',
+  10 => 'Career & Status',
+  11 => 'Community & Ideals',
+  12 => 'Spirituality',
+  _ => '',
+};
 
 String _houseInterpretation(int h, bool isZh) {
   if (!isZh) {
@@ -1095,30 +1082,19 @@ String _houseAnalysis(int h, bool isZh) {
     };
   }
   return switch (h) {
-    1 =>
-      '你的星盘能量集中在1宫，在意自我表达和个人形象。个性鲜明是你最大的特点，给人留下深刻的第一印象。人生课题是找到真实的自己。',
-    2 =>
-      '你的星盘能量集中在2宫，在意财富积累和自我价值。物质安全感对你很重要，你善于发现和创造价值。',
-    3 =>
-      '你的星盘能量集中在3宫，在意沟通学习和信息交流。你在需要表达和交流的环境中如鱼得水。',
-    4 =>
-      '你的星盘能量集中在4宫，在意家庭根基和内在安全。家是你力量的源泉，你需要一个安稳的私密空间。',
-    5 =>
-      '你的星盘能量集中在5宫，在意创造表达和恋爱体验。你天生具有戏剧性的魅力，享受生活中的乐趣。',
-    6 =>
-      '你的星盘能量集中在6宫，在意工作效率和健康管理。你在日常事务的优化中找到成就感，服务他人让你充实。',
-    7 =>
-      '你的星盘能量集中在7宫，在意合作关系和人际互动。你在亲密关系中成长最多，通过他人了解自己。',
-    8 =>
-      '你的星盘能量集中在8宫，在意深度探索和内在转化。你对生命的深层奥秘有天然的好奇，善于在危机中成长。',
-    9 =>
-      '你的星盘能量集中在9宫，在意哲学思考和远方探索。你渴望在更广阔的视野中寻找人生意义。',
+    1 => '你的星盘能量集中在1宫，在意自我表达和个人形象。个性鲜明是你最大的特点，给人留下深刻的第一印象。人生课题是找到真实的自己。',
+    2 => '你的星盘能量集中在2宫，在意财富积累和自我价值。物质安全感对你很重要，你善于发现和创造价值。',
+    3 => '你的星盘能量集中在3宫，在意沟通学习和信息交流。你在需要表达和交流的环境中如鱼得水。',
+    4 => '你的星盘能量集中在4宫，在意家庭根基和内在安全。家是你力量的源泉，你需要一个安稳的私密空间。',
+    5 => '你的星盘能量集中在5宫，在意创造表达和恋爱体验。你天生具有戏剧性的魅力，享受生活中的乐趣。',
+    6 => '你的星盘能量集中在6宫，在意工作效率和健康管理。你在日常事务的优化中找到成就感，服务他人让你充实。',
+    7 => '你的星盘能量集中在7宫，在意合作关系和人际互动。你在亲密关系中成长最多，通过他人了解自己。',
+    8 => '你的星盘能量集中在8宫，在意深度探索和内在转化。你对生命的深层奥秘有天然的好奇，善于在危机中成长。',
+    9 => '你的星盘能量集中在9宫，在意哲学思考和远方探索。你渴望在更广阔的视野中寻找人生意义。',
     10 =>
       '你的星盘10宫能量比较集中，在意自己在社会中取得的位置和成就。有事业心，愿意为长远目标付出努力，也希望得到外界的认可和尊重。人生课题是找到想要追求的方向，在社会中实现自己的价值。',
-    11 =>
-      '你的星盘能量集中在11宫，在意社群归属和理想追求。你在集体中找到归属感，友谊和共同愿景给你力量。',
-    12 =>
-      '你的星盘能量集中在12宫，在意灵性成长和内在世界。你拥有丰富的内在资源和深沉的慈悲心。',
+    11 => '你的星盘能量集中在11宫，在意社群归属和理想追求。你在集体中找到归属感，友谊和共同愿景给你力量。',
+    12 => '你的星盘能量集中在12宫，在意灵性成长和内在世界。你拥有丰富的内在资源和深沉的慈悲心。',
     _ => '',
   };
 }
