@@ -2954,6 +2954,18 @@ abstract class AppLocalizations {
   /// **'No significant transit events today'**
   String get transitDailyEmpty;
 
+  /// No description provided for @transitPersonalMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get transitPersonalMode;
+
+  /// No description provided for @transitSkyMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Sky'**
+  String get transitSkyMode;
+
   /// No description provided for @transitTitleFormat.
   ///
   /// In en, this message translates to:

@@ -19,4 +19,5 @@ abstract class TransitRepository {
   Future<void> dismissTransit(String id);
   Future<CalendarData> getCalendarEvents(int year, int month);
   Future<DailyTransitScan> getDailyTransits({String? date});
+  Future<DailyTransitScan> getSkyAspects({String? date});
 }

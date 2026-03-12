@@ -1472,6 +1472,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get transitDailyEmpty => '今日暂无显著行运事件';
 
   @override
+  String get transitPersonalMode => '行运';
+
+  @override
+  String get transitSkyMode => '天象';
+
+  @override
   String transitTitleFormat(String planet, String aspect, String natalPlanet) {
     return '$planet $aspect $natalPlanet';
   }

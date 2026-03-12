@@ -5,6 +5,7 @@ class BirthData {
   final double latitude;
   final double longitude;
   final double timezone;
+  final String? timezoneId;
   final String location;
   final String houseSystem;
 
@@ -15,6 +16,7 @@ class BirthData {
     required this.latitude,
     required this.longitude,
     required this.timezone,
+    this.timezoneId,
     this.location = '',
     this.houseSystem = 'Placidus',
   });

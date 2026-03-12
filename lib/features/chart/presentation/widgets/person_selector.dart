@@ -49,30 +49,9 @@ class _PersonSelectorState extends ConsumerState<PersonSelector> {
       birthTime: f.birthTime ?? '12:00',
       latitude: f.latitude,
       longitude: f.longitude,
-      timezone: _parseTimezone(f.timezone),
+      timezone: 8.0, // fallback for legacy positional FFI calls
+      timezoneId: f.timezone,
     );
-  }
-
-  static double _parseTimezone(String tz) {
-    // Handle IANA names we know
-    if (tz.contains('Shanghai') ||
-        tz.contains('Beijing') ||
-        tz.contains('Chongqing') ||
-        tz.contains('Hong_Kong') ||
-        tz.contains('Taipei') ||
-        tz.contains('Singapore')) {
-      return 8.0;
-    }
-    // Handle UTC±N or GMT±N patterns
-    final match = RegExp(r'[+-](\d+)(?::(\d+))?$').firstMatch(tz);
-    if (match != null) {
-      final hours = double.parse(match.group(1)!);
-      final minutes = double.parse(match.group(2) ?? '0');
-      final sign = tz.contains('-') ? -1.0 : 1.0;
-      return sign * (hours + minutes / 60.0);
-    }
-    // Default for Chinese users
-    return 8.0;
   }
 
   @override

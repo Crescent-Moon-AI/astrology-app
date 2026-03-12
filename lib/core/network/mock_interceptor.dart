@@ -324,6 +324,9 @@ class MockInterceptor extends Interceptor {
     if (path == '/api/transit/daily' && method == 'GET') {
       return _dailyTransits();
     }
+    if (path == '/api/transit/sky' && method == 'GET') {
+      return _skyAspects();
+    }
 
     // --- Tarot ---
     if (path == '/api/tarot/sessions' && method == 'POST') {
@@ -1044,6 +1047,55 @@ class MockInterceptor extends Interceptor {
             'natal_planet': 'Sun',
             'natal_planet_cn': '太阳',
             'aspect_cn': '六合',
+          },
+        ],
+      },
+    };
+  }
+
+  Map<String, dynamic> _skyAspects() {
+    final today = DateTime.now().toIso8601String().split('T').first;
+    return {
+      'data': {
+        'scan_date': today,
+        'events': [
+          {
+            'event_type': 'sky_aspect',
+            'time': '03:45',
+            'title': '水星 ⚹ 木星',
+            'transit_planet': 'Mercury',
+            'transit_planet_cn': '水星',
+            'natal_planet': 'Jupiter',
+            'natal_planet_cn': '木星',
+            'aspect_cn': '六分相',
+          },
+          {
+            'event_type': 'sky_aspect',
+            'time': '11:07',
+            'title': '月亮 ⚹ 水星',
+            'transit_planet': 'Moon',
+            'transit_planet_cn': '月亮',
+            'natal_planet': 'Mercury',
+            'natal_planet_cn': '水星',
+            'aspect_cn': '六分相',
+          },
+          {
+            'event_type': 'sky_ingress',
+            'time': '15:32',
+            'title': '月亮进入天秤座',
+            'transit_planet': 'Moon',
+            'transit_planet_cn': '月亮',
+            'sign_cn': '天秤座',
+          },
+          {
+            'event_type': 'sky_aspect',
+            'time': '18:09',
+            'title': '月亮 ☍ 木星',
+            'transit_planet': 'Moon',
+            'transit_planet_cn': '月亮',
+            'natal_planet': 'Jupiter',
+            'natal_planet_cn': '木星',
+            'aspect_cn': '冲',
           },
         ],
       },

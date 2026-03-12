@@ -51,6 +51,27 @@ final dailyTransitsProvider = FutureProvider.family<DailyTransitScan, String?>((
   return repo.getDailyTransits(date: date);
 });
 
+// Sky aspects scan (parameterized by date string, null = today)
+final skyAspectsProvider = FutureProvider.family<DailyTransitScan, String?>((
+  ref,
+  date,
+) async {
+  final repo = ref.watch(transitRepositoryProvider);
+  return repo.getSkyAspects(date: date);
+});
+
+// Tab index for transit/sky toggle (0=行运, 1=天象)
+class TransitTabNotifier extends Notifier<int> {
+  @override
+  int build() => 0;
+
+  void set(int index) => state = index;
+}
+
+final transitTabIndexProvider = NotifierProvider<TransitTabNotifier, int>(
+  TransitTabNotifier.new,
+);
+
 // Calendar events (parameterized by year+month)
 final calendarEventsProvider =
     FutureProvider.family<CalendarData, ({int year, int month})>((

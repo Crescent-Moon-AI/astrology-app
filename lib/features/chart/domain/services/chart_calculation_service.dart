@@ -34,6 +34,19 @@ class ChartCalculationService {
     };
   }
 
+  /// Build the common birth data fields for JSON input.
+  Map<String, dynamic> _birthFields(BirthData birth) => {
+    'birth_date': birth.birthDate,
+    'birth_time': birth.birthTime,
+    'latitude': birth.latitude,
+    'longitude': birth.longitude,
+    'timezone': birth.timezone,
+    if (birth.timezoneId != null) 'timezone_id': birth.timezoneId,
+    'house_system': birth.houseSystem,
+    'name': birth.name,
+    'location': birth.location,
+  };
+
   Future<NatalChartResult?> _calculateNatal(BirthData birth) async {
     final json = await _engine.calculateNatalChart(
       birthDate: birth.birthDate,
@@ -56,14 +69,7 @@ class ChartCalculationService {
     final dateStr = DateFormat('yyyy-MM-dd').format(transitDate);
     final timeStr = DateFormat('HH:mm').format(transitDate);
     final input = {
-      'birth_date': birth.birthDate,
-      'birth_time': birth.birthTime,
-      'latitude': birth.latitude,
-      'longitude': birth.longitude,
-      'timezone': birth.timezone,
-      'house_system': birth.houseSystem,
-      'name': birth.name,
-      'location': birth.location,
+      ..._birthFields(birth),
       'transit_options': {
         'date': dateStr,
         'time': timeStr,
@@ -144,12 +150,14 @@ class ChartCalculationService {
       'person1_latitude': person1.latitude,
       'person1_longitude': person1.longitude,
       'person1_timezone': person1.timezone,
+      if (person1.timezoneId != null) 'person1_timezone_id': person1.timezoneId,
       'person2_name': person2.name,
       'person2_birth_date': person2.birthDate,
       'person2_birth_time': person2.birthTime,
       'person2_latitude': person2.latitude,
       'person2_longitude': person2.longitude,
       'person2_timezone': person2.timezone,
+      if (person2.timezoneId != null) 'person2_timezone_id': person2.timezoneId,
       'house_system': person1.houseSystem,
     };
     final json = await _engine.calculateSynastry(input: input);

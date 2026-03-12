@@ -77,9 +77,12 @@ class DailyTransitCard extends StatelessWidget {
     switch (event.eventType) {
       case 'transit_aspect':
         return Icons.auto_awesome;
+      case 'sky_aspect':
+        return Icons.public;
       case 'house_ingress':
         return Icons.house_outlined;
       case 'sign_ingress':
+      case 'sky_ingress':
         return Icons.change_circle_outlined;
       default:
         return Icons.stars;
@@ -90,6 +93,9 @@ class DailyTransitCard extends StatelessWidget {
     switch (event.eventType) {
       case 'transit_aspect':
         return Colors.amber;
+      case 'sky_aspect':
+      case 'sky_ingress':
+        return Colors.teal;
       case 'house_ingress':
         return Colors.blue;
       case 'sign_ingress':
@@ -106,11 +112,14 @@ class DailyTransitCard extends StatelessWidget {
   String? get _subtitle {
     switch (event.eventType) {
       case 'transit_aspect':
+      case 'sky_aspect':
         return '${event.transitPlanetCn} ${event.aspectCn} ${event.natalPlanetCn}';
       case 'house_ingress':
         return '${event.transitPlanetCn} → 第${event.houseNumber}宫';
       case 'sign_ingress':
         return '${event.transitPlanetCn} → ${event.signCn} (第${event.activatedHouse}宫)';
+      case 'sky_ingress':
+        return '${event.transitPlanetCn} → ${event.signCn}';
       default:
         return null;
     }
