@@ -17,7 +17,11 @@ class TransitListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final dailyAsync = ref.watch(dailyTransitsProvider(null));
+    final tabIndex = ref.watch(transitTabIndexProvider);
+    final dailyAsync = tabIndex == 0
+        ? ref.watch(dailyTransitsProvider(null))
+        : null;
+    final skyAsync = tabIndex == 1 ? ref.watch(skyAspectsProvider(null)) : null;
     final activeAsync = ref.watch(activeTransitsProvider);
     final upcomingAsync = ref.watch(upcomingTransitsProvider(30));
 
@@ -49,27 +53,56 @@ class TransitListPage extends ConsumerWidget {
           backgroundColor: CosmicColors.surfaceElevated,
           onRefresh: () async {
             ref.invalidate(dailyTransitsProvider(null));
+            ref.invalidate(skyAspectsProvider(null));
             ref.invalidate(activeTransitsProvider);
             ref.invalidate(upcomingTransitsProvider(30));
           },
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              // Daily transit events (computed on-the-fly)
-              _SectionHeader(
-                title: l10n.transitDailyTitle,
-                icon: Icons.today,
-                color: CosmicColors.warning,
+              // Transit mode toggle: 行运 / 天象
+              Row(
+                children: [
+                  Icon(Icons.today, size: 18, color: CosmicColors.warning),
+                  const SizedBox(width: 8),
+                  _buildModeChip(
+                    label: l10n.transitPersonalMode,
+                    selected: tabIndex == 0,
+                    color: CosmicColors.warning,
+                    onSelected: () =>
+                        ref.read(transitTabIndexProvider.notifier).set(0),
+                  ),
+                  const SizedBox(width: 8),
+                  _buildModeChip(
+                    label: l10n.transitSkyMode,
+                    selected: tabIndex == 1,
+                    color: Colors.teal,
+                    onSelected: () =>
+                        ref.read(transitTabIndexProvider.notifier).set(1),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
-              dailyAsync.when(
-                data: (scan) => _buildDailyEvents(scan, l10n),
-                loading: () => const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 32),
-                  child: Center(child: BreathingLoader()),
+
+              // Daily events based on selected tab
+              if (tabIndex == 0)
+                dailyAsync!.when(
+                  data: (scan) => _buildDailyEvents(scan, l10n),
+                  loading: () => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 32),
+                    child: Center(child: BreathingLoader()),
+                  ),
+                  error: (error, _) => _buildError(context, error),
+                )
+              else
+                skyAsync!.when(
+                  data: (scan) => _buildDailyEvents(scan, l10n),
+                  loading: () => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 32),
+                    child: Center(child: BreathingLoader()),
+                  ),
+                  error: (error, _) => _buildError(context, error),
                 ),
-                error: (error, _) => _buildError(context, error),
-              ),
 
               const SizedBox(height: 28),
 
@@ -108,6 +141,25 @@ class TransitListPage extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildModeChip({
+    required String label,
+    required bool selected,
+    required Color color,
+    required VoidCallback onSelected,
+  }) {
+    return ChoiceChip(
+      label: Text(label),
+      selected: selected,
+      onSelected: (_) => onSelected(),
+      selectedColor: color.withValues(alpha: 0.25),
+      labelStyle: TextStyle(
+        color: selected ? color : CosmicColors.textSecondary,
+        fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+      ),
+      side: BorderSide(color: selected ? color : CosmicColors.textTertiary),
     );
   }
 

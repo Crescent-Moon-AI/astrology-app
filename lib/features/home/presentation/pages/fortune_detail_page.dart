@@ -209,13 +209,9 @@ class _DailyTabState extends ConsumerState<_DailyTab> {
     );
     if (idx >= 0 && _scrollController.hasClients) {
       final itemWidth = 56.0;
-      final viewportWidth =
-          _scrollController.position.viewportDimension;
-      final offset =
-          (idx * itemWidth - viewportWidth / 2 + itemWidth / 2).clamp(
-        0.0,
-        _scrollController.position.maxScrollExtent,
-      );
+      final viewportWidth = _scrollController.position.viewportDimension;
+      final offset = (idx * itemWidth - viewportWidth / 2 + itemWidth / 2)
+          .clamp(0.0, _scrollController.position.maxScrollExtent);
       _scrollController.animateTo(
         offset,
         duration: const Duration(milliseconds: 300),
@@ -253,8 +249,9 @@ class _DailyTabState extends ConsumerState<_DailyTab> {
     final fortuneAsync = isInitialDate
         ? null
         : ref.watch(dailyFortuneByDateProvider(_selectedDateStr));
-    final dailyTransitAsync =
-        ref.watch(dailyTransitsProvider(_selectedDateStr));
+    final dailyTransitAsync = ref.watch(
+      dailyTransitsProvider(_selectedDateStr),
+    );
 
     return Column(
       children: [
@@ -268,10 +265,12 @@ class _DailyTabState extends ConsumerState<_DailyTab> {
             itemCount: _days.length,
             itemBuilder: (context, i) {
               final day = _days[i];
-              final isSelected = day.year == _selectedDate.year &&
+              final isSelected =
+                  day.year == _selectedDate.year &&
                   day.month == _selectedDate.month &&
                   day.day == _selectedDate.day;
-              final isToday = day.year == _today.year &&
+              final isToday =
+                  day.year == _today.year &&
                   day.month == _today.month &&
                   day.day == _today.day;
 
@@ -289,9 +288,7 @@ class _DailyTabState extends ConsumerState<_DailyTab> {
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(12),
                     border: isSelected
-                        ? Border.all(
-                            color: CosmicColors.primary.withAlpha(128),
-                          )
+                        ? Border.all(color: CosmicColors.primary.withAlpha(128))
                         : null,
                   ),
                   child: Column(
@@ -363,12 +360,8 @@ class _DailyTabState extends ConsumerState<_DailyTab> {
     }
 
     return fortuneAsync!.when(
-      data: (fortune) => _buildFortuneContent(
-        context,
-        l10n,
-        fortune,
-        dailyTransitAsync,
-      ),
+      data: (fortune) =>
+          _buildFortuneContent(context, l10n, fortune, dailyTransitAsync),
       loading: () => const Center(
         child: CircularProgressIndicator(
           strokeWidth: 2,

@@ -1488,6 +1488,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transitDailyEmpty => 'No significant transit events today';
 
   @override
+  String get transitPersonalMode => 'Personal';
+
+  @override
+  String get transitSkyMode => 'Sky';
+
+  @override
   String transitTitleFormat(String planet, String aspect, String natalPlanet) {
     return '$planet $aspect $natalPlanet';
   }

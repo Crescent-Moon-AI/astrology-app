@@ -292,7 +292,8 @@ class _InsightPageState extends ConsumerState<InsightPage> {
             birthTime: friend.birthTime ?? '12:00',
             latitude: friend.latitude,
             longitude: friend.longitude,
-            timezone: double.tryParse(friend.timezone) ?? 8.0,
+            timezone: 8.0, // fallback for legacy positional FFI calls
+            timezoneId: friend.timezone,
             location: friend.birthLocationName,
           );
           if (mode == _FriendPickerMode.natalChart) {

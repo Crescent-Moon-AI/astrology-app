@@ -591,6 +591,8 @@
 
   "transitDailyTitle": "今日行运",
   "transitDailyEmpty": "今日暂无显著行运事件",
+  "transitPersonalMode": "行运",
+  "transitSkyMode": "天象",
 
   "transitTitleFormat": "{planet} {aspect} {natalPlanet}",
   "@transitTitleFormat": {

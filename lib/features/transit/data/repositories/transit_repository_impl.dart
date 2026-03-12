@@ -54,4 +54,10 @@ class TransitRepositoryImpl implements TransitRepository {
     final data = await _api.getDailyTransits(date: date);
     return DailyTransitScan.fromJson(data);
   }
+
+  @override
+  Future<DailyTransitScan> getSkyAspects({String? date}) async {
+    final data = await _api.getSkyAspects(date: date);
+    return DailyTransitScan.fromJson(data);
+  }
 }

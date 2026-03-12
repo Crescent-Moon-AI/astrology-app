@@ -591,6 +591,8 @@
 
   "transitDailyTitle": "Today's Transits",
   "transitDailyEmpty": "No significant transit events today",
+  "transitPersonalMode": "Personal",
+  "transitSkyMode": "Sky",
 
   "transitTitleFormat": "{planet} {aspect} {natalPlanet}",
   "@transitTitleFormat": {
