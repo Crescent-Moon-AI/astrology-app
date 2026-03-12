@@ -1626,4 +1626,21 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get photoAnalysisImageSelected => '图片已选择';
+
+  @override
+  String get devServerTitle => '开发者选项';
+
+  @override
+  String get devServerLabel => '服务器地址';
+
+  @override
+  String get devServerApply => '应用';
+
+  @override
+  String get devServerSwitched => '已切换服务器，请重新登录';
+
+  @override
+  String devServerDefault(String url) {
+    return '默认: $url';
+  }
 }

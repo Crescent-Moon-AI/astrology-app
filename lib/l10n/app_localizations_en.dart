@@ -1644,4 +1644,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photoAnalysisImageSelected => 'Image selected';
+
+  @override
+  String get devServerTitle => 'Developer Options';
+
+  @override
+  String get devServerLabel => 'Server URL';
+
+  @override
+  String get devServerApply => 'Apply';
+
+  @override
+  String get devServerSwitched => 'Server switched, please re-login';
+
+  @override
+  String devServerDefault(String url) {
+    return 'Default: $url';
+  }
 }

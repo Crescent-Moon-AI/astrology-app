@@ -48,6 +48,8 @@ class AuthNotifier extends Notifier<AuthState> {
     _datasource = ref.watch(authDatasourceProvider);
     _storage = ref.watch(secureStorageProvider);
     _dioClient = ref.watch(dioClientProvider);
+    // Install 401 interceptor on every new DioClient (idempotent via guard).
+    _dioClient.addAuthInterceptor(onUnauthorized: () => tryRefresh());
     return const AuthState();
   }
 

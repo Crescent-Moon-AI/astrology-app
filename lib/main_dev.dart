@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'config/env.dart';
 import 'core/astro/astro_engine.dart';
 import 'core/utils/debug_observer.dart';
 import 'core/providers/core_providers.dart';
+import 'shared/providers/dev_server_provider.dart';
 import 'main.dart';
 
 /// Dev entry point — connects to dev server (dev.astrology.net.cn).
@@ -27,10 +27,12 @@ void main() async {
   };
   AppConfig.init(env, mode: AppMode.dev);
 
+  // Restore saved dev server URL override (if any) before building providers
+  final prefs = await restoreDevServerOverride();
+
   final astroEngine = AstroEngine();
   await astroEngine.init();
 
-  final prefs = await SharedPreferences.getInstance();
   runApp(
     ProviderScope(
       observers: [if (AppConfig.mode.showStackTrace) DebugProviderObserver()],

@@ -665,5 +665,16 @@
   "photoAnalysisDefaultQuestion": "请帮我解读这张星盘图片",
   "photoAnalysisSend": "开始解读",
   "photoAnalysisNoImage": "请先选择或拍摄图片",
-  "photoAnalysisImageSelected": "图片已选择"
+  "photoAnalysisImageSelected": "图片已选择",
+
+  "devServerTitle": "开发者选项",
+  "devServerLabel": "服务器地址",
+  "devServerApply": "应用",
+  "devServerSwitched": "已切换服务器，请重新登录",
+  "devServerDefault": "默认: {url}",
+  "@devServerDefault": {
+    "placeholders": {
+      "url": { "type": "String" }
+    }
+  }
 }

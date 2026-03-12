@@ -53,6 +53,11 @@ class DioClient {
 
   Dio get dio => _dio;
 
+  /// Update the base URL at runtime (e.g. dev server switch).
+  void updateBaseUrl(String url) {
+    _dio.options.baseUrl = url;
+  }
+
   void setAuthToken(String token) {
     _dio.options.headers['Authorization'] = 'Bearer $token';
   }
@@ -63,7 +68,11 @@ class DioClient {
 
   /// Install an interceptor that calls [onUnauthorized] on 401 responses.
   /// Returns true from [onUnauthorized] to retry the request with a new token.
+  /// Safe to call multiple times — only installs once per DioClient instance.
+  bool _hasAuthInterceptor = false;
   void addAuthInterceptor({required Future<bool> Function() onUnauthorized}) {
+    if (_hasAuthInterceptor) return;
+    _hasAuthInterceptor = true;
     _dio.interceptors.add(
       InterceptorsWrapper(
         onError: (error, handler) async {

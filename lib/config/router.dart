@@ -53,6 +53,8 @@ import '../features/social/presentation/pages/share_preview_page.dart';
 import '../features/social/domain/models/shared_card.dart';
 import '../features/photo_analysis/presentation/pages/photo_analysis_page.dart';
 
+final rootNavigatorKey = GlobalKey<NavigatorState>();
+
 final routerProvider = Provider<GoRouter>((ref) {
   final authStatus = ref.watch(authProvider.select((s) => s.status));
   final needsOnboarding = ref.watch(
@@ -60,6 +62,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   );
 
   return GoRouter(
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/home',
     redirect: (context, state) {
       final isAuth = authStatus == AuthStatus.authenticated;
