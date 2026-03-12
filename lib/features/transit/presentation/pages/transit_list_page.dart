@@ -57,13 +57,13 @@ class TransitListPage extends ConsumerWidget {
             children: [
               // Daily transit events (computed on-the-fly)
               _SectionHeader(
-                title: '今日行运',
+                title: l10n.transitDailyTitle,
                 icon: Icons.today,
                 color: CosmicColors.warning,
               ),
               const SizedBox(height: 10),
               dailyAsync.when(
-                data: (scan) => _buildDailyEvents(scan),
+                data: (scan) => _buildDailyEvents(scan, l10n),
                 loading: () => const Padding(
                   padding: EdgeInsets.symmetric(vertical: 32),
                   child: Center(child: BreathingLoader()),
@@ -111,14 +111,17 @@ class TransitListPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildDailyEvents(DailyTransitScan scan) {
+  Widget _buildDailyEvents(DailyTransitScan scan, AppLocalizations l10n) {
     if (scan.events.isEmpty) {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 24),
-        child: const Center(
+        child: Center(
           child: Text(
-            '今日暂无显著行运事件',
-            style: TextStyle(color: CosmicColors.textSecondary, fontSize: 14),
+            l10n.transitDailyEmpty,
+            style: const TextStyle(
+              color: CosmicColors.textSecondary,
+              fontSize: 14,
+            ),
           ),
         ),
       );

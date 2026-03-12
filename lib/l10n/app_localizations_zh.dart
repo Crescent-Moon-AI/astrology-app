@@ -1385,6 +1385,98 @@ class AppLocalizationsZh extends AppLocalizations {
   String get transitNatalPlanet => '本命行星';
 
   @override
+  String get planetSun => '太阳';
+
+  @override
+  String get planetMoon => '月亮';
+
+  @override
+  String get planetMercury => '水星';
+
+  @override
+  String get planetVenus => '金星';
+
+  @override
+  String get planetMars => '火星';
+
+  @override
+  String get planetJupiter => '木星';
+
+  @override
+  String get planetSaturn => '土星';
+
+  @override
+  String get planetUranus => '天王星';
+
+  @override
+  String get planetNeptune => '海王星';
+
+  @override
+  String get planetPluto => '冥王星';
+
+  @override
+  String get aspectConjunction => '合';
+
+  @override
+  String get aspectOpposition => '冲';
+
+  @override
+  String get aspectTrine => '三合';
+
+  @override
+  String get aspectSquare => '四分';
+
+  @override
+  String get aspectSextile => '六合';
+
+  @override
+  String get signAries => '白羊座';
+
+  @override
+  String get signTaurus => '金牛座';
+
+  @override
+  String get signGemini => '双子座';
+
+  @override
+  String get signCancer => '巨蟹座';
+
+  @override
+  String get signLeo => '狮子座';
+
+  @override
+  String get signVirgo => '处女座';
+
+  @override
+  String get signLibra => '天秤座';
+
+  @override
+  String get signScorpio => '天蝎座';
+
+  @override
+  String get signSagittarius => '射手座';
+
+  @override
+  String get signCapricorn => '摩羯座';
+
+  @override
+  String get signAquarius => '水瓶座';
+
+  @override
+  String get signPisces => '双鱼座';
+
+  @override
+  String get transitDailyTitle => '今日行运';
+
+  @override
+  String get transitDailyEmpty => '今日暂无显著行运事件';
+
+  @override
+  String transitTitleFormat(String planet, String aspect, String natalPlanet) {
+    return '$planet $aspect $natalPlanet';
+  }
+
+  @override
   String get transitHouse => '宫位';
 
   @override

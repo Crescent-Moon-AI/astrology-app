@@ -3,6 +3,7 @@ import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../domain/models/user_transit_alert.dart';
 import 'severity_badge.dart';
+import 'transit_i18n.dart';
 
 class TransitCard extends StatelessWidget {
   final UserTransitAlert alert;
@@ -62,7 +63,7 @@ class TransitCard extends StatelessWidget {
 
               // Transit description
               Text(
-                _buildTitle(),
+                _buildTitle(l10n),
                 style: const TextStyle(
                   color: CosmicColors.textPrimary,
                   fontSize: 15,
@@ -77,7 +78,9 @@ class TransitCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Orb: ${alert.orb.toStringAsFixed(1)}\u00B0',
+                    l10n.transitOrbLabel(
+                      '${alert.orb.toStringAsFixed(1)}\u00B0',
+                    ),
                     style: const TextStyle(
                       color: CosmicColors.textTertiary,
                       fontSize: 12,
@@ -116,10 +119,12 @@ class TransitCard extends StatelessWidget {
     );
   }
 
-  String _buildTitle() {
+  String _buildTitle(AppLocalizations l10n) {
     final event = alert.transitEvent;
-    final aspect = event.aspectType ?? event.eventType;
-    return '${event.planet} $aspect ${alert.natalPlanet}';
+    final planet = localizedPlanet(l10n, event.planet);
+    final aspect = localizedAspect(l10n, event.aspectType ?? event.eventType);
+    final natal = localizedPlanet(l10n, alert.natalPlanet);
+    return l10n.transitTitleFormat(planet, aspect, natal);
   }
 
   IconData _planetIcon(String planet) {

@@ -6,6 +6,8 @@ import '../../../../shared/theme/cosmic_colors.dart';
 import '../providers/transit_providers.dart';
 import 'transit_card.dart';
 
+const _severityPriority = <String, int>{'major': 0, 'medium': 1, 'low': 2};
+
 class ActiveTransitsSection extends ConsumerWidget {
   const ActiveTransitsSection({super.key});
 
@@ -17,6 +19,15 @@ class ActiveTransitsSection extends ConsumerWidget {
     return activeAsync.when(
       data: (alerts) {
         if (alerts.isEmpty) return const SizedBox.shrink();
+
+        // Sort by severity (major first)
+        final sorted = List.of(alerts)
+          ..sort(
+            (a, b) => (_severityPriority[a.transitEvent.severity] ?? 2)
+                .compareTo(_severityPriority[b.transitEvent.severity] ?? 2),
+          );
+        final display = sorted.take(3).toList();
+        final hasMore = alerts.length > 3;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,17 +61,52 @@ class ActiveTransitsSection extends ConsumerWidget {
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: alerts.length,
+                itemCount: display.length + (hasMore ? 1 : 0),
                 separatorBuilder: (_, _) => const SizedBox(width: 12),
                 itemBuilder: (context, index) {
-                  final alert = alerts[index];
-                  return SizedBox(
-                    width: 260,
-                    child: TransitCard(
-                      alert: alert,
-                      onTap: () => context.pushNamed(
-                        'transitDetail',
-                        pathParameters: {'id': alert.id},
+                  if (index < display.length) {
+                    final alert = display[index];
+                    return SizedBox(
+                      width: 260,
+                      child: TransitCard(
+                        alert: alert,
+                        onTap: () => context.pushNamed(
+                          'transitDetail',
+                          pathParameters: {'id': alert.id},
+                        ),
+                      ),
+                    );
+                  }
+                  // "查看全部" card
+                  return GestureDetector(
+                    onTap: () => context.pushNamed('transits'),
+                    child: Container(
+                      width: 260,
+                      decoration: BoxDecoration(
+                        color: CosmicColors.surfaceElevated.withAlpha(120),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: CosmicColors.borderGlow),
+                      ),
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '查看全部 ${alerts.length} 个行运',
+                              style: const TextStyle(
+                                color: CosmicColors.primaryLight,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Icon(
+                              Icons.chevron_right,
+                              color: CosmicColors.primaryLight,
+                              size: 18,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

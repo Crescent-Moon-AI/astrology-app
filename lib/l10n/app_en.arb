@@ -558,6 +558,48 @@
 
   "transitTransitPlanet": "Transit Planet",
   "transitNatalPlanet": "Natal Planet",
+
+  "planetSun": "Sun",
+  "planetMoon": "Moon",
+  "planetMercury": "Mercury",
+  "planetVenus": "Venus",
+  "planetMars": "Mars",
+  "planetJupiter": "Jupiter",
+  "planetSaturn": "Saturn",
+  "planetUranus": "Uranus",
+  "planetNeptune": "Neptune",
+  "planetPluto": "Pluto",
+
+  "aspectConjunction": "Conjunction",
+  "aspectOpposition": "Opposition",
+  "aspectTrine": "Trine",
+  "aspectSquare": "Square",
+  "aspectSextile": "Sextile",
+
+  "signAries": "Aries",
+  "signTaurus": "Taurus",
+  "signGemini": "Gemini",
+  "signCancer": "Cancer",
+  "signLeo": "Leo",
+  "signVirgo": "Virgo",
+  "signLibra": "Libra",
+  "signScorpio": "Scorpio",
+  "signSagittarius": "Sagittarius",
+  "signCapricorn": "Capricorn",
+  "signAquarius": "Aquarius",
+  "signPisces": "Pisces",
+
+  "transitDailyTitle": "Today's Transits",
+  "transitDailyEmpty": "No significant transit events today",
+
+  "transitTitleFormat": "{planet} {aspect} {natalPlanet}",
+  "@transitTitleFormat": {
+    "placeholders": {
+      "planet": { "type": "String" },
+      "aspect": { "type": "String" },
+      "natalPlanet": { "type": "String" }
+    }
+  },
   "transitHouse": "House",
   "transitExactDate": "Exact Date",
   "transitActivePeriod": "Active Period",

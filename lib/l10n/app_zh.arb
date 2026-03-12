@@ -558,6 +558,48 @@
 
   "transitTransitPlanet": "行运行星",
   "transitNatalPlanet": "本命行星",
+
+  "planetSun": "太阳",
+  "planetMoon": "月亮",
+  "planetMercury": "水星",
+  "planetVenus": "金星",
+  "planetMars": "火星",
+  "planetJupiter": "木星",
+  "planetSaturn": "土星",
+  "planetUranus": "天王星",
+  "planetNeptune": "海王星",
+  "planetPluto": "冥王星",
+
+  "aspectConjunction": "合",
+  "aspectOpposition": "冲",
+  "aspectTrine": "三合",
+  "aspectSquare": "四分",
+  "aspectSextile": "六合",
+
+  "signAries": "白羊座",
+  "signTaurus": "金牛座",
+  "signGemini": "双子座",
+  "signCancer": "巨蟹座",
+  "signLeo": "狮子座",
+  "signVirgo": "处女座",
+  "signLibra": "天秤座",
+  "signScorpio": "天蝎座",
+  "signSagittarius": "射手座",
+  "signCapricorn": "摩羯座",
+  "signAquarius": "水瓶座",
+  "signPisces": "双鱼座",
+
+  "transitDailyTitle": "今日行运",
+  "transitDailyEmpty": "今日暂无显著行运事件",
+
+  "transitTitleFormat": "{planet} {aspect} {natalPlanet}",
+  "@transitTitleFormat": {
+    "placeholders": {
+      "planet": { "type": "String" },
+      "aspect": { "type": "String" },
+      "natalPlanet": { "type": "String" }
+    }
+  },
   "transitHouse": "宫位",
   "transitExactDate": "精确日期",
   "transitActivePeriod": "活跃期间",

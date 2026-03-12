@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -58,6 +59,28 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     } else {
       _finish();
     }
+  }
+
+  void _previousStep() {
+    if (_currentStep > 0) {
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+      setState(() => _currentStep--);
+    }
+  }
+
+  String _extractError(DioException e) {
+    final data = e.response?.data;
+    if (data is Map<String, dynamic>) {
+      final error = data['error'];
+      if (error is Map<String, dynamic>) {
+        return error['message'] as String? ?? '未知错误';
+      }
+      if (error is String) return error;
+    }
+    return e.message ?? '网络错误';
   }
 
   bool get _canProceed {
@@ -193,11 +216,27 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       await ref.read(authProvider.notifier).refreshUser();
 
       if (mounted) context.go('/home');
+    } on DioException catch (e) {
+      if (mounted) {
+        final msg = _extractError(e);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(msg)));
+        // 409 = username conflict → go back to nickname step
+        if (e.response?.statusCode == 409) {
+          _pageController.animateToPage(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+          setState(() => _currentStep = 0);
+        }
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('\u4FDD\u5B58\u5931\u8D25: $e')));
+        ).showSnackBar(const SnackBar(content: Text('保存失败，请重试')));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -235,6 +274,23 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   }),
                 ),
               ),
+
+              // Back button
+              if (_currentStep > 0)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: CosmicColors.textSecondary,
+                        size: 20,
+                      ),
+                      onPressed: _previousStep,
+                    ),
+                  ),
+                ),
 
               // Pages
               Expanded(

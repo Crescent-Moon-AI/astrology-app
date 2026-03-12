@@ -83,7 +83,7 @@ jobs:
         id: matrix
         run: |
           MOCK='{"variant":"mock","target":"lib/main_mock.dart"}'
-          DEV='{"variant":"dev","target":"lib/main.dart"}'
+          DEV='{"variant":"dev","target":"lib/main_dev.dart"}'
           REL='{"variant":"release","target":"lib/main_release.dart"}'
 
           case "${{ github.event_name }}" in
