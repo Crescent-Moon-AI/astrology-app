@@ -78,6 +78,7 @@ name = "astro-ffi"
 version = "0.1.0"
 dependencies = [
  "astro-core",
+ "chrono",
  "serde",
  "serde_json",
 ]

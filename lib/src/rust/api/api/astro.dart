@@ -103,3 +103,21 @@ Future<String> findLunarReturn({
   houseSystem: houseSystem,
   targetDate: targetDate,
 );
+
+/// Scan daily transit events (transit planets vs natal chart). Input/output as JSON strings.
+Future<String> scanTransitEventsJson({required String inputJson}) => RustLib
+    .instance
+    .api
+    .crateApiAstroScanTransitEventsJson(inputJson: inputJson);
+
+/// Scan transit events over a date range. Input/output as JSON strings.
+/// Input: `{ birth_date, birth_time, latitude, longitude, timezone, house_system, start_date, days }`
+/// Output: JSON array of daily scan results.
+Future<String> scanTransitRangeJson({required String inputJson}) => RustLib
+    .instance
+    .api
+    .crateApiAstroScanTransitRangeJson(inputJson: inputJson);
+
+/// Scan daily sky aspects (transit-to-transit, universal). Input/output as JSON strings.
+Future<String> scanSkyAspectsJson({required String inputJson}) =>
+    RustLib.instance.api.crateApiAstroScanSkyAspectsJson(inputJson: inputJson);

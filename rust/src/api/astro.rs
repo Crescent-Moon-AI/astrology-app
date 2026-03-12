@@ -103,3 +103,20 @@ pub fn find_lunar_return(
         target_date,
     )
 }
+
+/// Scan daily transit events (transit planets vs natal chart). Input/output as JSON strings.
+pub fn scan_transit_events_json(input_json: String) -> Result<String, String> {
+    astro_ffi::scan_transit_events_json(input_json)
+}
+
+/// Scan transit events over a date range. Input/output as JSON strings.
+/// Input: `{ birth_date, birth_time, latitude, longitude, timezone, house_system, start_date, days }`
+/// Output: JSON array of daily scan results.
+pub fn scan_transit_range_json(input_json: String) -> Result<String, String> {
+    astro_ffi::scan_transit_range_json(input_json)
+}
+
+/// Scan daily sky aspects (transit-to-transit, universal). Input/output as JSON strings.
+pub fn scan_sky_aspects_json(input_json: String) -> Result<String, String> {
+    astro_ffi::scan_sky_aspects_json(input_json)
+}

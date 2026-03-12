@@ -67,7 +67,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => 718203406;
+  int get rustContentHash => 711028256;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -131,6 +131,14 @@ abstract class RustLibApi extends BaseApi {
   String crateApiSimpleGreet({required String name});
 
   Future<void> crateApiSimpleInitApp();
+
+  Future<String> crateApiAstroScanSkyAspectsJson({required String inputJson});
+
+  Future<String> crateApiAstroScanTransitEventsJson({
+    required String inputJson,
+  });
+
+  Future<String> crateApiAstroScanTransitRangeJson({required String inputJson});
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -534,6 +542,103 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   TaskConstMeta get kCrateApiSimpleInitAppConstMeta =>
       const TaskConstMeta(debugName: "init_app", argNames: []);
+
+  @override
+  Future<String> crateApiAstroScanSkyAspectsJson({required String inputJson}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(inputJson, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 10,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiAstroScanSkyAspectsJsonConstMeta,
+        argValues: [inputJson],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiAstroScanSkyAspectsJsonConstMeta =>
+      const TaskConstMeta(
+        debugName: "scan_sky_aspects_json",
+        argNames: ["inputJson"],
+      );
+
+  @override
+  Future<String> crateApiAstroScanTransitEventsJson({
+    required String inputJson,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(inputJson, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 11,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiAstroScanTransitEventsJsonConstMeta,
+        argValues: [inputJson],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiAstroScanTransitEventsJsonConstMeta =>
+      const TaskConstMeta(
+        debugName: "scan_transit_events_json",
+        argNames: ["inputJson"],
+      );
+
+  @override
+  Future<String> crateApiAstroScanTransitRangeJson({
+    required String inputJson,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(inputJson, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 12,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiAstroScanTransitRangeJsonConstMeta,
+        argValues: [inputJson],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiAstroScanTransitRangeJsonConstMeta =>
+      const TaskConstMeta(
+        debugName: "scan_transit_range_json",
+        argNames: ["inputJson"],
+      );
 
   @protected
   String dco_decode_String(dynamic raw) {
