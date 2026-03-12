@@ -29,8 +29,10 @@ final selectedDateProvider = NotifierProvider<SelectedDateNotifier, DateTime>(
 );
 
 /// Daily fortune by explicit date string (for detail page date picker).
-final dailyFortuneByDateProvider =
-    FutureProvider.family<DailyFortune, String>((ref, dateStr) async {
+final dailyFortuneByDateProvider = FutureProvider.family<DailyFortune, String>((
+  ref,
+  dateStr,
+) async {
   final repo = ref.watch(fortuneRepositoryProvider);
 
   String? birthDate;

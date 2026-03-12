@@ -428,7 +428,9 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
                                       _initialCityCity = null;
                                       _initialCityDistrict = null;
                                     });
-                                    final notifier = ref.read(birthDataFormProvider.notifier);
+                                    final notifier = ref.read(
+                                      birthDataFormProvider.notifier,
+                                    );
                                     notifier.setCurrentCity(null);
                                     notifier.setCurrentCityDisplay(null);
                                   },
@@ -591,7 +593,9 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
     );
     if (result == null || !mounted) return;
 
-    ref.read(birthDataFormProvider.notifier).setBirthPlaceDisplay(result.displayName);
+    ref
+        .read(birthDataFormProvider.notifier)
+        .setBirthPlaceDisplay(result.displayName);
     setState(() {
       _initialProvince = result.province;
       _initialCity = result.city;
@@ -610,7 +614,9 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
     );
     if (result == null || !mounted) return;
 
-    ref.read(birthDataFormProvider.notifier).setCurrentCityDisplay(result.displayName);
+    ref
+        .read(birthDataFormProvider.notifier)
+        .setCurrentCityDisplay(result.displayName);
     setState(() {
       _initialCityProvince = result.province;
       _initialCityCity = result.city;
