@@ -317,7 +317,8 @@ class MockInterceptor extends Interceptor {
       return {'data': {}};
     }
     if (_matchPath(path, '/api/transits/{id}') && method == 'GET') {
-      return _transitDetail();
+      final id = path.split('/')[3];
+      return _transitDetail(id);
     }
     if (path == '/api/calendar' && method == 'GET') return _calendarEvents();
     if (path == '/api/transit/daily' && method == 'GET') {
@@ -959,41 +960,19 @@ class MockInterceptor extends Interceptor {
     };
   }
 
-  Map<String, dynamic> _transitDetail() {
-    final now = DateTime.now();
-    return {
-      'data': _mockTransitAlert(
-        'mock-ta-001',
-        natalPlanet: 'Venus',
-        natalSign: 'Capricorn',
-        natalDegree: 280.5,
-        natalHouse: 7,
-        transitSign: 'Pisces',
-        transitDegree: 340.5,
-        orb: 0.8,
-        transitEvent: {
-          'id': 'mock-te-001',
-          'event_type': 'aspect',
-          'planet': 'Venus',
-          'target_planet': 'Venus',
-          'aspect_type': 'sextile',
-          'sign': 'Pisces',
-          'exact_date': now.toIso8601String().split('T').first,
-          'start_date': now
-              .subtract(const Duration(days: 2))
-              .toIso8601String()
-              .split('T')
-              .first,
-          'end_date': now
-              .add(const Duration(days: 5))
-              .toIso8601String()
-              .split('T')
-              .first,
-          'description_key': 'transit.venus_sextile_venus',
-          'severity': 'medium',
-        },
-      ),
-    };
+  Map<String, dynamic> _transitDetail(String id) {
+    // Reuse the same data from active/upcoming lists
+    final active = _transitsActive();
+    final upcoming = _transitsUpcoming();
+    final allAlerts = [
+      ...(active['data']!['items'] as List),
+      ...(upcoming['data']!['items'] as List),
+    ];
+    final match = allAlerts.cast<Map<String, dynamic>>().firstWhere(
+      (a) => a['id'] == id,
+      orElse: () => allAlerts.first as Map<String, dynamic>,
+    );
+    return {'data': match};
   }
 
   Map<String, dynamic> _calendarEvents() => {

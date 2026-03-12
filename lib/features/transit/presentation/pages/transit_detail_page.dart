@@ -7,6 +7,7 @@ import '../../../../shared/widgets/breathing_loader.dart';
 import '../../domain/models/user_transit_alert.dart';
 import '../providers/transit_providers.dart';
 import '../widgets/severity_badge.dart';
+import '../widgets/transit_i18n.dart';
 
 class TransitDetailPage extends ConsumerWidget {
   final String transitAlertId;
@@ -61,7 +62,7 @@ class TransitDetailPage extends ConsumerWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              _buildTitle(alert),
+                              _buildTitle(l10n, alert),
                               style: const TextStyle(
                                 color: CosmicColors.textPrimary,
                                 fontSize: 20,
@@ -124,7 +125,7 @@ class TransitDetailPage extends ConsumerWidget {
                         icon: Icons.wb_sunny_outlined,
                         label: l10n.transitTransitPlanet,
                         value:
-                            '${event.planet} ${alert.transitDegree.toStringAsFixed(1)}\u00B0 ${alert.transitSign}',
+                            '${localizedPlanet(l10n, event.planet)} ${alert.transitDegree.toStringAsFixed(1)}\u00B0 ${localizedSign(l10n, alert.transitSign)}',
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 2),
@@ -134,7 +135,7 @@ class TransitDetailPage extends ConsumerWidget {
                         icon: Icons.dark_mode_outlined,
                         label: l10n.transitNatalPlanet,
                         value:
-                            '${alert.natalPlanet} ${alert.natalDegree.toStringAsFixed(1)}\u00B0 ${alert.natalSign}',
+                            '${localizedPlanet(l10n, alert.natalPlanet)} ${alert.natalDegree.toStringAsFixed(1)}\u00B0 ${localizedSign(l10n, alert.natalSign)}',
                       ),
                       if (alert.natalHouse != null) ...[
                         const Padding(
@@ -288,10 +289,12 @@ class TransitDetailPage extends ConsumerWidget {
     );
   }
 
-  String _buildTitle(UserTransitAlert alert) {
+  String _buildTitle(AppLocalizations l10n, UserTransitAlert alert) {
     final event = alert.transitEvent;
-    final aspect = event.aspectType ?? event.eventType;
-    return '${event.planet} $aspect ${alert.natalPlanet}';
+    final planet = localizedPlanet(l10n, event.planet);
+    final aspect = localizedAspect(l10n, event.aspectType ?? event.eventType);
+    final natal = localizedPlanet(l10n, alert.natalPlanet);
+    return l10n.transitTitleFormat(planet, aspect, natal);
   }
 }
 
@@ -447,7 +450,7 @@ class _DurationBar extends StatelessWidget {
               ),
               if (exact != null)
                 Text(
-                  'Exact: $exactDate',
+                  AppLocalizations.of(context)!.transitExactLabel(exactDate),
                   style: const TextStyle(
                     color: CosmicColors.secondary,
                     fontSize: 11,

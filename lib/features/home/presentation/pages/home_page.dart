@@ -14,7 +14,6 @@ import '../widgets/fortune_score_section.dart';
 import '../widgets/quick_action_cards.dart';
 import '../widgets/home_scenario_section.dart';
 import '../widgets/explore_more_section.dart';
-import '../../../transit/presentation/widgets/active_transits_section.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -185,8 +184,6 @@ class HomePage extends ConsumerWidget {
                         ),
                       const QuickActionCards(),
                       const SizedBox(height: 8),
-                      const ActiveTransitsSection(),
-                      const SizedBox(height: 8),
                       const HomeScenarioSection(),
                       const SizedBox(height: 8),
                       const ExploreMoreSection(),
@@ -203,8 +200,7 @@ class HomePage extends ConsumerWidget {
   }
 }
 
-/// Compact horizontal row showing the 4 lucky elements: color swatch, number,
-/// flower, and stone — matching the Yuejian home page design.
+/// Compact horizontal row showing the 4 lucky elements.
 class _LuckyElementsRow extends StatelessWidget {
   final DailyFortune fortune;
 
@@ -337,7 +333,6 @@ class _LuckyItem extends StatelessWidget {
 
 class _HexagonNumber extends StatelessWidget {
   final int number;
-
   const _HexagonNumber({required this.number});
 
   @override
@@ -372,7 +367,6 @@ class _HexPainter extends CustomPainter {
       ..color = CosmicColors.primaryLight.withAlpha(120)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
-
     final cx = size.width / 2;
     final cy = size.height / 2;
     final r = size.width / 2 - 1;

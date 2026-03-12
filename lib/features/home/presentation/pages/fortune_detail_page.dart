@@ -2,11 +2,14 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../domain/models/daily_fortune.dart';
 import '../providers/home_providers.dart';
 import '../widgets/dimension_arc.dart';
+import '../../../transit/domain/models/daily_transit.dart';
+import '../../../transit/presentation/providers/transit_providers.dart';
 
 class FortuneDetailPage extends ConsumerStatefulWidget {
   final DailyFortune fortune;
@@ -137,7 +140,7 @@ class _FortuneDetailPageState extends ConsumerState<FortuneDetailPage>
 
 // ---------- Daily Tab ----------
 
-class _DailyTab extends StatelessWidget {
+class _DailyTab extends ConsumerWidget {
   final DailyFortune fortune;
   final List<Color> dimensionColors;
   final Map<String, Color> colorMap;
@@ -151,7 +154,9 @@ class _DailyTab extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final dailyTransitAsync = ref.watch(dailyTransitsProvider(null));
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -225,6 +230,41 @@ class _DailyTab extends StatelessWidget {
             lucky: fortune.luckyElements,
             colorMap: colorMap,
             isZh: isZh,
+          ),
+          // Daily transit timeline
+          dailyTransitAsync.when(
+            data: (scan) {
+              if (scan.events.isEmpty) return const SizedBox.shrink();
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _SectionTitle(text: l10n.transitDailyTitle),
+                      GestureDetector(
+                        onTap: () => context.pushNamed('transits'),
+                        child: Text(
+                          l10n.cardShowDetails,
+                          style: const TextStyle(
+                            color: CosmicColors.primaryLight,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  GestureDetector(
+                    onTap: () => context.pushNamed('transits'),
+                    child: _DailyTransitList(events: scan.events),
+                  ),
+                ],
+              );
+            },
+            loading: () => const SizedBox.shrink(),
+            error: (_, _) => const SizedBox.shrink(),
           ),
           const SizedBox(height: 32),
           // AI consult entry
@@ -1099,5 +1139,142 @@ class _TopicChip extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+// ---------- Daily Transit List ----------
+
+class _DailyTransitList extends StatelessWidget {
+  final List<DailyTransitEvent> events;
+
+  const _DailyTransitList({required this.events});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: CosmicColors.surfaceElevated,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: CosmicColors.borderGlow),
+      ),
+      child: Column(
+        children: [
+          for (int i = 0; i < events.length; i++) ...[
+            if (i > 0)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Divider(
+                  height: 1,
+                  color: CosmicColors.borderGlow.withAlpha(60),
+                ),
+              ),
+            _DailyTransitRow(event: events[i]),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _DailyTransitRow extends StatelessWidget {
+  final DailyTransitEvent event;
+
+  const _DailyTransitRow({required this.event});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        // Time badge
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: _typeColor.withAlpha(30),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            event.time,
+            style: TextStyle(
+              color: _typeColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        // Icon
+        Icon(_typeIcon, size: 16, color: _typeColor),
+        const SizedBox(width: 8),
+        // Title + subtitle
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                event.title,
+                style: const TextStyle(
+                  color: CosmicColors.textPrimary,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              if (_subtitle != null) ...[
+                const SizedBox(height: 2),
+                Text(
+                  _subtitle!,
+                  style: const TextStyle(
+                    color: CosmicColors.textTertiary,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Color get _typeColor {
+    switch (event.eventType) {
+      case 'transit_aspect':
+        return const Color(0xFFFFBE0B);
+      case 'house_ingress':
+        return const Color(0xFF3498DB);
+      case 'sign_ingress':
+        return const Color(0xFF9B59B6);
+      default:
+        return CosmicColors.primaryLight;
+    }
+  }
+
+  IconData get _typeIcon {
+    switch (event.eventType) {
+      case 'transit_aspect':
+        return Icons.auto_awesome;
+      case 'house_ingress':
+        return Icons.house_outlined;
+      case 'sign_ingress':
+        return Icons.change_circle_outlined;
+      default:
+        return Icons.stars;
+    }
+  }
+
+  String? get _subtitle {
+    switch (event.eventType) {
+      case 'transit_aspect':
+        return '${event.transitPlanetCn} ${event.aspectCn} ${event.natalPlanetCn}';
+      case 'house_ingress':
+        return '${event.transitPlanetCn} → 第${event.houseNumber}宫';
+      case 'sign_ingress':
+        return '${event.transitPlanetCn} → ${event.signCn} (第${event.activatedHouse}宫)';
+      default:
+        return null;
+    }
   }
 }

@@ -1401,6 +1401,98 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transitNatalPlanet => 'Natal Planet';
 
   @override
+  String get planetSun => 'Sun';
+
+  @override
+  String get planetMoon => 'Moon';
+
+  @override
+  String get planetMercury => 'Mercury';
+
+  @override
+  String get planetVenus => 'Venus';
+
+  @override
+  String get planetMars => 'Mars';
+
+  @override
+  String get planetJupiter => 'Jupiter';
+
+  @override
+  String get planetSaturn => 'Saturn';
+
+  @override
+  String get planetUranus => 'Uranus';
+
+  @override
+  String get planetNeptune => 'Neptune';
+
+  @override
+  String get planetPluto => 'Pluto';
+
+  @override
+  String get aspectConjunction => 'Conjunction';
+
+  @override
+  String get aspectOpposition => 'Opposition';
+
+  @override
+  String get aspectTrine => 'Trine';
+
+  @override
+  String get aspectSquare => 'Square';
+
+  @override
+  String get aspectSextile => 'Sextile';
+
+  @override
+  String get signAries => 'Aries';
+
+  @override
+  String get signTaurus => 'Taurus';
+
+  @override
+  String get signGemini => 'Gemini';
+
+  @override
+  String get signCancer => 'Cancer';
+
+  @override
+  String get signLeo => 'Leo';
+
+  @override
+  String get signVirgo => 'Virgo';
+
+  @override
+  String get signLibra => 'Libra';
+
+  @override
+  String get signScorpio => 'Scorpio';
+
+  @override
+  String get signSagittarius => 'Sagittarius';
+
+  @override
+  String get signCapricorn => 'Capricorn';
+
+  @override
+  String get signAquarius => 'Aquarius';
+
+  @override
+  String get signPisces => 'Pisces';
+
+  @override
+  String get transitDailyTitle => 'Today\'s Transits';
+
+  @override
+  String get transitDailyEmpty => 'No significant transit events today';
+
+  @override
+  String transitTitleFormat(String planet, String aspect, String natalPlanet) {
+    return '$planet $aspect $natalPlanet';
+  }
+
+  @override
   String get transitHouse => 'House';
 
   @override
