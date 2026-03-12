@@ -52,6 +52,8 @@ class BirthDataFormState {
   final BirthTimeAccuracy birthTimeAccuracy;
   final LocationCandidate? selectedLocation;
   final LocationCandidate? currentCityLocation;
+  final String? birthPlaceDisplay;
+  final String? currentCityDisplay;
   final bool isSaving;
   final String? error;
 
@@ -61,6 +63,8 @@ class BirthDataFormState {
     this.birthTimeAccuracy = BirthTimeAccuracy.unknown,
     this.selectedLocation,
     this.currentCityLocation,
+    this.birthPlaceDisplay,
+    this.currentCityDisplay,
     this.isSaving = false,
     this.error,
   });
@@ -71,6 +75,8 @@ class BirthDataFormState {
     BirthTimeAccuracy? birthTimeAccuracy,
     LocationCandidate? Function()? selectedLocation,
     LocationCandidate? Function()? currentCityLocation,
+    String? Function()? birthPlaceDisplay,
+    String? Function()? currentCityDisplay,
     bool? isSaving,
     String? Function()? error,
   }) {
@@ -84,6 +90,12 @@ class BirthDataFormState {
       currentCityLocation: currentCityLocation != null
           ? currentCityLocation()
           : this.currentCityLocation,
+      birthPlaceDisplay: birthPlaceDisplay != null
+          ? birthPlaceDisplay()
+          : this.birthPlaceDisplay,
+      currentCityDisplay: currentCityDisplay != null
+          ? currentCityDisplay()
+          : this.currentCityDisplay,
       isSaving: isSaving ?? this.isSaving,
       error: error != null ? error() : this.error,
     );
@@ -151,6 +163,8 @@ class BirthDataFormNotifier extends Notifier<BirthDataFormState> {
       birthTimeAccuracy: core.birthTimeAccuracy,
       selectedLocation: location,
       currentCityLocation: cityLocation,
+      birthPlaceDisplay: place?.normalizedName,
+      currentCityDisplay: city?.normalizedName,
     );
   }
 
@@ -178,8 +192,16 @@ class BirthDataFormNotifier extends Notifier<BirthDataFormState> {
     state = state.copyWith(selectedLocation: () => location);
   }
 
+  void setBirthPlaceDisplay(String? display) {
+    state = state.copyWith(birthPlaceDisplay: () => display);
+  }
+
   void setCurrentCity(LocationCandidate? location) {
     state = state.copyWith(currentCityLocation: () => location);
+  }
+
+  void setCurrentCityDisplay(String? display) {
+    state = state.copyWith(currentCityDisplay: () => display);
   }
 
   Future<bool> save() async {

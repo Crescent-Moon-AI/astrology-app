@@ -28,6 +28,35 @@ final selectedDateProvider = NotifierProvider<SelectedDateNotifier, DateTime>(
   SelectedDateNotifier.new,
 );
 
+/// Daily fortune by explicit date string (for detail page date picker).
+final dailyFortuneByDateProvider =
+    FutureProvider.family<DailyFortune, String>((ref, dateStr) async {
+  final repo = ref.watch(fortuneRepositoryProvider);
+
+  String? birthDate;
+  try {
+    final profile = await ref.watch(userProfileProvider.future);
+    birthDate = profile.core.birthDate;
+  } catch (_) {
+    birthDate = null;
+  }
+
+  try {
+    return await repo.getDailyFortune(date: dateStr);
+  } on DioException catch (e) {
+    if (e.response?.statusCode == 404) {
+      final parts = dateStr.split('-');
+      final date = DateTime(
+        int.parse(parts[0]),
+        int.parse(parts[1]),
+        int.parse(parts[2]),
+      );
+      return _fallbackFortune(date, dateStr, birthDate);
+    }
+    rethrow;
+  }
+});
+
 /// Daily fortune for the selected date.
 /// Falls back to client-generated data when the backend endpoint doesn't exist (404).
 final dailyFortuneProvider = FutureProvider<DailyFortune>((ref) async {

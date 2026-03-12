@@ -24,12 +24,10 @@ class EditBirthDataPage extends ConsumerStatefulWidget {
 class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
   final _locationController = TextEditingController();
   bool _initialized = false;
-  String? _selectedRegionDisplay;
   String? _initialProvince;
   String? _initialCity;
   String? _initialDistrict;
   // Current city (residence)
-  String? _selectedCityDisplay;
   String? _initialCityProvince;
   String? _initialCityCity;
   String? _initialCityDistrict;
@@ -48,7 +46,6 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
     if (p.currentBirthPlace?.normalizedName != null) {
       final name = p.currentBirthPlace!.normalizedName!;
       _locationController.text = name;
-      _selectedRegionDisplay = name;
       // Try to parse "省 - 市 - 区" format for initial picker position
       final parts = name.split(' - ');
       if (parts.length >= 3) {
@@ -71,7 +68,6 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
     // Init current city
     if (p.currentCity?.normalizedName != null) {
       final cityName = p.currentCity!.normalizedName!;
-      _selectedCityDisplay = cityName;
       final cityParts = cityName.split(' - ');
       if (cityParts.length >= 3) {
         _initialCityProvince = cityParts[0].trim();
@@ -339,10 +335,10 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  _selectedRegionDisplay ??
+                                  formState.birthPlaceDisplay ??
                                       l10n.birthPlaceSearch,
                                   style: TextStyle(
-                                    color: _selectedRegionDisplay != null
+                                    color: formState.birthPlaceDisplay != null
                                         ? CosmicColors.textPrimary
                                         : CosmicColors.textTertiary,
                                     fontSize: 15,
@@ -412,10 +408,10 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  _selectedCityDisplay ??
+                                  formState.currentCityDisplay ??
                                       l10n.currentCitySearch,
                                   style: TextStyle(
-                                    color: _selectedCityDisplay != null
+                                    color: formState.currentCityDisplay != null
                                         ? CosmicColors.textPrimary
                                         : CosmicColors.textTertiary,
                                     fontSize: 15,
@@ -424,18 +420,17 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              if (_selectedCityDisplay != null)
+                              if (formState.currentCityDisplay != null)
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      _selectedCityDisplay = null;
                                       _initialCityProvince = null;
                                       _initialCityCity = null;
                                       _initialCityDistrict = null;
                                     });
-                                    ref
-                                        .read(birthDataFormProvider.notifier)
-                                        .setCurrentCity(null);
+                                    final notifier = ref.read(birthDataFormProvider.notifier);
+                                    notifier.setCurrentCity(null);
+                                    notifier.setCurrentCityDisplay(null);
                                   },
                                   child: const Padding(
                                     padding: EdgeInsets.only(left: 8),
@@ -596,8 +591,8 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
     );
     if (result == null || !mounted) return;
 
+    ref.read(birthDataFormProvider.notifier).setBirthPlaceDisplay(result.displayName);
     setState(() {
-      _selectedRegionDisplay = result.displayName;
       _initialProvince = result.province;
       _initialCity = result.city;
       _initialDistrict = result.district;
@@ -615,8 +610,8 @@ class _EditBirthDataPageState extends ConsumerState<EditBirthDataPage> {
     );
     if (result == null || !mounted) return;
 
+    ref.read(birthDataFormProvider.notifier).setCurrentCityDisplay(result.displayName);
     setState(() {
-      _selectedCityDisplay = result.displayName;
       _initialCityProvince = result.province;
       _initialCityCity = result.city;
       _initialCityDistrict = result.district;

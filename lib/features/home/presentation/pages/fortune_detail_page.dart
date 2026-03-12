@@ -114,7 +114,7 @@ class _FortuneDetailPageState extends ConsumerState<FortuneDetailPage>
                   controller: _tabController,
                   children: [
                     _DailyTab(
-                      fortune: widget.fortune,
+                      initialFortune: widget.fortune,
                       dimensionColors: _dimensionColors,
                       colorMap: _colorMap,
                       isZh: isZh,
@@ -140,23 +140,257 @@ class _FortuneDetailPageState extends ConsumerState<FortuneDetailPage>
 
 // ---------- Daily Tab ----------
 
-class _DailyTab extends ConsumerWidget {
-  final DailyFortune fortune;
+class _DailyTab extends ConsumerStatefulWidget {
+  final DailyFortune initialFortune;
   final List<Color> dimensionColors;
   final Map<String, Color> colorMap;
   final bool isZh;
 
   const _DailyTab({
-    required this.fortune,
+    required this.initialFortune,
     required this.dimensionColors,
     required this.colorMap,
     required this.isZh,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_DailyTab> createState() => _DailyTabState();
+}
+
+class _DailyTabState extends ConsumerState<_DailyTab> {
+  late DateTime _selectedDate;
+  late String _selectedDateStr;
+  late final ScrollController _scrollController;
+
+  // 16 days: -2 to +13 relative to today
+  static const _daysBefore = 2;
+  static const _totalDays = 16;
+  late final List<DateTime> _days;
+  late final DateTime _today;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    final now = DateTime.now();
+    _today = DateTime(now.year, now.month, now.day);
+
+    // Parse the initial fortune date
+    final parts = widget.initialFortune.date.split('-');
+    _selectedDate = DateTime(
+      int.parse(parts[0]),
+      int.parse(parts[1]),
+      int.parse(parts[2]),
+    );
+    _selectedDateStr = widget.initialFortune.date;
+
+    _days = List.generate(
+      _totalDays,
+      (i) => _today.add(Duration(days: i - _daysBefore)),
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToSelected();
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToSelected() {
+    final idx = _days.indexWhere(
+      (d) =>
+          d.year == _selectedDate.year &&
+          d.month == _selectedDate.month &&
+          d.day == _selectedDate.day,
+    );
+    if (idx >= 0 && _scrollController.hasClients) {
+      final itemWidth = 56.0;
+      final viewportWidth =
+          _scrollController.position.viewportDimension;
+      final offset =
+          (idx * itemWidth - viewportWidth / 2 + itemWidth / 2).clamp(
+        0.0,
+        _scrollController.position.maxScrollExtent,
+      );
+      _scrollController.animateTo(
+        offset,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
+  void _onDateSelected(DateTime day) {
+    setState(() {
+      _selectedDate = day;
+      _selectedDateStr =
+          '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+    });
+    _scrollToSelected();
+  }
+
+  String _weekdayLabel(int weekday) {
+    if (widget.isZh) {
+      const zh = ['一', '二', '三', '四', '五', '六', '日'];
+      return '周${zh[weekday - 1]}';
+    }
+    const en = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    return en[weekday - 1];
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final dailyTransitAsync = ref.watch(dailyTransitsProvider(null));
+    final isZh = widget.isZh;
+
+    // If selected date matches the initial fortune, use it directly;
+    // otherwise fetch from provider.
+    final bool isInitialDate = _selectedDateStr == widget.initialFortune.date;
+    final fortuneAsync = isInitialDate
+        ? null
+        : ref.watch(dailyFortuneByDateProvider(_selectedDateStr));
+    final dailyTransitAsync =
+        ref.watch(dailyTransitsProvider(_selectedDateStr));
+
+    return Column(
+      children: [
+        // Date picker
+        SizedBox(
+          height: 68,
+          child: ListView.builder(
+            controller: _scrollController,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            itemCount: _days.length,
+            itemBuilder: (context, i) {
+              final day = _days[i];
+              final isSelected = day.year == _selectedDate.year &&
+                  day.month == _selectedDate.month &&
+                  day.day == _selectedDate.day;
+              final isToday = day.year == _today.year &&
+                  day.month == _today.month &&
+                  day.day == _today.day;
+
+              return GestureDetector(
+                onTap: () => _onDateSelected(day),
+                child: Container(
+                  width: 48,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? CosmicColors.primary.withAlpha(51)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(12),
+                    border: isSelected
+                        ? Border.all(
+                            color: CosmicColors.primary.withAlpha(128),
+                          )
+                        : null,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        isToday
+                            ? (isZh ? '今' : 'Now')
+                            : _weekdayLabel(day.weekday),
+                        style: TextStyle(
+                          color: isSelected
+                              ? CosmicColors.primaryLight
+                              : CosmicColors.textTertiary,
+                          fontSize: 11,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.normal,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${day.day}',
+                        style: TextStyle(
+                          color: isSelected
+                              ? CosmicColors.textPrimary
+                              : CosmicColors.textSecondary,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        // Content
+        Expanded(
+          child: _buildContent(
+            context,
+            l10n,
+            isInitialDate ? widget.initialFortune : null,
+            fortuneAsync,
+            dailyTransitAsync,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContent(
+    BuildContext context,
+    AppLocalizations l10n,
+    DailyFortune? directFortune,
+    AsyncValue<DailyFortune>? fortuneAsync,
+    AsyncValue<DailyTransitScan> dailyTransitAsync,
+  ) {
+    final isZh = widget.isZh;
+
+    // Resolve fortune data
+    if (directFortune != null) {
+      return _buildFortuneContent(
+        context,
+        l10n,
+        directFortune,
+        dailyTransitAsync,
+      );
+    }
+
+    return fortuneAsync!.when(
+      data: (fortune) => _buildFortuneContent(
+        context,
+        l10n,
+        fortune,
+        dailyTransitAsync,
+      ),
+      loading: () => const Center(
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: CosmicColors.primaryLight,
+        ),
+      ),
+      error: (err, _) => Center(
+        child: Text(
+          isZh ? '加载失败，请重试' : 'Load failed, please retry',
+          style: const TextStyle(color: CosmicColors.textSecondary),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFortuneContent(
+    BuildContext context,
+    AppLocalizations l10n,
+    DailyFortune fortune,
+    AsyncValue<DailyTransitScan> dailyTransitAsync,
+  ) {
+    final isZh = widget.isZh;
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -213,22 +447,15 @@ class _DailyTab extends ConsumerWidget {
           const SizedBox(height: 14),
           _DimensionGrid(
             dimensions: fortune.dimensions,
-            dimensionColors: dimensionColors,
+            dimensionColors: widget.dimensionColors,
           ),
-          // Astro events (天象)
-          if (fortune.astroEvents.isNotEmpty) ...[
-            const SizedBox(height: 24),
-            _SectionTitle(text: isZh ? '今日天象' : 'Celestial Events'),
-            const SizedBox(height: 14),
-            _AstroEventsSection(events: fortune.astroEvents, isZh: isZh),
-          ],
           const SizedBox(height: 24),
           // Lucky elements
           _SectionTitle(text: isZh ? '幸运元素' : 'Lucky Elements'),
           const SizedBox(height: 14),
           _LuckyElementsVisual(
             lucky: fortune.luckyElements,
-            colorMap: colorMap,
+            colorMap: widget.colorMap,
             isZh: isZh,
           ),
           // Daily transit timeline
@@ -920,94 +1147,6 @@ class _WeekToggleChip extends StatelessWidget {
             fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
           ),
         ),
-      ),
-    );
-  }
-}
-
-// ---------- Astro Events Section ----------
-
-class _AstroEventsSection extends StatelessWidget {
-  final List<AstroEvent> events;
-  final bool isZh;
-
-  const _AstroEventsSection({required this.events, required this.isZh});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: CosmicColors.surfaceElevated,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: CosmicColors.borderGlow),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (int i = 0; i < events.length; i++) ...[
-            if (i > 0)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Divider(
-                  height: 1,
-                  color: CosmicColors.borderGlow.withAlpha(60),
-                ),
-              ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        CosmicColors.primary.withAlpha(60),
-                        CosmicColors.primaryLight.withAlpha(40),
-                      ],
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.auto_awesome,
-                      color: CosmicColors.primaryLight,
-                      size: 16,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        events[i].title,
-                        style: const TextStyle(
-                          color: CosmicColors.textPrimary,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      if (events[i].description.isNotEmpty) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          events[i].description,
-                          style: const TextStyle(
-                            color: CosmicColors.textSecondary,
-                            fontSize: 13,
-                            height: 1.5,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ],
       ),
     );
   }
