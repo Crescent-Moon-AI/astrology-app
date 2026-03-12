@@ -41,8 +41,10 @@ class DevServerNotifier extends Notifier<String> {
     } else {
       AppConfig.updateEnv(EnvConfig.custom(url));
     }
+    // Directly update the existing DioClient's baseUrl so all in-flight
+    // consumers (datasources, auth, etc.) immediately use the new server.
+    ref.read(dioClientProvider).updateBaseUrl(AppConfig.apiBaseUrl);
     state = url;
-    ref.invalidate(dioClientProvider);
   }
 }
 

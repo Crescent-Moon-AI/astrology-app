@@ -53,6 +53,11 @@ class DioClient {
 
   Dio get dio => _dio;
 
+  /// Update the base URL at runtime (e.g. dev server switch).
+  void updateBaseUrl(String url) {
+    _dio.options.baseUrl = url;
+  }
+
   void setAuthToken(String token) {
     _dio.options.headers['Authorization'] = 'Bearer $token';
   }
