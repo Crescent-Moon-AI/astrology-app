@@ -6,10 +6,8 @@ import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../../shared/widgets/breathing_loader.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../domain/models/daily_transit.dart';
-import '../../domain/models/user_transit_alert.dart';
 import '../providers/transit_providers.dart';
 import '../widgets/daily_transit_card.dart';
-import '../widgets/transit_card.dart';
 
 class TransitListPage extends ConsumerWidget {
   const TransitListPage({super.key});
@@ -18,12 +16,22 @@ class TransitListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final tabIndex = ref.watch(transitTabIndexProvider);
+    final now = DateTime.now();
+    final todayStr =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+    final tomorrow = now.add(const Duration(days: 1));
+    final tomorrowStr =
+        '${tomorrow.year}-${tomorrow.month.toString().padLeft(2, '0')}-${tomorrow.day.toString().padLeft(2, '0')}';
     final dailyAsync = tabIndex == 0
-        ? ref.watch(dailyTransitsProvider(null))
+        ? ref.watch(localDailyTransitsProvider(todayStr))
         : null;
-    final skyAsync = tabIndex == 1 ? ref.watch(skyAspectsProvider(null)) : null;
-    final activeAsync = ref.watch(activeTransitsProvider);
-    final upcomingAsync = ref.watch(upcomingTransitsProvider(30));
+    final skyAsync = tabIndex == 1
+        ? ref.watch(localSkyAspectsProvider(todayStr))
+        : null;
+    // Tomorrow's events — tab-aware (行运 or 天象)
+    final tomorrowAsync = tabIndex == 0
+        ? ref.watch(localDailyTransitsProvider(tomorrowStr))
+        : ref.watch(localSkyAspectsProvider(tomorrowStr));
 
     return Scaffold(
       appBar: AppBar(
@@ -52,10 +60,10 @@ class TransitListPage extends ConsumerWidget {
           color: CosmicColors.primary,
           backgroundColor: CosmicColors.surfaceElevated,
           onRefresh: () async {
-            ref.invalidate(dailyTransitsProvider(null));
-            ref.invalidate(skyAspectsProvider(null));
-            ref.invalidate(activeTransitsProvider);
-            ref.invalidate(upcomingTransitsProvider(30));
+            ref.invalidate(localDailyTransitsProvider(todayStr));
+            ref.invalidate(localSkyAspectsProvider(todayStr));
+            ref.invalidate(localDailyTransitsProvider(tomorrowStr));
+            ref.invalidate(localSkyAspectsProvider(tomorrowStr));
           },
           child: ListView(
             padding: const EdgeInsets.all(16),
@@ -107,30 +115,13 @@ class TransitListPage extends ConsumerWidget {
               const SizedBox(height: 28),
 
               _SectionHeader(
-                title: l10n.transitActiveTransits,
-                icon: Icons.radio_button_checked,
-                color: CosmicColors.secondary,
-              ),
-              const SizedBox(height: 10),
-              activeAsync.when(
-                data: (alerts) => _buildTransitList(context, alerts, l10n),
-                loading: () => const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 32),
-                  child: Center(child: BreathingLoader()),
-                ),
-                error: (error, _) => _buildError(context, error),
-              ),
-
-              const SizedBox(height: 28),
-
-              _SectionHeader(
                 title: l10n.transitUpcoming,
                 icon: Icons.schedule,
                 color: CosmicColors.primaryLight,
               ),
               const SizedBox(height: 10),
-              upcomingAsync.when(
-                data: (alerts) => _buildTransitList(context, alerts, l10n),
+              tomorrowAsync.when(
+                data: (scan) => _buildDailyEvents(scan, l10n),
                 loading: () => const Padding(
                   padding: EdgeInsets.symmetric(vertical: 32),
                   child: Center(child: BreathingLoader()),
@@ -182,50 +173,6 @@ class TransitListPage extends ConsumerWidget {
     return Column(
       children: scan.events
           .map((event) => DailyTransitCard(event: event))
-          .toList(),
-    );
-  }
-
-  Widget _buildTransitList(
-    BuildContext context,
-    List<UserTransitAlert> alerts,
-    AppLocalizations l10n,
-  ) {
-    if (alerts.isEmpty) {
-      return Container(
-        padding: const EdgeInsets.symmetric(vertical: 32),
-        child: Center(
-          child: Column(
-            children: [
-              const Text('\u2728', style: TextStyle(fontSize: 32)),
-              const SizedBox(height: 8),
-              Text(
-                l10n.transitNoActive,
-                style: const TextStyle(
-                  color: CosmicColors.textSecondary,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    return Column(
-      children: alerts
-          .map(
-            (alert) => Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: TransitCard(
-                alert: alert,
-                onTap: () => context.pushNamed(
-                  'transitDetail',
-                  pathParameters: {'id': alert.id},
-                ),
-              ),
-            ),
-          )
           .toList(),
     );
   }

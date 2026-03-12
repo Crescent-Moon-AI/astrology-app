@@ -250,7 +250,10 @@ class _DailyTabState extends ConsumerState<_DailyTab> {
         ? null
         : ref.watch(dailyFortuneByDateProvider(_selectedDateStr));
     final dailyTransitAsync = ref.watch(
-      dailyTransitsProvider(_selectedDateStr),
+      localDailyTransitsProvider(_selectedDateStr),
+    );
+    final skyAspectsAsync = ref.watch(
+      localSkyAspectsProvider(_selectedDateStr),
     );
 
     return Column(
@@ -334,6 +337,7 @@ class _DailyTabState extends ConsumerState<_DailyTab> {
             isInitialDate ? widget.initialFortune : null,
             fortuneAsync,
             dailyTransitAsync,
+            skyAspectsAsync,
           ),
         ),
       ],
@@ -346,6 +350,7 @@ class _DailyTabState extends ConsumerState<_DailyTab> {
     DailyFortune? directFortune,
     AsyncValue<DailyFortune>? fortuneAsync,
     AsyncValue<DailyTransitScan> dailyTransitAsync,
+    AsyncValue<DailyTransitScan> skyAspectsAsync,
   ) {
     final isZh = widget.isZh;
 
@@ -356,12 +361,18 @@ class _DailyTabState extends ConsumerState<_DailyTab> {
         l10n,
         directFortune,
         dailyTransitAsync,
+        skyAspectsAsync,
       );
     }
 
     return fortuneAsync!.when(
-      data: (fortune) =>
-          _buildFortuneContent(context, l10n, fortune, dailyTransitAsync),
+      data: (fortune) => _buildFortuneContent(
+        context,
+        l10n,
+        fortune,
+        dailyTransitAsync,
+        skyAspectsAsync,
+      ),
       loading: () => const Center(
         child: CircularProgressIndicator(
           strokeWidth: 2,
@@ -382,6 +393,7 @@ class _DailyTabState extends ConsumerState<_DailyTab> {
     AppLocalizations l10n,
     DailyFortune fortune,
     AsyncValue<DailyTransitScan> dailyTransitAsync,
+    AsyncValue<DailyTransitScan> skyAspectsAsync,
   ) {
     final isZh = widget.isZh;
     return SingleChildScrollView(
@@ -451,7 +463,24 @@ class _DailyTabState extends ConsumerState<_DailyTab> {
             colorMap: widget.colorMap,
             isZh: isZh,
           ),
-          // Daily transit timeline
+          // Sky aspects (星象) — local FFI, universal
+          skyAspectsAsync.when(
+            data: (scan) {
+              if (scan.events.isEmpty) return const SizedBox.shrink();
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 24),
+                  _SectionTitle(text: isZh ? '星象' : 'Celestial Aspects'),
+                  const SizedBox(height: 14),
+                  _DailyTransitList(events: scan.events),
+                ],
+              );
+            },
+            loading: () => const SizedBox.shrink(),
+            error: (_, _) => const SizedBox.shrink(),
+          ),
+          // Daily transit timeline (行运) — local FFI, personal
           dailyTransitAsync.when(
             data: (scan) {
               if (scan.events.isEmpty) return const SizedBox.shrink();
