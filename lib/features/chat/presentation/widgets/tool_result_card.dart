@@ -7,6 +7,7 @@ import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../chart/presentation/widgets/chart_result_card.dart';
 import '../../domain/models/message.dart';
 import 'tarot_reading_card.dart';
+import 'web_search_result_card.dart';
 
 class ToolResultCard extends StatefulWidget {
   final MessageBlock block;
@@ -74,6 +75,10 @@ class _ToolResultCardState extends State<ToolResultCard> {
       'synastry',
       'transit',
     }.contains(name);
+  }
+
+  bool get _isWebSearchTool {
+    return widget.block.toolName == 'web_search';
   }
 
   Map<String, dynamic>? get _parsedPayload {
@@ -166,10 +171,18 @@ class _ToolResultCardState extends State<ToolResultCard> {
                       widget.block.payloadJson != null) ...[
                     TarotReadingCard(payloadJson: widget.block.payloadJson!),
                   ],
-                  // Detail toggle for non-chart/non-tarot tools
+                  // Web search structured display
+                  if (widget.block.status == BlockStatus.success &&
+                      _isWebSearchTool &&
+                      widget.block.payloadJson != null) ...[
+                    WebSearchResultCard(
+                        payloadJson: widget.block.payloadJson!),
+                  ],
+                  // Detail toggle for non-specialized tools
                   if (widget.block.status == BlockStatus.success &&
                       !_isChartTool &&
                       !_isTarotTool &&
+                      !_isWebSearchTool &&
                       _parsedPayload != null) ...[
                     const SizedBox(height: 8),
                     AnimatedCrossFade(
