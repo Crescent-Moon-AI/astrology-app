@@ -179,8 +179,7 @@ jobs:
         env:
           OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
           OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
-          # CNAME domain for APK downloads (OSS default endpoint blocks APK files)
-          OSS_CNAME: dl.astrology.net.cn
+          OSS_BUCKET_DOMAIN: astrology-application.oss-cn-beijing.aliyuncs.com
         run: |
           curl -fsSL https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
           VERSION="${{ steps.version.outputs.version }}"
@@ -188,6 +187,10 @@ jobs:
           SHORT_SHA="${GITHUB_SHA::7}"
           APK="build/app/outputs/flutter-apk/xingjian-${VARIANT}-v${VERSION}.apk"
           OSS_FLAGS="-e oss-cn-beijing.aliyuncs.com -i $OSS_ACCESS_KEY_ID -k $OSS_ACCESS_KEY_SECRET"
+          # Zip the APK (OSS blocks raw .apk downloads; .zip works with default endpoint)
+          ZIP_NAME="xingjian-${VARIANT}-v${VERSION}.zip"
+          cd build/app/outputs/flutter-apk && zip "$ZIP_NAME" "xingjian-${VARIANT}-v${VERSION}.apk" && cd -
+          ZIP="build/app/outputs/flutter-apk/${ZIP_NAME}"
           # PR builds go to pr/ subdirectory to avoid polluting main releases
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             OSS_PREFIX="releases/${VARIANT}/pr"
@@ -195,18 +198,18 @@ jobs:
             OSS_PREFIX="releases/${VARIANT}"
           fi
           # Archive build (never overwritten)
-          ARCHIVE_NAME="xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.apk"
-          ossutil cp "$APK" "oss://astrology-application/${OSS_PREFIX}/${ARCHIVE_NAME}" $OSS_FLAGS
+          ARCHIVE_NAME="xingjian-${VARIANT}-v${VERSION}-${SHORT_SHA}.zip"
+          ossutil cp "$ZIP" "oss://astrology-application/${OSS_PREFIX}/${ARCHIVE_NAME}" $OSS_FLAGS
           # Latest pointer (only on push to main or manual trigger)
           if [ "${{ github.event_name }}" != "pull_request" ]; then
-            LATEST_NAME="xingjian-${VARIANT}-latest.apk"
-            ossutil cp -f "$APK" "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}" $OSS_FLAGS
+            LATEST_NAME="xingjian-${VARIANT}-latest.zip"
+            ossutil cp -f "$ZIP" "oss://astrology-application/${OSS_PREFIX}/${LATEST_NAME}" $OSS_FLAGS
           fi
-          # Write download links to job summary (CNAME domain bypasses APK restriction)
+          # Write download links to job summary (raw OSS domain, no CNAME needed for .zip)
           echo "### OSS Download — ${VARIANT}" >> "$GITHUB_STEP_SUMMARY"
           echo "| Build | Link |" >> "$GITHUB_STEP_SUMMARY"
           echo "|-------|------|" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Archive | [${ARCHIVE_NAME}](https://${OSS_CNAME}/${OSS_PREFIX}/${ARCHIVE_NAME}) |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Archive | [${ARCHIVE_NAME}](https://${OSS_BUCKET_DOMAIN}/${OSS_PREFIX}/${ARCHIVE_NAME}) |" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "$LATEST_NAME" ]; then
-            echo "| Latest | [${LATEST_NAME}](https://${OSS_CNAME}/${OSS_PREFIX}/${LATEST_NAME}) |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Latest | [${LATEST_NAME}](https://${OSS_BUCKET_DOMAIN}/${OSS_PREFIX}/${LATEST_NAME}) |" >> "$GITHUB_STEP_SUMMARY"
           fi
