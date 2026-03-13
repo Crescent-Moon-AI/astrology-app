@@ -1160,6 +1160,54 @@ abstract class AppLocalizations {
   /// **'Failed to load'**
   String get errorLoadFailed;
 
+  /// No description provided for @errorTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection timed out, retrying...'**
+  String get errorTimeout;
+
+  /// No description provided for @errorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Network unavailable, please check your connection'**
+  String get errorNetwork;
+
+  /// No description provided for @errorServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Service temporarily unavailable, please try again later'**
+  String get errorServer;
+
+  /// No description provided for @errorConnectionLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection lost'**
+  String get errorConnectionLost;
+
+  /// No description provided for @wsStatusConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get wsStatusConnected;
+
+  /// No description provided for @wsStatusConnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting...'**
+  String get wsStatusConnecting;
+
+  /// No description provided for @wsStatusReconnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnecting...'**
+  String get wsStatusReconnecting;
+
+  /// No description provided for @wsStatusDisconnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected'**
+  String get wsStatusDisconnected;
+
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:

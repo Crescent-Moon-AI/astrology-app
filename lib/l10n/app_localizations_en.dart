@@ -554,6 +554,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorLoadFailed => 'Failed to load';
 
   @override
+  String get errorTimeout => 'Connection timed out, retrying...';
+
+  @override
+  String get errorNetwork =>
+      'Network unavailable, please check your connection';
+
+  @override
+  String get errorServer =>
+      'Service temporarily unavailable, please try again later';
+
+  @override
+  String get errorConnectionLost => 'Connection lost';
+
+  @override
+  String get wsStatusConnected => 'Connected';
+
+  @override
+  String get wsStatusConnecting => 'Connecting...';
+
+  @override
+  String get wsStatusReconnecting => 'Reconnecting...';
+
+  @override
+  String get wsStatusDisconnected => 'Disconnected';
+
+  @override
   String get retry => 'Retry';
 
   @override

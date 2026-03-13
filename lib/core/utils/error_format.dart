@@ -1,13 +1,58 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
-/// Format an error for user display, respecting the current AppMode.
+import 'package:astrology_app/l10n/app_localizations.dart';
+
+/// Classify an error into a user-facing category.
+enum ErrorKind { timeout, network, server, unknown }
+
+/// Determine the [ErrorKind] for the given error.
+ErrorKind classifyError(Object error) {
+  if (error is TimeoutException) return ErrorKind.timeout;
+
+  if (error is DioException) {
+    switch (error.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.receiveTimeout:
+        return ErrorKind.timeout;
+      case DioExceptionType.connectionError:
+        return ErrorKind.network;
+      case DioExceptionType.badResponse:
+        final statusCode = error.response?.statusCode ?? 0;
+        if (statusCode >= 500) return ErrorKind.server;
+        return ErrorKind.unknown;
+      default:
+        return ErrorKind.unknown;
+    }
+  }
+
+  if (error is SocketException) return ErrorKind.network;
+
+  return ErrorKind.unknown;
+}
+
+/// Format an error into a user-friendly localized message.
 ///
-/// - dev/mock: full error string (including stack trace info)
-/// - test: error code + message (no stack trace)
-/// - release: generic user-friendly message
-String formatError(Object error) {
-  // TODO(debug): temporary — show full error detail in all modes for diagnosis.
-  // Revert this function after confirming the root cause.
+/// When [l10n] is available, returns a concise localized string.
+/// Falls back to the raw error string for unknown errors.
+String formatError(Object error, [AppLocalizations? l10n]) {
+  if (l10n != null) {
+    switch (classifyError(error)) {
+      case ErrorKind.timeout:
+        return l10n.errorTimeout;
+      case ErrorKind.network:
+        return l10n.errorNetwork;
+      case ErrorKind.server:
+        return l10n.errorServer;
+      case ErrorKind.unknown:
+        break;
+    }
+  }
+
+  // Fallback: technical detail (useful for dev/debug builds)
   if (error is DioException) {
     final buf = StringBuffer();
     buf.write('[${error.type.name}]');

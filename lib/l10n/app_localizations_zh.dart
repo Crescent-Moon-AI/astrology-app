@@ -551,6 +551,30 @@ class AppLocalizationsZh extends AppLocalizations {
   String get errorLoadFailed => '加载失败';
 
   @override
+  String get errorTimeout => '连接超时，正在重试...';
+
+  @override
+  String get errorNetwork => '网络不可用，请检查连接';
+
+  @override
+  String get errorServer => '服务暂时不可用，请稍后再试';
+
+  @override
+  String get errorConnectionLost => '连接已断开';
+
+  @override
+  String get wsStatusConnected => '已连接';
+
+  @override
+  String get wsStatusConnecting => '连接中...';
+
+  @override
+  String get wsStatusReconnecting => '重连中...';
+
+  @override
+  String get wsStatusDisconnected => '未连接';
+
+  @override
   String get retry => '重试';
 
   @override

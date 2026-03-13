@@ -51,6 +51,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   bool _isProcessing = false;
   bool _wsConnected = false;
   String? _wsError;
+  bool _isReconnecting = false;
+  int _reconnectAttempt = 0;
+  Timer? _reconnectTimer;
 
   @override
   void initState() {
@@ -94,7 +97,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     final datasource = ref.read(chatDatasourceProvider);
     final repo = ref.read(chatRepositoryProvider);
 
-    _wsSubscription = datasource.messageStream.listen(_handleServerMessage);
+    _wsSubscription = datasource.messageStream.listen(
+      _handleServerMessage,
+      onDone: _onWsDisconnected,
+    );
 
     const maxAttempts = 3;
     for (var attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -118,6 +124,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           setState(() {
             _wsConnected = true;
             _wsError = null;
+            _isReconnecting = false;
+            _reconnectAttempt = 0;
           });
           _sendInitialMessageIfNeeded();
         }
@@ -129,8 +137,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
         if (attempt >= maxAttempts) {
           if (mounted) {
+            final l10n = AppLocalizations.of(context);
             setState(() {
-              _wsError = formatError(e);
+              _wsError = formatError(e, l10n);
+              _isReconnecting = false;
             });
           }
         } else {
@@ -139,6 +149,41 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         }
       }
     }
+  }
+
+  void _onWsDisconnected() {
+    if (!mounted || !_wsConnected) return;
+    setState(() {
+      _wsConnected = false;
+      _isReconnecting = true;
+    });
+    _scheduleReconnect();
+  }
+
+  void _scheduleReconnect() {
+    if (!mounted) return;
+    _reconnectTimer?.cancel();
+    _reconnectAttempt++;
+    if (_reconnectAttempt > 5) {
+      // Give up after 5 auto-reconnect attempts
+      if (mounted) {
+        final l10n = AppLocalizations.of(context);
+        setState(() {
+          _isReconnecting = false;
+          _wsError = l10n?.errorConnectionLost ?? 'Connection lost';
+        });
+      }
+      return;
+    }
+    // Exponential backoff: 1s, 2s, 4s, 8s, 16s
+    final delay = Duration(seconds: 1 << (_reconnectAttempt - 1));
+    _reconnectTimer = Timer(delay, () {
+      if (mounted) {
+        _wsSubscription?.cancel();
+        ref.read(chatDatasourceProvider).disconnect();
+        _connectWebSocket();
+      }
+    });
   }
 
   void _sendInitialMessageIfNeeded() {
@@ -260,9 +305,12 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   }
 
   void _retryConnection() {
+    _reconnectTimer?.cancel();
     setState(() {
       _wsError = null;
       _wsConnected = false;
+      _isReconnecting = false;
+      _reconnectAttempt = 0;
     });
     _wsSubscription?.cancel();
     ref.read(chatDatasourceProvider).disconnect();
@@ -271,6 +319,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
   @override
   void dispose() {
+    _reconnectTimer?.cancel();
     _wsSubscription?.cancel();
     _autoScroll.dispose();
     super.dispose();
@@ -297,12 +346,19 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             }
           },
         ),
-        title: Text(
-          l10n?.chatTitle ?? '咨询',
-          style: const TextStyle(
-            color: CosmicColors.textPrimary,
-            fontWeight: FontWeight.w600,
-          ),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              l10n?.chatTitle ?? '月见',
+              style: const TextStyle(
+                color: CosmicColors.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(width: 6),
+            _buildConnectionDot(),
+          ],
         ),
         backgroundColor: CosmicColors.background.withValues(alpha: 0.95),
         centerTitle: true,
@@ -372,11 +428,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          Localizations.localeOf(
-                                context,
-                              ).languageCode.startsWith('zh')
-                              ? '重试'
-                              : 'Retry',
+                          l10n?.retry ?? 'Retry',
                           style: const TextStyle(
                             color: CosmicColors.primaryLight,
                             fontSize: 12,
@@ -395,6 +447,25 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildConnectionDot() {
+    final Color color;
+    if (_wsConnected) {
+      color = CosmicColors.success;
+    } else if (_isReconnecting) {
+      color = Colors.orange;
+    } else {
+      color = CosmicColors.error;
+    }
+    return Container(
+      width: 8,
+      height: 8,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
       ),
     );
   }
