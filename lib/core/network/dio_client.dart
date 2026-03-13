@@ -7,6 +7,7 @@ import 'api_constants.dart';
 
 class DioClient {
   late final Dio _dio;
+  static bool? _nativeAdapterWorks;
 
   DioClient({String? baseUrl}) {
     final resolvedBase = baseUrl ?? ApiConstants.baseUrl;
@@ -37,10 +38,42 @@ class DioClient {
           return client;
         },
       );
-    } else {
+    } else if (_nativeAdapterWorks != false) {
       // Use platform-native HTTP client for proper TLS 1.3 support.
       // Dart's built-in BoringSSL may use TLS 1.2 which can be blocked by DPI.
-      _dio.httpClientAdapter = NativeAdapter();
+      // Some Chinese Android devices fail with Cronet; we detect this on first
+      // request and fall back to the default IOHttpClientAdapter permanently.
+      final nativeAdapter = NativeAdapter();
+      final fallbackAdapter = IOHttpClientAdapter();
+      _dio.httpClientAdapter = nativeAdapter;
+
+      if (_nativeAdapterWorks == null) {
+        _dio.interceptors.add(
+          InterceptorsWrapper(
+            onResponse: (response, handler) {
+              _nativeAdapterWorks = true;
+              handler.next(response);
+            },
+            onError: (error, handler) {
+              // Connection-level failures (not HTTP errors) indicate Cronet issues.
+              if (error.type == DioExceptionType.connectionError ||
+                  error.type == DioExceptionType.unknown) {
+                _nativeAdapterWorks = false;
+                _dio.httpClientAdapter = fallbackAdapter;
+                // Retry the failed request with the fallback adapter.
+                _dio.fetch(error.requestOptions).then(
+                  (r) => handler.resolve(r),
+                  onError: (e) => handler.next(
+                    e is DioException ? e : error,
+                  ),
+                );
+                return;
+              }
+              handler.next(error);
+            },
+          ),
+        );
+      }
     }
 
     // Log requests/responses in dev mode for easier debugging.

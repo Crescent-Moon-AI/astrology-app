@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import '../../config/env.dart';
 
 /// Format an error for user display, respecting the current AppMode.
 ///
@@ -7,28 +6,21 @@ import '../../config/env.dart';
 /// - test: error code + message (no stack trace)
 /// - release: generic user-friendly message
 String formatError(Object error) {
-  final mode = AppConfig.mode;
-
-  if (mode.showStackTrace) {
-    return error.toString();
-  }
-
-  if (mode.showErrorDetail) {
-    // test mode: show code + message but not full stack
-    if (error is DioException) {
+  // TODO(debug): temporary — show full error detail in all modes for diagnosis.
+  // Revert this function after confirming the root cause.
+  if (error is DioException) {
+    final buf = StringBuffer();
+    buf.write('[${error.type.name}]');
+    if (error.message != null) buf.write(' ${error.message}');
+    if (error.error != null) buf.write('\ncause: ${error.error}');
+    final uri = error.requestOptions.uri;
+    buf.write('\nurl: $uri');
+    if (error.response != null) {
+      buf.write('\nstatus: ${error.response?.statusCode}');
       final data = error.response?.data;
-      if (data is Map<String, dynamic>) {
-        final err = data['error'];
-        if (err is Map<String, dynamic>) {
-          return err['message'] as String? ?? error.message ?? 'Unknown error';
-        }
-        if (err is String) return err;
-      }
-      return error.message ?? 'Network error';
+      if (data != null) buf.write('\nbody: $data');
     }
-    return error.toString();
+    return buf.toString();
   }
-
-  // release mode: generic message
-  return '操作失败，请重试';
+  return error.toString();
 }
