@@ -15,8 +15,10 @@ import '../../../../shared/widgets/character_avatar.dart';
 import '../../../../shared/widgets/starfield_background.dart';
 import '../../../../shared/models/expression.dart';
 import '../../data/models/ws_message.dart';
+import '../../domain/models/message.dart';
 import '../controllers/auto_scroll_controller.dart';
 import '../providers/chat_providers.dart';
+import '../utils/conversation_export.dart';
 import '../widgets/chat_input.dart';
 import '../widgets/message_bubble.dart';
 
@@ -320,6 +322,29 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     _autoScroll.scrollToBottom();
   }
 
+  Future<void> _handleCopyConversation(List<ChatMessage> messages) async {
+    final isZh =
+        Localizations.localeOf(context).languageCode.startsWith('zh');
+    try {
+      await copyConversationToClipboard(messages, isZh: isZh);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(isZh ? '对话已复制到剪贴板' : 'Conversation copied'),
+          ),
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(isZh ? '复制失败' : 'Copy failed'),
+          ),
+        );
+      }
+    }
+  }
+
   void _retryConnection() {
     _reconnectTimer?.cancel();
     setState(() {
@@ -378,6 +403,18 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         ),
         backgroundColor: CosmicColors.background.withValues(alpha: 0.95),
         centerTitle: true,
+        actions: [
+          if (messages.isNotEmpty)
+            IconButton(
+              icon: const Icon(Icons.copy, size: 20),
+              tooltip: Localizations.localeOf(context)
+                      .languageCode
+                      .startsWith('zh')
+                  ? '复制对话'
+                  : 'Copy conversation',
+              onPressed: () => _handleCopyConversation(messages),
+            ),
+        ],
       ),
       body: StarfieldBackground(
         child: Column(
