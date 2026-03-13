@@ -6,6 +6,8 @@ import 'package:astrology_app/l10n/app_localizations.dart';
 import '../../../../shared/theme/cosmic_colors.dart';
 import '../../../chart/presentation/widgets/chart_result_card.dart';
 import '../../domain/models/message.dart';
+import 'horoscope_result_card.dart';
+import 'memory_result_card.dart';
 import 'tarot_reading_card.dart';
 import 'web_search_result_card.dart';
 
@@ -39,6 +41,11 @@ class _ToolResultCardState extends State<ToolResultCard> {
       'web_search' => '\u7F51\u7EDC\u641C\u7D22',
       'recall_memory' => '\u8BB0\u5FC6\u53EC\u56DE',
       'horoscope' => '\u8FD0\u52BF\u67E5\u8BE2',
+      'rag_search' => '\u77E5\u8BC6\u641C\u7D22',
+      'active_transits' => '\u5F53\u524D\u661F\u8C61',
+      'resolve_location' => '\u5730\u70B9\u89E3\u6790',
+      'calculate_chart' => '\u661F\u76D8\u8BA1\u7B97',
+      'calculate_synastry' => '\u5408\u76D8\u8BA1\u7B97',
       _ => name,
     };
   }
@@ -79,6 +86,22 @@ class _ToolResultCardState extends State<ToolResultCard> {
 
   bool get _isWebSearchTool {
     return widget.block.toolName == 'web_search';
+  }
+
+  bool get _isHoroscopeTool {
+    return widget.block.toolName == 'horoscope';
+  }
+
+  bool get _isMemoryTool {
+    return widget.block.toolName == 'recall_memory';
+  }
+
+  bool get _hasSpecializedFormatter {
+    return _isChartTool ||
+        _isTarotTool ||
+        _isWebSearchTool ||
+        _isHoroscopeTool ||
+        _isMemoryTool;
   }
 
   Map<String, dynamic>? get _parsedPayload {
@@ -178,11 +201,23 @@ class _ToolResultCardState extends State<ToolResultCard> {
                     WebSearchResultCard(
                         payloadJson: widget.block.payloadJson!),
                   ],
+                  // Horoscope structured display
+                  if (widget.block.status == BlockStatus.success &&
+                      _isHoroscopeTool &&
+                      widget.block.payloadJson != null) ...[
+                    HoroscopeResultCard(
+                        payloadJson: widget.block.payloadJson!),
+                  ],
+                  // Memory recall structured display
+                  if (widget.block.status == BlockStatus.success &&
+                      _isMemoryTool &&
+                      widget.block.payloadJson != null) ...[
+                    MemoryResultCard(
+                        payloadJson: widget.block.payloadJson!),
+                  ],
                   // Detail toggle for non-specialized tools
                   if (widget.block.status == BlockStatus.success &&
-                      !_isChartTool &&
-                      !_isTarotTool &&
-                      !_isWebSearchTool &&
+                      !_hasSpecializedFormatter &&
                       _parsedPayload != null) ...[
                     const SizedBox(height: 8),
                     AnimatedCrossFade(

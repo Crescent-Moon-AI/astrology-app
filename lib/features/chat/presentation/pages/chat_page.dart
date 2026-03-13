@@ -44,11 +44,15 @@ class ChatPage extends ConsumerStatefulWidget {
   ConsumerState<ChatPage> createState() => _ChatPageState();
 }
 
+/// Tracks what the AI is currently doing, for user-facing status text.
+enum _ProcessingPhase { thinking, callingTool, generating }
+
 class _ChatPageState extends ConsumerState<ChatPage> {
   late AutoScrollController _autoScroll;
   StreamSubscription<WsServerMessage>? _wsSubscription;
   String? _currentConversationId;
   bool _isProcessing = false;
+  _ProcessingPhase _phase = _ProcessingPhase.thinking;
   bool _wsConnected = false;
   String? _wsError;
   bool _isReconnecting = false;
@@ -234,6 +238,11 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           );
           notifier.ensureAssistantMessage(msg.messageId!);
           notifier.handleBlockUpsert(msg.block!, msg.messageId!);
+          // Update processing phase based on block kind
+          final kind = msg.block!['kind'] as String?;
+          if (kind == 'tool' && _phase != _ProcessingPhase.callingTool) {
+            setState(() => _phase = _ProcessingPhase.callingTool);
+          }
         }
 
       case 'block_delta':
@@ -242,6 +251,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             chatMessagesProvider(_currentConversationId ?? '').notifier,
           );
           notifier.handleBlockDelta(msg.blockId!, msg.delta!);
+          // Text deltas mean AI is generating the response
+          if (_phase != _ProcessingPhase.generating) {
+            setState(() => _phase = _ProcessingPhase.generating);
+          }
           if (_autoScroll.isAtBottom) {
             _autoScroll.scrollToBottom();
           }
@@ -290,7 +303,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     }
 
     notifier.addUserMessage(content, imageBytes: imageBytes);
-    setState(() => _isProcessing = true);
+    setState(() {
+      _isProcessing = true;
+      _phase = _ProcessingPhase.thinking;
+    });
 
     datasource.sendMessage(
       content: content,
@@ -564,6 +580,11 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
   Widget _buildWaitingIndicator(BuildContext context) {
     final isZh = Localizations.localeOf(context).languageCode.startsWith('zh');
+    final statusText = switch (_phase) {
+      _ProcessingPhase.thinking => isZh ? '正在思考...' : 'Thinking...',
+      _ProcessingPhase.callingTool => isZh ? '调用工具中...' : 'Calling tool...',
+      _ProcessingPhase.generating => isZh ? '生成回复中...' : 'Generating...',
+    };
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 24),
       child: Column(
@@ -587,7 +608,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               ),
               const SizedBox(width: 8),
               Text(
-                isZh ? '感受平静...' : 'Feeling calm...',
+                statusText,
                 style: const TextStyle(
                   color: CosmicColors.textTertiary,
                   fontSize: 14,
