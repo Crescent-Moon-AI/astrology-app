@@ -63,7 +63,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatInputHint => 'Ask the stars...';
 
   @override
-  String get chatTitle => 'Chat';
+  String get chatTitle => 'Yuejian';
+
+  @override
+  String get conversationListTitle => 'Conversations';
 
   @override
   String get transitActiveTransits => 'Active Transits';
@@ -1105,7 +1108,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get consultTitle => 'Consult';
 
   @override
-  String get consultRoomTitle => 'Consultation Room';
+  String get consultRoomTitle => 'Yuejian Consult';
 
   @override
   String get consultFreeAsk => 'Free Ask';

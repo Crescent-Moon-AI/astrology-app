@@ -63,7 +63,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatInputHint => '向星空提问...';
 
   @override
-  String get chatTitle => '咨询';
+  String get chatTitle => '月见';
+
+  @override
+  String get conversationListTitle => '对话记录';
 
   @override
   String get transitActiveTransits => '活跃星象';
@@ -1094,7 +1097,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get consultTitle => '咨询';
 
   @override
-  String get consultRoomTitle => '咨询室';
+  String get consultRoomTitle => '月见咨询';
 
   @override
   String get consultFreeAsk => '自由询问';

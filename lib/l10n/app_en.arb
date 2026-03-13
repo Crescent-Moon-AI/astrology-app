@@ -18,7 +18,8 @@
   "cardShowDetails": "Show Details",
   "cardHideDetails": "Hide Details",
   "chatInputHint": "Ask the stars...",
-  "chatTitle": "Chat",
+  "chatTitle": "Yuejian",
+  "conversationListTitle": "Conversations",
   "transitActiveTransits": "Active Transits",
   "transitNoActive": "No active transits",
   "transitUpcoming": "Upcoming Transits",
@@ -427,7 +428,7 @@
   "insightComingSoon": "Coming Soon",
 
   "consultTitle": "Consult",
-  "consultRoomTitle": "Consultation Room",
+  "consultRoomTitle": "Yuejian Consult",
   "consultFreeAsk": "Free Ask",
   "consultTarot": "Tarot",
   "consultChart": "Chart",

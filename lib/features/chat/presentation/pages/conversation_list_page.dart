@@ -23,7 +23,7 @@ class ConversationListPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.chatTitle),
+        title: Text(l10n.conversationListTitle),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,

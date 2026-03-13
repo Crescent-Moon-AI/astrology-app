@@ -209,8 +209,14 @@ abstract class AppLocalizations {
   /// No description provided for @chatTitle.
   ///
   /// In en, this message translates to:
-  /// **'Chat'**
+  /// **'Yuejian'**
   String get chatTitle;
+
+  /// No description provided for @conversationListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversations'**
+  String get conversationListTitle;
 
   /// No description provided for @transitActiveTransits.
   ///
@@ -2225,7 +2231,7 @@ abstract class AppLocalizations {
   /// No description provided for @consultRoomTitle.
   ///
   /// In en, this message translates to:
-  /// **'Consultation Room'**
+  /// **'Yuejian Consult'**
   String get consultRoomTitle;
 
   /// No description provided for @consultFreeAsk.

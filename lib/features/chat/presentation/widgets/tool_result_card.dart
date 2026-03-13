@@ -35,6 +35,9 @@ class _ToolResultCardState extends State<ToolResultCard> {
       'lenormand_reading' => '\u96F7\u8BFA\u66FC\u724C',
       'iching_divination' => '\u6613\u7ECF\u5360\u535C',
       'meihua_divination' => '\u6885\u82B1\u6613\u6570',
+      'web_search' => '\u7F51\u7EDC\u641C\u7D22',
+      'recall_memory' => '\u8BB0\u5FC6\u53EC\u56DE',
+      'horoscope' => '\u8FD0\u52BF\u67E5\u8BE2',
       _ => name,
     };
   }

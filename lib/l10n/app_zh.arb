@@ -18,7 +18,8 @@
   "cardShowDetails": "查看详情",
   "cardHideDetails": "收起详情",
   "chatInputHint": "向星空提问...",
-  "chatTitle": "咨询",
+  "chatTitle": "月见",
+  "conversationListTitle": "对话记录",
   "transitActiveTransits": "活跃星象",
   "transitNoActive": "暂无活跃星象",
   "transitUpcoming": "即将到来的星象",
@@ -427,7 +428,7 @@
   "insightComingSoon": "即将开放",
 
   "consultTitle": "咨询",
-  "consultRoomTitle": "咨询室",
+  "consultRoomTitle": "月见咨询",
   "consultFreeAsk": "自由询问",
   "consultTarot": "塔罗咨询",
   "consultChart": "星盘咨询",
